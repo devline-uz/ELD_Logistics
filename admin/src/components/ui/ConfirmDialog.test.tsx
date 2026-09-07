@@ -2,11 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import i18n from '@/app/i18n';
-import uiOverlayEn from '@/locales/en/ui-overlay.json';
+import '@/app/i18n';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
-
-i18n.addResourceBundle('en', 'translation', uiOverlayEn, true, true);
 
 describe('ConfirmDialog', () => {
   it('renders as an alertdialog with the default title', () => {

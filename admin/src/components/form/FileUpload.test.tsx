@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
+import '@/app/i18n';
 import { FileUpload } from './FileUpload';
 
 /** Sodda qo'lda XHR mocki — progress/load/error hodisalarini nazorat qilish uchun. */

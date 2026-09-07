@@ -2,7 +2,7 @@ import { forwardRef, useId, useMemo } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 
 import { cn } from './cn';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface TimeValue {
   hours: number;
@@ -54,7 +54,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
   },
   ref,
 ) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const fieldId = id ?? generatedId;
   const errorId = `${fieldId}-error`;
@@ -65,10 +65,10 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
 
   const segments = useMemo(
     () => [
-      { key: 'hours' as const, max: 23, labelKey: 'time.hours' as const },
-      { key: 'minutes' as const, max: 59, labelKey: 'time.minutes' as const },
+      { key: 'hours' as const, max: 23, labelKey: 'ui.form.time.hours' as const },
+      { key: 'minutes' as const, max: 59, labelKey: 'ui.form.time.minutes' as const },
       ...(showSeconds
-        ? [{ key: 'seconds' as const, max: 59, labelKey: 'time.seconds' as const }]
+        ? [{ key: 'seconds' as const, max: 59, labelKey: 'ui.form.time.seconds' as const }]
         : []),
     ],
     [showSeconds],
@@ -98,7 +98,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
         <span id={`${fieldId}-label`} className="text-body-sm font-medium text-neutral-700">
           {label}
           {required ? (
-            <span aria-hidden="true" className="ml-0.5 text-error-base">
+            <span aria-hidden="true" className="ml-0.5 text-error-dark">
               *
             </span>
           ) : null}
@@ -139,7 +139,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
       </div>
 
       {error ? (
-        <p id={errorId} role="alert" className="text-body-sm text-error-base">
+        <p id={errorId} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : hint ? (

@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { useFocusTrap } from '@/components/ui/Modal';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 export interface DrawerProps {
   open: boolean;

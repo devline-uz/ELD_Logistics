@@ -26,7 +26,7 @@ import { Icon } from '@/components/ui/Icon';
 import { Skeleton } from '@/components/feedback/Skeleton';
 
 import { ColumnPicker, type ColumnPickerColumn } from './ColumnPicker';
-import { useUiDataTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export type SortOrder = 'asc' | 'desc';
 
@@ -92,7 +92,7 @@ export function DataTable<TData>({
   skeletonRowCount = 5,
   className,
 }: DataTableProps<TData>) {
-  const { t } = useUiDataTranslation();
+  const { t } = useTranslation();
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() =>
     readStoredVisibility(tableId),
   );
@@ -238,7 +238,7 @@ export function DataTable<TData>({
               <tr>
                 <td colSpan={visibleColumnCount || 1} className="p-8">
                   <ErrorState
-                    message={errorMessage ?? t('dataTable.error.message')}
+                    message={errorMessage ?? t('ui.data.dataTable.error.message')}
                     onRetry={onRetry}
                   />
                 </td>
@@ -247,8 +247,8 @@ export function DataTable<TData>({
               <tr>
                 <td colSpan={visibleColumnCount || 1} className="p-8">
                   <EmptyState
-                    title={emptyTitle ?? t('dataTable.empty.title')}
-                    description={emptyDescription ?? t('dataTable.empty.description')}
+                    title={emptyTitle}
+                    description={emptyDescription}
                     action={
                       onClearFilters ? (
                         <button
@@ -256,7 +256,7 @@ export function DataTable<TData>({
                           onClick={onClearFilters}
                           className="text-body-sm font-medium text-primary hover:underline"
                         >
-                          {t('dataTable.empty.clearFilters')}
+                          {t('ui.overlay.emptyState.clearFilters')}
                         </button>
                       ) : undefined
                     }

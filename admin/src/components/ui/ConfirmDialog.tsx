@@ -68,7 +68,7 @@ export function ConfirmDialog({
       open={open}
       onClose={onClose}
       role="alertdialog"
-      title={title ?? t('confirmDialog.title')}
+      title={title ?? t('ui.overlay.confirmDialog.title')}
       describedById={descriptionId}
       closeOnBackdrop={!loading}
       footer={
@@ -102,7 +102,8 @@ export function ConfirmDialog({
             htmlFor={reasonFieldId}
             className="mb-1 block text-body-sm font-medium text-neutral-700"
           >
-            {reasonLabel ?? t('confirmDialog.reasonLabel')} <span aria-hidden="true">*</span>
+            {reasonLabel ?? t('ui.overlay.confirmDialog.reasonLabel')}{' '}
+            <span aria-hidden="true">*</span>
           </label>
           <textarea
             id={reasonFieldId}
@@ -122,7 +123,7 @@ export function ConfirmDialog({
           />
           {reasonError ? (
             <p id={reasonErrorId} role="alert" className="mt-1 text-body-sm text-error-dark">
-              {t('confirmDialog.reasonRequired')}
+              {t('ui.overlay.confirmDialog.reasonRequired')}
             </p>
           ) : null}
         </div>

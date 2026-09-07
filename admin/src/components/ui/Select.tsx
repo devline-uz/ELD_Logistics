@@ -4,7 +4,7 @@ import { Check, ChevronDown, X } from 'lucide-react';
 
 import { cn } from './cn';
 import { Icon } from './Icon';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface SelectOption<TValue extends string = string> {
   value: TValue;
@@ -53,7 +53,7 @@ export function Select<TValue extends string = string>({
   name,
   className,
 }: SelectProps<TValue>) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const selectId = id ?? generatedId;
   const listboxId = `${selectId}-listbox`;
@@ -179,7 +179,7 @@ export function Select<TValue extends string = string>({
         <label htmlFor={selectId} className="text-body-sm font-medium text-neutral-700">
           {label}
           {required ? (
-            <span aria-hidden="true" className="ml-0.5 text-error-base">
+            <span aria-hidden="true" className="ml-0.5 text-error-dark">
               *
             </span>
           ) : null}
@@ -204,8 +204,11 @@ export function Select<TValue extends string = string>({
             aria-required={required || undefined}
             aria-describedby={describedBy}
             aria-autocomplete={searchable ? 'list' : 'none'}
+            aria-activedescendant={
+              open && activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined
+            }
             value={open && searchable ? query : (selectedOption?.label ?? '')}
-            placeholder={placeholder ?? t('select.placeholder')}
+            placeholder={placeholder ?? t('ui.form.select.placeholder')}
             onFocus={openList}
             onClick={openList}
             onChange={(event) => setQuery(event.target.value)}
@@ -222,7 +225,7 @@ export function Select<TValue extends string = string>({
             {clearable && selectedOption && !disabled ? (
               <button
                 type="button"
-                aria-label={t('actions.clear')}
+                aria-label={t('ui.form.actions.clear')}
                 onClick={(event) => {
                   event.stopPropagation();
                   onChange(null);
@@ -246,13 +249,18 @@ export function Select<TValue extends string = string>({
             )}
           >
             {loading ? (
-              <li className="px-3 py-2 text-body-sm text-neutral-400">{t('select.loading')}</li>
+              <li className="px-3 py-2 text-body-sm text-neutral-400">
+                {t('ui.form.select.loading')}
+              </li>
             ) : filteredOptions.length === 0 ? (
-              <li className="px-3 py-2 text-body-sm text-neutral-400">{t('select.noResults')}</li>
+              <li className="px-3 py-2 text-body-sm text-neutral-400">
+                {t('ui.form.select.noResults')}
+              </li>
             ) : (
               filteredOptions.map((option, index) => (
                 <li
                   key={option.value}
+                  id={`${listboxId}-option-${index}`}
                   role="option"
                   aria-selected={option.value === value}
                   aria-disabled={option.disabled || undefined}
@@ -279,7 +287,7 @@ export function Select<TValue extends string = string>({
       </div>
 
       {error ? (
-        <p id={errorId} role="alert" className="text-body-sm text-error-base">
+        <p id={errorId} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : hint ? (

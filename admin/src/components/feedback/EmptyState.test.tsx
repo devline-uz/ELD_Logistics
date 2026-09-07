@@ -2,11 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import '@/app/i18n';
-import i18n from '@/app/i18n';
-import uiOverlayEn from '@/locales/en/ui-overlay.json';
 import { EmptyState } from '@/components/feedback/EmptyState';
-
-i18n.addResourceBundle('en', 'translation', uiOverlayEn, true, true);
 
 describe('EmptyState', () => {
   it('falls back to the default title and description', () => {

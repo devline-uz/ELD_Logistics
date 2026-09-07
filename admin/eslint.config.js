@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
 import i18next from 'eslint-plugin-i18next';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
@@ -82,6 +83,7 @@ export default tseslint.config(
       },
     },
     plugins: {
+      react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'jsx-a11y': jsxA11y,
@@ -90,6 +92,10 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.flatConfigs.recommended.rules,
+
+      // XSS darvozasi (fe-security F210): `dangerouslySetInnerHTML` hozircha
+      // ishlatilmagan — bu qoida uni tasodifan qo'shilishidan himoya qiladi.
+      'react/no-danger': 'error',
 
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/consistent-type-imports': [
@@ -103,8 +109,8 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': 'error',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // Bosqich 1 dan keyin 'error' ga ko'tariladi (fe-conventions §4)
-      'i18next/no-literal-string': ['warn', { markupOnly: true, onlyAttribute: [] }],
+      // Bosqich 1 dan keyin 'error' ga ko'tarildi (fe-conventions §4, i18n-keeper).
+      'i18next/no-literal-string': ['error', { markupOnly: true, onlyAttribute: [] }],
 
       'no-restricted-imports': [
         'error',

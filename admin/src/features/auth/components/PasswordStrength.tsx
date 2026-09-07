@@ -21,24 +21,29 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
   const passed = RULES.filter((rule) => rule.test(password)).length;
 
   return (
-    <ul aria-live="polite" className="flex flex-col gap-1 text-xs" role="status">
-      {RULES.map((rule) => {
-        const ok = rule.test(password);
-        return (
-          <li
-            key={rule.key}
-            className="flex items-center gap-1.5"
-            style={{ color: ok ? 'var(--color-success-dark)' : 'var(--color-neutral-500)' }}
-          >
-            <span aria-hidden="true">{ok ? '✓' : '○'}</span>
-            {t(`auth.passwordStrength.${rule.key}`)}
-          </li>
-        );
-      })}
-      <li className="sr-only">
+    // `role="status"` `<ul>` elementiga to'g'ridan-to'g'ri qo'yilsa uning
+    // ro'yxat semantikasini buzadi (axe: aria-allowed-role/listitem) — shu
+    // sabab live-region alohida o'rovchi elementga ko'chirildi (fe-a11y §2).
+    <div aria-live="polite" role="status" className="text-xs">
+      <ul className="flex flex-col gap-1">
+        {RULES.map((rule) => {
+          const ok = rule.test(password);
+          return (
+            <li
+              key={rule.key}
+              className="flex items-center gap-1.5"
+              style={{ color: ok ? 'var(--color-success-dark)' : 'var(--color-neutral-500)' }}
+            >
+              <span aria-hidden="true">{ok ? '✓' : '○'}</span>
+              {t(`auth.passwordStrength.${rule.key}`)}
+            </li>
+          );
+        })}
+      </ul>
+      <span className="sr-only">
         {t('auth.passwordStrength.summary', { passed, total: RULES.length })}
-      </li>
-    </ul>
+      </span>
+    </div>
   );
 }
 

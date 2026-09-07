@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import type { ColumnDef } from '@tanstack/react-table';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import '@/app/i18n';
 import { DataTable } from './DataTable';
 
 interface Row {

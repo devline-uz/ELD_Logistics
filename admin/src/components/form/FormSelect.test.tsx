@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 import { describe, expect, it } from 'vitest';
 
+import '@/app/i18n';
 import { FormSelect } from './FormSelect';
 
 interface Values {

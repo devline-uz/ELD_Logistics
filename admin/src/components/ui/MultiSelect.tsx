@@ -4,7 +4,7 @@ import { Check, ChevronDown, X } from 'lucide-react';
 
 import { cn } from './cn';
 import { Icon } from './Icon';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface MultiSelectOption<TValue extends string = string> {
   value: TValue;
@@ -52,7 +52,7 @@ export function MultiSelect<TValue extends string = string>({
   name,
   className,
 }: MultiSelectProps<TValue>) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const selectId = id ?? generatedId;
   const listboxId = `${selectId}-listbox`;
@@ -183,7 +183,7 @@ export function MultiSelect<TValue extends string = string>({
         <label htmlFor={selectId} className="text-body-sm font-medium text-neutral-700">
           {label}
           {required ? (
-            <span aria-hidden="true" className="ml-0.5 text-error-base">
+            <span aria-hidden="true" className="ml-0.5 text-error-dark">
               *
             </span>
           ) : null}
@@ -211,7 +211,7 @@ export function MultiSelect<TValue extends string = string>({
                 {!disabled ? (
                   <button
                     type="button"
-                    aria-label={`${t('actions.clear')}: ${option.label}`}
+                    aria-label={`${t('ui.form.actions.clear')}: ${option.label}`}
                     onClick={() => removeValue(v)}
                     className="text-neutral-400 hover:text-neutral-600"
                   >
@@ -237,8 +237,13 @@ export function MultiSelect<TValue extends string = string>({
             aria-required={required || undefined}
             aria-describedby={describedBy}
             aria-autocomplete={searchable ? 'list' : 'none'}
+            aria-activedescendant={
+              open && activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined
+            }
             value={query}
-            placeholder={values.length === 0 ? (placeholder ?? t('multiSelect.placeholder')) : ''}
+            placeholder={
+              values.length === 0 ? (placeholder ?? t('ui.form.multiSelect.placeholder')) : ''
+            }
             onKeyDown={handleKeyDown}
             onFocus={openList}
             onClick={openList}
@@ -262,6 +267,7 @@ export function MultiSelect<TValue extends string = string>({
           >
             {selectAll ? (
               <li
+                id={`${listboxId}-option-0`}
                 role="option"
                 aria-selected={allSelected}
                 onMouseEnter={() => setActiveIndex(0)}
@@ -274,14 +280,18 @@ export function MultiSelect<TValue extends string = string>({
                   activeIndex === 0 && 'bg-surface-muted',
                 )}
               >
-                {t('actions.selectAll')}
+                {t('ui.form.actions.selectAll')}
                 {allSelected ? <Icon icon={Check} size={16} className="text-primary" /> : null}
               </li>
             ) : null}
             {loading ? (
-              <li className="px-3 py-2 text-body-sm text-neutral-400">{t('select.loading')}</li>
+              <li className="px-3 py-2 text-body-sm text-neutral-400">
+                {t('ui.form.select.loading')}
+              </li>
             ) : filteredOptions.length === 0 ? (
-              <li className="px-3 py-2 text-body-sm text-neutral-400">{t('select.noResults')}</li>
+              <li className="px-3 py-2 text-body-sm text-neutral-400">
+                {t('ui.form.select.noResults')}
+              </li>
             ) : (
               filteredOptions.map((option, index) => {
                 const activeOffset = selectAll ? 1 : 0;
@@ -289,6 +299,7 @@ export function MultiSelect<TValue extends string = string>({
                 return (
                   <li
                     key={option.value}
+                    id={`${listboxId}-option-${index + activeOffset}`}
                     role="option"
                     aria-selected={isChecked}
                     aria-disabled={option.disabled || undefined}
@@ -314,7 +325,7 @@ export function MultiSelect<TValue extends string = string>({
       </div>
 
       {error ? (
-        <p id={errorId} role="alert" className="text-body-sm text-error-base">
+        <p id={errorId} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : hint ? (
@@ -324,7 +335,7 @@ export function MultiSelect<TValue extends string = string>({
       ) : (
         values.length > 0 && (
           <p className="text-body-sm text-neutral-400">
-            {t('multiSelect.selectedCount', { count: values.length })}
+            {t('ui.form.multiSelect.selectedCount', { count: values.length })}
           </p>
         )
       )}

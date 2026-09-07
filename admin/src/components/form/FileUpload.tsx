@@ -20,8 +20,6 @@ import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/feedback/Spinner';
 
-import { useUiDataTranslation } from '../data/i18n';
-
 /** Backend `kind` enum'i (fe-api §8 oq ro'yxati). */
 export type FileUploadKind = 'dvir_photo' | 'invoice' | 'signature' | 'logo' | 'chat' | 'import';
 
@@ -124,7 +122,6 @@ export function FileUpload({
   className,
 }: FileUploadProps) {
   const { t } = useTranslation();
-  const { t: td } = useUiDataTranslation();
   const inputId = useId();
   const [state, setState] = useState<UploadState>({ status: 'idle' });
   const [isDragOver, setIsDragOver] = useState(false);
@@ -134,14 +131,14 @@ export function FileUpload({
   const validate = useCallback(
     (file: File): string | undefined => {
       if (!matchesAccept(file, rules.accept)) {
-        return td('fileUpload.errors.invalidType', { types: rules.accept.join(', ') });
+        return t('ui.data.fileUpload.errors.invalidType', { types: rules.accept.join(', ') });
       }
       if (file.size > rules.maxBytes) {
-        return td('fileUpload.errors.tooLarge', { max: formatBytes(rules.maxBytes) });
+        return t('ui.data.fileUpload.errors.tooLarge', { max: formatBytes(rules.maxBytes) });
       }
       return undefined;
     },
-    [rules, td],
+    [rules, t],
   );
 
   const startUpload = useCallback(
@@ -164,7 +161,7 @@ export function FileUpload({
         });
 
         if (presign.max_bytes && file.size > presign.max_bytes) {
-          const message = td('fileUpload.errors.tooLarge', {
+          const message = t('ui.data.fileUpload.errors.tooLarge', {
             max: formatBytes(presign.max_bytes),
           });
           setState({ status: 'error', filename: file.name, message });
@@ -191,13 +188,13 @@ export function FileUpload({
         abortRef.current = null;
         const wasAborted = cause instanceof Error && cause.message === 'aborted';
         const message = wasAborted
-          ? td('fileUpload.cancelled')
-          : td('fileUpload.errors.uploadFailed');
+          ? t('ui.data.fileUpload.cancelled')
+          : t('ui.data.fileUpload.errors.uploadFailed');
         setState({ status: 'error', filename: file.name, message });
         if (!wasAborted) onError?.(message);
       }
     },
-    [kind, onError, onPresign, onUploaded, td, validate],
+    [kind, onError, onPresign, onUploaded, t, validate],
   );
 
   const handleFiles = useCallback(
@@ -258,7 +255,7 @@ export function FileUpload({
           onChange={(event) => handleFiles(event.target.files)}
         />
 
-        <p className="text-body-sm text-neutral-500">{td('fileUpload.dragHint')}</p>
+        <p className="text-body-sm text-neutral-500">{t('ui.data.fileUpload.dragHint')}</p>
         <Button
           type="button"
           variant="secondary"
@@ -266,7 +263,7 @@ export function FileUpload({
           disabled={disabled || isBusy}
           onClick={() => document.getElementById(inputId)?.click()}
         >
-          {td('fileUpload.browse')}
+          {t('ui.data.fileUpload.browse')}
         </Button>
 
         {state.status === 'uploading' ? (
@@ -298,13 +295,13 @@ export function FileUpload({
 
         {state.status === 'done' ? (
           <p role="status" className="text-body-sm text-success-dark">
-            {td('fileUpload.done', { filename: state.filename })}
+            {t('ui.data.fileUpload.done', { filename: state.filename })}
           </p>
         ) : null}
 
         {state.status === 'error' ? (
           <div className="mt-2 flex flex-col items-center gap-2">
-            <p role="alert" className="text-body-sm text-error-base">
+            <p role="alert" className="text-body-sm text-error-dark">
               {state.message}
             </p>
             <Button type="button" variant="secondary" size="sm" onClick={handleRetry}>

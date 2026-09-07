@@ -44,6 +44,18 @@ jobs:
       - name: Build
         run: npm run build
 
+      # fe-security F210 (MUST): zaifliklarga qarshi darvoza.
+      # Prod bog'liqliklari (`--omit=dev`) bloklovchi — bundle'ga tushadigan
+      # narsa. Dev-only zaifliklar (vite/vitest/@vitest/coverage-v8 kabi)
+      # bundle'ga tushmaydi, shuning uchun ular alohida, faqat ogohlantiruvchi
+      # qadamda ko'rsatiladi va build'ni yiqitmaydi.
+      - name: Audit production dependencies (blocking)
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Audit dev dependencies (warning only)
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
       # Uch bosqichli klient generatsiyasi (fe-api §2):
       #   openapi/swagger.json (fetch, DOCS_TOKEN kerak)
       #     -> openapi/openapi3.json (convert, tarmoq kerak emas)

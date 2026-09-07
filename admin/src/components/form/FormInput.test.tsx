@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { describe, expect, it } from 'vitest';
 
+import '@/app/i18n';
 import { FormInput } from './FormInput';
 
 interface Values {

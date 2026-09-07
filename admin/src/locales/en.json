@@ -4,84 +4,89 @@
     "title": "ELD Admin"
   },
   "auth": {
+    "forgotPassword": {
+      "backToLogin": "Back to sign in",
+      "description": "Enter your email or username and we will send you a link to reset your password.",
+      "fields": {
+        "login": "Email or username"
+      },
+      "neutralMessage": "If the account exists, a link has been sent.",
+      "submit": "Send reset link"
+    },
+    "invitationAccept": {
+      "description": "Set a password to activate your account.",
+      "fields": {
+        "confirmPassword": "Confirm password",
+        "password": "Password"
+      },
+      "invalidToken": "This invitation link has expired or already been used.",
+      "missingToken": "This invitation link is missing or invalid.",
+      "submit": "Set password and continue",
+      "success": "Your account is ready. Please sign in."
+    },
     "login": {
+      "errors": {
+        "accountInactive": "This account is inactive. Contact your administrator.",
+        "invalidCredentials": "The email/username or password is incorrect.",
+        "rateLimited": "Too many sign-in attempts. Please wait before trying again."
+      },
       "fields": {
         "identifier": "Email or username",
         "password": "Password",
         "remember": "Remember this device"
       },
-      "showPassword": "Show password",
-      "hidePassword": "Hide password",
-      "submit": "Sign in",
       "forgotPassword": "Forgot password?",
+      "hidePassword": "Hide password",
       "retryIn": "Try again in {{seconds}}s",
-      "errors": {
-        "invalidCredentials": "The email/username or password is incorrect.",
-        "accountInactive": "This account is inactive. Contact your administrator.",
-        "rateLimited": "Too many sign-in attempts. Please wait before trying again."
-      }
-    },
-    "twoFactorSetup": {
-      "description": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish enabling two-factor authentication.",
-      "qrAlt": "QR code for two-factor authentication setup",
-      "manualEntry": "Or enter this code manually:",
-      "codeLabel": "6-digit code",
-      "submit": "Verify and continue",
-      "loadError": "Could not start two-factor setup. Please try signing in again.",
-      "invalidCode": "That code is not valid. Please try again."
-    },
-    "twoFactorVerify": {
-      "description": "Enter the 6-digit code from your authenticator app to finish signing in.",
-      "codeLabel": "6-digit code",
-      "submit": "Verify and sign in",
-      "invalidCode": "That code is not valid. Please try again."
-    },
-    "forgotPassword": {
-      "description": "Enter your email or username and we will send you a link to reset your password.",
-      "fields": {
-        "login": "Email or username"
-      },
-      "submit": "Send reset link",
-      "neutralMessage": "If the account exists, a link has been sent.",
-      "backToLogin": "Back to sign in"
-    },
-    "resetPassword": {
-      "fields": {
-        "password": "New password",
-        "confirmPassword": "Confirm password"
-      },
-      "submit": "Reset password",
-      "success": "Your password has been reset. Please sign in.",
-      "missingToken": "This reset link is missing or invalid. Request a new one.",
-      "invalidToken": "This reset link has expired or already been used."
-    },
-    "invitationAccept": {
-      "description": "Set a password to activate your account.",
-      "fields": {
-        "password": "Password",
-        "confirmPassword": "Confirm password"
-      },
-      "submit": "Set password and continue",
-      "success": "Your account is ready. Please sign in.",
-      "missingToken": "This invitation link is missing or invalid.",
-      "invalidToken": "This invitation link has expired or already been used."
+      "showPassword": "Show password",
+      "submit": "Sign in"
     },
     "passwordStrength": {
       "length": "At least 10 characters",
       "letter": "At least one letter",
       "number": "At least one number",
       "summary": "{{passed}} of {{total}} password requirements met"
+    },
+    "resetPassword": {
+      "fields": {
+        "confirmPassword": "Confirm password",
+        "password": "New password"
+      },
+      "invalidToken": "This reset link has expired or already been used.",
+      "missingToken": "This reset link is missing or invalid. Request a new one.",
+      "submit": "Reset password",
+      "success": "Your password has been reset. Please sign in."
+    },
+    "twoFactorSetup": {
+      "codeLabel": "6-digit code",
+      "description": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish enabling two-factor authentication.",
+      "invalidCode": "That code is not valid. Please try again.",
+      "loadError": "Could not start two-factor setup. Please try signing in again.",
+      "manualEntry": "Or enter this code manually:",
+      "qrAlt": "QR code for two-factor authentication setup",
+      "submit": "Verify and continue"
+    },
+    "twoFactorVerify": {
+      "codeLabel": "6-digit code",
+      "description": "Enter the 6-digit code from your authenticator app to finish signing in.",
+      "invalidCode": "That code is not valid. Please try again.",
+      "submit": "Verify and sign in"
+    }
+  },
+  "banner": {
+    "subscriptionReadonly": {
+      "description": "You can view data, but creating and editing is disabled until the subscription is renewed.",
+      "title": "Your subscription is read-only"
     }
   },
   "bootstrap": {
-    "loading": "Loading ONEBOOK ELD…",
     "error": {
-      "title": "We could not load the application",
-      "description": "Check your connection and try again."
-    }
+      "description": "Check your connection and try again.",
+      "title": "We could not load the application"
+    },
+    "loading": "Loading ONEBOOK ELD…"
   },
   "common": {
-    "na": "N/A",
     "actions": {
       "back": "Back",
       "cancel": "Cancel",
@@ -95,212 +100,196 @@
       "staySignedIn": "Stay signed in",
       "tryAgain": "Try again"
     },
+    "na": "N/A",
     "states": {
       "empty": "Nothing to show yet",
       "error": "Something went wrong",
       "loading": "Loading…"
     }
   },
+  "enums": {
+    "connection_status": {
+      "offline": "Offline",
+      "online": "Online"
+    },
+    "duty_status": {
+      "DR": "Driving",
+      "OFF": "Off duty",
+      "ON": "On duty",
+      "PC": "Personal conveyance",
+      "SB": "Sleeper berth",
+      "YM": "Yard move"
+    },
+    "export_job_status": {
+      "done": "Done",
+      "failed": "Failed",
+      "queued": "Queued",
+      "running": "Running"
+    },
+    "unit_status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
   "errors": {
-    "validation": "Please check the highlighted fields and try again.",
-    "unauthorized": "Your session has ended. Please sign in again.",
-    "forbidden": "You do not have permission to perform this action.",
-    "notFound": "Not found.",
-    "conflict": "This record changed while you were editing it.",
-    "rateLimited": "Too many requests. Please wait a moment and try again.",
-    "subscriptionReadonly": "Your subscription is read-only. Changes are disabled.",
     "accountInactive": "This account is inactive. Contact your administrator.",
-    "sessionExpired": "Your session ended for security reasons. Please sign in again.",
+    "boundary": {
+      "description": "An unexpected error occurred while rendering this screen.",
+      "title": "This page could not be displayed",
+      "traceId": "Trace ID: {{traceId}}"
+    },
+    "conflict": "This record changed while you were editing it.",
+    "forbidden": "You do not have permission to perform this action.",
+    "forbiddenScreen": {
+      "description": "Ask your administrator to grant access, or go back to a page you can open.",
+      "requiredPermission": "Required permission: {{permission}}",
+      "title": "You do not have permission to view this page"
+    },
     "internal": "The server could not complete the request.",
     "network": "You appear to be offline.",
-    "unknown": "Something went wrong.",
-    "forbiddenScreen": {
-      "title": "You do not have permission to view this page",
-      "description": "Ask your administrator to grant access, or go back to a page you can open.",
-      "requiredPermission": "Required permission: {{permission}}"
-    },
+    "notFound": "Not found.",
     "notFoundScreen": {
-      "title": "Not found",
-      "description": "The page or record you are looking for does not exist."
+      "description": "The page or record you are looking for does not exist.",
+      "title": "Not found"
     },
-    "boundary": {
-      "title": "This page could not be displayed",
-      "description": "An unexpected error occurred while rendering this screen.",
-      "traceId": "Trace ID: {{traceId}}"
-    }
+    "rateLimited": "Too many requests. Please wait a moment and try again.",
+    "sessionExpired": "Your session ended for security reasons. Please sign in again.",
+    "subscriptionReadonly": "Your subscription is read-only. Changes are disabled.",
+    "unauthorized": "Your session has ended. Please sign in again.",
+    "unknown": "Something went wrong.",
+    "validation": "Please check the highlighted fields and try again."
+  },
+  "idle": {
+    "countdown": "Signing out in {{seconds}} s",
+    "description": "You have been inactive for {{minutes}} minutes. You will be signed out automatically.",
+    "title": "Are you still there?"
   },
   "nav": {
     "brand": {
       "notifications": "Notifications",
-      "notificationsUnread": "{{count}} unread notification",
+      "notificationsUnread_one": "{{count}} unread notification",
       "notificationsUnread_other": "{{count}} unread notifications",
       "profileMenu": "Account menu",
       "searchPlaceholder": "Search drivers and units",
       "skipToContent": "Skip to main content"
     },
-    "primary": "Primary navigation",
     "breadcrumb": "Breadcrumb",
-    "home": "Home",
+    "chat": "Chat",
     "dashboard": "Dashboard",
-    "tracking": "Tracking",
-    "routes": "Routes",
+    "fleet": {
+      "drivers": "Driver Management",
+      "driversDescription": "Drivers, licences and co-driver pairing",
+      "eldDevices": "ELD Devices",
+      "eldDevicesDescription": "Devices and their unit assignments",
+      "label": "Fleet Management",
+      "roles": "Roles & Permissions",
+      "rolesDescription": "Role definitions and permission sets",
+      "shippingDocuments": "Shipping Documents",
+      "shippingDocumentsDescription": "Bills of lading and shipping references",
+      "trailers": "Trailers",
+      "trailersDescription": "Trailers available to your fleet",
+      "units": "Unit Management",
+      "unitsDescription": "Trucks and tractors in your fleet",
+      "users": "Users",
+      "usersDescription": "Back-office accounts and invitations"
+    },
+    "home": "Home",
     "logs": {
-      "label": "Logs",
-      "byUnit": "Logs By Unit",
-      "byUnitDescription": "View logs by unit for a single day",
       "byDriver": "Logs By Driver",
       "byDriverDescription": "View logs by driver over a date range",
+      "byUnit": "Logs By Unit",
+      "byUnitDescription": "View logs by unit for a single day",
       "editRequests": "Log Edit Requests",
       "editRequestsDescription": "Review and approve driver log edit requests",
+      "label": "Logs",
       "unassigned": "Unassigned Driving",
       "unassignedDescription": "Assign unidentified driving to drivers",
       "violations": "Violations",
       "violationsDescription": "HOS warnings and violations"
     },
-    "fleet": {
-      "label": "Fleet Management",
-      "units": "Unit Management",
-      "unitsDescription": "Trucks and tractors in your fleet",
-      "drivers": "Driver Management",
-      "driversDescription": "Drivers, licences and co-driver pairing",
-      "eldDevices": "ELD Devices",
-      "eldDevicesDescription": "Devices and their unit assignments",
-      "trailers": "Trailers",
-      "trailersDescription": "Trailers available to your fleet",
-      "shippingDocuments": "Shipping Documents",
-      "shippingDocumentsDescription": "Bills of lading and shipping references",
-      "users": "Users",
-      "usersDescription": "Back-office accounts and invitations",
-      "roles": "Roles & Permissions",
-      "rolesDescription": "Role definitions and permission sets"
-    },
     "maintenance": {
+      "dvir": "DVIR",
+      "dvirDescription": "Driver vehicle inspection reports",
       "label": "Maintenance",
       "schedule": "Maintenance",
-      "scheduleDescription": "Schedule, due and completed maintenance",
-      "dvir": "DVIR",
-      "dvirDescription": "Driver vehicle inspection reports"
+      "scheduleDescription": "Schedule, due and completed maintenance"
     },
+    "primary": "Primary navigation",
     "reports": {
-      "label": "Reports",
       "activity": "Activity Report",
       "activityDescription": "Driving time and odometer by driver or unit",
       "distanceByRegion": "Distance by Region",
       "distanceByRegionDescription": "Distance travelled per region",
-      "regulator": "Regulator Export",
-      "regulatorDescription": "Regulator export for roadside inspections",
       "dvir": "DVIR Report",
       "dvirDescription": "DVIR history and export",
-      "uncertified": "Uncertified Logs",
-      "uncertifiedDescription": "Logs that are still uncertified",
       "exports": "Export Jobs",
-      "exportsDescription": "Your export downloads"
+      "exportsDescription": "Your export downloads",
+      "label": "Reports",
+      "regulator": "Regulator Export",
+      "regulatorDescription": "Regulator export for roadside inspections",
+      "uncertified": "Uncertified Logs",
+      "uncertifiedDescription": "Logs that are still uncertified"
     },
+    "routes": "Routes",
     "support": {
-      "label": "Support & History",
       "audit": "Histories",
       "auditDescription": "Full audit trail of every change",
       "contact": "Contact Support",
       "contactDescription": "Driver support tickets",
       "feedback": "Feedback",
-      "feedbackDescription": "App ratings and comments from drivers"
+      "feedbackDescription": "App ratings and comments from drivers",
+      "label": "Support & History"
     },
-    "chat": "Chat"
-  },
-  "profileMenu": {
-    "label": "Account",
-    "profile": "My profile",
-    "company": "Company settings",
-    "hosPolicy": "HOS policy",
-    "security": "Security",
-    "signOut": "Sign out"
-  },
-  "banner": {
-    "subscriptionReadonly": {
-      "title": "Your subscription is read-only",
-      "description": "You can view data, but creating and editing is disabled until the subscription is renewed."
-    }
-  },
-  "writeGuard": {
-    "subscriptionReadonly": "Subscription is read-only",
-    "missingPermission": "Requires the {{permission}} permission"
-  },
-  "toast": {
-    "replacedSession": "Another web session was signed out.",
-    "dismiss": "Dismiss notification",
-    "region": "Notifications"
-  },
-  "idle": {
-    "title": "Are you still there?",
-    "description": "You have been inactive for {{minutes}} minutes. You will be signed out automatically.",
-    "countdown": "Signing out in {{seconds}} s"
-  },
-  "stub": {
-    "notice": "This screen is built in stage {{stage}}."
+    "tracking": "Tracking"
   },
   "pages": {
+    "audit": {
+      "title": "Histories"
+    },
+    "chat": {
+      "title": "Chat"
+    },
     "dashboard": {
       "title": "Dashboard"
-    },
-    "tracking": {
-      "title": "Tracking"
-    },
-    "trackOnMap": {
-      "title": "Track on Map"
-    },
-    "routes": {
-      "title": "Routes"
-    },
-    "logsByUnit": {
-      "title": "Logs By Unit"
-    },
-    "logsByDriver": {
-      "title": "Logs By Driver"
-    },
-    "logView": {
-      "title": "Daily Log"
-    },
-    "logEditRequests": {
-      "title": "Log Edit Requests"
-    },
-    "unassignedDriving": {
-      "title": "Unassigned Driving"
-    },
-    "violations": {
-      "title": "Violations"
-    },
-    "units": {
-      "title": "Unit Management"
-    },
-    "unitDetail": {
-      "title": "Unit"
-    },
-    "drivers": {
-      "title": "Driver Management"
     },
     "driverDetail": {
       "title": "Driver"
     },
-    "eldDevices": {
-      "title": "ELD Devices"
-    },
-    "trailers": {
-      "title": "Trailers"
-    },
-    "shippingDocuments": {
-      "title": "Shipping Documents"
-    },
-    "users": {
-      "title": "Users"
-    },
-    "roles": {
-      "title": "Roles & Permissions"
-    },
-    "maintenance": {
-      "title": "Maintenance"
+    "drivers": {
+      "title": "Driver Management"
     },
     "dvir": {
       "title": "DVIR"
+    },
+    "eldDevices": {
+      "title": "ELD Devices"
+    },
+    "feedback": {
+      "title": "Feedback"
+    },
+    "forgotPassword": {
+      "title": "Forgot password"
+    },
+    "invitationAccept": {
+      "title": "Accept invitation"
+    },
+    "logEditRequests": {
+      "title": "Log Edit Requests"
+    },
+    "login": {
+      "title": "Sign in"
+    },
+    "logsByDriver": {
+      "title": "Logs By Driver"
+    },
+    "logsByUnit": {
+      "title": "Logs By Unit"
+    },
+    "logView": {
+      "title": "Daily Log"
+    },
+    "maintenance": {
+      "title": "Maintenance"
     },
     "reportActivity": {
       "title": "Activity Report"
@@ -308,32 +297,26 @@
     "reportDistanceByRegion": {
       "title": "Distance by Region"
     },
-    "reportRegulator": {
-      "title": "Regulator Export"
-    },
     "reportDvir": {
       "title": "DVIR Report"
-    },
-    "reportUncertified": {
-      "title": "Uncertified Logs"
     },
     "reportExports": {
       "title": "Export Jobs"
     },
-    "audit": {
-      "title": "Histories"
+    "reportRegulator": {
+      "title": "Regulator Export"
     },
-    "support": {
-      "title": "Contact Support"
+    "reportUncertified": {
+      "title": "Uncertified Logs"
     },
-    "feedback": {
-      "title": "Feedback"
+    "resetPassword": {
+      "title": "Reset password"
     },
-    "chat": {
-      "title": "Chat"
+    "roles": {
+      "title": "Roles & Permissions"
     },
-    "settingsProfile": {
-      "title": "My profile"
+    "routes": {
+      "title": "Routes"
     },
     "settingsCompany": {
       "title": "Company"
@@ -341,11 +324,26 @@
     "settingsHos": {
       "title": "HOS policy"
     },
+    "settingsProfile": {
+      "title": "My profile"
+    },
     "settingsSecurity": {
       "title": "Security"
     },
-    "login": {
-      "title": "Sign in"
+    "shippingDocuments": {
+      "title": "Shipping Documents"
+    },
+    "support": {
+      "title": "Contact Support"
+    },
+    "tracking": {
+      "title": "Tracking"
+    },
+    "trackOnMap": {
+      "title": "Track on Map"
+    },
+    "trailers": {
+      "title": "Trailers"
     },
     "twoFactorSetup": {
       "title": "Set up two-factor authentication"
@@ -353,38 +351,151 @@
     "twoFactorVerify": {
       "title": "Two-factor verification"
     },
-    "forgotPassword": {
-      "title": "Forgot password"
+    "unassignedDriving": {
+      "title": "Unassigned Driving"
     },
-    "resetPassword": {
-      "title": "Reset password"
+    "unitDetail": {
+      "title": "Unit"
     },
-    "invitationAccept": {
-      "title": "Accept invitation"
+    "units": {
+      "title": "Unit Management"
+    },
+    "users": {
+      "title": "Users"
+    },
+    "violations": {
+      "title": "Violations"
     }
   },
-  "enums": {
-    "duty_status": {
-      "OFF": "Off duty",
-      "SB": "Sleeper berth",
-      "DR": "Driving",
-      "ON": "On duty",
-      "PC": "Personal conveyance",
-      "YM": "Yard move"
+  "profileMenu": {
+    "company": "Company settings",
+    "hosPolicy": "HOS policy",
+    "label": "Account",
+    "profile": "My profile",
+    "security": "Security",
+    "signOut": "Sign out"
+  },
+  "stub": {
+    "notice": "This screen is built in stage {{stage}}."
+  },
+  "toast": {
+    "dismiss": "Dismiss notification",
+    "region": "Notifications",
+    "replacedSession": "Another web session was signed out."
+  },
+  "ui": {
+    "data": {
+      "columnPicker": {
+        "trigger": "Columns"
+      },
+      "dataTable": {
+        "error": {
+          "message": "Something went wrong while loading this table."
+        }
+      },
+      "fileUpload": {
+        "browse": "Browse files",
+        "cancelled": "Upload cancelled",
+        "done": "{{filename}} uploaded",
+        "dragHint": "Drag and drop a file here, or",
+        "errors": {
+          "invalidType": "This file type is not supported. Allowed: {{types}}",
+          "tooLarge": "This file is too large. Maximum size: {{max}}",
+          "uploadFailed": "Upload failed. Please try again."
+        }
+      },
+      "filtersBar": {
+        "removeFilter": "Remove {{label}} filter",
+        "searchPlaceholder": "Search…"
+      },
+      "pagination": {
+        "navLabel": "Pagination",
+        "next": "Next",
+        "previous": "Previous",
+        "rowsPerPage": "Rows per page:"
+      }
     },
-    "unit_status": {
-      "active": "Active",
-      "inactive": "Inactive"
+    "form": {
+      "actions": {
+        "apply": "Apply",
+        "clear": "Clear",
+        "clearAll": "Clear all",
+        "selectAll": "Select all"
+      },
+      "calendar": {
+        "months": [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ],
+        "nextMonth": "Next month",
+        "previousMonth": "Previous month",
+        "weekdaysShort": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+      },
+      "date": {
+        "placeholder": "Select date"
+      },
+      "dateRange": {
+        "endDate": "End date",
+        "placeholder": "Start date – End date",
+        "presets": {
+          "custom": "Custom",
+          "last30Days": "Last 30 days",
+          "last7Days": "Last 7 days",
+          "thisMonth": "This month",
+          "today": "Today",
+          "yesterday": "Yesterday"
+        },
+        "startDate": "Start date"
+      },
+      "input": {
+        "charactersRemaining_one": "{{count}} character remaining",
+        "charactersRemaining_other": "{{count}} characters remaining"
+      },
+      "multiSelect": {
+        "placeholder": "Select…",
+        "selectedCount_one": "{{count}} selected",
+        "selectedCount_other": "{{count}} selected"
+      },
+      "select": {
+        "loading": "Loading…",
+        "noResults": "No results found",
+        "placeholder": "Select…"
+      },
+      "time": {
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds"
+      }
     },
-    "connection_status": {
-      "online": "Online",
-      "offline": "Offline"
-    },
-    "export_job_status": {
-      "queued": "Queued",
-      "running": "Running",
-      "done": "Done",
-      "failed": "Failed"
+    "overlay": {
+      "confirmDialog": {
+        "reasonLabel": "Reason",
+        "reasonRequired": "Please provide a reason before continuing.",
+        "title": "Are you absolutely sure?"
+      },
+      "emptyState": {
+        "clearFilters": "Clear filters",
+        "defaultDescription": "There is no data to show you right now",
+        "defaultTitle": "No Data Found",
+        "noAccessDescription": "You do not have permission to view this data",
+        "noAccessTitle": "No access",
+        "noResultsDescription": "No records match your filters",
+        "noResultsTitle": "No results"
+      }
     }
+  },
+  "writeGuard": {
+    "missingPermission": "Requires the {{permission}} permission",
+    "subscriptionReadonly": "Subscription is read-only"
   }
 }

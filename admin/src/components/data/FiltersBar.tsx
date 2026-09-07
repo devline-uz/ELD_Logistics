@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/Input';
 import { Select, type SelectOption } from '@/components/ui/Select';
 import { Badge } from '@/components/ui/Badge';
 
-import { useUiDataTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface FilterOption {
   value: string;
@@ -50,7 +50,7 @@ export function FiltersBar({
   debounceMs = 400,
   className,
 }: FiltersBarProps) {
-  const { t } = useUiDataTranslation();
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState(search);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -86,9 +86,9 @@ export function FiltersBar({
         <Input
           value={inputValue}
           onChange={(event) => handleSearchInput(event.target.value)}
-          placeholder={searchPlaceholder ?? t('filtersBar.searchPlaceholder')}
+          placeholder={searchPlaceholder ?? t('ui.data.filtersBar.searchPlaceholder')}
           containerClassName="w-full max-w-xs"
-          aria-label={searchPlaceholder ?? t('filtersBar.searchPlaceholder')}
+          aria-label={searchPlaceholder ?? t('ui.data.filtersBar.searchPlaceholder')}
         />
 
         {filters.map((filter) => (
@@ -109,7 +109,7 @@ export function FiltersBar({
             onClick={onClearAll}
             className="ms-auto text-body-sm font-medium text-primary hover:underline"
           >
-            {t('filtersBar.clearAll')}
+            {t('ui.form.actions.clearAll')}
           </button>
         ) : null}
       </div>
@@ -123,7 +123,7 @@ export function FiltersBar({
                 <button
                   type="button"
                   onClick={() => onFilterChange(badge.key, undefined)}
-                  aria-label={t('filtersBar.removeFilter', { label: badge.label })}
+                  aria-label={t('ui.data.filtersBar.removeFilter', { label: badge.label })}
                   className="ms-1 rounded hover:text-neutral-900"
                 >
                   <Icon icon={X} size={12} />

@@ -2,7 +2,7 @@ import { forwardRef, useId } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 
 import { cn } from './cn';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
   label?: string;
@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref,
 ) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const errorId = `${inputId}-error`;
@@ -58,7 +58,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         <label htmlFor={inputId} className="text-body-sm font-medium text-neutral-700">
           {label}
           {required ? (
-            <span aria-hidden="true" className="ml-0.5 text-error-base">
+            <span aria-hidden="true" className="ml-0.5 text-error-dark">
               *
             </span>
           ) : null}
@@ -104,7 +104,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
           {error ? (
-            <p id={errorId} role="alert" className="text-body-sm text-error-base">
+            <p id={errorId} role="alert" className="text-body-sm text-error-dark">
               {error}
             </p>
           ) : hint ? (
@@ -115,7 +115,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         </div>
         {maxLength ? (
           <p id={counterId} className="shrink-0 text-body-sm text-neutral-400">
-            {t('input.charactersRemaining', { count: Math.max(maxLength - currentLength, 0) })}
+            {t('ui.form.input.charactersRemaining', {
+              count: Math.max(maxLength - currentLength, 0),
+            })}
           </p>
         ) : null}
       </div>

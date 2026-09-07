@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
+import en from '@/locales/en.json';
+
 import {
   ApiError,
   ERROR_I18N_KEYS,
@@ -8,6 +10,17 @@ import {
   normalizeError,
   normalizeNetworkError,
 } from './errors';
+
+/** Nuqta bilan ajratilgan kalitni (`errors.notFound`) `en.json` ichidan topadi. */
+function resolveI18nKey(key: string): unknown {
+  return key
+    .split('.')
+    .reduce<unknown>(
+      (node, segment) =>
+        node && typeof node === 'object' ? (node as Record<string, unknown>)[segment] : undefined,
+      en,
+    );
+}
 
 function jsonResponse(body: unknown, init: ResponseInit): Response {
   return new Response(JSON.stringify(body), {
@@ -87,5 +100,15 @@ describe('ApiError', () => {
     expect(error.code).toBe('NETWORK_ERROR');
     expect(error.status).toBe(0);
     expect(error.message).toBe('offline');
+  });
+});
+
+describe('i18n coverage (i18n-keeper)', () => {
+  it('resolves every ERROR_I18N_KEYS entry to a real, non-empty string in en.json', () => {
+    for (const [code, key] of Object.entries(ERROR_I18N_KEYS)) {
+      const value = resolveI18nKey(key);
+      expect(value, `${code} -> "${key}" missing from en.json`).toEqual(expect.any(String));
+      expect(value).not.toBe('');
+    }
   });
 });

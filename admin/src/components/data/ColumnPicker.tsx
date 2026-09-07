@@ -9,7 +9,7 @@ import { Settings2 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { IconButton } from '@/components/ui/IconButton';
 
-import { useUiDataTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface ColumnPickerColumn {
   id: string;
@@ -33,7 +33,7 @@ export function ColumnPicker({
   onSelectAll,
   className,
 }: ColumnPickerProps) {
-  const { t } = useUiDataTranslation();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +60,7 @@ export function ColumnPicker({
     <div className={`relative inline-block ${className ?? ''}`} ref={rootRef}>
       <IconButton
         icon={Settings2}
-        aria-label={t('columnPicker.trigger')}
+        aria-label={t('ui.data.columnPicker.trigger')}
         variant="secondary"
         onClick={() => setOpen((prev) => !prev)}
         aria-haspopup="true"
@@ -70,7 +70,7 @@ export function ColumnPicker({
       {open ? (
         <div
           role="menu"
-          aria-label={t('columnPicker.trigger')}
+          aria-label={t('ui.data.columnPicker.trigger')}
           className="absolute end-0 z-20 mt-1 w-56 rounded-md border border-stroke bg-surface p-2 shadow-dropdown"
         >
           <div className="border-b border-stroke px-2 py-2">
@@ -78,7 +78,7 @@ export function ColumnPicker({
               checked={allVisible}
               indeterminate={!allVisible && someVisible}
               onChange={() => onSelectAll()}
-              label={t('columnPicker.selectAll')}
+              label={t('ui.form.actions.selectAll')}
             />
           </div>
 

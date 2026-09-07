@@ -10,7 +10,7 @@ import { PER_PAGE_OPTIONS, type PerPage } from '@/api/types';
 import { Icon } from '@/components/ui/Icon';
 import { Select, type SelectOption } from '@/components/ui/Select';
 
-import { useUiDataTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface PaginationProps {
   page: number;
@@ -51,7 +51,7 @@ export function Pagination({
   onPerPageChange,
   className,
 }: PaginationProps) {
-  const { t } = useUiDataTranslation();
+  const { t } = useTranslation();
   const totalPages = Math.max(1, Math.ceil(total / perPage));
   const clampedPage = Math.min(Math.max(page, 1), totalPages);
   const pageWindow = buildPageWindow(clampedPage, totalPages);
@@ -59,7 +59,7 @@ export function Pagination({
   return (
     <div className={`flex flex-wrap items-center justify-between gap-4 ${className ?? ''}`}>
       <div className="flex items-center gap-2">
-        <span className="text-body-sm text-neutral-600">{t('pagination.rowsPerPage')}</span>
+        <span className="text-body-sm text-neutral-600">{t('ui.data.pagination.rowsPerPage')}</span>
         <Select
           value={String(perPage)}
           onChange={(value) => value && onPerPageChange(Number(value) as PerPage)}
@@ -68,7 +68,7 @@ export function Pagination({
         />
       </div>
 
-      <nav aria-label={t('pagination.navLabel')} className="flex items-center gap-1">
+      <nav aria-label={t('ui.data.pagination.navLabel')} className="flex items-center gap-1">
         <button
           type="button"
           onClick={() => onPageChange(clampedPage - 1)}
@@ -76,7 +76,7 @@ export function Pagination({
           className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-body-sm text-neutral-700 hover:bg-surface-muted disabled:cursor-not-allowed disabled:text-neutral-400"
         >
           <Icon icon={ChevronLeft} size={16} />
-          {t('pagination.previous')}
+          {t('ui.data.pagination.previous')}
         </button>
 
         {pageWindow.map((entry, index) =>
@@ -107,7 +107,7 @@ export function Pagination({
           disabled={clampedPage >= totalPages}
           className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-body-sm text-neutral-700 hover:bg-surface-muted disabled:cursor-not-allowed disabled:text-neutral-400"
         >
-          {t('pagination.next')}
+          {t('ui.data.pagination.next')}
           <Icon icon={ChevronRight} size={16} />
         </button>
       </nav>

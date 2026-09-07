@@ -2,7 +2,7 @@ import { forwardRef, useId } from 'react';
 import type { TextareaHTMLAttributes } from 'react';
 
 import { cn } from './cn';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -35,7 +35,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   },
   ref,
 ) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const textareaId = id ?? generatedId;
   const errorId = `${textareaId}-error`;
@@ -55,7 +55,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
         <label htmlFor={textareaId} className="text-body-sm font-medium text-neutral-700">
           {label}
           {required ? (
-            <span aria-hidden="true" className="ml-0.5 text-error-base">
+            <span aria-hidden="true" className="ml-0.5 text-error-dark">
               *
             </span>
           ) : null}
@@ -90,7 +90,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
           {error ? (
-            <p id={errorId} role="alert" className="text-body-sm text-error-base">
+            <p id={errorId} role="alert" className="text-body-sm text-error-dark">
               {error}
             </p>
           ) : hint ? (
@@ -101,7 +101,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
         </div>
         {maxLength ? (
           <p id={counterId} className="shrink-0 text-body-sm text-neutral-400">
-            {t('input.charactersRemaining', { count: Math.max(maxLength - currentLength, 0) })}
+            {t('ui.form.input.charactersRemaining', {
+              count: Math.max(maxLength - currentLength, 0),
+            })}
           </p>
         ) : null}
       </div>

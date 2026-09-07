@@ -19,10 +19,10 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
         {icon ?? <Inbox className="h-12 w-12" />}
       </div>
       <h3 className="text-body-lg font-semibold text-neutral-900">
-        {title ?? t('emptyState.defaultTitle')}
+        {title ?? t('ui.overlay.emptyState.defaultTitle')}
       </h3>
       <p className="max-w-sm text-body text-neutral-500">
-        {description ?? t('emptyState.defaultDescription')}
+        {description ?? t('ui.overlay.emptyState.defaultDescription')}
       </p>
       {action ? <div className="mt-2">{action}</div> : null}
     </div>

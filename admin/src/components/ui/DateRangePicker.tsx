@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import {
   addDays,
   addMonths,
@@ -20,7 +20,7 @@ import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from './cn';
 import { Icon } from './Icon';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface DateRange {
   start: Date | null;
@@ -52,6 +52,16 @@ function buildMonthGrid(month: Date): Date[] {
     cursor = addDays(cursor, 1);
   }
   return days;
+}
+
+/** `role="grid"` — `role="gridcell"` to'g'ridan-to'g'ri emas, `role="row"` orqali
+ * bolalanishi shart (ARIA aria-required-children, fe-a11y). Haftalarga bo'ladi. */
+function chunkWeeks(days: Date[]): Date[][] {
+  const weeks: Date[][] = [];
+  for (let i = 0; i < days.length; i += 7) {
+    weeks.push(days.slice(i, i + 7));
+  }
+  return weeks;
 }
 
 function resolvePreset(preset: PresetKey): DateRange | null {
@@ -99,7 +109,7 @@ export function DateRangePicker({
   id,
   className,
 }: DateRangePickerProps) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const fieldId = id ?? generatedId;
   const labelId = `${fieldId}-label`;
@@ -111,10 +121,21 @@ export function DateRangePicker({
   const [visibleMonth, setVisibleMonth] = useState<Date>(value.start ?? new Date());
   const [draftStart, setDraftStart] = useState<Date | null>(value.start);
   const [draftEnd, setDraftEnd] = useState<Date | null>(value.end);
+  const [focusedDay, setFocusedDay] = useState<Date>(value.start ?? new Date());
   const rootRef = useRef<HTMLDivElement>(null);
+  const dayButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const pendingFocusKey = useRef<string | null>(null);
 
-  const months = t('calendar.months', { returnObjects: true }) as string[];
-  const weekdays = t('calendar.weekdaysShort', { returnObjects: true }) as string[];
+  // Roving tabindex — DatePicker bilan bir xil naqsh (fe-a11y §1).
+  useEffect(() => {
+    if (!pendingFocusKey.current) return;
+    const key = pendingFocusKey.current;
+    pendingFocusKey.current = null;
+    dayButtonRefs.current.get(key)?.focus();
+  }, [focusedDay, visibleMonth]);
+
+  const months = t('ui.form.calendar.months', { returnObjects: true }) as string[];
+  const weekdays = t('ui.form.calendar.weekdaysShort', { returnObjects: true }) as string[];
   const days = useMemo(() => buildMonthGrid(visibleMonth), [visibleMonth]);
 
   useEffect(() => {
@@ -133,7 +154,29 @@ export function DateRangePicker({
     setDraftStart(value.start);
     setDraftEnd(value.end);
     setVisibleMonth(value.start ?? new Date());
+    setFocusedDay(value.start ?? new Date());
     setOpen(true);
+  };
+
+  const handleGridKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const deltas: Record<string, number> = {
+      ArrowLeft: -1,
+      ArrowRight: 1,
+      ArrowUp: -7,
+      ArrowDown: 7,
+    };
+    if (event.key in deltas) {
+      event.preventDefault();
+      const next = addDays(focusedDay, deltas[event.key] ?? 0);
+      pendingFocusKey.current = next.toISOString();
+      setFocusedDay(next);
+      if (!isSameMonth(next, visibleMonth)) setVisibleMonth(next);
+      return;
+    }
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleDayClick(focusedDay);
+    }
   };
 
   const applyPreset = (preset: PresetKey) => {
@@ -174,7 +217,7 @@ export function DateRangePicker({
   const displayValue =
     value.start && value.end
       ? `${format(value.start, displayFormat)} – ${format(value.end, displayFormat)}`
-      : (placeholder ?? t('dateRange.placeholder'));
+      : (placeholder ?? t('ui.form.dateRange.placeholder'));
 
   const describedBy =
     [error ? errorId : null, !error && hint ? hintId : null].filter(Boolean).join(' ') || undefined;
@@ -216,7 +259,7 @@ export function DateRangePicker({
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Escape bilan yopish uchun popover konteyneri
           <div
             role="dialog"
-            aria-label={label ?? t('dateRange.placeholder')}
+            aria-label={label ?? t('ui.form.dateRange.placeholder')}
             tabIndex={-1}
             onKeyDown={(event) => {
               if (event.key === 'Escape') {
@@ -234,7 +277,7 @@ export function DateRangePicker({
                     onClick={() => applyPreset(preset)}
                     className="w-full rounded px-2 py-1.5 text-start text-body-sm text-neutral-700 hover:bg-surface-muted"
                   >
-                    {t(`dateRange.presets.${preset}`)}
+                    {t(`ui.form.dateRange.presets.${preset}`)}
                   </button>
                 </li>
               ))}
@@ -244,7 +287,7 @@ export function DateRangePicker({
               <div className="mb-2 flex items-center justify-between">
                 <button
                   type="button"
-                  aria-label={t('calendar.previousMonth')}
+                  aria-label={t('ui.form.calendar.previousMonth')}
                   onClick={() => setVisibleMonth((m) => subMonths(m, 1))}
                   className="rounded p-1 text-neutral-500 hover:bg-surface-muted"
                 >
@@ -255,7 +298,7 @@ export function DateRangePicker({
                 </span>
                 <button
                   type="button"
-                  aria-label={t('calendar.nextMonth')}
+                  aria-label={t('ui.form.calendar.nextMonth')}
                   onClick={() => setVisibleMonth((m) => addMonths(m, 1))}
                   className="rounded p-1 text-neutral-500 hover:bg-surface-muted"
                 >
@@ -269,52 +312,73 @@ export function DateRangePicker({
                 ))}
               </div>
 
-              <div role="grid" className="grid grid-cols-7 gap-1">
-                {days.map((day) => {
-                  const outsideMonth = !isSameMonth(day, visibleMonth);
-                  const isStart = draftStart ? isSameDay(day, draftStart) : false;
-                  const isEnd = draftEnd ? isSameDay(day, draftEnd) : false;
-                  const inRange =
-                    draftStart && draftEnd
-                      ? isWithinInterval(day, { start: draftStart, end: draftEnd })
-                      : false;
-                  return (
-                    <button
-                      key={day.toISOString()}
-                      type="button"
-                      role="gridcell"
-                      aria-selected={isStart || isEnd}
-                      onClick={() => handleDayClick(day)}
-                      className={cn(
-                        'h-8 w-8 rounded-md text-body-sm',
-                        outsideMonth && 'text-neutral-300',
-                        !outsideMonth &&
-                          !inRange &&
-                          !isStart &&
-                          !isEnd &&
-                          'text-neutral-700 hover:bg-surface-muted',
-                        inRange && !isStart && !isEnd && 'bg-light text-neutral-800',
-                        (isStart || isEnd) && 'bg-primary text-white',
-                      )}
-                    >
-                      {day.getDate()}
-                    </button>
-                  );
-                })}
+              <div
+                role="grid"
+                tabIndex={-1}
+                onKeyDown={handleGridKeyDown}
+                className="grid grid-cols-7 gap-1"
+              >
+                {chunkWeeks(days).map((week) => (
+                  // `display:contents` — vizual CSS grid joylashuvini saqlaydi,
+                  // faqat ARIA `row` bo'shlig'i sifatida xizmat qiladi.
+                  <div key={week[0]!.toISOString()} role="row" className="contents">
+                    {week.map((day) => {
+                      const outsideMonth = !isSameMonth(day, visibleMonth);
+                      const isStart = draftStart ? isSameDay(day, draftStart) : false;
+                      const isEnd = draftEnd ? isSameDay(day, draftEnd) : false;
+                      const inRange =
+                        draftStart && draftEnd
+                          ? isWithinInterval(day, { start: draftStart, end: draftEnd })
+                          : false;
+                      const isFocusTarget = isSameDay(day, focusedDay);
+                      return (
+                        <button
+                          key={day.toISOString()}
+                          ref={(el) => {
+                            const key = day.toISOString();
+                            if (el) dayButtonRefs.current.set(key, el);
+                            else dayButtonRefs.current.delete(key);
+                          }}
+                          type="button"
+                          role="gridcell"
+                          tabIndex={isFocusTarget ? 0 : -1}
+                          aria-selected={isStart || isEnd}
+                          onFocus={() => setFocusedDay(day)}
+                          onClick={() => handleDayClick(day)}
+                          className={cn(
+                            'h-8 w-8 rounded-md text-body-sm',
+                            outsideMonth && 'text-neutral-300',
+                            !outsideMonth &&
+                              !inRange &&
+                              !isStart &&
+                              !isEnd &&
+                              'text-neutral-700 hover:bg-surface-muted',
+                            inRange && !isStart && !isEnd && 'bg-light text-neutral-800',
+                            (isStart || isEnd) && 'bg-primary text-white',
+                          )}
+                        >
+                          {day.getDate()}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
 
               <div className="mt-3 flex items-center justify-between text-body-sm text-neutral-600">
                 <span>
-                  {t('dateRange.startDate')}: {draftStart ? format(draftStart, displayFormat) : '—'}
+                  {t('ui.form.dateRange.startDate')}:{' '}
+                  {draftStart ? format(draftStart, displayFormat) : '—'}
                 </span>
                 <span>
-                  {t('dateRange.endDate')}: {draftEnd ? format(draftEnd, displayFormat) : '—'}
+                  {t('ui.form.dateRange.endDate')}:{' '}
+                  {draftEnd ? format(draftEnd, displayFormat) : '—'}
                 </span>
               </div>
 
               <div className="mt-3 flex justify-end gap-2">
                 <Button variant="ghost" size="sm" onClick={cancel}>
-                  {t('actions.cancel')}
+                  {t('common.actions.cancel')}
                 </Button>
                 <Button
                   variant="primary"
@@ -322,7 +386,7 @@ export function DateRangePicker({
                   disabled={!draftStart || !draftEnd}
                   onClick={apply}
                 >
-                  {t('actions.apply')}
+                  {t('ui.form.actions.apply')}
                 </Button>
               </div>
             </div>
@@ -331,7 +395,7 @@ export function DateRangePicker({
       </div>
 
       {error ? (
-        <p id={errorId} role="alert" className="text-body-sm text-error-base">
+        <p id={errorId} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : hint ? (

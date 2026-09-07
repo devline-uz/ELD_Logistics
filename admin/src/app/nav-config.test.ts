@@ -1,7 +1,33 @@
 import { describe, expect, it } from 'vitest';
 
-import { NAV_ENTRIES, filterNav, navGroupOf, routeTitleKey } from '@/app/nav-config';
+import { NAV_ENTRIES, filterNav, isNavGroup, navGroupOf, routeTitleKey } from '@/app/nav-config';
+import en from '@/locales/en.json';
 import { PERM, createPermissionChecker } from '@/lib/permissions';
+
+/** Nuqta bilan ajratilgan kalitni (`nav.fleet.units`) `en.json` ichidan topadi. */
+function resolveI18nKey(key: string): unknown {
+  return key
+    .split('.')
+    .reduce<unknown>(
+      (node, segment) =>
+        node && typeof node === 'object' ? (node as Record<string, unknown>)[segment] : undefined,
+      en,
+    );
+}
+
+/** `NAV_ENTRIES` daraxtidan har bir `labelKey`/`descriptionKey`ni yig'ib chiqadi. */
+function collectNavI18nKeys(entries: typeof NAV_ENTRIES): string[] {
+  const keys: string[] = [];
+  for (const entry of entries) {
+    keys.push(entry.labelKey);
+    if (isNavGroup(entry)) {
+      keys.push(...collectNavI18nKeys(entry.children));
+    } else if (entry.descriptionKey) {
+      keys.push(entry.descriptionKey);
+    }
+  }
+  return keys;
+}
 
 describe('filterNav', () => {
   it('hides everything when the user has no permissions', () => {
@@ -47,5 +73,17 @@ describe('breadcrumb helpers', () => {
   it('finds the owning group, including nested paths', () => {
     expect(navGroupOf('/units/42')?.id).toBe('fleet');
     expect(navGroupOf('/chat')).toBeUndefined();
+  });
+});
+
+describe('i18n coverage (i18n-keeper)', () => {
+  it('resolves every NAV_ENTRIES labelKey/descriptionKey to a real string in en.json', () => {
+    const keys = collectNavI18nKeys(NAV_ENTRIES);
+    expect(keys.length).toBeGreaterThan(0);
+    for (const key of keys) {
+      const value = resolveI18nKey(key);
+      expect(value, `"${key}" missing from en.json`).toEqual(expect.any(String));
+      expect(value).not.toBe('');
+    }
   });
 });

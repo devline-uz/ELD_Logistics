@@ -71,7 +71,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
         ) : null}
       </label>
       {error ? (
-        <p id={errorId} role="alert" className="text-body-sm text-error-base">
+        <p id={errorId} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : null}

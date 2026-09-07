@@ -16,7 +16,7 @@ import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { cn } from './cn';
 import { Icon } from './Icon';
-import { useUiFormTranslation } from './i18n';
+import { useTranslation } from 'react-i18next';
 
 export interface DatePickerProps {
   value: Date | null;
@@ -48,9 +48,19 @@ function buildMonthGrid(month: Date): Date[] {
   return days;
 }
 
+/** `role="grid"` — `role="gridcell"` to'g'ridan-to'g'ri emas, `role="row"` orqali
+ * bolalanishi shart (ARIA aria-required-children, fe-a11y). Haftalarga bo'ladi. */
+function chunkWeeks(days: Date[]): Date[][] {
+  const weeks: Date[][] = [];
+  for (let i = 0; i < days.length; i += 7) {
+    weeks.push(days.slice(i, i + 7));
+  }
+  return weeks;
+}
+
 /**
  * Bitta sanani tanlash. Kalendar `date-fns` bilan quriladi, ichki matnlar
- * `ui-form` i18n bo'lagidan olinadi.
+ * `ui.form.*` (`src/locales/en.json`) dan olinadi.
  */
 export function DatePicker({
   value,
@@ -68,7 +78,7 @@ export function DatePicker({
   name,
   className,
 }: DatePickerProps) {
-  const { t } = useUiFormTranslation();
+  const { t } = useTranslation();
   const generatedId = useId();
   const fieldId = id ?? generatedId;
   const errorId = `${fieldId}-error`;
@@ -78,9 +88,21 @@ export function DatePicker({
   const [visibleMonth, setVisibleMonth] = useState<Date>(value ?? new Date());
   const [focusedDay, setFocusedDay] = useState<Date>(value ?? new Date());
   const rootRef = useRef<HTMLDivElement>(null);
+  const dayButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const pendingFocusKey = useRef<string | null>(null);
 
-  const months = t('calendar.months', { returnObjects: true }) as string[];
-  const weekdays = t('calendar.weekdaysShort', { returnObjects: true }) as string[];
+  // Roving tabindex: strelka tugmasi bosilganda `focusedDay` o'zgaradi, lekin
+  // brauzer fokusi avtomatik ko'chmaydi — shu yerda yangi kunga `.focus()`
+  // bilan ko'chiriladi (fe-a11y §1 "o'q tugmalari bilan kun navigatsiyasi").
+  useEffect(() => {
+    if (!pendingFocusKey.current) return;
+    const key = pendingFocusKey.current;
+    pendingFocusKey.current = null;
+    dayButtonRefs.current.get(key)?.focus();
+  }, [focusedDay, visibleMonth]);
+
+  const months = t('ui.form.calendar.months', { returnObjects: true }) as string[];
+  const weekdays = t('ui.form.calendar.weekdaysShort', { returnObjects: true }) as string[];
 
   const days = useMemo(() => buildMonthGrid(visibleMonth), [visibleMonth]);
 
@@ -121,6 +143,7 @@ export function DatePicker({
     if (event.key in deltas) {
       event.preventDefault();
       const next = addDays(focusedDay, deltas[event.key] ?? 0);
+      pendingFocusKey.current = next.toISOString();
       setFocusedDay(next);
       if (!isSameMonth(next, visibleMonth)) setVisibleMonth(next);
       return;
@@ -148,7 +171,7 @@ export function DatePicker({
         <span id={labelId} className="text-body-sm font-medium text-neutral-700">
           {label}
           {required ? (
-            <span aria-hidden="true" className="ml-0.5 text-error-base">
+            <span aria-hidden="true" className="ml-0.5 text-error-dark">
               *
             </span>
           ) : null}
@@ -177,7 +200,7 @@ export function DatePicker({
           )}
         >
           <span id={valueId} className={cn(!value && 'text-neutral-400')}>
-            {value ? format(value, displayFormat) : (placeholder ?? t('date.placeholder'))}
+            {value ? format(value, displayFormat) : (placeholder ?? t('ui.form.date.placeholder'))}
           </span>
           <Icon icon={CalendarDays} size={16} className="text-neutral-400" />
         </button>
@@ -185,13 +208,13 @@ export function DatePicker({
         {open ? (
           <div
             role="dialog"
-            aria-label={label ?? t('date.placeholder')}
+            aria-label={label ?? t('ui.form.date.placeholder')}
             className="absolute z-20 mt-1 w-72 rounded-md border border-stroke bg-surface p-3 shadow-dropdown"
           >
             <div className="mb-2 flex items-center justify-between">
               <button
                 type="button"
-                aria-label={t('calendar.previousMonth')}
+                aria-label={t('ui.form.calendar.previousMonth')}
                 onClick={() => setVisibleMonth((m) => subMonths(m, 1))}
                 className="rounded p-1 text-neutral-500 hover:bg-surface-muted"
               >
@@ -202,7 +225,7 @@ export function DatePicker({
               </span>
               <button
                 type="button"
-                aria-label={t('calendar.nextMonth')}
+                aria-label={t('ui.form.calendar.nextMonth')}
                 onClick={() => setVisibleMonth((m) => addMonths(m, 1))}
                 className="rounded p-1 text-neutral-500 hover:bg-surface-muted"
               >
@@ -222,40 +245,51 @@ export function DatePicker({
               onKeyDown={handleGridKeyDown}
               className="grid grid-cols-7 gap-1"
             >
-              {days.map((day) => {
-                const selected = value ? isSameDay(day, value) : false;
-                const outsideMonth = !isSameMonth(day, visibleMonth);
-                const dayDisabled = isDisabledDay(day);
-                const isFocusTarget = isSameDay(day, focusedDay);
-                return (
-                  <button
-                    key={day.toISOString()}
-                    type="button"
-                    role="gridcell"
-                    tabIndex={isFocusTarget ? 0 : -1}
-                    aria-selected={selected}
-                    disabled={dayDisabled}
-                    onFocus={() => setFocusedDay(day)}
-                    onClick={() => selectDay(day)}
-                    className={cn(
-                      'h-8 w-8 rounded-md text-body-sm',
-                      outsideMonth && 'text-neutral-300',
-                      !outsideMonth && !selected && 'text-neutral-700 hover:bg-surface-muted',
-                      selected && 'bg-primary text-white',
-                      dayDisabled && 'cursor-not-allowed text-neutral-300 hover:bg-transparent',
-                    )}
-                  >
-                    {day.getDate()}
-                  </button>
-                );
-              })}
+              {chunkWeeks(days).map((week) => (
+                // `display:contents` — vizual CSS grid joylashuvini saqlaydi,
+                // faqat ARIA `row` bo'shlig'i sifatida xizmat qiladi.
+                <div key={week[0]!.toISOString()} role="row" className="contents">
+                  {week.map((day) => {
+                    const selected = value ? isSameDay(day, value) : false;
+                    const outsideMonth = !isSameMonth(day, visibleMonth);
+                    const dayDisabled = isDisabledDay(day);
+                    const isFocusTarget = isSameDay(day, focusedDay);
+                    return (
+                      <button
+                        key={day.toISOString()}
+                        ref={(el) => {
+                          const key = day.toISOString();
+                          if (el) dayButtonRefs.current.set(key, el);
+                          else dayButtonRefs.current.delete(key);
+                        }}
+                        type="button"
+                        role="gridcell"
+                        tabIndex={isFocusTarget ? 0 : -1}
+                        aria-selected={selected}
+                        disabled={dayDisabled}
+                        onFocus={() => setFocusedDay(day)}
+                        onClick={() => selectDay(day)}
+                        className={cn(
+                          'h-8 w-8 rounded-md text-body-sm',
+                          outsideMonth && 'text-neutral-300',
+                          !outsideMonth && !selected && 'text-neutral-700 hover:bg-surface-muted',
+                          selected && 'bg-primary text-white',
+                          dayDisabled && 'cursor-not-allowed text-neutral-300 hover:bg-transparent',
+                        )}
+                      >
+                        {day.getDate()}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         ) : null}
       </div>
 
       {error ? (
-        <p id={errorId} role="alert" className="text-body-sm text-error-base">
+        <p id={errorId} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : hint ? (

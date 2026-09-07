@@ -66,7 +66,7 @@ export function FormField({
       <label htmlFor={fieldId} className="text-body font-medium text-neutral-700">
         {label}
         {required ? (
-          <span className="ml-1 text-error-base" aria-hidden="true">
+          <span className="ml-1 text-error-dark" aria-hidden="true">
             *
           </span>
         ) : null}
@@ -81,7 +81,7 @@ export function FormField({
       ) : null}
 
       {error ? (
-        <p id={`${fieldId}-error`} role="alert" className="text-body-sm text-error-base">
+        <p id={`${fieldId}-error`} role="alert" className="text-body-sm text-error-dark">
           {error}
         </p>
       ) : null}
