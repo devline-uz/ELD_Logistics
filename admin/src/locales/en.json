@@ -1,1 +1,298 @@
-{}
+{
+  "app": {
+    "name": "ONEBOOK ELD",
+    "title": "ELD Admin"
+  },
+  "common": {
+    "na": "N/A",
+    "actions": {
+      "back": "Back",
+      "cancel": "Cancel",
+      "close": "Close",
+      "confirm": "Confirm",
+      "goHome": "Go to dashboard",
+      "reload": "Reload the page",
+      "save": "Save",
+      "search": "Search",
+      "signOut": "Sign out",
+      "staySignedIn": "Stay signed in",
+      "tryAgain": "Try again"
+    },
+    "states": {
+      "empty": "Nothing to show yet",
+      "error": "Something went wrong",
+      "loading": "Loading…"
+    }
+  },
+  "errors": {
+    "validation": "Please check the highlighted fields and try again.",
+    "unauthorized": "Your session has ended. Please sign in again.",
+    "forbidden": "You do not have permission to perform this action.",
+    "notFound": "Not found.",
+    "conflict": "This record changed while you were editing it.",
+    "rateLimited": "Too many requests. Please wait a moment and try again.",
+    "subscriptionReadonly": "Your subscription is read-only. Changes are disabled.",
+    "accountInactive": "This account is inactive. Contact your administrator.",
+    "sessionExpired": "Your session ended for security reasons. Please sign in again.",
+    "internal": "The server could not complete the request.",
+    "network": "You appear to be offline.",
+    "unknown": "Something went wrong.",
+    "forbiddenScreen": {
+      "title": "You do not have permission to view this page",
+      "description": "Ask your administrator to grant access, or go back to a page you can open.",
+      "requiredPermission": "Required permission: {{permission}}"
+    },
+    "notFoundScreen": {
+      "title": "Not found",
+      "description": "The page or record you are looking for does not exist."
+    },
+    "boundary": {
+      "title": "This page could not be displayed",
+      "description": "An unexpected error occurred while rendering this screen.",
+      "traceId": "Trace ID: {{traceId}}"
+    }
+  },
+  "nav": {
+    "brand": {
+      "notifications": "Notifications",
+      "notificationsUnread": "{{count}} unread notification",
+      "notificationsUnread_other": "{{count}} unread notifications",
+      "profileMenu": "Account menu",
+      "searchPlaceholder": "Search drivers and units",
+      "skipToContent": "Skip to main content"
+    },
+    "primary": "Primary navigation",
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "tracking": "Tracking",
+    "routes": "Routes",
+    "logs": {
+      "label": "Logs",
+      "byUnit": "Logs By Unit",
+      "byUnitDescription": "View logs by unit for a single day",
+      "byDriver": "Logs By Driver",
+      "byDriverDescription": "View logs by driver over a date range",
+      "editRequests": "Log Edit Requests",
+      "editRequestsDescription": "Review and approve driver log edit requests",
+      "unassigned": "Unassigned Driving",
+      "unassignedDescription": "Assign unidentified driving to drivers",
+      "violations": "Violations",
+      "violationsDescription": "HOS warnings and violations"
+    },
+    "fleet": {
+      "label": "Fleet Management",
+      "units": "Unit Management",
+      "unitsDescription": "Trucks and tractors in your fleet",
+      "drivers": "Driver Management",
+      "driversDescription": "Drivers, licences and co-driver pairing",
+      "eldDevices": "ELD Devices",
+      "eldDevicesDescription": "Devices and their unit assignments",
+      "trailers": "Trailers",
+      "trailersDescription": "Trailers available to your fleet",
+      "shippingDocuments": "Shipping Documents",
+      "shippingDocumentsDescription": "Bills of lading and shipping references",
+      "users": "Users",
+      "usersDescription": "Back-office accounts and invitations",
+      "roles": "Roles & Permissions",
+      "rolesDescription": "Role definitions and permission sets"
+    },
+    "maintenance": {
+      "label": "Maintenance",
+      "schedule": "Maintenance",
+      "scheduleDescription": "Schedule, due and completed maintenance",
+      "dvir": "DVIR",
+      "dvirDescription": "Driver vehicle inspection reports"
+    },
+    "reports": {
+      "label": "Reports",
+      "activity": "Activity Report",
+      "activityDescription": "Driving time and odometer by driver or unit",
+      "distanceByRegion": "Distance by Region",
+      "distanceByRegionDescription": "Distance travelled per region",
+      "regulator": "Regulator Export",
+      "regulatorDescription": "Regulator export for roadside inspections",
+      "dvir": "DVIR Report",
+      "dvirDescription": "DVIR history and export",
+      "uncertified": "Uncertified Logs",
+      "uncertifiedDescription": "Logs that are still uncertified",
+      "exports": "Export Jobs",
+      "exportsDescription": "Your export downloads"
+    },
+    "support": {
+      "label": "Support & History",
+      "audit": "Histories",
+      "auditDescription": "Full audit trail of every change",
+      "contact": "Contact Support",
+      "contactDescription": "Driver support tickets",
+      "feedback": "Feedback",
+      "feedbackDescription": "App ratings and comments from drivers"
+    },
+    "chat": "Chat"
+  },
+  "profileMenu": {
+    "label": "Account",
+    "profile": "My profile",
+    "company": "Company settings",
+    "hosPolicy": "HOS policy",
+    "security": "Security",
+    "signOut": "Sign out"
+  },
+  "banner": {
+    "subscriptionReadonly": {
+      "title": "Your subscription is read-only",
+      "description": "You can view data, but creating and editing is disabled until the subscription is renewed."
+    }
+  },
+  "writeGuard": {
+    "subscriptionReadonly": "Subscription is read-only",
+    "missingPermission": "Requires the {{permission}} permission"
+  },
+  "toast": {
+    "replacedSession": "Another web session was signed out.",
+    "dismiss": "Dismiss notification",
+    "region": "Notifications"
+  },
+  "idle": {
+    "title": "Are you still there?",
+    "description": "You have been inactive for {{minutes}} minutes. You will be signed out automatically.",
+    "countdown": "Signing out in {{seconds}} s"
+  },
+  "stub": {
+    "notice": "This screen is built in stage {{stage}}."
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Dashboard"
+    },
+    "tracking": {
+      "title": "Tracking"
+    },
+    "trackOnMap": {
+      "title": "Track on Map"
+    },
+    "routes": {
+      "title": "Routes"
+    },
+    "logsByUnit": {
+      "title": "Logs By Unit"
+    },
+    "logsByDriver": {
+      "title": "Logs By Driver"
+    },
+    "logView": {
+      "title": "Daily Log"
+    },
+    "logEditRequests": {
+      "title": "Log Edit Requests"
+    },
+    "unassignedDriving": {
+      "title": "Unassigned Driving"
+    },
+    "violations": {
+      "title": "Violations"
+    },
+    "units": {
+      "title": "Unit Management"
+    },
+    "unitDetail": {
+      "title": "Unit"
+    },
+    "drivers": {
+      "title": "Driver Management"
+    },
+    "driverDetail": {
+      "title": "Driver"
+    },
+    "eldDevices": {
+      "title": "ELD Devices"
+    },
+    "trailers": {
+      "title": "Trailers"
+    },
+    "shippingDocuments": {
+      "title": "Shipping Documents"
+    },
+    "users": {
+      "title": "Users"
+    },
+    "roles": {
+      "title": "Roles & Permissions"
+    },
+    "maintenance": {
+      "title": "Maintenance"
+    },
+    "dvir": {
+      "title": "DVIR"
+    },
+    "reportActivity": {
+      "title": "Activity Report"
+    },
+    "reportDistanceByRegion": {
+      "title": "Distance by Region"
+    },
+    "reportRegulator": {
+      "title": "Regulator Export"
+    },
+    "reportDvir": {
+      "title": "DVIR Report"
+    },
+    "reportUncertified": {
+      "title": "Uncertified Logs"
+    },
+    "reportExports": {
+      "title": "Export Jobs"
+    },
+    "audit": {
+      "title": "Histories"
+    },
+    "support": {
+      "title": "Contact Support"
+    },
+    "feedback": {
+      "title": "Feedback"
+    },
+    "chat": {
+      "title": "Chat"
+    },
+    "settingsProfile": {
+      "title": "My profile"
+    },
+    "settingsCompany": {
+      "title": "Company"
+    },
+    "settingsHos": {
+      "title": "HOS policy"
+    },
+    "settingsSecurity": {
+      "title": "Security"
+    },
+    "login": {
+      "title": "Sign in"
+    }
+  },
+  "enums": {
+    "duty_status": {
+      "OFF": "Off duty",
+      "SB": "Sleeper berth",
+      "DR": "Driving",
+      "ON": "On duty",
+      "PC": "Personal conveyance",
+      "YM": "Yard move"
+    },
+    "unit_status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "connection_status": {
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "export_job_status": {
+      "queued": "Queued",
+      "running": "Running",
+      "done": "Done",
+      "failed": "Failed"
+    }
+  }
+}

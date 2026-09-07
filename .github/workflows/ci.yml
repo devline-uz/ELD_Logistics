@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  admin:
+    name: admin — typecheck · lint · test · build
+    runs-on: ubuntu-latest
+    env:
+      # Step-level `if:` faqat `env` ni ko'ra oladi, `secrets` ni emas.
+      DOCS_TOKEN: ${{ secrets.DOCS_TOKEN }}
+    defaults:
+      run:
+        working-directory: admin
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint (ESLint + Prettier)
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      # `schema.d.ts` — generatsiya natijasi (W7). Spec o'zgargan bo'lsa build yiqiladi.
+      # `DOCS_TOKEN` secret bo'lmasa qadam o'tkazib yuboriladi (hozirgi BLOKER, 0.7).
+      - name: Regenerate API types from the committed spec
+        if: ${{ env.DOCS_TOKEN != '' }}
+        env:
+          VITE_API_DOCS_URL: ${{ vars.VITE_API_DOCS_URL || 'https://eldapi.stackyard.uz/api/docs' }}
+        run: npm run api
+
+      - name: Fail if generated API types drifted
+        if: ${{ env.DOCS_TOKEN != '' }}
+        run: git diff --exit-code -- src/api/schema.d.ts openapi/swagger.json

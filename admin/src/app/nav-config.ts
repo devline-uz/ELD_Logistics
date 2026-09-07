@@ -1,0 +1,327 @@
+/**
+ * Navigatsiya modeli — `fe-permissions` §6 jadvalining yagona kod ko'rinishi.
+ *
+ * Kanonik nomlar (W11): **Fleet Management**, **Reports**, **Support & History**
+ * (`Fleet Operations` / `Report` / `Histories` — ishlatilmaydi; `Histories`
+ * faqat Support & History ichidagi punkt nomi).
+ *
+ * Ko'rinish qoidasi: element ruxsat bo'lmasa **DOM'da bo'lmaydi**; marshrutning
+ * o'zi esa `RouteGuard` bilan 403 ekraniga olib boradi (fe-permissions §3).
+ */
+
+import { PERM, type Permission } from '@/lib/permissions';
+
+export interface NavLeaf {
+  id: string;
+  path: string;
+  labelKey: string;
+  /** Flyout punktining tavsif matni (dizayndagi lorem ipsum o'rniga). */
+  descriptionKey?: string;
+  /** Ko'rinish sharti — kamida bittasi yetarli. */
+  anyOf: readonly Permission[];
+}
+
+export interface NavGroup {
+  id: string;
+  labelKey: string;
+  /** Guruh o'zi bosiladigan bo'lsa (Maintenance). */
+  path?: string;
+  children: readonly NavLeaf[];
+}
+
+export type NavEntry = NavLeaf | NavGroup;
+
+export function isNavGroup(entry: NavEntry): entry is NavGroup {
+  return 'children' in entry;
+}
+
+export const NAV_ENTRIES: readonly NavEntry[] = [
+  {
+    id: 'dashboard',
+    path: '/',
+    labelKey: 'nav.dashboard',
+    anyOf: [PERM.dashboardRead],
+  },
+  {
+    id: 'tracking',
+    path: '/tracking',
+    labelKey: 'nav.tracking',
+    anyOf: [PERM.trackingViewLive],
+  },
+  {
+    id: 'logs',
+    labelKey: 'nav.logs.label',
+    children: [
+      {
+        id: 'logs-by-unit',
+        path: '/logs/by-unit',
+        labelKey: 'nav.logs.byUnit',
+        descriptionKey: 'nav.logs.byUnitDescription',
+        anyOf: [PERM.logsRead],
+      },
+      {
+        id: 'logs-by-driver',
+        path: '/logs/by-driver',
+        labelKey: 'nav.logs.byDriver',
+        descriptionKey: 'nav.logs.byDriverDescription',
+        anyOf: [PERM.logsRead],
+      },
+      {
+        id: 'logs-edit-requests',
+        path: '/logs/edit-requests',
+        labelKey: 'nav.logs.editRequests',
+        descriptionKey: 'nav.logs.editRequestsDescription',
+        anyOf: [PERM.logsEditRequestsRead, PERM.logsRead],
+      },
+      {
+        id: 'logs-unassigned',
+        path: '/logs/unassigned',
+        labelKey: 'nav.logs.unassigned',
+        descriptionKey: 'nav.logs.unassignedDescription',
+        anyOf: [PERM.logsUnassignedRead, PERM.logsRead],
+      },
+      {
+        id: 'violations',
+        path: '/violations',
+        labelKey: 'nav.logs.violations',
+        descriptionKey: 'nav.logs.violationsDescription',
+        anyOf: [PERM.violationsRead],
+      },
+    ],
+  },
+  {
+    id: 'fleet',
+    labelKey: 'nav.fleet.label',
+    children: [
+      {
+        id: 'units',
+        path: '/units',
+        labelKey: 'nav.fleet.units',
+        descriptionKey: 'nav.fleet.unitsDescription',
+        anyOf: [PERM.unitsRead],
+      },
+      {
+        id: 'drivers',
+        path: '/drivers',
+        labelKey: 'nav.fleet.drivers',
+        descriptionKey: 'nav.fleet.driversDescription',
+        anyOf: [PERM.driversRead],
+      },
+      {
+        id: 'eld-devices',
+        path: '/eld-devices',
+        labelKey: 'nav.fleet.eldDevices',
+        descriptionKey: 'nav.fleet.eldDevicesDescription',
+        anyOf: [PERM.eldDevicesRead],
+      },
+      {
+        id: 'trailers',
+        path: '/trailers',
+        labelKey: 'nav.fleet.trailers',
+        descriptionKey: 'nav.fleet.trailersDescription',
+        anyOf: [PERM.trailersRead],
+      },
+      {
+        id: 'shipping-documents',
+        path: '/shipping-documents',
+        labelKey: 'nav.fleet.shippingDocuments',
+        descriptionKey: 'nav.fleet.shippingDocumentsDescription',
+        anyOf: [PERM.shippingDocumentsRead],
+      },
+      {
+        id: 'users',
+        path: '/users',
+        labelKey: 'nav.fleet.users',
+        descriptionKey: 'nav.fleet.usersDescription',
+        anyOf: [PERM.usersRead],
+      },
+      {
+        id: 'roles',
+        path: '/roles',
+        labelKey: 'nav.fleet.roles',
+        descriptionKey: 'nav.fleet.rolesDescription',
+        anyOf: [PERM.rolesRead],
+      },
+    ],
+  },
+  {
+    id: 'maintenance',
+    labelKey: 'nav.maintenance.label',
+    path: '/maintenance',
+    children: [
+      {
+        id: 'maintenance-schedule',
+        path: '/maintenance',
+        labelKey: 'nav.maintenance.schedule',
+        descriptionKey: 'nav.maintenance.scheduleDescription',
+        anyOf: [PERM.maintenanceRead],
+      },
+      {
+        id: 'dvir',
+        path: '/dvir',
+        labelKey: 'nav.maintenance.dvir',
+        descriptionKey: 'nav.maintenance.dvirDescription',
+        anyOf: [PERM.dvirRead],
+      },
+    ],
+  },
+  {
+    id: 'reports',
+    labelKey: 'nav.reports.label',
+    children: [
+      {
+        id: 'report-activity',
+        path: '/reports/activity',
+        labelKey: 'nav.reports.activity',
+        descriptionKey: 'nav.reports.activityDescription',
+        anyOf: [PERM.reportsRead],
+      },
+      {
+        id: 'report-distance-by-region',
+        path: '/reports/distance-by-region',
+        labelKey: 'nav.reports.distanceByRegion',
+        descriptionKey: 'nav.reports.distanceByRegionDescription',
+        anyOf: [PERM.reportsRead],
+      },
+      {
+        id: 'report-regulator',
+        path: '/reports/regulator',
+        labelKey: 'nav.reports.regulator',
+        descriptionKey: 'nav.reports.regulatorDescription',
+        anyOf: [PERM.reportsRead],
+      },
+      {
+        id: 'report-dvir',
+        path: '/reports/dvir',
+        labelKey: 'nav.reports.dvir',
+        descriptionKey: 'nav.reports.dvirDescription',
+        anyOf: [PERM.reportsRead],
+      },
+      {
+        id: 'report-uncertified',
+        path: '/reports/uncertified-logs',
+        labelKey: 'nav.reports.uncertified',
+        descriptionKey: 'nav.reports.uncertifiedDescription',
+        anyOf: [PERM.reportsRead],
+      },
+      {
+        id: 'report-exports',
+        path: '/reports/exports',
+        labelKey: 'nav.reports.exports',
+        descriptionKey: 'nav.reports.exportsDescription',
+        anyOf: [PERM.reportsRead],
+      },
+    ],
+  },
+  {
+    id: 'support',
+    labelKey: 'nav.support.label',
+    children: [
+      {
+        id: 'audit',
+        path: '/audit',
+        labelKey: 'nav.support.audit',
+        descriptionKey: 'nav.support.auditDescription',
+        anyOf: [PERM.auditView],
+      },
+      {
+        id: 'support-tickets',
+        path: '/support',
+        labelKey: 'nav.support.contact',
+        descriptionKey: 'nav.support.contactDescription',
+        anyOf: [PERM.supportRead],
+      },
+      {
+        id: 'feedback',
+        path: '/feedback',
+        labelKey: 'nav.support.feedback',
+        descriptionKey: 'nav.support.feedbackDescription',
+        anyOf: [PERM.feedbackRead],
+      },
+    ],
+  },
+  {
+    id: 'chat',
+    path: '/chat',
+    labelKey: 'nav.chat',
+    anyOf: [PERM.chatRead],
+  },
+];
+
+/**
+ * Nav'dan tashqaridagi ekranlar (breadcrumb sarlavhasi uchun).
+ * Settings — profil menyusi orqali; detal ekranlari — ro'yxatlardan.
+ */
+export const EXTRA_ROUTE_TITLES: Readonly<Record<string, string>> = Object.freeze({
+  '/routes': 'pages.routes.title',
+  '/settings/profile': 'pages.settingsProfile.title',
+  '/settings/company': 'pages.settingsCompany.title',
+  '/settings/hos': 'pages.settingsHos.title',
+  '/settings/security': 'pages.settingsSecurity.title',
+});
+
+export interface VisibleNavLeaf extends NavLeaf {
+  kind: 'leaf';
+}
+
+export interface VisibleNavGroup {
+  kind: 'group';
+  id: string;
+  labelKey: string;
+  path?: string;
+  children: VisibleNavLeaf[];
+}
+
+export type VisibleNavEntry = VisibleNavLeaf | VisibleNavGroup;
+
+/**
+ * Nav daraxtini ruxsatlar bo'yicha filtrlaydi. Bo'sh qolgan guruh butunlay
+ * tushib qoladi (fe-permissions §3 — "Nav elementi / flyout punkti → yashiriladi").
+ */
+export function filterNav(
+  entries: readonly NavEntry[],
+  can: (permission: Permission) => boolean,
+): VisibleNavEntry[] {
+  const allowed = (leaf: NavLeaf) => leaf.anyOf.some(can);
+  const result: VisibleNavEntry[] = [];
+
+  for (const entry of entries) {
+    if (isNavGroup(entry)) {
+      const children = entry.children.filter(allowed).map<VisibleNavLeaf>((leaf) => ({
+        ...leaf,
+        kind: 'leaf',
+      }));
+      if (children.length > 0) {
+        result.push({
+          kind: 'group',
+          id: entry.id,
+          labelKey: entry.labelKey,
+          ...(entry.path === undefined ? {} : { path: entry.path }),
+          children,
+        });
+      }
+    } else if (allowed(entry)) {
+      result.push({ ...entry, kind: 'leaf' });
+    }
+  }
+
+  return result;
+}
+
+/** Barcha nav punktlari — breadcrumb va marshrut sarlavhalari uchun tekis ro'yxat. */
+export function flattenNav(entries: readonly NavEntry[] = NAV_ENTRIES): NavLeaf[] {
+  return entries.flatMap((entry) => (isNavGroup(entry) ? [...entry.children] : [entry]));
+}
+
+/** `pathname` → sarlavha i18n kaliti (breadcrumb oxirgi bo'g'ini uchun). */
+export function routeTitleKey(pathname: string): string | undefined {
+  const leaf = flattenNav().find((item) => item.path === pathname);
+  return leaf?.labelKey ?? EXTRA_ROUTE_TITLES[pathname];
+}
+
+/** `pathname` qaysi nav guruhiga tegishli (breadcrumbning o'rta bo'g'ini). */
+export function navGroupOf(pathname: string): NavGroup | undefined {
+  return NAV_ENTRIES.filter(isNavGroup).find((group) =>
+    group.children.some((leaf) => pathname === leaf.path || pathname.startsWith(`${leaf.path}/`)),
+  );
+}

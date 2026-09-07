@@ -35,14 +35,14 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [ ] 0.13 Refresh mutex + proaktiv (80 % TTL) + reaktiv (401) yangilash; reuse → to'liq logout
 - [ ] 0.14 `GET /app/config` bootstrap: soat siljishi, feature flags
 - [ ] 0.15 `GET /me` — profil, ruxsatlar, company (region, unit_system, regulation_profile, timezone)
-- [ ] 0.16 `src/lib/permissions.ts` — 105 kalit konstantasi + `usePermission()` + `PermissionGate`
-- [ ] 0.17 CI testi: konstantalar `GET /permissions` snapshot'i bilan mos
-- [ ] 0.18 `AppLayout` — 3 qatlamli header (brend + nav + breadcrumb), profil menyusi
-- [ ] 0.19 Nav va flyout'lar ruxsat bo'yicha filtrlanadi (§4.5 jadvali)
-- [ ] 0.20 `router.tsx` — barcha marshrutlar lazy, route guard, 403/404/ErrorBoundary ekranlari
-- [ ] 0.21 i18n sozlash + `en.json` skeleti (`common.*`, `errors.*`, `nav.*`, `enums.*`)
-- [ ] 0.22 Idle timeout (30 daq) + `subscription_readonly` banneri + `replaced_session` toast
-- [ ] 0.23 GitHub Actions: typecheck, lint, test, build, `schema.d.ts` diff tekshiruvi
+- [x] 0.16 `src/lib/permissions.ts` — `PERM` konstantasi + `usePermission()` + `PermissionGate` (**kalitlar TAXMINIY** — `GET /permissions` bilan tasdiqlanmagan, 0.7 blokeri)
+- [~] 0.17 CI testi: konstantalar `GET /permissions` snapshot'i bilan mos — **BLOKER:** `DOCS_TOKEN` yo'q, snapshot olinmagan
+- [x] 0.18 `AppLayout` — 3 qatlamli header (brend + nav + breadcrumb), profil menyusi
+- [x] 0.19 Nav va flyout'lar ruxsat bo'yicha filtrlanadi (§4.5 jadvali)
+- [x] 0.20 `router.tsx` — barcha marshrutlar lazy (modul bo'yicha `app/router/*.routes.tsx`), `RouteGuard`, 403/404/ErrorBoundary ekranlari
+- [x] 0.21 i18n sozlash + `en.json` skeleti (`common.*`, `errors.*`, `nav.*`, `enums.*`)
+- [x] 0.22 Idle timeout (30 daq) + `subscription_readonly` banneri + `replaced_session` toast
+- [x] 0.23 GitHub Actions: typecheck, lint, test, build, `schema.d.ts` diff tekshiruvi (`DOCS_TOKEN` bo'lmasa diff qadami o'tkazib yuboriladi)
 - [ ] 0.24 `frontend-security-reviewer` + `frontend-code-reviewer`
 ```
 

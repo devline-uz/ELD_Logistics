@@ -177,6 +177,9 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | D-f4 | Radius shkalasi 4/8/12/16 — dizaynda berilmagan (F49) |
 | D-f5 | Spacing shkalasi 4 pt — dizaynda berilmagan (F47) |
 | D-f6 | Vaqt Company Home Terminal TZ da ko'rsatiladi, brauzer TZ da emas (F193) |
+| D-f7 | `src/lib/permissions.ts` dagi `PERM` kalitlari **taxminiy** (90 ta) — `GET /permissions` 401 bergani uchun (0.7 blokeri) `fe-permissions` §8 marshrut→prefiks jadvalidan tiklangan. `DOCS_TOKEN` kelgach 0.17 CI testi haqiqiy 105 kalit bilan solishtiradi va fayl yangilanadi |
+| D-f8 | `super_admin` — rol emas, alohida bayroq; frontendda faqat `companies.*` kalitlarini ochadi, boshqa modullarni **kengaytirmaydi** (backend ham shunday tekshiradi) |
+| D-f9 | Routes (`/routes`) nav'da alohida element emas — Tracking/Dashboard ekranlaridan ochiladi (fe-permissions §6 «nav tashqarisidagi ekranlar») |
 
 ---
 

@@ -112,6 +112,34 @@ va PDF/eksport `blob` yuklab olish.
 **Token saqlash:** access token **faqat xotirada** (`src/api/session.ts`), refresh token
 `sessionStorage` (`eld.rt`). `localStorage` da token yo'q.
 
+## Ruxsatlar, navigatsiya va router
+
+- `src/lib/permissions.ts` — `PERM` konstantalari, `createPermissionChecker()`,
+  `usePermission()` (`can(p)` · `can.any([...])` · `can.all([...])`).
+  `super_admin` — **rol emas, alohida bayroq**: frontendda faqat `companies.*` ni ochadi.
+  > **BLOKER:** kalitlar hozircha **taxminiy** — `GET /permissions` 401 qaytaradi.
+  > `DOCS_TOKEN` kelgach 0.17 CI testi haqiqiy ro'yxat bilan solishtiradi.
+- `src/app/providers/PermissionsProvider.tsx` — ruxsat ro'yxatini props orqali oladi
+  (auth store 0.12/0.15 da ulanadi; testda to'g'ridan-to'g'ri ro'yxat beriladi).
+- `src/components/ui/PermissionGate.tsx` — `permission` / `anyOf` / `allOf`;
+  ruxsat yo'q bo'lsa element **DOM'da bo'lmaydi**.
+- `src/app/nav-config.ts` — navigatsiya jadvali (kanonik nomlar: Fleet Management,
+  Reports, Support & History) + `filterNav()` + breadcrumb yordamchilari.
+- `src/app/router.tsx` — modul bo'yicha bo'lingan `src/app/router/<modul>.routes.tsx`
+  fayllarini birlashtiradi. Har bir ekran `lazy`; keyingi bosqichlarda parallel
+  agentlar faqat o'z marshrut faylini tahrirlaydi (W2).
+- `src/app/RouteGuard.tsx` — ruxsat yo'q bo'lsa **403 ekrani** (redirect ham,
+  404 ham emas). 404 faqat ma'lumot darajasida (backend `NOT_FOUND`).
+
+## Sessiya holati (0.22)
+
+- `SessionFlagsProvider` — `subscription_readonly` (doimiy banner) va
+  `replaced_session` (bir martalik toast).
+- `useWriteGuard()` — yozuv amallari darvozasi: ruxsat + obuna holati;
+  `disabledReason()` har bir `disabled` tugma uchun sabab matnini beradi (F35).
+- `useIdleTimeout()` / `IdleTimeoutDialog` — 30 daqiqa harakatsizlik, oxirgi
+  60 s da ogohlantirish oynasi.
+
 ## Sifat darvozasi
 
 ```bash

@@ -8,4 +8,18 @@
  */
 :root {
   color-scheme: light;
+
+  /* Bosqich 0 da faqat layout uchun zarur bo'lgan minimal to'plam. */
+  --color-primary: #b7002c;
+  --color-primary-hover: #9a0025;
+  --color-bg: #fcfcfd;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f2f4f7;
+  --color-stroke: #e5e7eb;
+  --color-warning-bg: #fceac8;
+  --color-warning-dark: #7b5d24;
+}
+
+body {
+  background-color: var(--color-bg);
 }
