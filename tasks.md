@@ -28,8 +28,8 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] 0.4 `tsconfig` paths (`@/*`) + Vite alias
 - [x] 0.5 `package.json` skriptlari: `dev build preview typecheck lint lint:fix test test:cov e2e api api:gen i18n:extract`
 - [x] 0.6 `.env.example`, `README.md` (ishga tushirish yo'riqnomasi)
-- [~] 0.7 `npm run api` — skript tayyor; **BLOKER:** `DOCS_TOKEN` yo'q (spec 401), `schema.d.ts` placeholder
-- [~] 0.8 `src/api/types.ts` — karkas + konvertlar tayyor; domen alias'lari 0.7 blokeriga bog'liq
+- [x] 0.7 `npm run api` — 3 bosqichli oqim: fetch → convert (Swagger 2.0 → OAS3) → gen. `openapi/{swagger,openapi3}.json` va `schema.d.ts` (19854 qator) commit qilindi
+- [x] 0.8 `src/api/types.ts` — 165 schema-backed alias, 30+ domen. `Dto<>` helper nom spec'da yo'q bo'lsa kompilyatsiya xatosi beradi
 - [x] 0.9 `src/api/client.ts` — `openapi-fetch` + 4 middleware (auth, company, idempotency, error)
 - [x] 0.10 `src/lib/errors.ts` — `normalizeError`, kod → i18n kaliti xaritasi
 - [ ] 0.11 `src/features/auth/` — login, forgot/reset password, invitation accept, 2FA
@@ -37,8 +37,8 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [ ] 0.13 Refresh mutex + proaktiv (80 % TTL) + reaktiv (401) yangilash; reuse → to'liq logout
 - [ ] 0.14 `GET /app/config` bootstrap: soat siljishi, feature flags
 - [ ] 0.15 `GET /me` — profil, ruxsatlar, company (region, unit_system, regulation_profile, timezone)
-- [x] 0.16 `src/lib/permissions.ts` — `PERM` konstantasi + `usePermission()` + `PermissionGate` (**kalitlar TAXMINIY** — `GET /permissions` bilan tasdiqlanmagan, 0.7 blokeri)
-- [~] 0.17 CI testi: konstantalar `GET /permissions` snapshot'i bilan mos — **BLOKER:** `DOCS_TOKEN` yo'q, snapshot olinmagan
+- [x] 0.16 `src/lib/permissions.ts` — **104 haqiqiy kalit** (TZ dagi 105 noto'g'ri), 28 guruh + `usePermission()` + `PermissionGate`
+- [x] 0.17 `permissions.catalog.test.ts` — `swagger.json` dagi `x-permission` bilan ikki tomonlama solishtirish (8 test), OR istisnolari hujjatlashtirildi
 - [x] 0.18 `AppLayout` — 3 qatlamli header (brend + nav + breadcrumb), profil menyusi
 - [x] 0.19 Nav va flyout'lar ruxsat bo'yicha filtrlanadi (§4.5 jadvali)
 - [x] 0.20 `router.tsx` — barcha marshrutlar lazy (modul bo'yicha `app/router/*.routes.tsx`), `RouteGuard`, 403/404/ErrorBoundary ekranlari
