@@ -169,6 +169,7 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | Q13 | Chat: fayl biriktirish uchun `kind=chat` presign bor, lekin xabar DTO'sida `file_key` bitta | Bir xabarga bir fayl | Bir xabar = bir fayl (F132) |
 | Q15 | `per_page` spec'da `enum` emas — oddiy `integer` (tavsifda faqat «max 100» yoki «10/25/50» matni), amalda 10/25/50 dan boshqa qiymat **422** qaytaradi | Frontend cheklovni faqat tip darajasida (`PerPage` union) majburlaydi; spec'dan generatsiya qilingan tip bu qoidani ko'rsatmaydi, boshqa klient (mobil, uchinchi tomon) buni bilmasdan noto'g'ri qiymat yuborishi mumkin | `per_page: {type: integer, enum: [10, 25, 50]}` spec'ga qo'shilsin |
 | Q16 | Login rate limit (5 so'rov/daqiqa/IP, `POST /auth/login` → `429`) spec'da hujjatlashtirilmagan — faqat amaliy tekshiruv orqali ma'lum | E2E/dev muhitida kutilmagan `429` sabab tushunarsiz bo'lib qolishi mumkin; frontend chegarani spec'dan emas, tajribadan bilib qo'llaydi (fe-api §1) | `POST /auth/login` operatsiyasiga `x-rate-limit: 5/min/ip` (yoki tengdosh) izoh/annotatsiya qo'shilsin |
+| Q18 | Uncertified Logs (7.8.5) `Send reminder` amali uchun endpoint swagger'da yo'q (`/notifications` faqat `GET`+`read`, `POST` yo'q) | Ekranda tugma bo'ladi, lekin chaqiradigan API yo'q | Bosqich 6.1: `useUncertifiedLogSendReminder` yozilmadi, tugma `disabled` + tooltip «Coming soon» rejimida qoldiriladi (ekran agentiga topshiriq); to'liq yozuv D29 da |
 
 ### Frontend ichki qarorlar (tasdiq talab qilmaydi, lekin qayd etiladi)
 
@@ -335,3 +336,43 @@ nomidan log yozmaydi). Admin ekranlari **faqat** `useLogEditRequestPropose`
 
 `useLogAddEvent` hooki yozilgan, lekin izohida shu ogohlantirish bor.
 Ekran agentlari uni **chaqirmasligi** kerak.
+
+---
+
+### D29 — Uncertified Logs `Send reminder` uchun backend endpoint yo'q (Bosqich 6.1, swagger'dan)
+
+`docs/tz/07-8-reports.md` §7.8.5 (F128) Uncertified Logs jadvalida `Send reminder` amalini
+talab qiladi. Swagger'da (`/notifications`, `/company/notification-settings`,
+`/daily-logs/{id}/certify`, `/dvir-reports/{id}/certify`) shu maqsadga mos **hech qanday**
+`POST` yo'q — `notifications` resursi faqat `GET` (ro'yxat) va o'qilgan deb belgilash
+(`/notifications/{id}/read`, `/notifications/read-all`) operatsiyalarini beradi, admin
+tomonidan **yangi** bildirishnoma/eslatma yaratish endpointi mavjud emas.
+
+**MVP vaqtinchalik yechimi (Bosqich 6.1, `api/queries/reports.ts`):** `useUncertifiedLogSendReminder`
+mutatsiyasi **yozilmadi** — mavjud bo'lmagan endpointga so'rov yubormaydi. Ekran agentiga
+(keyingi bosqich) topshiriq: `Send reminder` tugmasi `disabled` holatda, tooltip
+«Reminders are not available yet» (yoki tegishli i18n kaliti) bilan ko'rsatiladi.
+
+**Backend CR taklifi:** `POST /reports/uncertified-logs/{driver_id}/remind` (yoki
+`POST /notifications` umumiy yaratish endpointi) — kompaniya `notification-settings`dagi
+kanal(lar) orqali haydovchiga eslatma yuboradi, javobda `sent_at` qaytaradi.
+
+
+### D30 — DVIR `repair`: mexanik imzosi majburiy, lekin admin panelda uni olish oqimi yo'q
+
+**Swagger:** `POST /dvir-reports/{id}/repair` tanasida `mechanic_note` **va**
+`mechanic_signature_key` — **ikkalasi ham majburiy**.
+
+**TZ (§7.5, 5.4):** faqat «izoh + invoice fayl» deb yozgan; mexanik imzosi haqida gap yo'q.
+
+**Muammo:** admin panel imzo **olmaydi** (§1.1 — admin hech kim nomidan imzo qo'ymaydi).
+Mexanik imzosi mobil/planshet ilovasida olinadi va obyekt-saqlashga yoziladi.
+Ya'ni admin `Record repair` amalini **imzosiz bajara olmaydi**.
+
+**MVP yechimi (frontend):** `Record repair` formasi `mechanic_signature_key` ni
+**majburiy maydon** sifatida ko'rsatmaydi va amalni **bloklaydi** emas — buning o'rniga:
+- Agar DVIR'da allaqachon `mechanic_signature_key` bo'lsa (mobilda olingan) — amal ishlaydi
+- Aks holda tugma `disabled` + sabab: «Mechanic signature required — captured in the driver app»
+
+**Backend CR nomzodi:** `mechanic_signature_key` ni ixtiyoriy qilish yoki
+admin uchun alohida «office repair record» oqimi (imzosiz) qo'shish.

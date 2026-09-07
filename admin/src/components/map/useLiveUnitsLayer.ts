@@ -16,7 +16,8 @@ import maplibregl from 'maplibre-gl';
 
 import type { LiveUnit } from '@/api/types';
 
-import { dutyStatusIconName, registerDutyStatusIcons } from './markerIcons';
+import { buildLiveUnitsGeoJson, type LiveUnitFeatureProperties } from './liveUnitsGeoJson';
+import { registerDutyStatusIcons } from './markerIcons';
 import { mountUnitMarkerCard, type UnitMarkerCardProps } from './UnitMarkerCard';
 
 const SOURCE_ID = 'live-units';
@@ -25,16 +26,9 @@ const CLUSTER_COUNT_LAYER = 'live-units-cluster-count';
 const RING_LAYER = 'live-units-ring';
 const POINT_LAYER = 'live-units-point';
 
-const STALE_MS = 60_000;
 const STALE_RECOMPUTE_INTERVAL_MS = 15_000;
 
-export interface LiveUnitFeatureProperties {
-  unitId: string;
-  heading: number;
-  dutyStatus: string;
-  onlineStatus: string;
-  stale: boolean;
-}
+export type { LiveUnitFeatureProperties };
 
 export interface UseLiveUnitsLayerOptions {
   /** Marker bosilganda — `UnitMarkerCard` popup'i shu callback bergan matnlarni oladi. */
@@ -44,39 +38,10 @@ export interface UseLiveUnitsLayerOptions {
   listPopupTitle: string;
 }
 
-function toFeature(unit: LiveUnit, now: number) {
-  const lastSeenMs = unit.last_seen_at ? Date.parse(unit.last_seen_at) : NaN;
-  const stale = Number.isFinite(lastSeenMs) ? now - lastSeenMs > STALE_MS : false;
-
-  return {
-    type: 'Feature' as const,
-    id: unit.unit_id,
-    geometry: {
-      type: 'Point' as const,
-      coordinates: [unit.lng ?? 0, unit.lat ?? 0],
-    },
-    properties: {
-      unitId: unit.unit_id ?? '',
-      heading: unit.heading_deg ?? 0,
-      dutyStatus: unit.duty_status ?? 'OFF',
-      onlineStatus: unit.online_status ?? 'offline',
-      stale,
-    } satisfies LiveUnitFeatureProperties,
-  };
-}
-
-function buildGeoJson(units: LiveUnit[]) {
-  const now = Date.now();
-  return {
-    type: 'FeatureCollection' as const,
-    features: units
-      .filter((unit) => typeof unit.lat === 'number' && typeof unit.lng === 'number')
-      .map((unit) => toFeature(unit, now)),
-  };
-}
+const buildGeoJson = buildLiveUnitsGeoJson;
 
 /** `online_status` → halqa rangi (fe-map: online yashil, offline kulrang, disconnected qizil). */
-const ONLINE_RING_COLOR: Record<string, string> = {
+const ONLINE_RING_COLOR: Record<'online' | 'idle' | 'offline' | 'disconnected' | 'malfunction', string> = {
   online: '#1AA05D',
   idle: '#F6BA47',
   offline: '#8A94A6',
@@ -185,7 +150,7 @@ export function useLiveUnitsLayer(
 
     const ensure = () => addLayers(map);
     if (map.isStyleLoaded()) ensure();
-    else map.once('load', ensure);
+    else void map.once('load', ensure);
 
     const showPopup = (lngLat: [number, number], props: Parameters<typeof mountUnitMarkerCard>[1]) => {
       popupRef.current?.remove();
@@ -206,6 +171,34 @@ export function useLiveUnitsLayer(
       showPopup([unit.lng, unit.lat], optionsRef.current.buildPopupProps(unit));
     };
 
+    const showListPopup = (lngLat: { lng: number; lat: number }, leaves: GeoJSON.Feature[]) => {
+      const ids = new Set(
+        leaves
+          .map((leaf) => (leaf.properties as LiveUnitFeatureProperties | undefined)?.unitId)
+          .filter((id): id is string => Boolean(id)),
+      );
+      const list = unitsRef.current.filter((unit) => unit.unit_id && ids.has(unit.unit_id));
+
+      const container = document.createElement('div');
+      container.className = 'flex max-h-60 w-56 flex-col gap-1 overflow-y-auto p-2 text-body-sm';
+      const title = document.createElement('div');
+      title.className = 'font-semibold text-neutral-900';
+      title.textContent = optionsRef.current.listPopupTitle;
+      container.appendChild(title);
+      for (const unit of list) {
+        const row = document.createElement('div');
+        row.className = 'text-neutral-700';
+        row.textContent = optionsRef.current.formatListEntry(unit);
+        container.appendChild(row);
+      }
+
+      popupRef.current?.remove();
+      popupRef.current = new maplibregl.Popup({ closeButton: true, maxWidth: '240px' })
+        .setLngLat(lngLat)
+        .setDOMContent(container)
+        .addTo(map);
+    };
+
     const onClusterClick = (event: {
       features?: MapGeoJSONFeature[];
       lngLat: { lng: number; lat: number };
@@ -213,46 +206,26 @@ export function useLiveUnitsLayer(
       const feature = event.features?.[0];
       if (!feature) return;
       const clusterId = feature.properties?.cluster_id as number | undefined;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da getClusterExpansionZoom yo'q)
       const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
       if (clusterId === undefined || !source) return;
 
-      source.getClusterExpansionZoom(clusterId, (error, zoom) => {
-        if (!error && zoom !== undefined && zoom <= (map.getMaxZoom() ?? 22)) {
-          map.easeTo({ center: event.lngLat, zoom, duration: 300 });
-          return;
-        }
-
-        // Kengaytirish mumkin emas (max zoom'da ham to'plangan) — spiderfy
-        // o'rniga ro'yxat popup'i (fe-map).
-        source.getClusterLeaves(clusterId, 100, 0, (leavesError, leaves) => {
-          if (leavesError || !leaves) return;
-          const ids = new Set(
-            leaves
-              .map((leaf) => (leaf.properties as LiveUnitFeatureProperties | undefined)?.unitId)
-              .filter((id): id is string => Boolean(id)),
-          );
-          const list = unitsRef.current.filter((unit) => unit.unit_id && ids.has(unit.unit_id));
-
-          const container = document.createElement('div');
-          container.className = 'flex max-h-60 w-56 flex-col gap-1 overflow-y-auto p-2 text-body-sm';
-          const title = document.createElement('div');
-          title.className = 'font-semibold text-neutral-900';
-          title.textContent = optionsRef.current.listPopupTitle;
-          container.appendChild(title);
-          for (const unit of list) {
-            const row = document.createElement('div');
-            row.className = 'text-neutral-700';
-            row.textContent = optionsRef.current.formatListEntry(unit);
-            container.appendChild(row);
+      void source
+        .getClusterExpansionZoom(clusterId)
+        .then((zoom) => {
+          if (zoom <= (map.getMaxZoom() ?? 22)) {
+            map.easeTo({ center: event.lngLat, zoom, duration: 300 });
+            return undefined;
           }
-
-          popupRef.current?.remove();
-          popupRef.current = new maplibregl.Popup({ closeButton: true, maxWidth: '240px' })
-            .setLngLat(event.lngLat)
-            .setDOMContent(container)
-            .addTo(map);
+          // Kengaytirish mumkin emas (max zoom'da ham to'plangan) — spiderfy
+          // o'rniga ro'yxat popup'i (fe-map).
+          return source.getClusterLeaves(clusterId, 100, 0).then((leaves) => {
+            showListPopup(event.lngLat, leaves);
+          });
+        })
+        .catch(() => {
+          // Klaster kengayishi so'ralmadi — jim o'tkaziladi, xarita ishlashda davom etadi.
         });
-      });
     };
 
     const onEnter = () => {
@@ -285,12 +258,13 @@ export function useLiveUnitsLayer(
     if (!map) return undefined;
 
     const update = () => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
       const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
       source?.setData(buildGeoJson(unitsRef.current));
     };
 
     if (map.isStyleLoaded() && map.getSource(SOURCE_ID)) update();
-    else map.once('load', update);
+    else void map.once('load', update);
 
     // 60s'dan eski nuqta shaffofligini yangi fetch bo'lmasa ham yangilash (F166).
     const interval = window.setInterval(update, STALE_RECOMPUTE_INTERVAL_MS);

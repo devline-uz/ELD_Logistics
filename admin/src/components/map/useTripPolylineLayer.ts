@@ -1,8 +1,10 @@
 /**
  * Trip polyline qatlami (`fe-map` skill, Trip polyline bo'limi):
  * `primary` rangda, 4 px, `line-cap: round`; to'xtash nuqtalari raqamli
- * markerlar bilan (1, 2, 3…); segment tanlanganda qolganlari 30% shaffofga
- * o'tadi va `fitBounds` (padding 64px) chaqiriladi.
+ * markerlar bilan (1, 2, 3…); segment tanlanganda qolgan segmentlar (kunning
+ * boshqa trip'lari, boshlanish/tugash nuqtalaridan tortilgan sodda chiziq —
+ * ularning to'liq geometriyasi so'ralmaydi, F169) 30% shaffofga o'tadi va
+ * tanlangan segment uchun `fitBounds` (padding 64px) chaqiriladi.
  */
 import { useEffect, useRef } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
@@ -10,8 +12,10 @@ import maplibregl, { LngLatBounds } from 'maplibre-gl';
 
 import type { LngLatTuple } from './polyline';
 
-const SOURCE_ID = 'trip-polyline';
-const LINE_LAYER = 'trip-polyline-line';
+const OVERVIEW_SOURCE_ID = 'trip-overview-lines';
+const OVERVIEW_LAYER = 'trip-overview-lines-line';
+const ACTIVE_SOURCE_ID = 'trip-active-line';
+const ACTIVE_LAYER = 'trip-active-line-line';
 
 export interface TripStopMarker {
   index: number;
@@ -20,32 +24,53 @@ export interface TripStopMarker {
 }
 
 export interface UseTripPolylineLayerOptions {
-  /** Segment tanlanmagan bo'lsa `undefined` — qatlam butunlay tozalanadi. */
-  coordinates: LngLatTuple[] | undefined;
-  /** `true` — boshqa (tanlanmagan) segmentlar mavjud, shuning uchun 30% shaffof (fe-map). */
-  dimmed?: boolean;
+  /** Kunning barcha trip'lari — sodda (boshlanish→tugash) chiziqlar, 30% shaffof. */
+  overviewLines?: LngLatTuple[][];
+  /** Tanlangan trip'ning to'liq geometriyasi (`include_polyline=true`), to'liq shaffoflik. */
+  activeLine?: LngLatTuple[];
   stops?: TripStopMarker[];
   /** Yangi segment tanlanganda `fitBounds` chaqirilsinmi (default true). */
   fitOnChange?: boolean;
 }
 
-function addLayer(map: MapLibreMap): void {
-  if (map.getSource(SOURCE_ID)) return;
-  map.addSource(SOURCE_ID, {
-    type: 'geojson',
-    data: { type: 'FeatureCollection', features: [] },
-  });
-  map.addLayer({
-    id: LINE_LAYER,
-    type: 'line',
-    source: SOURCE_ID,
-    layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: {
-      'line-color': '#2F6FED',
-      'line-width': 4,
-      'line-opacity': 1,
-    },
-  });
+function addLayers(map: MapLibreMap): void {
+  if (!map.getSource(OVERVIEW_SOURCE_ID)) {
+    map.addSource(OVERVIEW_SOURCE_ID, {
+      type: 'geojson',
+      data: { type: 'FeatureCollection', features: [] },
+    });
+    map.addLayer({
+      id: OVERVIEW_LAYER,
+      type: 'line',
+      source: OVERVIEW_SOURCE_ID,
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#2F6FED', 'line-width': 3, 'line-opacity': 0.3 },
+    });
+  }
+
+  if (!map.getSource(ACTIVE_SOURCE_ID)) {
+    map.addSource(ACTIVE_SOURCE_ID, {
+      type: 'geojson',
+      data: { type: 'FeatureCollection', features: [] },
+    });
+    map.addLayer({
+      id: ACTIVE_LAYER,
+      type: 'line',
+      source: ACTIVE_SOURCE_ID,
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#2F6FED', 'line-width': 4, 'line-opacity': 1 },
+    });
+  }
+}
+
+function toLineFeatures(lines: LngLatTuple[][]): GeoJSON.Feature[] {
+  return lines
+    .filter((line) => line.length >= 2)
+    .map((coordinates) => ({
+      type: 'Feature',
+      properties: {},
+      geometry: { type: 'LineString', coordinates },
+    }));
 }
 
 export function useTripPolylineLayer(
@@ -56,9 +81,9 @@ export function useTripPolylineLayer(
 
   useEffect(() => {
     if (!map) return undefined;
-    const ensure = () => addLayer(map);
+    const ensure = () => addLayers(map);
     if (map.isStyleLoaded()) ensure();
-    else map.once('load', ensure);
+    else void map.once('load', ensure);
     return undefined;
   }, [map]);
 
@@ -66,27 +91,20 @@ export function useTripPolylineLayer(
     if (!map) return undefined;
 
     const apply = () => {
-      const source = map.getSource(SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
-      if (!source) return;
-
-      const coordinates = options.coordinates ?? [];
-      source.setData({
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
+      const overviewSource = map.getSource(OVERVIEW_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
+      overviewSource?.setData({
         type: 'FeatureCollection',
-        features:
-          coordinates.length > 0
-            ? [
-                {
-                  type: 'Feature',
-                  properties: {},
-                  geometry: { type: 'LineString', coordinates },
-                },
-              ]
-            : [],
+        features: toLineFeatures(options.overviewLines ?? []),
       });
 
-      if (map.getLayer(LINE_LAYER)) {
-        map.setPaintProperty(LINE_LAYER, 'line-opacity', options.dimmed ? 0.3 : 1);
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
+      const activeSource = map.getSource(ACTIVE_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
+      const activeCoords = options.activeLine ?? [];
+      activeSource?.setData({
+        type: 'FeatureCollection',
+        features: toLineFeatures(activeCoords.length > 0 ? [activeCoords] : []),
+      });
 
       for (const marker of stopMarkersRef.current) marker.remove();
       stopMarkersRef.current = [];
@@ -99,19 +117,18 @@ export function useTripPolylineLayer(
         stopMarkersRef.current.push(marker);
       }
 
-      if ((options.fitOnChange ?? true) && coordinates.length > 0) {
-        const bounds = coordinates.reduce(
+      if ((options.fitOnChange ?? true) && activeCoords.length > 0) {
+        const bounds = activeCoords.reduce(
           (acc, coord) => acc.extend(coord),
-          new LngLatBounds(coordinates[0], coordinates[0]),
+          new LngLatBounds(activeCoords[0], activeCoords[0]),
         );
         map.fitBounds(bounds, { padding: 64, duration: 500, maxZoom: 16 });
       }
     };
 
-    if (map.isStyleLoaded() && map.getSource(SOURCE_ID)) apply();
-    else map.once('load', apply);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, options.coordinates, options.dimmed, options.stops, options.fitOnChange]);
+    if (map.isStyleLoaded() && map.getSource(ACTIVE_SOURCE_ID)) apply();
+    else void map.once('load', apply);
+  }, [map, options.overviewLines, options.activeLine, options.stops, options.fitOnChange]);
 
   useEffect(
     () => () => {

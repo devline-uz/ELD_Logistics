@@ -67,7 +67,7 @@ function drawRing(ctx: CanvasRenderingContext2D, color: string): void {
 
 /** Har `DutyStatus` uchun ImageData generatsiya qiladi. */
 function buildIcon(status: DutyStatus): ImageData {
-  const { canvas, ctx } = makeCanvas();
+  const { ctx } = makeCanvas();
   const color = DUTY_COLORS[status];
   if (status === 'DR') drawArrow(ctx, color);
   else if (status === 'ON') drawDot(ctx, color);

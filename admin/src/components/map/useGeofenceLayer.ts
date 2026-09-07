@@ -81,6 +81,7 @@ export function useGeofenceLayer(map: MapLibreMap | null, options: UseGeofenceLa
     const apply = () => {
       ensureLayers(map);
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
       const geofenceSource = map.getSource(GEOFENCE_SOURCE) as GeoJSONSource | undefined;
       if (geofenceSource) {
         geofenceSource.setData({
@@ -101,9 +102,8 @@ export function useGeofenceLayer(map: MapLibreMap | null, options: UseGeofenceLa
         });
       }
 
-      const directionsSource = map.getSource(DIRECTIONS_SOURCE) as
-        | GeoJSONSource
-        | undefined;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
+      const directionsSource = map.getSource(DIRECTIONS_SOURCE) as GeoJSONSource | undefined;
       if (directionsSource) {
         directionsSource.setData({
           type: 'FeatureCollection',
@@ -122,7 +122,6 @@ export function useGeofenceLayer(map: MapLibreMap | null, options: UseGeofenceLa
     };
 
     if (map.isStyleLoaded()) apply();
-    else map.once('load', apply);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    else void map.once('load', apply);
   }, [map, options.destination, options.geofenceM, options.directions]);
 }

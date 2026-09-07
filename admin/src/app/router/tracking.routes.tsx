@@ -7,15 +7,17 @@ import { PERM } from '@/lib/permissions';
 export const trackingRoutes: RouteObject[] = [
   guardedRoute(
     'tracking',
-    async () => (await import('@/features/tracking/pages/stubs')).TrackingPage,
+    async () => (await import('@/features/tracking/pages/TrackingListPage')).TrackingListPage,
     { permission: PERM.trackingViewLive },
   ),
   guardedRoute(
     'tracking/units/:unitId',
-    async () => (await import('@/features/tracking/pages/stubs')).TrackOnMapPage,
+    async () => (await import('@/features/tracking/pages/TrackOnMapPage')).TrackOnMapPage,
     { permission: PERM.trackingViewLive },
   ),
-  guardedRoute('routes', async () => (await import('@/features/routes/pages/stubs')).RoutesPage, {
-    permission: PERM.routesRead,
-  }),
+  guardedRoute(
+    'routes',
+    async () => (await import('@/features/routes/pages/RouteListPage')).RouteListPage,
+    { permission: PERM.routesRead },
+  ),
 ];

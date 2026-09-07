@@ -488,3 +488,53 @@ export type ViolationsListParams = NonNullable<paths['/violations']['get']['para
 
 /** `GET /routes` — status/unit/driver filtri + saralash (§7.7.3). */
 export type RoutesListParams = NonNullable<paths['/routes']['get']['parameters']['query']>;
+
+/** `GET /dvir-reports` — `unit_id/driver_id/type/status/from/to` filtri (7.5). */
+export type DvirReportsListParams = NonNullable<
+  paths['/dvir-reports']['get']['parameters']['query']
+>;
+
+/** `GET /dvir-reports/pending-certification` — faqat `unit_id` filtri (7.5). */
+export type DvirPendingCertificationParams = NonNullable<
+  paths['/dvir-reports/pending-certification']['get']['parameters']['query']
+>;
+
+/** `GET /maintenance-schedules` — Schedule tabi (`status/q`, 7.6). */
+export type MaintenanceSchedulesListParams = NonNullable<
+  paths['/maintenance-schedules']['get']['parameters']['query']
+>;
+
+/** `GET /maintenance/due` — Due tabi (`unit_id/schedule_id/status`, 7.6). */
+export type MaintenanceDueParams = NonNullable<
+  paths['/maintenance/due']['get']['parameters']['query']
+>;
+
+/** `GET /maintenance-records` — History tabi (`unit_id/status/from/to`, 7.6). */
+export type MaintenanceRecordsListParams = NonNullable<
+  paths['/maintenance-records']['get']['parameters']['query']
+>;
+
+/** `GET /defect-types` — `category/is_active/is_critical` filtri (7.6.1). */
+export type DefectTypesListParams = NonNullable<
+  paths['/defect-types']['get']['parameters']['query']
+>;
+
+/** `GET /reports/activity` — `subject*` (`drivers|units`) + majburiy `from/to` (7.8.1). */
+export type ReportsActivityParams = NonNullable<
+  paths['/reports/activity']['get']['parameters']['query']
+>;
+
+/** `GET /reports/distance-by-region` — majburiy `quarter/year`, `mode` (7.8.2). */
+export type ReportsDistanceByRegionParams = NonNullable<
+  paths['/reports/distance-by-region']['get']['parameters']['query']
+>;
+
+/** `GET /reports/uncertified-logs` — `driver_id/branch_id` filtri (7.8.5, F128). */
+export type ReportsUncertifiedLogsParams = NonNullable<
+  paths['/reports/uncertified-logs']['get']['parameters']['query']
+>;
+
+/** `GET /reports/export-jobs` — `status/type/mine` filtri (7.8.7, F129). */
+export type ExportJobsListParams = NonNullable<
+  paths['/reports/export-jobs']['get']['parameters']['query']
+>;

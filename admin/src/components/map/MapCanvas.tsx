@@ -86,7 +86,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, MapCanvasProps>(function Ma
 
     mapRef.current = map;
 
-    map.once('load', () => {
+    void map.once('load', () => {
       onLoadRef.current?.(map);
     });
 
