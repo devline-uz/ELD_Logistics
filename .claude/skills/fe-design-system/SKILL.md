@@ -156,7 +156,15 @@ Texnik tayyorgarlik saqlanadi: barcha ranglar CSS o'zgaruvchilari orqali (`--col
 
 Format `regulation_profile` ga bog'liq (dizayndagi 6 xil variant shu 2 taga qisqartirilgan):
 
-| Kontekst | `generic` | `fmcsa_us` |
+> ⚠️ **Tuzatish (swagger'dan tasdiqlangan, F1):** TZ `fmcsa_us` deb yozadi — **noto'g'ri**.
+> Backend enum'i: **`us_fmcsa`**. Bundan tashqari profil **ikkita emas, yettita**:
+> `us_fmcsa`, `generic`, `canada`, `texas`, `california`, `alaska`, `hawaii`.
+> **Formatlash uchun ikki guruhga yig'iladi:** `us_fmcsa` → US shabloni;
+> qolgan oltitasi → generic shabloni (`resolveDateFormatProfile()` shu ishni qiladi).
+> Ekran nomlari almashinuvi (`IFTA Report` / `FMCSA Report` / `US DOT`) ham
+> faqat `us_fmcsa` da qo'llanadi.
+
+| Kontekst | `generic` (+canada/texas/california/alaska/hawaii) | `us_fmcsa` |
 |---|---|---|
 | Sana | `DD/MM/YYYY` (`17/12/2025`) | `MM/DD/YYYY` (`12/17/2025`) |
 | Sana + hafta kuni | `Fri, 17/12/2025` | `Fri, 12/17/2025` |

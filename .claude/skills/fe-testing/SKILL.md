@@ -32,7 +32,7 @@ CI'da tekshiriladi — chegaradan pastga tushsa build muvaffaqiyatsiz bo'ladi.
 - `components/data/DataTable` — sortlash, sahifalash, bo'sh holat, xato holati.
 - Har modul uchun asosiy integratsiya oqimi: yuklanish → ro'yxat → filtr → forma → xato (MSW orqali mock qilingan backend bilan).
 - **F214 [MUST] Permission testlari** — har modul uchun «ruxsat yo'q» ssenariysi: tugma ko'rinmaydi, marshrut `403` qaytaradi, jadval satr amali yo'q. Bu `usePermission` hook'idagi regressiyadan himoya qiladi.
-- **F215** Konvertatsiya testlari **majburiy**: `metric ↔ imperial` va `generic ↔ fmcsa_us` — chegaraviy qiymatlar bilan (0, manfiy son, juda katta odometer qiymati).
+- **F215** Konvertatsiya testlari **majburiy**: `metric ↔ imperial` va `generic ↔ us_fmcsa` — chegaraviy qiymatlar bilan (0, manfiy son, juda katta odometer qiymati).
 
 **Test qilinmaydi (piramida chegarasidan tashqarida):**
 - Uchinchi tomon kutubxonalarining o'z ichki mantig'i (masalan MapLibre render mexanikasi) — faqat bizning integratsiya qatlamimiz test qilinadi.
@@ -47,7 +47,7 @@ CI'da tekshiriladi — chegaradan pastga tushsa build muvaffaqiyatsiz bo'ladi.
 
 ## Golden / snapshot testlar
 
-- Konvertatsiya funksiyalari (`metric ↔ imperial`, `generic ↔ fmcsa_us`) uchun chegaraviy qiymatlar bilan golden testlar yoziladi: `0`, manfiy son, juda katta odometer — kutilgan natija qat'iy tenglik bilan tekshiriladi (F215).
+- Konvertatsiya funksiyalari (`metric ↔ imperial`, `generic ↔ us_fmcsa`) uchun chegaraviy qiymatlar bilan golden testlar yoziladi: `0`, manfiy son, juda katta odometer — kutilgan natija qat'iy tenglik bilan tekshiriladi (F215).
 - Format funksiyalari (`lib/*` ichidagi sana/vaqt/raqam formatlash) uchun ham kirish → kutilgan chiqish juftliklari sifatida saqlanadi, real snapshot fayllar emas — qiymatlar testda aniq yozilgan bo'ladi (o'zgarishni ko'rish oson bo'lishi uchun).
 
 ## Playwright E2E — 8 oqim [MUST] — §14.4
@@ -62,6 +62,17 @@ CI'da tekshiriladi — chegaradan pastga tushsa build muvaffaqiyatsiz bo'ladi.
 8. Permission: cheklangan rol bilan kirish → yashirilgan menyular va `403`/`404` ekranlari.
 
 **F226** E2E **MSW yoki test-backend** ga qarshi ishlaydi, prod ma'lumotiga hech qachon tegmaydi.
+
+### E2E login strategiyasi — `storageState` qayta ishlatiladi [MUST]
+
+Login rate limit **5 so'rov/daqiqa/IP** (fe-api §1). 8 oqimning har biri o'z ichida qayta login qilsa, parallel/ketma-ket ishlaydigan Playwright loyihasi tezda `429` ga uchraydi. Shuning uchun:
+
+- Login **bitta marta**, alohida `global setup` loyihasida bajariladi (`playwright.config.ts` → `projects: [{ name: 'setup', testMatch: /global\.setup\.ts/ }]`), natija `playwright/.auth/user.json` ga (`page.context().storageState({ path })`) yoziladi.
+- Qolgan 7 oqim shu faylni `use: { storageState: 'playwright/.auth/user.json' }` orqali **o'qiydi** — har test faylida qaytadan `/login` formasini to'ldirmaydi.
+- Faqat 1-oqim (Login → dashboard → logout) haqiqiy login formasi bilan ishlaydi; qolganlari darhol autentifikatsiyalangan holatda boshlanadi.
+- Turli rol/ruxsat ssenariylari (masalan 8-oqim — cheklangan rol) uchun **alohida** `storageState` fayli (`playwright/.auth/<rol>.json`), har biri o'z `global setup` loyihasida — baribir har rol uchun bitta login, testlar ichida emas.
+- `storageState` fayli faqat `sessionStorage`dagi refresh token va cookie'larni saqlaydi (Playwright `storageState` ikkalasini ham qamrab oladi); access token xotirada bo'lgani uchun (fe-security §4) sahifa qayta ochilganda ilova uni **refresh oqimi** orqali tiklaydi — bu haqiqiy foydalanuvchi tajribasiga mos, qo'shimcha moslashtirish shart emas.
+- CI'da `storageState` fayli git'ga commit qilinmaydi (`playwright/.auth/` — `.gitignore`); har CI ishga tushishida `setup` loyihasi qayta login qiladi (bitta so'rov — limitga urilmaydi).
 
 ## Performans byudjetlari [SHOULD] — §14.3
 

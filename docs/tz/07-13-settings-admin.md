@@ -16,7 +16,7 @@ Kirish — profil menyusi orqali (dizayndagidek). Chapda ichki vertikal navigats
 | Security | `/settings/security` | `GET/DELETE /auth/sessions`, `POST /auth/2fa/*`, `POST /auth/password/*` | authenticated |
 
 ### 7.13.1 Company
-**Maydonlar:** `Company Name *` · `Address *` · `Home Terminal Address *` · `Timezone *` (IANA ro'yxati) · `Email *` · `Phone *` · **`Registration No`** (label: `regulation_profile=fmcsa_us` → `US DOT`) · `Logo` (fayl, `kind=logo`) · `Region` (`PK|UZ|US|other`) · `Unit system` (`metric|imperial`) · `Regulation profile` (`generic|fmcsa_us`) · `Distance regions`
+**Maydonlar:** `Company Name *` · `Address *` · `Home Terminal Address *` · `Timezone *` (IANA ro'yxati) · `Email *` · `Phone *` · **`Registration No`** (label: `regulation_profile=us_fmcsa` → `US DOT`) · `Logo` (fayl, `kind=logo`) · `Region` (`PK|UZ|US|other`) · `Unit system` (`metric|imperial`) · `Regulation profile` (`generic|us_fmcsa`) · `Distance regions`
 **Faqat ko'rish:** `plan`, `subscription_status`, `subscription_end_at` (o'zgartirish — Super Admin).
 **F145 [MUST]** `unit_system` yoki `regulation_profile` o'zgartirilganda: tasdiq dialogi («This changes date formats and units across the whole panel») + saqlangandan keyin `GET /me` qayta olinadi va butun UI qayta formatlanadi (§12).
 

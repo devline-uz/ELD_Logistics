@@ -38,7 +38,7 @@ Dizayn inventarida **31 ta nomlash nomuvofiqligi** (B.1 + B.2), **16 ta imlo xat
 | N25 | Log jadvali oxirgi ustuni: planshetda `Edit`, mobilda `Action` | **`Action`** (web admin uchun) | Ustun bitta amal emas, menyu (`···`) ni ochadi | frontend |
 | N26 | Sana tasmasi: mobilda `Fri 07`, planshetda `07 Jan` | **Web'ga taalluqli emas**; web'da to'liq sana navigatori `‹ 17/12/2025 ›` | Web'da joy yetarli, qisqartma kerak emas | frontend (§12.2) |
 | N27 | Bildirishnoma vaqti: nisbiy (`2hrs`) vs absolyut (`28 May, 10:04 am`) | **< 24 soat — nisbiy, keyin absolyut** | Yaqin hodisa uchun nisbiy tushunarli, eskisi uchun aniq sana kerak | frontend (F144) |
-| N28 | ELD output file matni: «to the DOT officer» vs «to the Insection officer» | **«to the inspection officer»** (`generic`), «to the DOT officer» (`fmcsa_us`) | Imlo xatosi + domen bog'liqligi | `tz.md` Q0.2, C5 |
+| N28 | ELD output file matni: «to the DOT officer» vs «to the Insection officer» | **«to the inspection officer»** (`generic`), «to the DOT officer» (`us_fmcsa`) | Imlo xatosi + domen bog'liqligi | `tz.md` Q0.2, C5 |
 | N29 | Sana/vaqt formati — **6 xil variant** | **2 ta format**, `regulation_profile` ga bog'liq (§12.2 jadvali) | Yagona manba: `Intl` + company profili | `tz.md` §18.4 |
 | N30 | DVIR holat to'plami: mobil 3 tur vs admin 7 holat | **Backend 6 holati kanonik** (§7.5, F106); mobil 3 turi — derived ko'rinish | Backend enum'i haqiqat; `Not Started`/`In Progress`/`Submitted` — UI derived yoki olib tashlangan | backend + `tz.md` Q30.2 |
 | N31 | Dark/Light Figma tugun nomlari (`Edit Documents` → `edit doc`) | **E'tiborga olinmaydi** (Figma ichki nomlanishi) | Tugun nomi mahsulot matni emas; admin panelda dark tema yo'q (F53) | frontend |
@@ -98,7 +98,7 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | D8 | `Disconnected ELD` kartasi ostidagi chiziq **yashil** | **Neutral; qiymat > 0 bo'lsa qizil** | Uzilgan qurilma — muammo, yashil noto'g'ri signal | frontend, F81 |
 | D9 | Dashboard `Ongoing` marshrut — **qizil** fon | **Sariq (warning)** | Davom etayotgan marshrut xato emas; qizil `not_completed` uchun | frontend, F43 |
 | D10 | `Last Known Location` = `48.8566, 2.3522, 30` (uchinchi son noma'lum) | **`<manzil matni> · lat, lng`**; uchinchi son (GPS aniqligi) ko'rsatilmaydi | Backend aniqlik maydonini bermaydi; manzil matni foydaliroq | backend, F95 |
-| D11 | `IFTA Report`, `FMCSA Report`, `US DOT` labellari | **`regulation_profile` ga bog'liq**: `generic` → `Distance by Region`, `Regulator Export`, `Registration No` | Bozor Pokiston/O'zbekiston; AQSh domeni faqat `fmcsa_us` da | `tz.md` Q0.2, F122/F125 |
+| D11 | `IFTA Report`, `FMCSA Report`, `US DOT` labellari | **`regulation_profile` ga bog'liq**: `generic` → `Distance by Region`, `Regulator Export`, `Registration No` | Bozor Pokiston/O'zbekiston; AQSh domeni faqat `us_fmcsa` da | `tz.md` Q0.2, F122/F125 |
 | D12 | «Reports will be ready by the fifth day of each month» | **Olib tashlanadi** — hisobot darhol tayyor | Kunlik agregat jadvali (`unit_region_distance_daily`) | `tz.md` §14, F123 |
 | D13 | Maintenance invoice — «faqat PDF» | **PDF / JPG / PNG ≤ 10 MB** | TZ cheklovlari | `tz.md` §18.3, F111 |
 | D14 | Maintenance `Alert Type`, `Delivery Method` ro'yxatlari berilmagan | `maintenance_upcoming` / `maintenance_overdue`; `push · email · sms · in_app` | Backend `alert_type` enum'i va TZ Q89 | backend, F110 |
@@ -167,6 +167,8 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | Q11 | Route status enum'i ikki xil (`dashboard_dto` vs `routes_dto`) | Tip xavfsizligi | Normalizator: `planned\|in_progress → ongoing` (F119) |
 | Q12 | `GET /tracking/live` da bbox filtri yo'q | Katta parkda barcha unitlar bir marta yuklanadi | Klasterlash + klient tomonda filtrlash (F167/F168) |
 | Q13 | Chat: fayl biriktirish uchun `kind=chat` presign bor, lekin xabar DTO'sida `file_key` bitta | Bir xabarga bir fayl | Bir xabar = bir fayl (F132) |
+| Q15 | `per_page` spec'da `enum` emas — oddiy `integer` (tavsifda faqat «max 100» yoki «10/25/50» matni), amalda 10/25/50 dan boshqa qiymat **422** qaytaradi | Frontend cheklovni faqat tip darajasida (`PerPage` union) majburlaydi; spec'dan generatsiya qilingan tip bu qoidani ko'rsatmaydi, boshqa klient (mobil, uchinchi tomon) buni bilmasdan noto'g'ri qiymat yuborishi mumkin | `per_page: {type: integer, enum: [10, 25, 50]}` spec'ga qo'shilsin |
+| Q16 | Login rate limit (5 so'rov/daqiqa/IP, `POST /auth/login` → `429`) spec'da hujjatlashtirilmagan — faqat amaliy tekshiruv orqali ma'lum | E2E/dev muhitida kutilmagan `429` sabab tushunarsiz bo'lib qolishi mumkin; frontend chegarani spec'dan emas, tajribadan bilib qo'llaydi (fe-api §1) | `POST /auth/login` operatsiyasiga `x-rate-limit: 5/min/ip` (yoki tengdosh) izoh/annotatsiya qo'shilsin |
 
 ### Frontend ichki qarorlar (tasdiq talab qilmaydi, lekin qayd etiladi)
 
@@ -181,6 +183,7 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | D-f7 | ✅ **YOPILDI** (2026-09-07) — `PERM` endi taxminiy emas: 104 haqiqiy kalit `admin/openapi/swagger.json` dagi `x-permission` dan olindi (`docs/api/permissions.md`). Tafsilot: «Yopilgan qarorlar → D-f7» |
 | D-f8 | `super_admin` — rol ham, permission kaliti ham emas: alohida bayroq. Katalogda `companies.*` kaliti **yo'q** — `x-permission: super_admin` bo'lgan 4 ta `/companies*` operatsiyasi faqat shu bayroq bilan ochiladi (`can.isSuperAdmin`), boshqa modullarni **kengaytirmaydi** |
 | D-f9 | Routes (`/routes`) nav'da alohida element emas — Tracking/Dashboard ekranlaridan ochiladi (fe-permissions §6 «nav tashqarisidagi ekranlar») |
+| D-f10 | `/2fa/verify` oqimi (0.11, TZ §7.1.2): `LoginResult` da faqat `requires_totp_setup` bor — allaqachon yoqilgan 2FA hisobi uchun alohida bayroq yo'q. `LoginRequest.totp_code` tavsifi «required once two factor authentication is enabled» deb yozilgan, ya'ni backend buni `login` chaqiruvining o'zida (ehtimol `VALIDATION_ERROR`, `details:[{field:"totp_code"}]`) bildiradi. Frontend shu farazga tayanib qurilgan: `/login` bu xatoni ko'rsa, login so'rovini (login+parol, navigatsiya `state`da, URL'da emas) `/2fa/verify` ga uzatadi va u yerda kod bilan qayta yuboradi. Spec bu oqimni aniq hujjatlashtirmagan — tasdiqlanishi kerak (`Q16` bilan bir xil bo'limda kuzatiladi) |
 
 ---
 
@@ -236,3 +239,25 @@ butunlay almashtirildi.**
   `GET /permissions` → `permissions.read` **yoki** `roles.read`. UI bu ekranlarda `can.any([...])` ishlatadi.
 - **Marshrut prefiksi ≠ kalit** tuzoqlari (`company.history.view`, `users.update` ↔ activate/deactivate,
   `logs.export`, `support.update_status`, …) — `.claude/skills/fe-permissions/SKILL.md` §1.1 da.
+
+
+### D27 — `regulation_profile`: nom va qiymatlar soni (2026-09-07, swagger'dan)
+
+| Nima | TZ da | Backend'da (haqiqat) |
+|---|---|---|
+| Kalit nomi | `fmcsa_us` | **`us_fmcsa`** |
+| Qiymatlar soni | 2 (`generic`, `fmcsa_us`) | **7** |
+| To'liq ro'yxat | — | `us_fmcsa`, `generic`, `canada`, `texas`, `california`, `alaska`, `hawaii` |
+
+**Manba:** `openapi3.json` → `company_dto.Company.regulation_profile` (va yana 7 ta DTO da bir xil).
+
+**Oqibati (F1 — backend ustun):**
+- Formatlash **ikki guruhga** yig'iladi: `us_fmcsa` → US shabloni; qolgan **oltitasi** → generic shabloni.
+  `lib/format.ts` dagi `resolveDateFormatProfile()` shu ishni bajaradi.
+- Ekran nomlari almashinuvi (F122 `IFTA Report`, F125 `FMCSA Report`, `US DOT` label) faqat `us_fmcsa` da.
+- **Settings › Company** dagi `Regulation profile` select'i **yettita** qiymatni ko'rsatishi kerak
+  (TZ §7.13.1 ikkitasini yozgan — eskirgan).
+- 6-bosqich testlari «ikkala profil» emas, **kamida `us_fmcsa` + bitta generic-guruh** profilini qamrasin.
+
+Tuzatildi: `.claude/skills/{fe-design-system,fe-testing}`, `docs/tz/07-8-reports.md`,
+`docs/tz/07-13-settings-admin.md`, shu reestr.

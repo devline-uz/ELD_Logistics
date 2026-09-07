@@ -14,7 +14,7 @@
 
 ### 7.8.2 Distance by Region — `/reports/distance-by-region` (dizaynda «IFTA Report»)
 - **Ruxsat:** `reports.read` · **Endpoint:** `GET /reports/distance-by-region?quarter*&year*&mode=regions_and_units|regions_only&unit_id`
-- **F122 [MUST]** Ekran nomi `regulation_profile` ga bog'liq (`tz.md` Q0.2): `fmcsa_us` → **`IFTA Report`**, `generic` → **`Distance by Region`**. Bitta i18n kalit, ikkita qiymat.
+- **F122 [MUST]** Ekran nomi `regulation_profile` ga bog'liq (`tz.md` Q0.2): `us_fmcsa` → **`IFTA Report`**, `generic` → **`Distance by Region`**. Bitta i18n kalit, ikkita qiymat.
 - **Yuqori ko'rsatkichlar:** `IFTA Miles / In-region distance` · `Non-IFTA / Out-of-region` · `Total` (`Total = In + Out`)
 - **Tablar:** `Units` (`Unit # · VIN · Region · Distance · Month`) / `Regions` (`Region · Total distance`)
 - **Filtrlar:** `Year *` · `Quarter *` · `Region` · `Unit`
@@ -24,11 +24,11 @@
 
 ### 7.8.3 Regulator Export — `/reports/regulator` (dizaynda «FMCSA Report»)
 - **Ruxsat:** `reports.read` / `reports.export` · **Endpointlar:** `GET /reports/export-jobs?type=regulator` · `POST /reports/export-jobs {type:"regulator"}` · `GET /reports/export-jobs/{id}`
-- **F125** Ekran nomi profilga bog'liq: `fmcsa_us` → **`FMCSA Report`**, `generic` → **`Regulator Export`**.
+- **F125** Ekran nomi profilga bog'liq: `us_fmcsa` → **`FMCSA Report`**, `generic` → **`Regulator Export`**.
 - **Ustunlar:** `# · Driver Name · Comment · Start Date · End Date · Status (queued|running|done|failed) · Processed Time (finished_at) · Job ID · Action (Download)`
 - **F126** Dizayndagi `Submission ID` (UUID) → ✅ **`Job ID`** = `export_job.id`. Dizayndagi `Status: Pending / Information` → backend enum'i `queued|running|done|failed`. §16
 - **Generate modali — `REPORT DETAILS`:** `Type *` (`Roadside inspection report (8 days)` / `Custom Range`) · `Driver *` · `From */To *` (faqat Custom Range) · `Comment *`
-- **F127** `tz.md` §14: `fmcsa_us` da FMCSA output file + web-service — **2-bosqich**; `generic` da PDF+CSV darhol. UI ikkalasini `export_job.format` orqali qo'llab-quvvatlaydi.
+- **F127** `tz.md` §14: `us_fmcsa` da FMCSA output file + web-service — **2-bosqich**; `generic` da PDF+CSV darhol. UI ikkalasini `export_job.format` orqali qo'llab-quvvatlaydi.
 
 ### 7.8.4 DVIR Report — `/reports/dvir`
 - **Ruxsat:** `reports.read` · **Endpointlar:** `GET /dvir-reports` (jonli ro'yxat) · `POST /reports/export-jobs {type:"dvir"}`
