@@ -20,16 +20,16 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** login qilib bo'ladi, `/` da bo'sh layout va haqiqiy nav ko'rinadi (ruxsatlar bo'yicha), 401 da avtomatik refresh ishlaydi, logout ishlaydi, 4 tekshiruv yashil.
 
 ```markdown
-- [ ] 0.1 `admin/` papkasi, Vite + React 18 + TS strict, `npm create vite`
-- [ ] 0.2 Tailwind 3.4 o'rnatish, `tailwind.config.ts` bo'sh token skeleti
-- [ ] 0.3 ESLint 9 flat config + Prettier + `jsx-a11y` + `no-restricted-imports` (features kesishmasi)
-- [ ] 0.4 `tsconfig` paths (`@/*`) + Vite alias
-- [ ] 0.5 `package.json` skriptlari: `dev build preview typecheck lint lint:fix test test:cov e2e api api:gen i18n:extract`
-- [ ] 0.6 `.env.example`, `README.md` (ishga tushirish yo'riqnomasi)
-- [ ] 0.7 `npm run api` — `swagger.json` yuklab olish + `schema.d.ts` generatsiya, `openapi/swagger.json` commit
-- [ ] 0.8 `src/api/types.ts` — 30+ domen tipi uchun alias
-- [ ] 0.9 `src/api/client.ts` — `openapi-fetch` + 4 middleware (auth, company, idempotency, error)
-- [ ] 0.10 `src/lib/errors.ts` — `normalizeError`, kod → i18n kaliti xaritasi
+- [x] 0.1 `admin/` papkasi, Vite + React 18 + TS strict, `npm create vite`
+- [x] 0.2 Tailwind 3.4 o'rnatish, `tailwind.config.ts` bo'sh token skeleti
+- [x] 0.3 ESLint 9 flat config + Prettier + `jsx-a11y` + `no-restricted-imports` (features kesishmasi)
+- [x] 0.4 `tsconfig` paths (`@/*`) + Vite alias
+- [x] 0.5 `package.json` skriptlari: `dev build preview typecheck lint lint:fix test test:cov e2e api api:gen i18n:extract`
+- [x] 0.6 `.env.example`, `README.md` (ishga tushirish yo'riqnomasi)
+- [~] 0.7 `npm run api` — skript tayyor; **BLOKER:** `DOCS_TOKEN` yo'q (spec 401), `schema.d.ts` placeholder
+- [~] 0.8 `src/api/types.ts` — karkas + konvertlar tayyor; domen alias'lari 0.7 blokeriga bog'liq
+- [x] 0.9 `src/api/client.ts` — `openapi-fetch` + 4 middleware (auth, company, idempotency, error)
+- [x] 0.10 `src/lib/errors.ts` — `normalizeError`, kod → i18n kaliti xaritasi
 - [ ] 0.11 `src/features/auth/` — login, forgot/reset password, invitation accept, 2FA
 - [ ] 0.12 Auth store (Zustand): access token xotirada, refresh `sessionStorage` da
 - [ ] 0.13 Refresh mutex + proaktiv (80 % TTL) + reaktiv (401) yangilash; reuse → to'liq logout

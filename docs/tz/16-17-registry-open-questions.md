@@ -153,6 +153,7 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | Q4 | **Admin panelda dark tema kerakmi** | MVP'da yo'q (F53); keyingi bosqichda 50+ ekran uchun dizayn kerak | Mobil/planshet dark palitrasi mavjud — web uchun moslashtirish 🎨 |
 | Q5 | **Kompaniya logotipi va brend elementlari** | `Company Logo` maydoni bor, lekin panel brendi (logotip fayli) yo'q | 🎨 SVG logotip + favicon to'plami |
 | Q6 | **Bo'sh holat illyustratsiyasi** | Dizaynda «illyustratsiya» deb yozilgan, fayl yo'q | 🎨 1 ta universal SVG |
+| Q14 | **Swagger `DOCS_TOKEN`** — `GET /api/docs/swagger.json` bearer token talab qiladi (tokensiz `401 UNAUTHORIZED: api docs requires a bearer token`) | Token bo'lmasa `npm run api` ishlamaydi: `src/api/schema.d.ts` placeholder bo'lib qoladi, `src/api/types.ts` domen alias'lari `unknown` ga yechiladi va API chaqiruvlari tip xavfsizligisiz qoladi. **Bosqich 0.7/0.8 ni bloklaydi, keyingi barcha bosqichlarga ta'sir qiladi** | Backend jamoasidan doimiy `DOCS_TOKEN` olinadi va `.env` (dev) hamda CI secret sifatida saqlanadi |
 
 ### Backend CR nomzodlari (`v1` muzlatilgan — v1.1 uchun)
 

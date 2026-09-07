@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Dizayn tokenlari CSS o'zgaruvchilari sifatida — Bosqich 1.1 da to'ldiriladi.
+ * `tailwind.config.ts` shu o'zgaruvchilarga murojaat qiladi.
+ */
+:root {
+  color-scheme: light;
+}
