@@ -8,11 +8,16 @@ description: ELD Admin Panel frontendida MapLibre GL JS xarita komponenti (jonli
 ## Texnologiya [MUST]
 
 - **MapLibre GL JS v4** (`tz.md` B§6.2). React wrapper qo'lda yoziladi (`components/map/MapCanvas.tsx`) — `react-map-gl` qo'shimcha bog'liqlik sifatida qabul qilinmaydi (F3).
-- **F164 ❓ ochiq savol Q1 — tile provayderi tasdiqlanmagan** (`tz.md` qaror 26, §23). Talablar:
+- **F164 ✅ Q1 YOPILDI (2026-09-07): tile provayderi — MapTiler Cloud (MVP), chiqish yo'li Protomaps/PMTiles self-hosting.**
+  - Kalit **domen bo'yicha cheklangan** bo'lishi SHART (`eldadmin.stackyard.uz` + dev uchun `localhost`) — F9.
+  - Style oilasi: kam kontrastli **basic / dataviz** (satellite yoki streets EMAS) — 500 ta duty-status markeri ustidan o'qilishi kerak.
+  - CSP: `https://api.maptiler.com` → `connect-src` va `img-src` (§13).
+  - Ko'chish yo'li: `VITE_MAP_STYLE_URL` + CSP hostini almashtirish, **kod o'zgarmaydi**.
+  - To'liq qaror va asos: `docs/tz/16-17-registry-open-questions.md` → D-Q1.
+  - Provayderga bog'liqlik qoidalari (o'zgarishsiz kuchda):
   - (a) style JSON `VITE_MAP_STYLE_URL` environment o'zgaruvchisi orqali beriladi;
   - (b) kalit domen bo'yicha cheklangan;
   - (c) kod hech bir provayderga **qattiq bog'lanmaydi** — `MapCanvas` faqat style URL qabul qiladi, provayderga xos API chaqirmaydi.
-  - Nomzod provayderlar: MapTiler, Protomaps (self-host), OpenFreeMap. Qaysi biri tanlanishidan qat'i nazar, kod o'zgarmasligi kerak.
 - **F165** Xarita komponenti **lazy** yuklanadi (`React.lazy`) — MapLibre ~800 KB, asosiy bundle'ga kirmaydi.
 
 ## Jonli kuzatuv [MUST]

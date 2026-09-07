@@ -147,7 +147,7 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 
 | № | Savol | Nima uchun muhim | Taklif |
 |---|---|---|---|
-| Q1 | **Xarita tile provayderi** (`tz.md` qaror 26, §23) | Style URL va kalit bo'lmasa xarita ekranlari (Dashboard, Tracking, Track on Map, Trip Planner) ishlamaydi. **4-bosqichni bloklaydi** | MapTiler (boshlang'ich) yoki Protomaps self-host (xarajatsiz, ma'lumot chiqmaydi) |
+| ~~Q1~~ | ~~**Xarita tile provayderi**~~ | — | ✅ **YOPILDI 2026-09-07** — qaror quyida (D-Q1) |
 | Q2 | **Product Sans litsenziyasi** | Display darajasida ishlatiladi; litsenziya bo'lmasa huquqiy risk | Fallback: IBM Plex Sans 700 (vizual farq minimal) |
 | Q3 | **Privacy Policy / Terms of Use matni** (`tz.md` qaror 28) | Footer havolalari; hozircha begona («Jusoor») matn | Matn kelmaguncha havolalar ko'rsatilmaydi |
 | Q4 | **Admin panelda dark tema kerakmi** | MVP'da yo'q (F53); keyingi bosqichda 50+ ekran uchun dizayn kerak | Mobil/planshet dark palitrasi mavjud — web uchun moslashtirish 🎨 |
@@ -180,3 +180,31 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 
 ---
 
+
+
+---
+
+## Yopilgan qarorlar (frontend)
+
+### D-Q1 — Xarita tile provayderi ✅ (2026-09-07, buyurtmachi tasdig'i bilan)
+
+**Qaror: MVP uchun MapTiler Cloud; o'sish/xarajat bosimida chiqish yo'li — Protomaps (PMTiles) self-hosting.**
+
+**Asos:**
+- Ikkalasi ham bir xil abstraksiya — MapLibre **style JSON**. Ko'chish = `VITE_MAP_STYLE_URL` + CSP hostini almashtirish. **Kod o'zgarmaydi.**
+- MapTiler kaliti **domen bo'yicha cheklanadi** → F9 (bundle'da ochiq maxfiy kalit bo'lmasligi) bajariladi.
+- Mapbox **rad etildi**: GL JS v2+ litsenziyasi tile'larini MapLibre bilan ishlatishni taqiqlaydi, TZ §2.1 esa MapLibre'ni muzlatgan.
+- Google Maps **rad etildi**: vector tile / style JSON bermaydi.
+- Self-hosted OpenMapTiles/TileServer GL **rad etildi**: PMTiles bilan bir xil foyda, ammo doimiy server + DevOps yuki.
+
+**Amalga oshirish shartlari (4-bosqichgacha):**
+
+| № | Nima | Kim |
+|---|---|---|
+| 1 | MapTiler hisobi + **domen bo'yicha cheklangan** kalit (`eldadmin.stackyard.uz`, dev uchun `localhost`) | buyurtmachi / DevOps |
+| 2 | `VITE_MAP_STYLE_URL` = style JSON URL (kalit URL ichida — shuning uchun domen cheklovi **majburiy**) | fe-architect |
+| 3 | CSP (§13): `connect-src` va `img-src` ga `https://api.maptiler.com` qo'shiladi | frontend-security-reviewer |
+| 4 | Style tanlovi: kam kontrastli **basic / dataviz** oilasi (satellite yoki streets emas) — 500 ta duty-status markeri ustidan o'qilishi kerak | map-engineer |
+| 5 | Chiqish yo'li hujjatlashtiriladi: Shimoliy Amerika PMTiles (~8-15 GB) statik hostingda, `pmtiles://` protokoli | map-engineer (9-bosqichda README) |
+
+**Ochiq qolgan kichik nuqta:** MapTiler tarif rejasi (free 100k tile/oy → paid) — haqiqiy trafik 4-bosqich performans o'lchovidan keyin aniqlanadi.

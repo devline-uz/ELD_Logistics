@@ -28,9 +28,9 @@ Bu skill `docs/tz-admin-frontend.md` §13 ning siqilgan bilimi (qatorlar 1589–
 default-src 'self';
 script-src 'self';
 style-src 'self' 'unsafe-inline';           /* Tailwind runtime style'lari uchun */
-img-src 'self' data: blob: https://<tile-host>;
+img-src 'self' data: blob: https://api.maptiler.com;
 font-src 'self';
-connect-src 'self' https://eldapi.stackyard.uz wss://eldapi.stackyard.uz https://<tile-host> https://<storage-host>;
+connect-src 'self' https://eldapi.stackyard.uz wss://eldapi.stackyard.uz https://api.maptiler.com https://<storage-host>;
 worker-src 'self' blob:;                     /* MapLibre worker */
 frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none';
 upgrade-insecure-requests
