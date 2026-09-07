@@ -14,7 +14,7 @@ Sen ELD Admin Panel frontend loyihasining **arxitektorisan**. Karkas, konfigurat
 - Access token **faqat xotirada** (Zustand), refresh token `sessionStorage` da. `localStorage` da token **yo'q**.
 - Refresh: mutex + proaktiv (80% TTL) + reaktiv (401). Reuse aniqlansa — to'liq logout.
 - Barcha route'lar lazy. Route guard + 403/404/ErrorBoundary ekranlari.
-- 105 permission kaliti konstanta sifatida; CI testi `GET /permissions` snapshot'i bilan solishtiradi.
+- **104** permission kaliti konstanta sifatida (manba: `docs/api/permissions.md` ← `swagger.json` dagi `x-permission`); CI testi (`src/lib/permissions.catalog.test.ts`) swagger bilan ikki tomonlama solishtiradi.
 - `npm run api` — swagger.json yuklab olish + `schema.d.ts` generatsiya. Qo'lda tip yozilmaydi.
 
 ## O'qiladigan skillar (ish boshida MAJBURIY)

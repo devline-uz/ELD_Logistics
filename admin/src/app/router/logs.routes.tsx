@@ -16,10 +16,10 @@ export const logsRoutes: RouteObject[] = [
     permission: PERM.logsRead,
   }),
   guardedRoute('logs/edit-requests', async () => (await load()).LogEditRequestsPage, {
-    anyOf: [PERM.logsEditRequestsRead, PERM.logsRead],
+    permission: PERM.logsRead,
   }),
   guardedRoute('logs/unassigned', async () => (await load()).UnassignedDrivingPage, {
-    anyOf: [PERM.logsUnassignedRead, PERM.logsRead],
+    anyOf: [PERM.logsAssignUnidentified, PERM.logsRead],
   }),
   guardedRoute('violations', async () => (await load()).ViolationsPage, {
     permission: PERM.violationsRead,

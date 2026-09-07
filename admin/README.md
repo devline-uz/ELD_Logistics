@@ -56,9 +56,10 @@ cheklangan bo'lishi shart.
 | `npm run test`         | Vitest (bir marta)                                                  |
 | `npm run test:cov`     | Vitest + v8 qamrov hisoboti                                         |
 | `npm run e2e`          | Playwright                                                          |
-| `npm run api`          | spec yuklab olish → tip generatsiyasi → `lint:fix`                  |
+| `npm run api`          | spec → konvertatsiya → tip generatsiyasi → `lint:fix`               |
 | `npm run api:fetch`    | `openapi/swagger.json` ni yuklab oladi (`DOCS_TOKEN` kerak)         |
-| `npm run api:gen`      | `openapi-typescript` → `src/api/schema.d.ts`                        |
+| `npm run api:convert`  | Swagger 2.0 → OpenAPI 3.0 (`openapi/openapi3.json`)                 |
+| `npm run api:gen`      | `openapi-typescript` → `src/api/schema.d.ts` + `@generated` banner  |
 | `npm run i18n:extract` | kodda ishlatilgan i18n kalitlarini `src/locales/en.json` ga yig'adi |
 
 ### API tiplarini yangilash
@@ -68,16 +69,37 @@ DOCS_TOKEN=<bearer> npm run api
 ```
 
 `https://eldapi.stackyard.uz/api/docs/swagger.json` bearer token talab qiladi
-(tokensiz `401 UNAUTHORIZED`). Token `.env` dagi `DOCS_TOKEN` dan ham o'qiladi.
+(tokensiz `401 UNAUTHORIZED`). Token `admin/.env.local` dagi `DOCS_TOKEN` dan ham
+o'qiladi — bu fayl gitignored, token hech qachon commitga tushmaydi.
+
+**Oqim (uch bosqich):**
+
+```
+openapi/swagger.json    ← backend beradi (Swagger 2.0, swaggo)      [commit]
+      ↓ swagger2openapi
+openapi/openapi3.json   ← konvertatsiya natijasi (OpenAPI 3.0)      [commit]
+      ↓ openapi-typescript
+src/api/schema.d.ts     ← tiplar (~20 000 qator)                    [commit]
+```
+
+Nega konvertatsiya kerak: backend spec'i **Swagger 2.0**, `openapi-typescript`
+esa faqat **OpenAPI 3.x** ni qabul qiladi.
+
+**Qaror — `openapi/openapi3.json` ham commit qilinadi.** U oraliq artefakt
+bo'lsa-da repoda saqlanadi: CI dagi `git diff --exit-code` tekshiruvi barqarorroq
+bo'ladi (konvertorning versiya o'zgarishi tip generatsiyasidagi o'zgarishdan
+ajratib ko'rinadi) va spec diff'ini OAS3 ko'rinishida ko'rish oson.
 
 - `src/api/schema.d.ts` — **generatsiya natijasi**, qo'lda tegilmaydi (W7).
-- `openapi/swagger.json` snapshot bilan birga commit qilinadi.
-- CI: `npm run api:gen && git diff --exit-code src/api/schema.d.ts` — spec o'zgargan
-  bo'lsa build yiqiladi.
+  `@generated` bannerini `scripts/api-banner.mjs` har generatsiyada qayta qo'yadi.
+- `scripts/fetch-swagger.mjs` javobni 2 probel bilan normallashtirib yozadi —
+  serverning formatlash o'zgarishi diff shovqin bermaydi.
+- Uchala artefakt ham Prettier/ESLint dan chetlashtirilgan.
+- CI: `npm run api:convert && npm run api:gen && git diff --exit-code openapi/openapi3.json src/api/schema.d.ts`
+  — spec o'zgargan bo'lsa build yiqiladi.
 
-> **Hozirgi holat (BLOKER):** `DOCS_TOKEN` hali berilmagan, shu sababli
-> `src/api/schema.d.ts` — placeholder va `src/api/types.ts` alias'lari `unknown`
-> ga yechiladi. Token olinishi bilan `npm run api` ishga tushiriladi.
+Domen tiplari faqat `src/api/types.ts` alias'lari orqali ishlatiladi
+(`Dto<'fleet', 'Unit'>` kabi); nom xato bo'lsa TypeScript xato beradi.
 
 ## Papkalar tuzilmasi
 

@@ -71,14 +71,18 @@ export const NAV_ENTRIES: readonly NavEntry[] = [
         path: '/logs/edit-requests',
         labelKey: 'nav.logs.editRequests',
         descriptionKey: 'nav.logs.editRequestsDescription',
-        anyOf: [PERM.logsEditRequestsRead, PERM.logsRead],
+        // `GET /log-edit-requests` → `logs.read` (alohida `logs.edit_requests.*`
+        // guruhi yo'q; tasdiqlash/rad etish — `logs.approve_edit`/`logs.reject_edit`).
+        anyOf: [PERM.logsRead],
       },
       {
         id: 'logs-unassigned',
         path: '/logs/unassigned',
         labelKey: 'nav.logs.unassigned',
         descriptionKey: 'nav.logs.unassignedDescription',
-        anyOf: [PERM.logsUnassignedRead, PERM.logsRead],
+        // `GET /unidentified-events` — OR mantiq: swagger `logs.assign_unidentified`
+        // ko'rsatadi, backend `logs.read` ni ham qabul qiladi (docs/api/permissions.md).
+        anyOf: [PERM.logsAssignUnidentified, PERM.logsRead],
       },
       {
         id: 'violations',

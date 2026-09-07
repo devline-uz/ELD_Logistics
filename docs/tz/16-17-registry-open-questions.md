@@ -113,6 +113,7 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | D23 | Tasdiq matni «inactive the unit» | «**deactivate** the unit» | Grammatika | frontend, F66 |
 | D24 | Logs ekranlarida `Export Drivers` / `Import Drivers` tugmalari | **Olib tashlanadi**; o'rniga `Export` (`export-jobs`) | Log ekranida haydovchi import qilish ma'nosiz — nusxalash xatosi | frontend, F96 |
 | D25 | `Log By Driver` sarlavhasi | **`Logs By Driver`** | `Logs By Unit` bilan parallel | frontend, F97 |
+| D26 | **TZ §4.1: «105 permission kaliti»** (dizaynda emas — TZ matnida) | **104 kalit**, 28 guruh | Backend yakuniy tozalashda 4 ta o'lik kalitni olib tashladi (`tracking.read`, `tracking.history`, `trips.read`, `support.update`) va `drivers.license.view` ni qo'shdi. Haqiqat manbai — `swagger.json` dagi `x-permission`, hujjat: `docs/api/permissions.md`; drift `admin/src/lib/permissions.catalog.test.ts` bilan majburlanadi | backend swagger, D-f7 |
 
 ---
 
@@ -177,8 +178,8 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | D-f4 | Radius shkalasi 4/8/12/16 — dizaynda berilmagan (F49) |
 | D-f5 | Spacing shkalasi 4 pt — dizaynda berilmagan (F47) |
 | D-f6 | Vaqt Company Home Terminal TZ da ko'rsatiladi, brauzer TZ da emas (F193) |
-| D-f7 | `src/lib/permissions.ts` dagi `PERM` kalitlari **taxminiy** (90 ta) — `GET /permissions` 401 bergani uchun (0.7 blokeri) `fe-permissions` §8 marshrut→prefiks jadvalidan tiklangan. `DOCS_TOKEN` kelgach 0.17 CI testi haqiqiy 105 kalit bilan solishtiradi va fayl yangilanadi |
-| D-f8 | `super_admin` — rol emas, alohida bayroq; frontendda faqat `companies.*` kalitlarini ochadi, boshqa modullarni **kengaytirmaydi** (backend ham shunday tekshiradi) |
+| D-f7 | ✅ **YOPILDI** (2026-09-07) — `PERM` endi taxminiy emas: 104 haqiqiy kalit `admin/openapi/swagger.json` dagi `x-permission` dan olindi (`docs/api/permissions.md`). Tafsilot: «Yopilgan qarorlar → D-f7» |
+| D-f8 | `super_admin` — rol ham, permission kaliti ham emas: alohida bayroq. Katalogda `companies.*` kaliti **yo'q** — `x-permission: super_admin` bo'lgan 4 ta `/companies*` operatsiyasi faqat shu bayroq bilan ochiladi (`can.isSuperAdmin`), boshqa modullarni **kengaytirmaydi** |
 | D-f9 | Routes (`/routes`) nav'da alohida element emas — Tracking/Dashboard ekranlaridan ochiladi (fe-permissions §6 «nav tashqarisidagi ekranlar») |
 
 ---
@@ -211,3 +212,27 @@ Barchasi **to'g'rilangan holda** yoziladi; hech biri kodga yoki i18n fayliga xat
 | 5 | Chiqish yo'li hujjatlashtiriladi: Shimoliy Amerika PMTiles (~8-15 GB) statik hostingda, `pmtiles://` protokoli | map-engineer (9-bosqichda README) |
 
 **Ochiq qolgan kichik nuqta:** MapTiler tarif rejasi (free 100k tile/oy → paid) — haqiqiy trafik 4-bosqich performans o'lchovidan keyin aniqlanadi.
+
+---
+
+### D-f7 — Permission katalogi: taxminiy kalitlar → haqiqiy 104 ✅ (2026-09-07)
+
+**Qaror: `admin/src/lib/permissions.ts` dagi `PERM` — `admin/openapi/swagger.json` dagi
+`x-permission` maydonlaridan olingan 104 ta haqiqiy kalit (28 guruh). Taxminiy 90 kalit
+butunlay almashtirildi.**
+
+- **Manba (haqiqat):** `swagger.json` → `x-permission`; o'qish uchun jadval — **`docs/api/permissions.md`**
+  (`GET /permissions` ish vaqtida shu ro'yxatni beradi).
+- **TZ §4.1 dagi «105» — xato** (§16.5 D26 qatori). To'g'ri son — **104**: backend 4 ta o'lik kalitni
+  olib tashladi (`tracking.read`, `tracking.history`, `trips.read`, `support.update`) va
+  `drivers.license.view` ni qo'shdi.
+- **Uchta maxsus qiymat permission emas** va `PERM` da yo'q: `public` (6 operatsiya),
+  `authenticated` (7), `super_admin` (4 — alohida bayroq, F33, faqat `/companies*`).
+- **Majburlash:** `admin/src/lib/permissions.catalog.test.ts` (0.17) swagger va `PERM` ni ikki
+  tomonlama solishtiradi (har ikki yo'nalishda 0 farq) va sonni 104 deb tasdiqlaydi. Drift bo'lsa
+  CI qizil bo'ladi va **backend ustun** — `PERM` yangilanadi.
+- **OR mantiq istisnolari** (swaggo OR sintaksisiga ega emas; testda alohida ro'yxat):
+  `GET /unidentified-events` → `logs.assign_unidentified` **yoki** `logs.read`;
+  `GET /permissions` → `permissions.read` **yoki** `roles.read`. UI bu ekranlarda `can.any([...])` ishlatadi.
+- **Marshrut prefiksi ≠ kalit** tuzoqlari (`company.history.view`, `users.update` ↔ activate/deactivate,
+  `logs.export`, `support.update_status`, …) — `.claude/skills/fe-permissions/SKILL.md` §1.1 da.

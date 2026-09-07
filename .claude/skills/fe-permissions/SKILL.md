@@ -7,7 +7,12 @@ description: ELD Admin Panel uchun permission kalitlari manbai, usePermission()/
 
 ## 1. Permission kalitlari manbai **[MUST]**
 
-- Haqiqiy manba: `backend/internal/auth/permissions.go` (**105 kalit**) va ish vaqtida `GET /permissions`.
+- Haqiqiy manba: `admin/openapi/swagger.json` dagi `x-permission` maydonlari (**104 kalit**, 28 guruh);
+  o'qish uchun qulay ko'rinish — **`docs/api/permissions.md`** (endpoint → kalit jadvali bilan).
+  Ish vaqtida Roles ekrani `GET /permissions` dan ham shu ro'yxatni oladi.
+- ⚠️ TZ §4.1 dagi «**105 kalit**» — **eskirgan**. Backend yakuniy tozalashda 4 ta o'lik kalitni
+  olib tashladi (`tracking.read`, `tracking.history`, `trips.read`, `support.update`) va
+  `drivers.license.view` ni qo'shdi. **To'g'ri son — 104.**
 - Frontendda kalitlar `src/lib/permissions.ts` da **konstanta sifatida** takrorlanadi (typo'ni kompilyatsiya vaqtida topish uchun):
 
 ```ts
@@ -16,8 +21,57 @@ export const PERM = {
 export type Permission = typeof PERM[keyof typeof PERM];
 ```
 
-- CI testi `src/lib/permissions.ts` dagi kalitlarni `GET /permissions` snapshot'i bilan solishtiradi (drift bo'lsa qizil).
-- 26 modul guruhiga bo'lingan (Add/Edit Role ekrani checkbox ro'yxati uchun ham shu manba ishlatiladi — dizayndagi go'zallik saloni domeni matni (`Salons`, `Clients`, …) e'tiborga olinmaydi, faqat struktura: `Role Name *` + guruhlangan checkbox).
+- CI testi `src/lib/permissions.catalog.test.ts` `PERM` ni `swagger.json` bilan **ikki tomonlama**
+  solishtiradi (swagger'da bor-katalogda yo'q = 0, katalogda bor-swagger'da yo'q = 0) va sonni 104 deb tasdiqlaydi.
+- 28 modul guruhiga bo'lingan (Add/Edit Role ekrani checkbox ro'yxati uchun ham shu manba ishlatiladi — dizayndagi go'zallik saloni domeni matni (`Salons`, `Clients`, …) e'tiborga olinmaydi, faqat struktura: `Role Name *` + guruhlangan checkbox).
+
+## 1.1 Marshrut prefiksi ≠ permission kaliti **[MUST]**
+
+Kalitni marshrut/endpoint nomidan **taxmin qilib bo'lmaydi** — har doim `docs/api/permissions.md`
+jadvalidan tekshiring. Ma'lum tuzoqlar:
+
+| Endpoint / ekran | To'g'ri kalit | Xato taxmin |
+|---|---|---|
+| `GET /company/history` | `company.history.view` | ~~`audit.view`~~ |
+| `GET /audit-log`, `/audit-log/tables` | `audit.view` | — |
+| `POST /users/{id}/activate` va `/deactivate` | `users.update` | ~~`users.activate` / `users.deactivate`~~ (yo'q) |
+| `POST /drivers/{id}/activate` va `/deactivate` | `drivers.activate` / `drivers.deactivate` (bor!) | — |
+| `GET /daily-logs/{id}/pdf` | `logs.export` | ~~`logs.pdf`~~ |
+| `POST /daily-logs/{id}/certify` | `logs.certify` | — |
+| `GET /log-edit-requests` | `logs.read` | ~~`logs.edit_requests.read`~~ (guruh yo'q) |
+| `POST /log-edit-requests/{id}/approve` \| `/reject` | `logs.approve_edit` / `logs.reject_edit` | ~~`logs.edit_requests.approve`~~ |
+| `GET /tracking/live` | `tracking.view_live` | ~~`tracking.read`~~ (o'lik) |
+| `GET /trips/{id}`, `GET /units/{id}/trips` | `tracking.view_history` | ~~`tracking.history`~~, ~~`trips.read`~~ (o'lik; `trips.*` guruhi umuman yo'q) |
+| `PATCH /support-tickets/{id}/status` | `support.update_status` | ~~`support.update`~~ (o'lik), ~~`support.close`~~ |
+| `GET /units/{id}/diagnostics` | `units.diagnostics` | ~~`units.diagnostics.read`~~ |
+| `GET /drivers/{id}/license` ("Reveal") | `drivers.license.view` | — (bor, maskalangan maydon uchun) |
+| `POST /routes/{id}/not-completed` | `routes.complete` | — |
+| `POST /maintenance-schedule-units/{id}/cancel` | `maintenance.cancel` | — |
+| `GET /company/notification-settings` | `notification_settings.read` | ~~`notifications.read`~~ (bu push bildirishnomalar) |
+| `GET /company/branches` | `branches.read` | ~~`company.read`~~ |
+| `GET /defect-types` | `defect_types.read` | ~~`dvir.read`~~ |
+| `POST /dvir-reports/{id}/repair` | `dvir.repair` | ~~`dvir.resolve_defect`~~ |
+| `POST /files/presign` | `files.upload` | — |
+
+Mavjud bo'lmagan (avval taxmin qilingan) kalitlar: `*.include_inactive`, `violations.resolve`,
+`billing.read`, `companies.*`, `notifications.update`, `logs.unassigned.*`.
+
+Ekran bir nechta endpointdan foydalansa — nav/route guard uchun **ro'yxatni ochadigan `*.read`**
+kaliti olinadi; yozuv amallari (tugmalar) o'z kalitlari bilan alohida yopiladi.
+
+## 1.2 OR mantiq istisnolari **[MUST]**
+
+swaggo OR sintaksisiga ega emas: swagger bitta kalit ko'rsatadi, backend ikkitasini qabul qiladi.
+Bu ekranlarda UI **`can.any([...])`** ishlatishi shart (bitta kalit bilan tekshirish foydalanuvchini
+nohaq to'sib qo'yadi):
+
+| Endpoint | Swagger'da | Backend qabul qiladi | UI |
+|---|---|---|---|
+| `GET /unidentified-events` (Unassigned Driving) | `logs.assign_unidentified` | + `logs.read` | `can.any([PERM.logsAssignUnidentified, PERM.logsRead])` |
+| `GET /permissions` (Roles ekrani) | `permissions.read` | + `roles.read` | `can.any([PERM.permissionsRead, PERM.rolesRead])` |
+
+Istisnolar `permissions.catalog.test.ts` da ro'yxat sifatida hujjatlashtirilgan; ikkala kalit ham
+katalogda bor, shuning uchun ular drift solishtiruvini buzmaydi.
 
 ## 2. `usePermission()` API **[MUST]**
 
@@ -30,7 +84,15 @@ can.any([PERM.unitsRead, …])     // kamida bittasi
 can.all([…])                     // hammasi
 ```
 
-`super_admin` — alohida bayroq (rol emas): `x-permission: super_admin` bo'lgan endpointlar faqat unga ochiq (`/companies*`).
+`x-permission` ning uchta qiymati **permission emas** va `PERM` da yo'q:
+
+| Qiymat | Operatsiya | Ma'no | UI'da |
+|---|---|---|---|
+| `public` | 6 | auth'siz (login, parol tiklash, invitation, app config) | guard yo'q |
+| `authenticated` | 7 | har qanday kirgan foydalanuvchi, kalit tekshirilmaydi (`GET /me`, sessiyalar, 2FA, logout) | faqat auth guard |
+| `super_admin` | 4 | alohida bayroq, rol emas (F33) — faqat `/companies*` | `can.isSuperAdmin`, `PERM` kaliti bilan EMAS |
+
+`createPermissionChecker` `super_admin` bilan hech qanday kalitni ochmaydi — katalogda `companies.*` kaliti yo'q.
 
 ## 3. `PermissionGate` / menyu-tugma boshqaruvi **[MUST]**
 
@@ -70,7 +132,7 @@ Tavsiya etilgan komponent shakli (TZ'da nom berilmagan, konventsiyaga mos taklif
 Ikki holat qat'iy ajratiladi:
 
 - **403 FORBIDDEN** — resurs mavjud va sizning kompaniyangizniki, lekin ruxsat kaliti yo'q. UI: «You do not have permission…» + qaysi kalit kerakligi (dev rejimda).
-- **404 NOT_FOUND** — resurs yo'q **yoki boshqa tenantga tegishli**. Backend ataylab tafovut bermaydi (tenant enumeratsiyasini oldini olish). UI hech qachon «Bu boshqa kompaniyaniki» demaydi — faqat «Not found».
+- **404 NOT_FOUND** — resurs yo'q **yoki boshqa tenantga/filialga tegishli**. **Cross-tenant murojaat har doim `404` qaytaradi, `403` emas** — backend ataylab tafovut bermaydi (tenant enumeratsiyasini oldini olish). UI hech qachon «Bu boshqa kompaniyaniki» demaydi — faqat «Not found». Ya'ni 403 faqat *o'z* kompaniyangiz resursida ruxsat kaliti yetishmaganda ko'rinadi.
 - WebSocket'da ham xuddi shunday: `filter.unit_ids` begona unit'ni nomlasa — `NOT_FOUND`, `FORBIDDEN` emas.
 
 ## 6. Navigatsiya tuzilishi **[MUST]** (kanonik nomlar)
@@ -131,25 +193,28 @@ Yuqoridagi jadvaldagi har bir marshrut uchun kutilayotgan backend permission pre
 | Marshrut | Modul prefiksi | Izoh |
 |---|---|---|
 | `/` | `dashboard.*` | KPI kartalar, grafik — barchasi `dashboard.read` bilan bitta ruxsat |
-| `/tracking` | `tracking.*` | `tracking.view_live` — WS oqimi ham shu kalit bilan himoyalanadi |
+| `/tracking` | `tracking.*` | `tracking.view_live` — WS oqimi ham shu kalit bilan; trip tarixi — `tracking.view_history` |
 | `/logs/by-unit`, `/logs/by-driver` | `logs.*` | `logs.read` |
-| `/logs/edit-requests` | `logs.edit_requests.*` | Ko'rish `logs.read`, tasdiqlash alohida yozuv kaliti (`logs.edit_requests.approve` kabi) |
-| `/logs/unassigned` | `logs.*` | `logs.read`, tayinlash uchun yozuv kaliti kerak |
-| `/violations` | `violations.*` | `violations.read` — logsdan alohida modul |
-| `/units` | `units.*` | `units.read`/`units.create`/`units.update`/`units.delete` |
+| `/logs/edit-requests` | `logs.*` | Ko'rish — `logs.read`; tasdiqlash/rad etish — `logs.approve_edit` / `logs.reject_edit` (`logs.edit_requests.*` guruhi **yo'q**) |
+| `/logs/unassigned` | `logs.*` | OR: `can.any([logs.assign_unidentified, logs.read])`; tayinlash — `logs.assign_unidentified`, annotatsiya — `logs.annotate_unidentified` |
+| `/violations` | `violations.*` | `violations.read` — logsdan alohida modul (faqat shu bitta kalit, `violations.resolve` yo'q) |
+| `/units` | `units.*` | `units.read`/`create`/`update`/`delete`, shuningdek `units.activate`, `units.deactivate`, `units.assign_driver`, `units.diagnostics`, `units.export`, `units.import` |
 | `/drivers` | `drivers.*` | shu jumladan `drivers.license.view` — maskalangan maydonni ochish uchun alohida kalit |
 | `/eld-devices` | `eld_devices.*` | |
 | `/trailers` | `trailers.*` | |
 | `/shipping-documents` | `shipping_documents.*` | |
-| `/users` | `users.*` | Export tugmasi yo'q (backend endpointi yo'q — N16) |
-| `/roles` | `roles.*` | `GET /permissions` dan 105 kalit shu ekranda guruhlanadi |
+| `/users` | `users.*` | Activate/Deactivate — **`users.update`** (alohida kalit yo'q). Export tugmasi yo'q (backend endpointi yo'q — N16) |
+| `/roles` | `roles.*` | `GET /permissions` dan 104 kalit shu ekranda 28 guruhga bo'linadi; ro'yxatni ochish — `can.any([permissions.read, roles.read])` |
 | `/maintenance`, `/dvir` | `maintenance.*`, `dvir.*` | Ikkalasi alohida `.read` kaliti |
 | Reports flyout | `reports.*` | Barcha hisobot turlari bitta `reports.read` ostida, eksport uchun alohida yozuv kaliti |
-| `/audit` | `audit.*` | `audit.view` — append-only, yozuv/o'chirish kaliti yo'q |
-| `/support` | `support.*` | `support.read` |
+| `/audit` | `audit.*` | `audit.view` — append-only. Kompaniya sozlamalari tarixi (`GET /company/history`) — alohida **`company.history.view`** |
+| `/support` | `support.*` | `support.read`; javob yozish — `support.create`; status — **`support.update_status`** |
 | `/feedback` | `feedback.*` | `feedback.read` |
 | `/chat` | `chat.*` | `chat.read` |
-| `/settings/*` | shaxsiy profil, kalit talab qilmaydi | Password tabi — `Current password *` majburiy (D20) |
+| `/settings/profile`, `/settings/security` | shaxsiy profil, kalit talab qilmaydi (`authenticated`) | Password tabi — `Current password *` majburiy (D20) |
+| `/settings/company` | `company.*` | `company.read`/`company.update`; filiallar — `branches.*`; tarix — `company.history.view` |
+| `/settings/hos` | `hos_policy.*` | `hos_policy.read` / `hos_policy.update` |
+| Bildirishnoma sozlamalari | `notification_settings.*` | `notifications.*` (push/ro'yxat) bilan **aralashtirilmaydi** |
 
 Aniq kalit nomlari (`units.read` kabi to'liq satr) kod yozishda **doim** `src/lib/permissions.ts` dagi `PERM` konstantasidan olinadi — bu jadvaldagi prefikslar faqat yo'naltirish uchun, hardcode qilinmaydi.
 
@@ -162,5 +227,7 @@ Ba'zi maydonlar (masalan haydovchi litsenziya raqami) backend tomonidan maskalan
 
 ## To'liq manba
 
-- `docs/tz-admin-frontend.md` §4 (Ruxsatlar va navigatsiya) — qatorlar 311–387
+- **`docs/api/permissions.md`** — 104 kalit, 28 guruh, endpoint → kalit jadvali (generatsiya: `admin/openapi/swagger.json`)
+- `admin/src/lib/permissions.ts` (`PERM`) va `admin/src/lib/permissions.catalog.test.ts` (drift testi)
+- `docs/tz-admin-frontend.md` §4 (Ruxsatlar va navigatsiya) — qatorlar 311–387 (§4.1 dagi «105» — xato, §16 reestrida)
 - Kanonik nomlar va nomuvofiqliklar tafsiloti: `docs/tz/16-17-registry-open-questions.md` §16.1, §16.4

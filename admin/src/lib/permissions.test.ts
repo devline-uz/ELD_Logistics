@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   ALL_PERMISSIONS,
   PERM,
+  PERMISSION_GROUPS,
   createPermissionChecker,
   permissionGroupOf,
 } from '@/lib/permissions';
@@ -31,12 +32,14 @@ describe('createPermissionChecker', () => {
     expect(can.any([])).toBe(false);
   });
 
-  it('treats super_admin as a flag that only unlocks companies.*', () => {
+  it('exposes super_admin as a flag that grants no permission key', () => {
+    // `super_admin` — permission emas, alohida bayroq (F33): katalogda
+    // `companies.*` kaliti yo'q, `/companies*` faqat shu bayroq bilan ochiladi.
     const can = createPermissionChecker({ permissions: [], isSuperAdmin: true });
 
     expect(can.isSuperAdmin).toBe(true);
-    expect(can(PERM.companiesRead)).toBe(true);
     expect(can(PERM.unitsRead)).toBe(false);
+    expect(can(PERM.companyRead)).toBe(false);
   });
 });
 
@@ -48,6 +51,13 @@ describe('PERM constant', () => {
   it('maps keys to their module group', () => {
     expect(permissionGroupOf(PERM.unitsRead)).toBe('units');
     expect(permissionGroupOf(PERM.eldDevicesAssignUnit)).toBe('eld_devices');
+    expect(permissionGroupOf(PERM.notificationSettingsUpdate)).toBe('notification_settings');
+    // Uch bo'g'inli kalitlar ham o'z guruhiga tushadi.
     expect(permissionGroupOf(PERM.driversLicenseView)).toBe('drivers');
+    expect(permissionGroupOf(PERM.companyHistoryView)).toBe('company');
+  });
+
+  it('covers every module group', () => {
+    expect(new Set(ALL_PERMISSIONS.map(permissionGroupOf))).toEqual(new Set(PERMISSION_GROUPS));
   });
 });
