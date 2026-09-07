@@ -1,0 +1,38 @@
+{
+  "columnPicker": {
+    "trigger": "Columns",
+    "selectAll": "Select all"
+  },
+  "dataTable": {
+    "empty": {
+      "title": "No Data Found",
+      "description": "There is no data to show you right now",
+      "clearFilters": "Clear filters"
+    },
+    "error": {
+      "message": "Something went wrong while loading this table."
+    }
+  },
+  "pagination": {
+    "navLabel": "Pagination",
+    "rowsPerPage": "Rows per page:",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "filtersBar": {
+    "searchPlaceholder": "Search…",
+    "clearAll": "Clear all",
+    "removeFilter": "Remove {{label}} filter"
+  },
+  "fileUpload": {
+    "dragHint": "Drag and drop a file here, or",
+    "browse": "Browse files",
+    "done": "{{filename}} uploaded",
+    "cancelled": "Upload cancelled",
+    "errors": {
+      "invalidType": "This file type is not supported. Allowed: {{types}}",
+      "tooLarge": "This file is too large. Maximum size: {{max}}",
+      "uploadFailed": "Upload failed. Please try again."
+    }
+  }
+}

@@ -1,45 +1,37 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  DEFAULT_SESSION_FLAGS,
-  SessionFlagsContext,
-  type SessionFlags,
-  type SessionFlagsApi,
-} from '@/app/providers/session-flags-context';
+import { useSessionFlags } from '@/app/providers/session-flags-context';
 import { useToast } from '@/components/feedback/toast-context';
 
 export interface SessionFlagsProviderProps {
-  /** Boshlang'ich qiymat — auth store (0.12) ulangach login javobidan keladi. */
-  initial?: Partial<SessionFlags>;
   children: ReactNode;
 }
 
 /**
- * `subscription_readonly` va `replaced_session` bayroqlari (0.22).
- * `replaced_session` — bir martalik toast, banner emas.
+ * `replaced_session` bir martalik toast'i (0.22).
+ *
+ * Bayroqning o'zi endi auth store'da (`session-flags-context.ts`) — bu
+ * komponent faqat "boshqa web sessiya yopildi" toast'ini bir marta
+ * ko'rsatish yon ta'sirini boshqaradi, hech qanday Context taqdim etmaydi.
  */
-export function SessionFlagsProvider({ initial, children }: SessionFlagsProviderProps) {
+export function SessionFlagsProvider({ children }: SessionFlagsProviderProps) {
   const { t } = useTranslation();
   const toast = useToast();
-  const [flags, setFlags] = useState<SessionFlags>({ ...DEFAULT_SESSION_FLAGS, ...initial });
+  const { replacedSession } = useSessionFlags();
   const replacedNotified = useRef(false);
 
   useEffect(() => {
-    if (flags.replacedSession && !replacedNotified.current) {
+    if (replacedSession && !replacedNotified.current) {
       replacedNotified.current = true;
       toast.show({ variant: 'warning', message: t('toast.replacedSession') });
     }
-  }, [flags.replacedSession, toast, t]);
+    if (!replacedSession) {
+      replacedNotified.current = false;
+    }
+  }, [replacedSession, toast, t]);
 
-  const setSessionFlags = useCallback((partial: Partial<SessionFlags>) => {
-    setFlags((current) => ({ ...current, ...partial }));
-  }, []);
-
-  const value = useMemo<SessionFlagsApi>(
-    () => ({ ...flags, setSessionFlags }),
-    [flags, setSessionFlags],
-  );
-
-  return <SessionFlagsContext.Provider value={value}>{children}</SessionFlagsContext.Provider>;
+  return <>{children}</>;
 }
+
+export default SessionFlagsProvider;

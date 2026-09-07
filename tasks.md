@@ -55,22 +55,22 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** har komponent testi bor, `components/ui/` qamrovi ≥ 90 %, `axe` kritik xato 0, hech qanday hardcode hex/px/string yo'q.
 
 ```markdown
-- [ ] 1.1 `tailwind.config.ts` — ranglar (CSS o'zgaruvchilar orqali), tipografika, spacing, radius, soyalar
-- [ ] 1.2 Shriftlar lokal `woff2` (IBM Plex Sans; Product Sans yoki fallback)
-- [ ] 1.3 `lucide-react` o'rnatish, `Icon` wrapper
-- [ ] 1.4 Primitivlar: Button, IconButton, Input, Textarea, Select, MultiSelect, Checkbox, Radio, Switch
-- [ ] 1.5 Sana/vaqt: DatePicker, DateRangePicker (presetlar bilan), TimePicker
-- [ ] 1.6 Overlay: Modal (focus trap), ConfirmDialog, Drawer, Tooltip, Toast provayderi
-- [ ] 1.7 Ko'rsatish: Badge, StatusChip, Avatar, Card, KpiCard, Breadcrumb, Tabs
-- [ ] 1.8 Holatlar: EmptyState, ErrorState, Skeleton, Spinner, `useDelayedLoading`
-- [ ] 1.9 `DataTable` — saralash, ustun ko'rsatish/yashirish (`localStorage`), sticky birinchi ustun, `overflow-x`
-- [ ] 1.10 `Pagination` (10/25/50) + `useListParams` (URL query-string sinxronizatsiyasi)
-- [ ] 1.11 `FiltersBar` — qidiruv (400 ms debounce), select filtrlar, faol filtr badge'i, `Clear all`
-- [ ] 1.12 `FormField` oilasi — react-hook-form + zod integratsiyasi, server xatolarini bog'lash
-- [ ] 1.13 `FileUpload` — presign oqimi, progress (XHR), MIME/hajm tekshiruvi
-- [ ] 1.14 `lib/format.ts` (sana/vaqt/davomiylik/nisbiy) + `lib/units.ts` (SI ↔ imperial) + testlari
-- [ ] 1.15 `ListScreen` shabloni — §6.1 tuzilmasini beruvchi kompozitsiya
-- [ ] 1.16 Har komponent uchun Vitest testi (render + interaksiya + rol)
+- [x] 1.1 `tailwind.config.ts` — ranglar (CSS o'zgaruvchilar orqali), tipografika, spacing, radius, soyalar
+- [x] 1.2 Shriftlar lokal `woff2` (IBM Plex Sans; Product Sans yoki fallback)
+- [x] 1.3 `lucide-react` o'rnatish, `Icon` wrapper
+- [x] 1.4 Primitivlar: Button, IconButton, Input, Textarea, Select, MultiSelect, Checkbox, Radio, Switch
+- [x] 1.5 Sana/vaqt: DatePicker, DateRangePicker (presetlar bilan), TimePicker
+- [x] 1.6 Overlay: Modal (focus trap), ConfirmDialog, Drawer, Tooltip, Toast provayderi
+- [x] 1.7 Ko'rsatish: Badge, StatusChip, Avatar, Card, KpiCard, Breadcrumb, Tabs
+- [x] 1.8 Holatlar: EmptyState, ErrorState, Skeleton, Spinner, `useDelayedLoading`
+- [x] 1.9 `DataTable` — saralash, ustun ko'rsatish/yashirish (`localStorage`), sticky birinchi ustun, `overflow-x`
+- [x] 1.10 `Pagination` (10/25/50) + `useListParams` (URL query-string sinxronizatsiyasi)
+- [x] 1.11 `FiltersBar` — qidiruv (400 ms debounce), select filtrlar, faol filtr badge'i, `Clear all`
+- [x] 1.12 `FormField` oilasi — react-hook-form + zod integratsiyasi, server xatolarini bog'lash
+- [x] 1.13 `FileUpload` — presign oqimi, progress (XHR), MIME/hajm tekshiruvi
+- [x] 1.14 `lib/format.ts` (sana/vaqt/davomiylik/nisbiy) + `lib/units.ts` (SI ↔ imperial) + testlari
+- [x] 1.15 `ListScreen` shabloni — §6.1 tuzilmasini beruvchi kompozitsiya
+- [x] 1.16 Har komponent uchun Vitest testi (render + interaksiya + rol)
 - [ ] 1.17 `a11y-reviewer`: fokus halqasi, ARIA, kontrast; `warning-base` matn uchun `warning-dark` ga almashtirish
 - [ ] 1.18 `frontend-code-reviewer`
 ```

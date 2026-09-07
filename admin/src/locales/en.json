@@ -3,6 +3,83 @@
     "name": "ONEBOOK ELD",
     "title": "ELD Admin"
   },
+  "auth": {
+    "login": {
+      "fields": {
+        "identifier": "Email or username",
+        "password": "Password",
+        "remember": "Remember this device"
+      },
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot password?",
+      "retryIn": "Try again in {{seconds}}s",
+      "errors": {
+        "invalidCredentials": "The email/username or password is incorrect.",
+        "accountInactive": "This account is inactive. Contact your administrator.",
+        "rateLimited": "Too many sign-in attempts. Please wait before trying again."
+      }
+    },
+    "twoFactorSetup": {
+      "description": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish enabling two-factor authentication.",
+      "qrAlt": "QR code for two-factor authentication setup",
+      "manualEntry": "Or enter this code manually:",
+      "codeLabel": "6-digit code",
+      "submit": "Verify and continue",
+      "loadError": "Could not start two-factor setup. Please try signing in again.",
+      "invalidCode": "That code is not valid. Please try again."
+    },
+    "twoFactorVerify": {
+      "description": "Enter the 6-digit code from your authenticator app to finish signing in.",
+      "codeLabel": "6-digit code",
+      "submit": "Verify and sign in",
+      "invalidCode": "That code is not valid. Please try again."
+    },
+    "forgotPassword": {
+      "description": "Enter your email or username and we will send you a link to reset your password.",
+      "fields": {
+        "login": "Email or username"
+      },
+      "submit": "Send reset link",
+      "neutralMessage": "If the account exists, a link has been sent.",
+      "backToLogin": "Back to sign in"
+    },
+    "resetPassword": {
+      "fields": {
+        "password": "New password",
+        "confirmPassword": "Confirm password"
+      },
+      "submit": "Reset password",
+      "success": "Your password has been reset. Please sign in.",
+      "missingToken": "This reset link is missing or invalid. Request a new one.",
+      "invalidToken": "This reset link has expired or already been used."
+    },
+    "invitationAccept": {
+      "description": "Set a password to activate your account.",
+      "fields": {
+        "password": "Password",
+        "confirmPassword": "Confirm password"
+      },
+      "submit": "Set password and continue",
+      "success": "Your account is ready. Please sign in.",
+      "missingToken": "This invitation link is missing or invalid.",
+      "invalidToken": "This invitation link has expired or already been used."
+    },
+    "passwordStrength": {
+      "length": "At least 10 characters",
+      "letter": "At least one letter",
+      "number": "At least one number",
+      "summary": "{{passed}} of {{total}} password requirements met"
+    }
+  },
+  "bootstrap": {
+    "loading": "Loading ONEBOOK ELD…",
+    "error": {
+      "title": "We could not load the application",
+      "description": "Check your connection and try again."
+    }
+  },
   "common": {
     "na": "N/A",
     "actions": {
@@ -269,6 +346,21 @@
     },
     "login": {
       "title": "Sign in"
+    },
+    "twoFactorSetup": {
+      "title": "Set up two-factor authentication"
+    },
+    "twoFactorVerify": {
+      "title": "Two-factor verification"
+    },
+    "forgotPassword": {
+      "title": "Forgot password"
+    },
+    "resetPassword": {
+      "title": "Reset password"
+    },
+    "invitationAccept": {
+      "title": "Accept invitation"
     }
   },
   "enums": {

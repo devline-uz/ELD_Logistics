@@ -44,14 +44,29 @@ jobs:
       - name: Build
         run: npm run build
 
-      # `schema.d.ts` — generatsiya natijasi (W7). Spec o'zgargan bo'lsa build yiqiladi.
-      # `DOCS_TOKEN` secret bo'lmasa qadam o'tkazib yuboriladi (hozirgi BLOKER, 0.7).
-      - name: Regenerate API types from the committed spec
+      # Uch bosqichli klient generatsiyasi (fe-api §2):
+      #   openapi/swagger.json (fetch, DOCS_TOKEN kerak)
+      #     -> openapi/openapi3.json (convert, tarmoq kerak emas)
+      #     -> src/api/schema.d.ts (gen, tarmoq kerak emas)
+      # `api:convert` va `api:gen` committed `swagger.json`dan ishlaydi, shuning
+      # uchun DOCS_TOKEN bo'lmasa ham har CI ishga tushishida bajariladi — bu
+      # generatsiya skriptlaridagi yoki qo'lda tahrirlangan artefaktlardagi
+      # driftni ushlaydi. `api:fetch` (haqiqiy backendga so'rov) faqat
+      # `DOCS_TOKEN` secret mavjud bo'lsa qo'shiladi — u spec'ning o'zi
+      # backendda o'zgarganini ushlaydi.
+      - name: Fetch the latest swagger spec
         if: ${{ env.DOCS_TOKEN != '' }}
         env:
           VITE_API_DOCS_URL: ${{ vars.VITE_API_DOCS_URL || 'https://eldapi.stackyard.uz/api/docs' }}
-        run: npm run api
+        run: npm run api:fetch
 
-      - name: Fail if generated API types drifted
-        if: ${{ env.DOCS_TOKEN != '' }}
-        run: git diff --exit-code -- src/api/schema.d.ts openapi/swagger.json
+      - name: Convert Swagger 2.0 -> OpenAPI 3 and regenerate types
+        run: npm run api:convert && npm run api:gen
+
+      - name: Fail if the committed spec/types drifted from generation
+        run: |
+          if [ "$DOCS_TOKEN" != "" ]; then
+            git diff --exit-code -- openapi/swagger.json openapi/openapi3.json src/api/schema.d.ts
+          else
+            git diff --exit-code -- openapi/openapi3.json src/api/schema.d.ts
+          fi

@@ -23,6 +23,12 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     css: false,
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    // MSW so'rovlarni ushlab olishi uchun mutlaq (absolyut) baza kerak —
+    // `.env.local` haqiqiy prod URL'ini beradi, lekin testlar backendga
+    // ulanmasligi shart (fe-api §1, W12: haqiqiy backendga urinilmaydi).
+    env: {
+      VITE_API_BASE_URL: 'http://eldapi.test/api/v1',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],

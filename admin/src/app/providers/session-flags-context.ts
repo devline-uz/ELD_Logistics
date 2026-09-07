@@ -1,12 +1,18 @@
-import { createContext, useContext } from 'react';
+/**
+ * Sessiya bayroqlari (`subscription_readonly`, `replaced_session`) —
+ * `POST /auth/login` javobining bir qismi, shuning uchun **auth store**da
+ * yashaydi (`src/store/auth-store.ts`), alohida React Context'da emas.
+ *
+ * Ilgari bu qiymatlar `SessionFlagsProvider` orqali props sifatida
+ * uzatilardi (`initial` prop). Bu boshqa har qanday sessiya holatidan
+ * (access token, profil) ajralib turardi va testlarda butun provayder
+ * daraxtini (`AppProviders` → `BootstrapGate` → ...) qurishni talab qilardi.
+ * Endi testlar `useAuthStore.setState({ subscriptionReadonly, replacedSession })`
+ * bilan to'g'ridan-to'g'ri sozlaydi.
+ */
+import { useAuthStore, type AuthState } from '@/store/auth-store';
 
-/** `POST /auth/login` javobidagi sessiya bayroqlari (fe-api §4). */
-export interface SessionFlags {
-  /** Obuna muddati tugagan — barcha yozuv amallari bloklanadi (F35). */
-  subscriptionReadonly: boolean;
-  /** Boshqa web sessiya majburan yopilgan — bir martalik toast. */
-  replacedSession: boolean;
-}
+export type SessionFlags = Pick<AuthState, 'subscriptionReadonly' | 'replacedSession'>;
 
 export interface SessionFlagsApi extends SessionFlags {
   setSessionFlags: (flags: Partial<SessionFlags>) => void;
@@ -17,11 +23,16 @@ export const DEFAULT_SESSION_FLAGS: SessionFlags = {
   replacedSession: false,
 };
 
-export const SessionFlagsContext = createContext<SessionFlagsApi>({
-  ...DEFAULT_SESSION_FLAGS,
-  setSessionFlags: () => undefined,
-});
-
+/**
+ * Auth store'dagi sessiya bayroqlari + ularni yangilash funksiyasi.
+ *
+ * Har bayroq **alohida** selektor bilan o'qiladi (obyekt qaytaruvchi bitta
+ * selektor emas) — zustand standart taqqoslashi referens bo'yicha bo'lgani
+ * uchun har render yangi obyekt cheksiz qayta render'ga olib kelardi.
+ */
 export function useSessionFlags(): SessionFlagsApi {
-  return useContext(SessionFlagsContext);
+  const subscriptionReadonly = useAuthStore((state) => state.subscriptionReadonly);
+  const replacedSession = useAuthStore((state) => state.replacedSession);
+  const setSessionFlags = useAuthStore((state) => state.setSessionFlags);
+  return { subscriptionReadonly, replacedSession, setSessionFlags };
 }

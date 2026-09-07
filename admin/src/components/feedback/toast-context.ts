@@ -7,6 +7,9 @@ export interface Toast {
   variant: ToastVariant;
   /** Tayyor matn — chaqiruvchi `t()` bilan tarjima qilib beradi. */
   message: string;
+  /** Ixtiyoriy — masalan «Undo». */
+  actionLabel?: string;
+  onAction?: () => void;
 }
 
 export interface ToastApi {

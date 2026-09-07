@@ -1,0 +1,19 @@
+{
+  "confirmDialog": {
+    "title": "Are you absolutely sure?",
+    "reasonLabel": "Reason",
+    "reasonRequired": "Please provide a reason before continuing."
+  },
+  "breadcrumb": {
+    "navLabel": "Breadcrumb"
+  },
+  "emptyState": {
+    "defaultTitle": "No Data Found",
+    "defaultDescription": "There is no data to show you right now",
+    "noResultsTitle": "No results",
+    "noResultsDescription": "No records match your filters",
+    "clearFilters": "Clear filters",
+    "noAccessTitle": "No access",
+    "noAccessDescription": "You do not have permission to view this data"
+  }
+}
