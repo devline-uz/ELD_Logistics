@@ -1159,5 +1159,394 @@
       "deleted": "Role deleted",
       "deleteFailed": "Could not delete this role."
     }
+  },
+  "logs": {
+    "dutyGrid": {
+      "status": {
+        "off": "OFF",
+        "sb": "SB",
+        "dr": "DR",
+        "on": "ON"
+      },
+      "special": {
+        "pc": "Personal Conveyance",
+        "ym": "Yard Move"
+      },
+      "event": {
+        "pti": "PTI",
+        "fuel": "Fuel",
+        "certify": "Certify",
+        "malfunction": "Malfunction"
+      },
+      "total": "Total",
+      "gridAriaLabel": "24-hour duty status grid",
+      "segmentsTableCaption": "Duty status segments",
+      "columns": {
+        "status": "Status",
+        "from": "From",
+        "to": "To",
+        "duration": "Duration",
+        "note": "Note",
+        "event": "Event",
+        "time": "Time"
+      },
+      "eventsTableCaption": "Events",
+      "emptyState": "No duty status recorded for this day."
+    },
+    "hos": {
+      "unknown": "N/A",
+      "nearLimit": "Near limit",
+      "exceeded": "Exceeded",
+      "remainingSuffix": "remaining",
+      "rings": {
+        "break": "BREAK",
+        "drive": "DRIVE",
+        "shift": "SHIFT",
+        "cycle": "CYCLE"
+      }
+    },
+    "violations": {
+      "type": {
+        "form_manner_trailer": "Trailer not set",
+        "form_manner_doc": "Shipping document is not set",
+        "drive_limit": "Drive limit",
+        "shift_limit": "Shift limit",
+        "break_required": "Break required",
+        "cycle_limit": "Cycle limit",
+        "uncertified_log": "Uncertified log",
+        "unidentified_driving": "Unidentified driving",
+        "eld_malfunction": "ELD malfunction",
+        "missing_dvir": "Missing DVIR"
+      }
+    },
+    "events": {
+      "eventType": {
+        "duty_status": "Duty status",
+        "intermediate": "Intermediate",
+        "login": "Login",
+        "logout": "Logout",
+        "power_on": "Power On",
+        "power_off": "Power Off",
+        "engine_on": "Engine On",
+        "engine_off": "Engine Off",
+        "malfunction": "Malfunction",
+        "diagnostic": "Diagnostic",
+        "certification": "Certify",
+        "yard_moves": "Yard Move",
+        "personal_use": "Personal Conveyance"
+      },
+      "origin": {
+        "auto": "Automatic",
+        "driver": "Driver",
+        "driver_edit": "Driver edit",
+        "admin_edit": "Admin edit",
+        "assigned": "Assigned"
+      }
+    },
+    "byUnit": {
+      "title": "Logs By Unit",
+      "unassignedDriver": "Unassigned",
+      "openLog": "Open log",
+      "actions": {
+        "showHos": "Show HOS counters",
+        "hideHos": "Hide HOS counters"
+      },
+      "columns": {
+        "index": "#",
+        "deviceStatus": "Device Status",
+        "unitNumber": "Unit #",
+        "driverName": "Driver Name",
+        "status": "Status",
+        "lastKnownLocation": "Last Known Location",
+        "warningsViolations": "Warnings & Violations",
+        "recap": "Recap"
+      },
+      "onlineStatus": {
+        "online": "Online",
+        "offline": "Offline",
+        "disconnected": "Disconnected",
+        "malfunction": "Malfunction"
+      },
+      "filters": {
+        "searchPlaceholder": "Search driver or unit…",
+        "onlineStatus": "Device status",
+        "violations": "Violations",
+        "warnings": "Warnings"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      }
+    },
+    "byDriver": {
+      "title": "Logs By Driver",
+      "columns": {
+        "index": "#",
+        "date": "Date",
+        "unitNumber": "Unit #",
+        "distance": "Distance",
+        "off": "OFF",
+        "sb": "SB",
+        "dr": "DR",
+        "on": "ON",
+        "certification": "Certification",
+        "ready": "Ready",
+        "warningsViolations": "Warnings & Violations"
+      },
+      "certificationStatus": {
+        "uncertified": "Uncertified",
+        "certified": "Certified",
+        "needs_recertify": "Needs recertify"
+      },
+      "ready": {
+        "ready": "Ready",
+        "notReady": "Not Ready"
+      },
+      "filters": {
+        "driver": "Driver",
+        "driverPlaceholder": "Select a driver",
+        "dateRange": "Date range"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "selectDriverTitle": "Select a driver",
+        "selectDriverDescription": "Select driver first, to display the data in the table."
+      }
+    },
+    "view": {
+      "certified": "Certified: {{value}}",
+      "violationsCount": "Violations: {{count}}",
+      "resolvedAt": "Resolved at {{value}}",
+      "previousDay": "Previous day",
+      "nextDay": "Next day",
+      "notFound": "This daily log could not be found.",
+      "tabsLabel": "Log view tabs",
+      "tabs": {
+        "log": "Driver's Log",
+        "report": "Report",
+        "tripPlanner": "Trip Planner"
+      },
+      "events": {
+        "caption": "Duty status and inspection events for this day",
+        "empty": "No events recorded for this day.",
+        "proposeEdit": "Propose edit",
+        "editedMark": "✎",
+        "columns": {
+          "status": "Status",
+          "start": "Start",
+          "duration": "Duration",
+          "location": "Last Known Location",
+          "odometer": "Odometer",
+          "engineHours": "Engine Hours",
+          "document": "Document",
+          "trailer": "Trailer",
+          "notes": "Notes",
+          "origin": "Origin",
+          "action": "Action"
+        }
+      },
+      "form": {
+        "empty": "No log form data available.",
+        "notSet": "Not set",
+        "signed": "Signed",
+        "notSigned": "Not Signed",
+        "signatureAlt": "Driver signature",
+        "fields": {
+          "units": "Unit #(s)",
+          "driver": "Driver",
+          "coDriver": "Co-Driver",
+          "distance": "Distance",
+          "homeTerminal": "Home Terminal",
+          "trailers": "Trailers",
+          "shippingDocs": "Shipping Docs",
+          "signature": "Signature"
+        }
+      },
+      "editRequest": {
+        "title": "Insert / Edit Duty Status",
+        "notice": "This will be sent to the driver for approval. The log is not changed until the driver approves.",
+        "submit": "Send edit request",
+        "immutableWarning": "This segment was recorded automatically by the ELD. It cannot be reclassified or shortened — you may only extend it.",
+        "immutableTooltip": "Automatically recorded driving time cannot be reclassified or shortened.",
+        "fields": {
+          "status": "Status",
+          "from": "From",
+          "to": "To",
+          "note": "Note"
+        },
+        "errors": {
+          "toAfterFrom": "To must be after From.",
+          "shrinksInterval": "Automatically recorded driving time cannot be shortened."
+        },
+        "toast": {
+          "sent": "Edit request sent to the driver for approval"
+        }
+      },
+      "report": {
+        "title": "Daily log PDF",
+        "download": "Download",
+        "openInNewTab": "Open in a new tab",
+        "errorTitle": "Could not load the PDF"
+      },
+      "tripPlanner": {
+        "mapPlaceholder": "Map view is coming in a later stage.",
+        "segmentsTitle": "Trip segments",
+        "noTrips": "No trips recorded for this day.",
+        "formTitle": "Plan a Trip",
+        "copyLastLocation": "Copy last location",
+        "noUnit": "No unit is assigned to this log — a route cannot be created.",
+        "submit": "Create route",
+        "fields": {
+          "from": "From",
+          "to": "To",
+          "geofenceRadius": "Geofence radius (m)",
+          "note": "Note"
+        },
+        "toast": {
+          "created": "Route created and sent to the driver"
+        }
+      }
+    },
+    "editRequests": {
+      "title": "Log Edit Requests",
+      "tabs": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "columns": {
+        "index": "#",
+        "driver": "Driver",
+        "logDate": "Log date",
+        "proposedChange": "Proposed change",
+        "note": "Note",
+        "proposedBy": "Proposed by",
+        "created": "Created",
+        "status": "Status"
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "source": {
+        "adminEdit": "Admin",
+        "unidentifiedAssign": "Unassigned driving"
+      },
+      "actions": {
+        "approve": "Approve",
+        "reject": "Reject"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now"
+      },
+      "rejectDialog": {
+        "title": "Are you absolutely sure?",
+        "description": "Reject the proposed edit for {{driver}}? The driver will see your reason.",
+        "reasonLabel": "Reason"
+      },
+      "toast": {
+        "approved": "Edit request for {{driver}} approved",
+        "approveFailed": "Could not approve the edit request",
+        "rejected": "Edit request for {{driver}} rejected",
+        "rejectFailed": "Could not reject the edit request"
+      }
+    },
+    "unassigned": {
+      "title": "Unassigned Driving",
+      "columns": {
+        "index": "#",
+        "unitNumber": "Unit #",
+        "start": "Start",
+        "end": "End",
+        "duration": "Duration",
+        "distance": "Distance",
+        "status": "Status"
+      },
+      "status": {
+        "pending": "Pending",
+        "assigned": "Assigned",
+        "annotated": "Annotated"
+      },
+      "overdue": "{{days}} days overdue",
+      "actions": {
+        "assign": "Assign to driver",
+        "annotate": "Annotate"
+      },
+      "filters": {
+        "searchPlaceholder": "Search unit…",
+        "status": "Status"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "assignModal": {
+        "title": "Assign to driver",
+        "notice": "This will be sent to the driver for approval as a log edit request.",
+        "submit": "Send",
+        "fields": {
+          "driver": "Driver",
+          "note": "Note"
+        }
+      },
+      "annotateDialog": {
+        "title": "Annotate unassigned driving",
+        "description": "Leave unit {{unitNumber}} unassigned with an explanation (e.g. a mechanic's test drive).",
+        "reasonLabel": "Annotation"
+      },
+      "toast": {
+        "assigned": "Unit {{unitNumber}} driving block sent to the driver",
+        "annotated": "Unit {{unitNumber}} annotated",
+        "annotateFailed": "Could not annotate this event"
+      }
+    },
+    "violationsList": {
+      "title": "Violations",
+      "columns": {
+        "index": "#",
+        "date": "Date",
+        "driver": "Driver",
+        "unit": "Unit",
+        "type": "Type",
+        "severity": "Severity",
+        "occurredAt": "Occurred at",
+        "resolvedAt": "Resolved at"
+      },
+      "severity": {
+        "warning": "Warning",
+        "violation": "Violation"
+      },
+      "filters": {
+        "searchPlaceholder": "Search driver or unit…",
+        "type": "Type",
+        "severity": "Severity",
+        "resolved": "Resolved"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      }
+    },
+    "violationDetail": {
+      "notFound": "This violation could not be found.",
+      "openLog": "Open daily log",
+      "fields": {
+        "driver": "Driver",
+        "unit": "Unit",
+        "logDate": "Log date",
+        "occurredAt": "Occurred at",
+        "limit": "Policy limit",
+        "remaining": "Remaining at warning",
+        "note": "Note",
+        "resolvedAt": "Resolved at",
+        "resolvedReason": "Resolved reason"
+      }
+    }
   }
 }

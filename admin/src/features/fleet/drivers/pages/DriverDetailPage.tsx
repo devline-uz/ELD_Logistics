@@ -60,12 +60,7 @@ function HosSummaryBlock({ driverId }: { driverId: string }) {
     if (hosQuery.error?.status === 404) {
       return null;
     }
-    return (
-      <ErrorState
-        message={hosQuery.error?.message}
-        onRetry={() => void hosQuery.refetch()}
-      />
-    );
+    return <ErrorState message={hosQuery.error?.message} onRetry={() => void hosQuery.refetch()} />;
   }
 
   const summary = hosQuery.data;

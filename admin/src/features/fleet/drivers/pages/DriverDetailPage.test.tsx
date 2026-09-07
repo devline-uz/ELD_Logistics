@@ -18,11 +18,7 @@ import { ToastProvider } from '@/components/feedback/ToastProvider';
 import { PermissionsProvider } from '@/app/providers/PermissionsProvider';
 import { PERM } from '@/lib/permissions';
 
-import {
-  DriverActivitiesPage,
-  DriverDailyLogsPage,
-  DriverDetailPage,
-} from './DriverDetailPage';
+import { DriverActivitiesPage, DriverDailyLogsPage, DriverDetailPage } from './DriverDetailPage';
 
 function renderPage(permissions: string[]) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -50,7 +46,12 @@ afterEach(() => {
 
 describe('DriverDetailPage', () => {
   it('`drivers.license.view` bo\'lmasa "Reveal" tugmasi ko\'rinmaydi', async () => {
-    server.use(driversListHandler, driverGetHandler, driverCoDriversEmptyHandler, hosSummaryHandler);
+    server.use(
+      driversListHandler,
+      driverGetHandler,
+      driverCoDriversEmptyHandler,
+      hosSummaryHandler,
+    );
     renderPage([PERM.driversRead]);
 
     await waitFor(() =>
@@ -88,8 +89,13 @@ describe('DriverDetailPage', () => {
     await waitFor(() => expect(screen.queryByText('TX-9930-4821')).not.toBeInTheDocument());
   });
 
-  it('B3: HOS summary blokini backend hisoblagichlaridan ko\'rsatadi', async () => {
-    server.use(driversListHandler, driverGetHandler, driverCoDriversEmptyHandler, hosSummaryHandler);
+  it("B3: HOS summary blokini backend hisoblagichlaridan ko'rsatadi", async () => {
+    server.use(
+      driversListHandler,
+      driverGetHandler,
+      driverCoDriversEmptyHandler,
+      hosSummaryHandler,
+    );
     renderPage([PERM.driversRead]);
 
     await waitFor(() =>
@@ -101,7 +107,7 @@ describe('DriverDetailPage', () => {
     expect(screen.getByText('05:00')).toBeInTheDocument();
   });
 
-  it('HOS summary `404` bo\'lsa blok yashiriladi (endpoint hali `hos_policy` yo\'q holat)', async () => {
+  it("HOS summary `404` bo'lsa blok yashiriladi (endpoint hali `hos_policy` yo'q holat)", async () => {
     server.use(
       driversListHandler,
       driverGetHandler,
@@ -116,7 +122,7 @@ describe('DriverDetailPage', () => {
     await waitFor(() => expect(screen.queryByText('Hours of Service')).not.toBeInTheDocument());
   });
 
-  it('B4: Activities/Daily logs tablari haqiqiy marshrutga o\'tadi (useState emas)', async () => {
+  it("B4: Activities/Daily logs tablari haqiqiy marshrutga o'tadi (useState emas)", async () => {
     server.use(
       driversListHandler,
       driverGetHandler,

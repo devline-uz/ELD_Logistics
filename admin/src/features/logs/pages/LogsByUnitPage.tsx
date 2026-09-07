@@ -69,7 +69,12 @@ export function LogsByUnitPage() {
       online_status:
         (listParams.filters.online_status as TrackingLiveParams['online_status']) || undefined,
     }),
-    [listParams.page, listParams.perPage, listParams.filters.branch_id, listParams.filters.online_status],
+    [
+      listParams.page,
+      listParams.perPage,
+      listParams.filters.branch_id,
+      listParams.filters.online_status,
+    ],
   );
 
   const live = useTrackingLive(queryParams);
@@ -101,8 +106,11 @@ export function LogsByUnitPage() {
     let filtered = all;
     if (searchTerm) {
       filtered = filtered.filter((unit) => {
-        const name = `${unit.driver?.first_name ?? ''} ${unit.driver?.last_name ?? ''}`.toLowerCase();
-        return name.includes(searchTerm) || (unit.unit_number ?? '').toLowerCase().includes(searchTerm);
+        const name =
+          `${unit.driver?.first_name ?? ''} ${unit.driver?.last_name ?? ''}`.toLowerCase();
+        return (
+          name.includes(searchTerm) || (unit.unit_number ?? '').toLowerCase().includes(searchTerm)
+        );
       });
     }
     if (listParams.filters.has_violations === 'true') {
@@ -118,7 +126,13 @@ export function LogsByUnitPage() {
       });
     }
     return filtered;
-  }, [live.data, searchTerm, listParams.filters.has_violations, listParams.filters.has_warnings, violationsByUnit]);
+  }, [
+    live.data,
+    searchTerm,
+    listParams.filters.has_violations,
+    listParams.filters.has_warnings,
+    violationsByUnit,
+  ]);
 
   const openLog = async (unit: LiveUnit) => {
     if (!unit.driver?.id) return;

@@ -104,20 +104,20 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** grid to'g'ri chiziladi (golden snapshot testi), **log edit request oqimi** to'liq ishlaydi va hech qanday to'g'ridan-to'g'ri tahrir yo'q, HOS raqamlari faqat backenddan.
 
 ```markdown
-- [ ] 3.1 `api/queries/logs.ts`, `hos.ts`, `violations.ts`, `logEditRequests.ts`, `unidentified.ts`
-- [ ] 3.2 Logs By Unit — `tracking/live` + shartli `hos-summary` kompozitsiyasi (concurrency ≤ 6, kesh 60 s)
-- [ ] 3.3 Logs By Driver — driver select + sana oralig'i + `daily-logs`
-- [ ] 3.4 `HosRings` komponenti — 4 halqa, qiymatlar `hos-summary` dan, hech qanday hardcode chegara
-- [ ] 3.5 `DutyGrid` — 24 soatlik SVG grid, PC/YM shtrixi, hodisa markerlari (`pti/fuel/certify/malfunction`), tooltip
-- [ ] 3.6 Voqealar jadvali — `origin` ustuni, `✎` belgisi + asl qiymat tooltip'i
-- [ ] 3.7 Log Form bloki — trailers/docs badge'lari, imzo (faqat ko'rish)
-- [ ] 3.8 **`Send edit request` paneli** — status tugmalari, From/To/Note, Q17.1 taqiqlari UI'da bloklangan
-- [ ] 3.9 Report tabi — PDF ko'rish + download (blob, `Authorization`)
-- [ ] 3.10 Trip Planner tabi — xarita joy egallaydi (to'liq 4-bosqichda), segmentlar ro'yxati, `Create route` formasi
-- [ ] 3.11 Log Edit Requests ekrani — approve/reject (sabab majburiy), o'z taklifini tasdiqlash bloklangan 🎨
-- [ ] 3.12 Unassigned Driving ekrani — assign / annotate, 8 kun qoidasi 🎨
-- [ ] 3.13 Violations ro'yxati + detal, `resolved` badge, delete yo'q
-- [ ] 3.14 Golden testlar: grid render (snapshot), HOS format, violation matnlari
+- [x] 3.1 `api/queries/logs.ts`, `hos.ts`, `violations.ts`, `logEditRequests.ts`, `unidentified.ts`
+- [x] 3.2 Logs By Unit — `tracking/live` + shartli `hos-summary` kompozitsiyasi (concurrency ≤ 6, kesh 60 s)
+- [x] 3.3 Logs By Driver — driver select + sana oralig'i + `daily-logs`
+- [x] 3.4 `HosRings` komponenti — 4 halqa, qiymatlar `hos-summary` dan, hech qanday hardcode chegara
+- [x] 3.5 `DutyGrid` — 24 soatlik SVG grid, PC/YM shtrixi, hodisa markerlari (`pti/fuel/certify/malfunction`), tooltip
+- [x] 3.6 Voqealar jadvali — `origin` ustuni, `✎` belgisi + asl qiymat tooltip'i
+- [x] 3.7 Log Form bloki — trailers/docs badge'lari, imzo (faqat ko'rish)
+- [x] 3.8 **`Send edit request` paneli** — status tugmalari, From/To/Note, Q17.1 taqiqlari UI'da bloklangan
+- [x] 3.9 Report tabi — PDF ko'rish + download (blob, `Authorization`)
+- [x] 3.10 Trip Planner tabi — xarita joy egallaydi (to'liq 4-bosqichda), segmentlar ro'yxati, `Create route` formasi
+- [x] 3.11 Log Edit Requests ekrani — approve/reject (sabab majburiy), o'z taklifini tasdiqlash bloklangan 🎨
+- [x] 3.12 Unassigned Driving ekrani — assign / annotate, 8 kun qoidasi 🎨
+- [x] 3.13 Violations ro'yxati + detal, `resolved` badge, delete yo'q
+- [x] 3.14 Golden testlar: grid render (snapshot), HOS format, violation matnlari
 - [ ] 3.15 `frontend-security-reviewer` (audit tasdig'i, taqiqlar) + `frontend-code-reviewer`
 ```
 

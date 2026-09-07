@@ -11,14 +11,20 @@ import { Badge } from '@/components/ui/Badge';
 import { StatusChip } from '@/components/ui/StatusChip';
 import type { UseDateFormatResult } from '@/hooks/useDateFormat';
 
-const ONLINE_STATUS_TONE: Record<NonNullable<LiveUnit['online_status']>, 'success' | 'neutral' | 'error'> = {
+const ONLINE_STATUS_TONE: Record<
+  NonNullable<LiveUnit['online_status']>,
+  'success' | 'neutral' | 'error'
+> = {
   online: 'success',
   offline: 'neutral',
   disconnected: 'error',
   malfunction: 'error',
 };
 
-const DUTY_STATUS_TONE: Record<NonNullable<LiveUnit['duty_status']>, 'success' | 'neutral' | 'info' | 'warning'> = {
+const DUTY_STATUS_TONE: Record<
+  NonNullable<LiveUnit['duty_status']>,
+  'success' | 'neutral' | 'info' | 'warning'
+> = {
   OFF: 'neutral',
   SB: 'warning',
   DR: 'success',
@@ -45,7 +51,8 @@ export function buildLogsByUnitColumns(
   t: TFunction,
   options: LogsByUnitColumnsOptions,
 ): ColumnDef<LiveUnit, unknown>[] {
-  const { startIndex, showExtended, hosByDriver, violationsByUnit, dateFormat, onOpenLog } = options;
+  const { startIndex, showExtended, hosByDriver, violationsByUnit, dateFormat, onOpenLog } =
+    options;
 
   const baseColumns: ColumnDef<LiveUnit, unknown>[] = [
     {
@@ -95,7 +102,9 @@ export function buildLogsByUnitColumns(
             <span>
               {lat.toFixed(4)}, {lng.toFixed(4)}
             </span>
-            <span className="text-body-sm text-neutral-500">{dateFormat.formatRelative(last_seen_at)}</span>
+            <span className="text-body-sm text-neutral-500">
+              {dateFormat.formatRelative(last_seen_at)}
+            </span>
           </div>
         );
       },
@@ -168,7 +177,9 @@ export function buildLogsByUnitColumns(
         const driverId = row.original.driver?.id;
         const summary = driverId ? hosByDriver[driverId] : undefined;
         const nextDay = summary?.recap?.[0];
-        return nextDay ? dateFormat.formatDuration(nextDay.gained_next_min ?? null) : t('common.na');
+        return nextDay
+          ? dateFormat.formatDuration(nextDay.gained_next_min ?? null)
+          : t('common.na');
       },
     },
     {

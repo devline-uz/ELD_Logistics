@@ -65,4 +65,5 @@ afterAll(() => {
  * asosida qo'lda hisoblanadi — 1.17). Shuning uchun `null` qaytaruvchi stub
  * qo'yamiz: xatti-harakat o'zgarmaydi, shovqin yo'qoladi.
  */
-HTMLCanvasElement.prototype.getContext = (() => null) as typeof HTMLCanvasElement.prototype.getContext;
+HTMLCanvasElement.prototype.getContext = (() =>
+  null) as typeof HTMLCanvasElement.prototype.getContext;

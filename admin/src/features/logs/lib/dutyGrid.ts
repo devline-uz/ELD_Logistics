@@ -33,7 +33,7 @@ export function buildDutySegments(events: DailyLogDetail['events'] = []): DutySe
     const endTime = next?.event_time ?? startTime;
     segments.push({
       status: current.status as DutySegment['status'],
-      special: (current.special as DutySegment['special']) ?? 'none',
+      special: current.special ?? 'none',
       startTime,
       endTime,
       note: current.notes,
@@ -44,7 +44,10 @@ export function buildDutySegments(events: DailyLogDetail['events'] = []): DutySe
 }
 
 const MARKER_TYPE_BY_EVENT_TYPE: Partial<
-  Record<NonNullable<DailyLogDetail['events']>[number]['event_type'] & string, DutyEventMarker['type']>
+  Record<
+    NonNullable<DailyLogDetail['events']>[number]['event_type'] & string,
+    DutyEventMarker['type']
+  >
 > = {
   certification: 'certify',
   malfunction: 'malfunction',

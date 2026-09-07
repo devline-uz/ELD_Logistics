@@ -87,7 +87,12 @@ describe('DriverListPage', () => {
   });
 
   it("Export/Import tugmalari ruxsat bo'lsa ko'rinadi va Import modalni ochadi (B2)", async () => {
-    server.use(driversListHandler, usersListHandler, driversExportHandler, driversImportTemplateHandler);
+    server.use(
+      driversListHandler,
+      usersListHandler,
+      driversExportHandler,
+      driversImportTemplateHandler,
+    );
     const user = userEvent.setup();
     renderPage([PERM.driversRead, PERM.driversExport, PERM.driversImport]);
 
