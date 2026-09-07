@@ -31,8 +31,7 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
           return (
             <li
               key={rule.key}
-              className="flex items-center gap-1.5"
-              style={{ color: ok ? 'var(--color-success-dark)' : 'var(--color-neutral-500)' }}
+              className={`flex items-center gap-1.5 ${ok ? 'text-success-dark' : 'text-neutral-500'}`}
             >
               <span aria-hidden="true">{ok ? '✓' : '○'}</span>
               {t(`auth.passwordStrength.${rule.key}`)}

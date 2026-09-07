@@ -45,7 +45,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] 0.21 i18n sozlash + `en.json` skeleti (`common.*`, `errors.*`, `nav.*`, `enums.*`)
 - [x] 0.22 Idle timeout (30 daq) + `subscription_readonly` banneri + `replaced_session` toast
 - [x] 0.23 GitHub Actions: typecheck, lint, test, build, `schema.d.ts` diff tekshiruvi (`DOCS_TOKEN` bo'lmasa diff qadami o'tkazib yuboriladi)
-- [ ] 0.24 `frontend-security-reviewer` + `frontend-code-reviewer`
+- [x] 0.24 `frontend-security-reviewer` (kritik 0) + `frontend-code-reviewer` (qatlam buzilishi 0, dublikat 0)
 ```
 
 ### Bosqich 1 — Dizayn tizimi va komponent kutubxonasi
@@ -71,8 +71,8 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] 1.14 `lib/format.ts` (sana/vaqt/davomiylik/nisbiy) + `lib/units.ts` (SI ↔ imperial) + testlari
 - [x] 1.15 `ListScreen` shabloni — §6.1 tuzilmasini beruvchi kompozitsiya
 - [x] 1.16 Har komponent uchun Vitest testi (render + interaksiya + rol)
-- [ ] 1.17 `a11y-reviewer`: fokus halqasi, ARIA, kontrast; `warning-base` matn uchun `warning-dark` ga almashtirish
-- [ ] 1.18 `frontend-code-reviewer`
+- [x] 1.17 `a11y-reviewer`: axe kritik 0 (34 test), 2 kritik + 2 yuqori tuzatildi, `error-base` matn kontrasti -> `error-dark`
+- [x] 1.18 `frontend-code-reviewer`: `components/ui/` qamrovi 93.65%, auth dublikatlari tozalandi, `Alert` umumiy primitivga chiqarildi
 ```
 
 ### Bosqich 2 — Fleet moduli
@@ -276,10 +276,10 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 | Bosqich | Nomi | Holat | Branch |
 |---|---|---|---|
-| -1 | Tayyorgarlik | 🔄 jarayonda | `main` |
-| 0 | Karkas va autentifikatsiya | ⬜ | `feat/stage-0-skeleton` |
-| 1 | Dizayn tizimi | ⬜ | `feat/stage-1-design-system` |
-| 2 | Fleet moduli | ⬜ | `feat/stage-2-fleet` |
+| -1 | Tayyorgarlik | ✅ | `main` |
+| 0 | Karkas va autentifikatsiya | ✅ | `feat/stage-0-skeleton` |
+| 1 | Dizayn tizimi | ✅ | `feat/stage-0-skeleton` |
+| 2 | Fleet moduli | 🔄 jarayonda | `feat/stage-2-fleet` |
 | 3 | Logs va HOS | ⬜ | `feat/stage-3-logs` |
 | 4 | Tracking va xarita | ⬜ | `feat/stage-4-tracking` |
 | 5 | DVIR va Maintenance | ⬜ | `feat/stage-5-dvir-maintenance` |

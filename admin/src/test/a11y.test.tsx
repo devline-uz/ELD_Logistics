@@ -56,8 +56,7 @@ import { useToast } from '@/components/feedback/toast-context';
 
 import { FileUpload } from '@/components/form/FileUpload';
 
-import { FormAlert } from '@/features/auth/components/FormAlert';
-import { FormField as AuthFormField } from '@/features/auth/components/FormField';
+import { Alert } from '@/components/feedback/Alert';
 import { PasswordStrength } from '@/features/auth/components/PasswordStrength';
 
 /** Har chaqiruvda o'zaro mustaqil bo'lishi uchun `axe()` natijasini tekshiruvchi yordamchi. */
@@ -529,11 +528,11 @@ describe('a11y: feedback components', () => {
 });
 
 describe('a11y: auth presentational components', () => {
-  it('FormAlert (error/info)', async () => {
+  it('Alert (error/info)', async () => {
     const { container } = render(
       <div>
-        <FormAlert message="Invalid credentials" variant="error" />
-        <FormAlert message="Check your email" variant="info" />
+        <Alert message="Invalid credentials" variant="error" />
+        <Alert message="Check your email" variant="info" />
       </div>,
     );
     await expectNoViolations(container);
@@ -541,16 +540,6 @@ describe('a11y: auth presentational components', () => {
 
   it('PasswordStrength', async () => {
     const { container } = render(<PasswordStrength password="abc" />);
-    await expectNoViolations(container);
-  });
-
-  it('auth FormField — normal va xato', async () => {
-    const { container } = render(
-      <div>
-        <AuthFormField label="Email" name="email" />
-        <AuthFormField label="Password" name="password" error="Password is required" required />
-      </div>,
-    );
     await expectNoViolations(container);
   });
 });

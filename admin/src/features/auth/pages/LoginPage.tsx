@@ -9,9 +9,9 @@ import { applyTokens } from '@/api/refresh';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { resolveDeviceId } from '@/features/auth/device-id';
 import { loginSchema, type LoginFormValues } from '@/features/auth/schemas';
-import { FormAlert } from '@/features/auth/components/FormAlert';
-import { FormField } from '@/features/auth/components/FormField';
-import { SubmitButton } from '@/features/auth/components/SubmitButton';
+import { Alert } from '@/components/feedback/Alert';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { useRetryAfter } from '@/features/auth/useRetryAfter';
 import { isApiError } from '@/lib/errors';
 import { useToast } from '@/components/feedback/toast-context';
@@ -140,10 +140,10 @@ export function LoginPage() {
           void onSubmit(event);
         }}
       >
-        {sessionEndMessage ? <FormAlert message={t(sessionEndMessage)} variant="info" /> : null}
-        {formError ? <FormAlert message={formError} /> : null}
+        {sessionEndMessage ? <Alert message={t(sessionEndMessage)} variant="info" /> : null}
+        {formError ? <Alert message={formError} /> : null}
 
-        <FormField
+        <Input
           autoComplete="username"
           error={errors.identifier?.message}
           label={t('auth.login.fields.identifier')}
@@ -151,7 +151,7 @@ export function LoginPage() {
           {...register('identifier')}
         />
 
-        <FormField
+        <Input
           autoComplete="current-password"
           error={errors.password?.message}
           label={t('auth.login.fields.password')}
@@ -161,7 +161,7 @@ export function LoginPage() {
               aria-label={
                 showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')
               }
-              className="absolute end-2 text-xs underline"
+              className="text-xs underline"
               onClick={() => {
                 setShowPassword((value) => !value);
               }}
@@ -179,11 +179,11 @@ export function LoginPage() {
           {t('auth.login.fields.remember')}
         </label>
 
-        <SubmitButton disabled={retryBlocked} loading={isSubmitting}>
+        <Button disabled={retryBlocked || undefined} fullWidth loading={isSubmitting} type="submit">
           {retryBlocked
             ? t('auth.login.retryIn', { seconds: secondsLeft })
             : t('auth.login.submit')}
-        </SubmitButton>
+        </Button>
 
         <Link className="text-center text-sm underline" to="/forgot-password">
           {t('auth.login.forgotPassword')}

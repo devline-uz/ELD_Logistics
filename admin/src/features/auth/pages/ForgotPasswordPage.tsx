@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 
 import { requestPasswordReset } from '@/api/auth.api';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
-import { FormAlert } from '@/features/auth/components/FormAlert';
-import { FormField } from '@/features/auth/components/FormField';
-import { SubmitButton } from '@/features/auth/components/SubmitButton';
+import { Alert } from '@/components/feedback/Alert';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { forgotPasswordSchema, type ForgotPasswordFormValues } from '@/features/auth/schemas';
 
 /**
@@ -70,9 +70,9 @@ export function ForgotPasswordPage() {
           void onSubmit(event);
         }}
       >
-        {errors.root?.message ? <FormAlert message={errors.root.message} /> : null}
+        {errors.root?.message ? <Alert message={errors.root.message} /> : null}
 
-        <FormField
+        <Input
           autoComplete="username"
           error={errors.login?.message}
           label={t('auth.forgotPassword.fields.login')}
@@ -80,7 +80,9 @@ export function ForgotPasswordPage() {
           {...register('login')}
         />
 
-        <SubmitButton loading={isSubmitting}>{t('auth.forgotPassword.submit')}</SubmitButton>
+        <Button fullWidth loading={isSubmitting} type="submit">
+          {t('auth.forgotPassword.submit')}
+        </Button>
 
         <Link className="text-center text-sm underline" to="/login">
           {t('auth.forgotPassword.backToLogin')}

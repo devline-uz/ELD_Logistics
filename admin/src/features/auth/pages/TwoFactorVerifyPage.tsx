@@ -6,9 +6,9 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { login } from '@/api/auth.api';
 import { applyTokens } from '@/api/refresh';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
-import { FormAlert } from '@/features/auth/components/FormAlert';
-import { FormField } from '@/features/auth/components/FormField';
-import { SubmitButton } from '@/features/auth/components/SubmitButton';
+import { Alert } from '@/components/feedback/Alert';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { totpVerifySchema, type TotpVerifyFormValues } from '@/features/auth/schemas';
 import { isApiError } from '@/lib/errors';
 import type { LoginRequest } from '@/api/types';
@@ -106,9 +106,9 @@ export function TwoFactorVerifyPage() {
           void onSubmit(event);
         }}
       >
-        {errors.root?.message ? <FormAlert message={errors.root.message} /> : null}
+        {errors.root?.message ? <Alert message={errors.root.message} /> : null}
 
-        <FormField
+        <Input
           autoComplete="one-time-code"
           error={errors.code?.message}
           inputMode="numeric"
@@ -118,7 +118,9 @@ export function TwoFactorVerifyPage() {
           {...register('code')}
         />
 
-        <SubmitButton loading={isSubmitting}>{t('auth.twoFactorVerify.submit')}</SubmitButton>
+        <Button fullWidth loading={isSubmitting} type="submit">
+          {t('auth.twoFactorVerify.submit')}
+        </Button>
       </form>
     </AuthLayout>
   );

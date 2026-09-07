@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { startTotpSetup, verifyTotp } from '@/api/auth.api';
 import { applyTokens } from '@/api/refresh';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
-import { FormAlert } from '@/features/auth/components/FormAlert';
-import { FormField } from '@/features/auth/components/FormField';
-import { SubmitButton } from '@/features/auth/components/SubmitButton';
+import { Alert } from '@/components/feedback/Alert';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { totpVerifySchema, type TotpVerifyFormValues } from '@/features/auth/schemas';
 import { isApiError } from '@/lib/errors';
 import type { TotpSetup } from '@/api/types';
@@ -79,7 +79,7 @@ export function TwoFactorSetupPage() {
       </h1>
       <p className="mb-6 text-sm text-neutral-600">{t('auth.twoFactorSetup.description')}</p>
 
-      {loadError ? <FormAlert message={loadError} /> : null}
+      {loadError ? <Alert message={loadError} /> : null}
 
       {setup ? (
         <div className="mb-6 flex flex-col items-center gap-3">
@@ -112,9 +112,9 @@ export function TwoFactorSetupPage() {
           void onSubmit(event);
         }}
       >
-        {formError ? <FormAlert message={formError} /> : null}
+        {formError ? <Alert message={formError} /> : null}
 
-        <FormField
+        <Input
           autoComplete="one-time-code"
           error={errors.code?.message}
           inputMode="numeric"
@@ -124,7 +124,9 @@ export function TwoFactorSetupPage() {
           {...register('code')}
         />
 
-        <SubmitButton loading={isSubmitting}>{t('auth.twoFactorSetup.submit')}</SubmitButton>
+        <Button fullWidth loading={isSubmitting} type="submit">
+          {t('auth.twoFactorSetup.submit')}
+        </Button>
       </form>
     </AuthLayout>
   );
