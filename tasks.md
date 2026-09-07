@@ -7,9 +7,11 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 - [x] -1.1 `docs/tz-admin-frontend.md` repozitoriyga ko'chirildi
 - [x] -1.2 §7 modul bo'yicha `docs/tz/*.md` ga bo'lindi (agent kontekstini tejash uchun)
-- [ ] -1.3 `.claude/skills/fe-*` — 10 ta skill yaratildi
-- [ ] -1.4 `.claude/agents/*` — 11 ta subagent yaratildi
-- [ ] -1.5 `tasks.md` yuritish tartibi kelishildi
+- [x] -1.3 `.claude/skills/fe-*` — 10 ta skill yaratildi
+- [x] -1.4 `.claude/agents/*` — 11 ta subagent yaratildi
+- [x] -1.5 `tasks.md` yuritish tartibi kelishildi
+- [x] -1.6 `DOCS_TOKEN` olindi; `admin/openapi/swagger.json` (Swagger 2.0, 125 path) commit qilindi
+- [x] -1.7 `docs/api/permissions.md` — 104 kalit `x-permission` dan generatsiya qilindi (`scripts/gen-permissions-doc.py`)
 
 ## 18.2 Bosqichlar
 
@@ -126,7 +128,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** 500 marker bilan xarita ≥ 30 fps, WS yangilanishi ≤ 5 s, xarita chunk lazy va ≤ 400 KB.
 
 ```markdown
-- [ ] 4.1 ❓ Q1 hal qilinadi; `VITE_MAP_STYLE_URL` sozlanadi
+- [x] 4.1 ✅ Q1 hal qilindi — **MapTiler Cloud** (MVP), chiqish yo'li Protomaps/PMTiles. Qaror: `docs/tz/16-17-registry-open-questions.md` → D-Q1. Qoladi: buyurtmachidan domen bo'yicha cheklangan kalit → `VITE_MAP_STYLE_URL`
 - [ ] 4.2 `components/map/MapCanvas.tsx` — MapLibre wrapper, lazy chunk, `prefers-reduced-motion`
 - [ ] 4.3 GeoJSON source + klasterlash (radius 50, maxZoom 14) + duty status ikonkalari
 - [ ] 4.4 `UnitMarkerCard` popup (dizayn 200×217 tarkibi)
