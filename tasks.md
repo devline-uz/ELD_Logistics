@@ -118,7 +118,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] 3.12 Unassigned Driving ekrani — assign / annotate, 8 kun qoidasi 🎨
 - [x] 3.13 Violations ro'yxati + detal, `resolved` badge, delete yo'q
 - [x] 3.14 Golden testlar: grid render (snapshot), HOS format, violation matnlari
-- [ ] 3.15 `frontend-security-reviewer` (audit tasdig'i, taqiqlar) + `frontend-code-reviewer`
+- [x] 3.15 `frontend-security-reviewer` (kritik 0; F100/Q17.1/F103 tasdiqlandi) + `frontend-code-reviewer` (PDF blob leak va o'lik qidiruv tuzatildi)
 ```
 
 ### Bosqich 4 — Tracking va xarita
@@ -280,10 +280,25 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 | 0 | Karkas va autentifikatsiya | ✅ | `feat/stage-0-skeleton` |
 | 1 | Dizayn tizimi | ✅ | `feat/stage-0-skeleton` |
 | 2 | Fleet moduli | ✅ | `feat/stage-2-fleet` |
-| 3 | Logs va HOS | 🔄 jarayonda | `feat/stage-3-logs` |
-| 4 | Tracking va xarita | ⬜ | `feat/stage-4-tracking` |
+| 3 | Logs va HOS | ✅ | `feat/stage-3-logs` |
+| 4 | Tracking va xarita | 🔄 jarayonda | `feat/stage-4-tracking` |
 | 5 | DVIR va Maintenance | ⬜ | `feat/stage-5-dvir-maintenance` |
 | 6 | Reports va eksport | ⬜ | `feat/stage-6-reports` |
 | 7 | Real-vaqt, Chat, Dashboard | ⬜ | `feat/stage-7-realtime` |
 | 8 | Settings, Support, Audit | ⬜ | `feat/stage-8-settings` |
 | 9 | Sayqal va deploy | ⬜ | `feat/stage-9-polish` |
+
+
+---
+
+## Texnik qarz (bosqich oxirida hal qilinadi)
+
+- [ ] TD1 `features/logs/lib/tripPlannerApi.ts` → `api/queries/routes.ts` ga ko'chirish
+      (qatlam buzilishi — tasdiqlangan; `map-engineer` `routes.ts` ni tugatgach mexanik ko'chirish)
+- [ ] TD2 `batchSettled<T,R>(items, fn, concurrency)` yordamchisini `lib/` ga chiqarish
+      (`api/queries/hos.ts` va `features/logs/lib/hosByDate.ts` da chunking algoritmi takrorlangan)
+- [ ] TD3 Qidiruv faqat joriy sahifada ishlashini UI'da ko'rsatish
+      (`LogsByUnitPage`, `ViolationsPage`, `UnassignedDrivingPage` — backend `search` parametri yo'q,
+      lekin pagination `total` filtrlanmagan holda keladi → foydalanuvchi chalg'ishi mumkin)
+- [ ] TD4 `ConfirmDialog` da sabab uzunligi (3–500) tekshirilmaydi — faqat bo'sh emasligi
+      (13 ekran ishlatadi; backend yakuniy hakam, lekin klient tekshiruvi foydali)

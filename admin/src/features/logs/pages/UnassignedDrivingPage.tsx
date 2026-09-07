@@ -53,6 +53,16 @@ export function UnassignedDrivingPage() {
   const list = useUnidentifiedEventsList(queryParams);
   const annotate = useUnidentifiedAnnotate();
 
+  // `GET /unidentified-events` matn qidiruviga ega emas (swagger) —
+  // LogsByUnitPage/ViolationsPage'dagi naqshga o'xshab, `search` joriy
+  // sahifa ichida `unit_number` bo'yicha mijoz tomonida filtrlanadi.
+  const searchTerm = listParams.search.trim().toLowerCase();
+  const rows = useMemo(() => {
+    const all = list.data?.data ?? [];
+    if (!searchTerm) return all;
+    return all.filter((event) => (event.unit_number ?? '').toLowerCase().includes(searchTerm));
+  }, [list.data, searchTerm]);
+
   const handleAnnotateConfirm = async (annotation?: string) => {
     if (!annotating?.id || !annotation) return;
     try {
@@ -108,7 +118,7 @@ export function UnassignedDrivingPage() {
           <DataTable
             tableId="unassigned-driving"
             columns={columns}
-            data={list.data?.data ?? []}
+            data={rows}
             isLoading={list.isLoading}
             isError={list.isError}
             errorMessage={list.error?.message}

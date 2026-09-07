@@ -470,6 +470,14 @@ export type LogEditRequestsListParams = NonNullable<
 /** `GET /tracking/live` — Logs By Unit asosiy manbai (F95). */
 export type TrackingLiveParams = NonNullable<paths['/tracking/live']['get']['parameters']['query']>;
 
+/** `GET /units/{id}/trips` — Track on Map «Histories» bloki (§7.7.2). */
+export type UnitTripsParams = NonNullable<
+  paths['/units/{id}/trips']['get']['parameters']['query']
+>;
+
+/** `GET /trips/{id}` — `include_polyline` faqat bitta trip tanlanganda `true` (F169). */
+export type TripParams = NonNullable<paths['/trips/{id}']['get']['parameters']['query']>;
+
 /** `GET /unidentified-events` — Unassigned Driving ro'yxati. */
 export type UnidentifiedEventsListParams = NonNullable<
   paths['/unidentified-events']['get']['parameters']['query']
@@ -477,3 +485,6 @@ export type UnidentifiedEventsListParams = NonNullable<
 
 /** `GET /violations` — 10 turdagi filtr + `severity`/`resolved`/sana oralig'i. */
 export type ViolationsListParams = NonNullable<paths['/violations']['get']['parameters']['query']>;
+
+/** `GET /routes` — status/unit/driver filtri + saralash (§7.7.3). */
+export type RoutesListParams = NonNullable<paths['/routes']['get']['parameters']['query']>;

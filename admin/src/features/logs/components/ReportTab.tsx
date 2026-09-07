@@ -6,7 +6,7 @@
  * qilingani uchun oddiy `<a href="/daily-logs/{id}/pdf">` ISHLATILMAYDI.
  * Blob keladi → `URL.createObjectURL` → `<iframe>` va `<a download>`.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useDailyLogPdf } from '@/api/queries/logs';
@@ -24,20 +24,30 @@ export function ReportTab({ dailyLogId }: ReportTabProps) {
   const { t } = useTranslation();
   const pdf = useDailyLogPdf();
   const [objectUrl, setObjectUrl] = useState<string | undefined>(undefined);
+  // Har doim oxirgi yaratilgan blob URL'ni saqlaydi — `setObjectUrl` orqali
+  // emas (state yangilanishi async), shu sabab retry va effect cleanup
+  // ikkalasi ham eskisini `revokeObjectURL` bilan tozalay oladi (memory leak
+  // oldini olish).
+  const currentUrlRef = useRef<string | undefined>(undefined);
+
+  const setNewObjectUrl = (blob: Blob) => {
+    if (currentUrlRef.current) URL.revokeObjectURL(currentUrlRef.current);
+    const url = URL.createObjectURL(blob);
+    currentUrlRef.current = url;
+    setObjectUrl(url);
+  };
 
   useEffect(() => {
-    let cancelledUrl: string | undefined;
     pdf
       .mutateAsync(dailyLogId)
-      .then((blob) => {
-        const url = URL.createObjectURL(blob);
-        cancelledUrl = url;
-        setObjectUrl(url);
-      })
+      .then((blob) => setNewObjectUrl(blob))
       .catch(() => undefined);
 
     return () => {
-      if (cancelledUrl) URL.revokeObjectURL(cancelledUrl);
+      if (currentUrlRef.current) {
+        URL.revokeObjectURL(currentUrlRef.current);
+        currentUrlRef.current = undefined;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dailyLogId]);
@@ -51,9 +61,7 @@ export function ReportTab({ dailyLogId }: ReportTabProps) {
       <ErrorState
         title={t('logs.view.report.errorTitle')}
         message={pdf.error?.message}
-        onRetry={() =>
-          void pdf.mutateAsync(dailyLogId).then((blob) => setObjectUrl(URL.createObjectURL(blob)))
-        }
+        onRetry={() => void pdf.mutateAsync(dailyLogId).then((blob) => setNewObjectUrl(blob))}
       />
     );
   }
