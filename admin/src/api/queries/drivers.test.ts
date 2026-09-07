@@ -10,10 +10,17 @@ import {
   driverFixture,
   driverLicenseRevealForbiddenHandler,
   driverLicenseRevealHandler,
+  driversImportHandler,
+  driversImportValidationErrorHandler,
   driversListHandler,
 } from '@/mocks/handlers/drivers';
 
-import { useDriverCreate, useDriverLicenseReveal, useDriversList } from './drivers';
+import {
+  useDriverCreate,
+  useDriverLicenseReveal,
+  useDriversImport,
+  useDriversList,
+} from './drivers';
 import { withQueryClient } from './test-utils';
 
 describe('useDriversList', () => {
@@ -66,4 +73,37 @@ describe('useDriverLicenseReveal', () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error?.status).toBe(403);
   });
+});
+
+describe('useDriversImport', () => {
+  it('200 da barcha qatorlar importlanganini qaytaradi', async () => {
+    server.use(driversImportHandler);
+    const { result } = renderHook(() => useDriversImport(), { wrapper: withQueryClient() });
+
+    result.current.mutate(new File(['username\njdoe'], 'drivers.csv', { type: 'text/csv' }));
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual({ imported: 2, total: 2, errors: [] });
+  });
+
+  it(
+    "422 all-or-nothing javobida qator xatolarini to'liq qaytaradi " +
+      '(D-f9: units.ts bilan bir xil mexanizm)',
+    async () => {
+      server.use(driversImportValidationErrorHandler);
+      const { result } = renderHook(() => useDriversImport(), { wrapper: withQueryClient() });
+
+      result.current.mutate(new File(['username\n,'], 'drivers.csv', { type: 'text/csv' }));
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      expect(result.current.data).toEqual({
+        imported: 0,
+        total: 2,
+        errors: [
+          { row: 1, field: 'username', message: 'must be 4-32 characters of [a-z0-9._]' },
+          { row: 2, field: 'license_no', message: 'required' },
+        ],
+      });
+    },
+  );
 });

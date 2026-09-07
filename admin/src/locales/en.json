@@ -98,13 +98,30 @@
       "search": "Search",
       "signOut": "Sign out",
       "staySignedIn": "Stay signed in",
-      "tryAgain": "Try again"
+      "tryAgain": "Try again",
+      "create": "Create",
+      "saveChanges": "Save changes",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "more": "More actions",
+      "add": "Add"
     },
     "na": "N/A",
     "states": {
       "empty": "Nothing to show yet",
       "error": "Something went wrong",
-      "loading": "Loading…"
+      "loading": "Loading…",
+      "notAvailable": "N/A",
+      "notFound": "Not found",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "boolean": {
+      "yes": "Yes",
+      "no": "No"
     }
   },
   "enums": {
@@ -127,6 +144,16 @@
       "running": "Running"
     },
     "unit_status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "driver_status": {
+      "invited": "Invited",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "user_status": {
+      "invited": "Invited",
       "active": "Active",
       "inactive": "Inactive"
     }
@@ -391,7 +418,8 @@
       "dataTable": {
         "error": {
           "message": "Something went wrong while loading this table."
-        }
+        },
+        "rowActions": "Row actions"
       },
       "fileUpload": {
         "browse": "Browse files",
@@ -475,6 +503,11 @@
         "hours": "Hours",
         "minutes": "Minutes",
         "seconds": "Seconds"
+      },
+      "discard": {
+        "title": "Discard unsaved changes?",
+        "description": "You have unsaved changes. If you leave now, they will be lost.",
+        "confirm": "Discard"
       }
     },
     "overlay": {
@@ -497,5 +530,579 @@
   "writeGuard": {
     "missingPermission": "Requires the {{permission}} permission",
     "subscriptionReadonly": "Subscription is read-only"
+  },
+  "fleet": {
+    "units": {
+      "title": "Unit Management",
+      "eldNotFound": "Not Found",
+      "tabs": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "columns": {
+        "index": "#",
+        "unitNumber": "Unit #",
+        "licensePlate": "License Plate",
+        "makeModel": "Make & Model",
+        "year": "Year",
+        "eld": "ELD",
+        "vin": "VIN",
+        "status": "Status"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "outOfService": "Out of service"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by unit #, plate or VIN",
+        "outOfService": "Out of service"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "actions": {
+        "add": "Add Unit",
+        "export": "Export Units",
+        "import": "Import Units",
+        "trackOnMap": "Track on Map"
+      },
+      "rowActionsLabel": "Actions for unit {{unitNumber}}",
+      "fuelTypes": {
+        "diesel": "Diesel",
+        "petrol": "Petrol",
+        "cng": "CNG",
+        "lpg": "LPG",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      },
+      "form": {
+        "addTitle": "Add unit",
+        "editTitle": "Edit unit",
+        "fields": {
+          "unitNumber": "Unit #",
+          "make": "Make",
+          "model": "Model",
+          "licensePlate": "License Plate Number",
+          "plateRegion": "Plate Issue Region",
+          "fuelType": "Fuel Type",
+          "year": "Year",
+          "eld": "ELD",
+          "vin": "VIN",
+          "vinHint": "17 characters, read from the ELD or entered manually.",
+          "gvwrClass": "GVWR class",
+          "sleeperNotAvailable": "Sleeper Not Available",
+          "sleeperNotAvailableHint": "The Sleeper Berth (SB) status will be disabled.",
+          "notes": "Notes"
+        }
+      },
+      "toast": {
+        "created": "Unit {{unitNumber}} created",
+        "updated": "Unit {{unitNumber}} updated",
+        "activated": "Unit {{unitNumber}} activated",
+        "deactivated": "Unit {{unitNumber}} deactivated",
+        "deleted": "Unit {{unitNumber}} deleted",
+        "exportFailed": "Could not export units",
+        "deleteConflict": "This unit is referenced by open logs and cannot be deleted"
+      },
+      "confirm": {
+        "activateDescription": "Are you sure you want to activate unit {{unitNumber}}?",
+        "deactivateDescription": "Are you sure you want to deactivate unit {{unitNumber}}?",
+        "deleteDescription": "This action cannot be undone. Are you sure you want to delete unit {{unitNumber}}?"
+      },
+      "import": {
+        "title": "Import units",
+        "downloadTemplateLabel": "Download a template to get started:",
+        "dragHint": "Drag and drop a CSV or XLSX file here, or",
+        "fileInputLabel": "Choose a file to import",
+        "errorsTitle": "Row errors",
+        "nothingImported": "Nothing was imported. Fix {{count}} errors and try again.",
+        "summary": "Imported {{imported}} of {{total}} rows.",
+        "actions": {
+          "downloadCsv": "Download CSV",
+          "downloadXlsx": "Download XLSX",
+          "browse": "Browse files",
+          "upload": "Upload",
+          "downloadErrors": "Download errors as CSV"
+        },
+        "columns": {
+          "row": "Row",
+          "field": "Field",
+          "message": "Message"
+        },
+        "errors": {
+          "invalidType": "Only CSV or XLSX files are accepted.",
+          "tooLarge": "File must be 10 MB or smaller.",
+          "templateFailed": "Could not download the template",
+          "genericFailure": "Import failed. Please try again."
+        },
+        "toast": {
+          "success": "{{count}} units imported"
+        }
+      },
+      "assignDriver": {
+        "title": "Assign driver",
+        "submit": "Assign",
+        "fields": {
+          "driver": "Driver",
+          "role": "Role"
+        },
+        "roles": {
+          "primary": "Primary",
+          "co": "Co-driver"
+        },
+        "toast": {
+          "success": "Driver assigned"
+        }
+      },
+      "detail": {
+        "heading": "Unit # {{unitNumber}}",
+        "breadcrumb": "Unit # {{unitNumber}}",
+        "notFound": "This unit could not be found.",
+        "assignDriver": "Assign driver",
+        "tabsLabel": "Unit sections",
+        "available": "Available",
+        "notAvailable": "Not Available",
+        "tabs": {
+          "info": "Unit Details",
+          "activities": "Activities",
+          "diagnostics": "Diagnostics"
+        },
+        "fields": {
+          "drivers": "Drivers",
+          "eld": "ELD",
+          "activatedOn": "Activated On",
+          "vin": "VIN",
+          "make": "Make",
+          "model": "Model",
+          "year": "Year",
+          "sleeperBerth": "Sleeper Berth",
+          "licensePlate": "License plate",
+          "fuelType": "Fuel Type",
+          "branch": "Branch",
+          "notes": "Notes",
+          "status": "Status",
+          "outOfService": "Out of service"
+        },
+        "activities": {
+          "empty": "No activity recorded yet.",
+          "columns": {
+            "timestamp": "Time Stamp",
+            "action": "Action",
+            "changedBy": "Changed by",
+            "details": "Details"
+          },
+          "actions": {
+            "create": "Created",
+            "update": "Updated",
+            "delete": "Deleted",
+            "restore": "Restored",
+            "assign": "Driver assigned"
+          },
+          "fieldChange": "{{field}} changed from {{oldValue}} to {{newValue}}"
+        },
+        "diagnostics": {
+          "forbidden": "You do not have permission to view diagnostics.",
+          "none": "None",
+          "fields": {
+            "deviceSerial": "Device serial",
+            "vendor": "Vendor",
+            "model": "Model",
+            "firmware": "Firmware",
+            "connectionType": "Connection type",
+            "connectionState": "Connection state",
+            "simPresent": "SIM present",
+            "lastSeen": "Last seen",
+            "odometer": "Odometer",
+            "engineHours": "Engine hours",
+            "fuel": "Fuel",
+            "coolantTemp": "Coolant temperature",
+            "malfunctionCodes": "Malfunction codes"
+          }
+        }
+      }
+    },
+    "eldDevices": {
+      "title": "ELD Devices",
+      "unassigned": "Unassigned",
+      "columns": {
+        "serial": "Serial",
+        "vendor": "Vendor",
+        "model": "Model",
+        "firmware": "Firmware",
+        "connection": "Connection",
+        "status": "Status",
+        "assignedUnit": "Assigned Unit",
+        "lastSeen": "Last seen"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "malfunction": "Malfunction"
+      },
+      "connectionTypes": {
+        "bluetooth": "Bluetooth",
+        "wifi": "Wi-Fi",
+        "cellular": "Cellular",
+        "usb": "USB"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by serial or vendor",
+        "status": "Status",
+        "connectionType": "Connection"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "actions": {
+        "register": "Register device",
+        "assignToUnit": "Assign to unit"
+      },
+      "rowActionsLabel": "Actions for device {{serial}}",
+      "form": {
+        "addTitle": "Register device",
+        "editTitle": "Edit device",
+        "fields": {
+          "serial": "Serial",
+          "vendor": "Vendor",
+          "model": "Model",
+          "firmware": "Firmware",
+          "connectionType": "Connection type",
+          "status": "Status",
+          "simPresent": "SIM present",
+          "notes": "Notes"
+        }
+      },
+      "toast": {
+        "created": "Device {{serial}} registered",
+        "updated": "Device {{serial}} updated",
+        "deleted": "Device {{serial}} deleted",
+        "deleteConflict": "This device is in use and cannot be deleted"
+      },
+      "confirm": {
+        "deleteDescription": "This action cannot be undone. Are you sure you want to delete device {{serial}}?"
+      },
+      "assignUnit": {
+        "title": "Assign to unit",
+        "submit": "Save",
+        "fields": {
+          "unit": "Unit",
+          "unitHint": "Leave empty to detach the device from its current unit."
+        },
+        "toast": {
+          "success": "Device assignment updated"
+        }
+      }
+    },
+    "trailers": {
+      "title": "Trailers",
+      "columns": {
+        "number": "Number",
+        "notes": "Notes",
+        "created": "Created"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by number"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "actions": {
+        "add": "Add Trailer"
+      },
+      "rowActionsLabel": "Actions for trailer {{number}}",
+      "form": {
+        "addTitle": "Add trailer",
+        "editTitle": "Edit trailer",
+        "fields": {
+          "number": "Number",
+          "notes": "Notes"
+        }
+      },
+      "toast": {
+        "created": "Trailer {{number}} created",
+        "updated": "Trailer {{number}} updated",
+        "deleted": "Trailer {{number}} deleted",
+        "deleteConflict": "This trailer is referenced by open trips and cannot be deleted"
+      },
+      "confirm": {
+        "deleteDescription": "This action cannot be undone. Are you sure you want to delete trailer {{number}}?"
+      }
+    },
+    "shippingDocuments": {
+      "title": "Shipping Documents",
+      "columns": {
+        "number": "Number",
+        "notes": "Notes",
+        "created": "Created"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by number"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "actions": {
+        "add": "Add Document"
+      },
+      "rowActionsLabel": "Actions for document {{number}}",
+      "form": {
+        "addTitle": "Add shipping document",
+        "editTitle": "Edit shipping document",
+        "fields": {
+          "number": "Number",
+          "notes": "Notes"
+        }
+      },
+      "toast": {
+        "created": "Document {{number}} created",
+        "updated": "Document {{number}} updated",
+        "deleted": "Document {{number}} deleted",
+        "deleteConflict": "This document is referenced and cannot be deleted"
+      },
+      "confirm": {
+        "deleteDescription": "This action cannot be undone. Are you sure you want to delete document {{number}}?"
+      }
+    }
+  },
+  "fleetDrivers": {
+    "tabs": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "addDriver": "Add Driver",
+      "sendPasswordReset": "Send password reset",
+      "rowMenuLabel": "Actions for {{name}}"
+    },
+    "filters": {
+      "searchPlaceholder": "Search drivers…",
+      "fleetManager": "Fleet Manager"
+    },
+    "columns": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "username": "Username",
+      "fleetManager": "Fleet Manager",
+      "unitNumber": "Unit #",
+      "appVersion": "App Version",
+      "activatedOn": "Activated On",
+      "status": "Status"
+    },
+    "empty": {
+      "title": "No drivers yet",
+      "description": "Add a driver to get started."
+    },
+    "form": {
+      "addTitle": "Add Driver",
+      "editTitle": "Edit Driver",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "username": "Username",
+      "usernameHint": "4-32 characters: lowercase letters, digits, \".\" or \"_\".",
+      "email": "Email",
+      "phone": "Phone",
+      "emailOrPhoneHint": "An email or a phone number is required for the invitation.",
+      "licenseNo": "License No",
+      "licenseNoEditHint": "Leave blank to keep the current license number.",
+      "licenseRegion": "License Region",
+      "defaultUnit": "Default Unit",
+      "fleetManager": "Fleet Manager",
+      "homeTerminal": "Home Terminal",
+      "city": "City",
+      "state": "State",
+      "zip": "Zip",
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "notes": "Notes"
+    },
+    "license": {
+      "reveal": "Reveal license number",
+      "hide": "Hide license number",
+      "copy": "Copy license number"
+    },
+    "coDrivers": {
+      "title": "Co-Drivers",
+      "emptyTitle": "No co-driver",
+      "emptyDescription": "This driver has no co-driver paired.",
+      "selectPlaceholder": "Select a driver to pair",
+      "link": "Link co-driver",
+      "linked": "Co-driver linked",
+      "linkFailed": "Could not link this co-driver.",
+      "unlink": "Unlink",
+      "unlinkConfirm": "Are you sure you want to unlink this co-driver?",
+      "unlinked": "Co-driver unlinked",
+      "unlinkFailed": "Could not unlink this co-driver.",
+      "loadError": "Could not load co-drivers."
+    },
+    "confirm": {
+      "deactivate": "Are you sure you want to deactivate {{name}}?",
+      "delete": "This action cannot be undone. Are you sure you want to delete {{name}}?",
+      "resetPasswordTitle": "Send password reset?",
+      "resetPassword": "This sends a new invitation link to {{name}} and cancels their current sessions."
+    },
+    "toast": {
+      "created": "Driver created",
+      "updated": "Driver updated",
+      "deleted": "Driver deleted",
+      "deleteFailed": "Could not delete this driver.",
+      "activated": "{{name}} activated",
+      "activateFailed": "Could not activate this driver.",
+      "deactivated": "Driver deactivated",
+      "deactivateFailed": "Could not deactivate this driver.",
+      "passwordResetSent": "Password reset link sent",
+      "passwordResetFailed": "Could not send the password reset link."
+    },
+    "detail": {
+      "tabsLabel": "Driver detail",
+      "tabs": {
+        "information": "Information",
+        "activities": "Activities",
+        "dailyLogs": "Daily logs"
+      },
+      "notFound": "This driver could not be found.",
+      "backToList": "Back to Driver Management",
+      "activitiesEmptyTitle": "No activity yet",
+      "activitiesEmptyDescription": "Changes to this driver will show up here.",
+      "activitiesColumns": {
+        "timestamp": "Time Stamp",
+        "editedBy": "Edited By",
+        "activity": "Activity"
+      },
+      "activitySummary": "{{field}} changed from {{oldValue}} to {{newValue}}",
+      "dailyLogsEmptyTitle": "No daily logs",
+      "dailyLogsEmptyDescription": "No daily logs in the current certification window.",
+      "dailyLogsColumns": {
+        "date": "Date",
+        "certification": "Certification",
+        "coDriver": "Co-Driver",
+        "action": "Action"
+      },
+      "certificationStatus": {
+        "uncertified": "Uncertified",
+        "certified": "Certified",
+        "needs_recertify": "Needs recertify"
+      },
+      "viewLog": "View log"
+    }
+  },
+  "fleetUsers": {
+    "actions": {
+      "inviteUser": "Invite User",
+      "resendInvitation": "Resend invitation",
+      "sendPasswordReset": "Send password reset",
+      "rowMenuLabel": "Actions for {{name}}"
+    },
+    "filters": {
+      "searchPlaceholder": "Search users…",
+      "status": "Status"
+    },
+    "columns": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "role": "Role",
+      "phone": "Phone",
+      "branch": "Branch",
+      "status": "Status"
+    },
+    "empty": {
+      "title": "No users yet",
+      "description": "Invite a user to get started."
+    },
+    "form": {
+      "inviteTitle": "Invite User",
+      "editTitle": "Edit User",
+      "sendInvite": "Send invite",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "username": "Username",
+      "usernameHint": "4-32 characters: lowercase letters, digits, \".\" or \"_\".",
+      "email": "Email",
+      "emailOrPhoneHint": "An email or a phone number is required for the invitation.",
+      "phone": "Phone",
+      "role": "Role"
+    },
+    "confirm": {
+      "deactivate": "Are you sure you want to deactivate {{name}}?",
+      "delete": "This action cannot be undone. Are you sure you want to delete {{name}}?",
+      "resetPasswordTitle": "Send password reset?",
+      "resetPassword": "This sends a new invitation link to {{name}} and cancels their current sessions."
+    },
+    "toast": {
+      "invited": "Invitation sent",
+      "updated": "User updated",
+      "deleted": "User deleted",
+      "deleteFailed": "Could not delete this user.",
+      "activated": "{{name}} activated",
+      "activateFailed": "Could not activate this user.",
+      "deactivated": "User deactivated",
+      "deactivateFailed": "Could not deactivate this user.",
+      "invitationResent": "Invitation resent to {{name}}",
+      "invitationResendFailed": "Could not resend the invitation.",
+      "passwordResetSent": "Password reset link sent",
+      "passwordResetFailed": "Could not send the password reset link."
+    }
+  },
+  "fleetRoles": {
+    "actions": {
+      "addRole": "Add Role",
+      "duplicate": "Duplicate",
+      "systemImmutable": "System roles cannot be edited or deleted.",
+      "rowMenuLabel": "Actions for {{name}}"
+    },
+    "filters": {
+      "searchPlaceholder": "Search roles…",
+      "scope": "Scope"
+    },
+    "columns": {
+      "name": "Role Name",
+      "scope": "Scope",
+      "users": "Users",
+      "system": "System"
+    },
+    "scopeLabel": {
+      "company": "Company",
+      "branch": "Branch",
+      "self": "Self"
+    },
+    "empty": {
+      "title": "No roles yet",
+      "description": "Add a role to get started."
+    },
+    "form": {
+      "addTitle": "Add Role",
+      "editTitle": "Edit Role",
+      "duplicateTitle": "Duplicate Role",
+      "name": "Role Name",
+      "description": "Description",
+      "scope": "Scope",
+      "scopeCompany": "Company",
+      "scopeBranch": "Branch",
+      "scopeHint": "Company sees all branches; Branch is limited to the holder's own branch.",
+      "permissionsTitle": "Permissions",
+      "permissionsLoadError": "Could not load the permission catalogue.",
+      "selectAllInGroup": "Select all",
+      "systemLockedNotice": "This is a system role and cannot be edited. Use Duplicate to create an editable copy."
+    },
+    "confirm": {
+      "delete": "This action cannot be undone. Are you sure you want to delete {{name}}?",
+      "inUseTitle": "Role is in use",
+      "viewUsers": "View users"
+    },
+    "toast": {
+      "created": "Role \"{{name}}\" created",
+      "updated": "Role updated",
+      "deleted": "Role deleted",
+      "deleteFailed": "Could not delete this role."
+    }
   }
 }

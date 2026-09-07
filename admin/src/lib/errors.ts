@@ -72,8 +72,18 @@ export class ApiError extends Error implements NormalizedError {
   readonly fields: Record<string, string>;
   readonly retryAfterSeconds?: number;
   readonly traceId?: string;
+  /**
+   * Ba'zi endpointlar (masalan `POST /units|drivers/import`, TZ 2.3/D-f9)
+   * muvaffaqiyatsiz javobda ham standart `{error:...}` konvertidan farqli,
+   * domenga xos tanani qaytaradi (masalan `ImportResultEnvelope`:
+   * `{data:{imported,total,errors[]}}`). `client.ts`dagi `errorMiddleware`
+   * shu turdagi so'rovlar uchun butun JSON tanani shu yerga saqlaydi;
+   * chaqiruvchi (masalan `useUnitsImport`) uni o'zi generatsiya qilingan
+   * tipga o'qiydi. Boshqa endpointlarda `undefined`.
+   */
+  readonly payload?: unknown;
 
-  constructor(normalized: NormalizedError) {
+  constructor(normalized: NormalizedError, payload?: unknown) {
     super(normalized.message);
     this.name = 'ApiError';
     this.code = normalized.code;
@@ -81,6 +91,7 @@ export class ApiError extends Error implements NormalizedError {
     this.fields = normalized.fields;
     this.retryAfterSeconds = normalized.retryAfterSeconds;
     this.traceId = normalized.traceId;
+    this.payload = payload;
   }
 }
 

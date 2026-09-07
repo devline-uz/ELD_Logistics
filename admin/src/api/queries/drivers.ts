@@ -14,7 +14,7 @@
 import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 
 import { api } from '@/api/client';
-import type { ApiError } from '@/lib/errors';
+import { isApiError, type ApiError } from '@/lib/errors';
 import type {
   CoDriver,
   CoDriverCreate,
@@ -285,9 +285,20 @@ export function useDriversImportTemplate() {
 }
 
 /**
+ * Swagger `422` javobini ham `200` bilan bir xil `ImportResultEnvelope`
+ * (`{data:{imported,total,errors[]}}`) deb belgilaydi (D-f9, `units.ts`dagi
+ * kabi) — `client.ts`ning `errorMiddleware`si buni taniydi va butun JSON
+ * tanani `ApiError.payload`ga saqlaydi.
+ */
+function isImportResultPayload(payload: unknown): payload is { data?: ImportResult } {
+  return typeof payload === 'object' && payload !== null && 'data' in payload;
+}
+
+/**
  * `POST /drivers/import` (`drivers.import`, multipart) — all-or-nothing.
- * ⚠️ Bir xil cheklov `units.ts`dagi kabi: `422` javobidagi `errors[]` hozircha
- * umumiy `errorMiddleware` orqali yo'qoladi (client.ts CR nomzodi).
+ *
+ * `422` va `200` bir xil `ImportResult` qaytaradi — ekran `result.errors`ga
+ * qarab jadval yoki muvaffaqiyat holatini ko'rsatadi (misol `units.ts`da).
  */
 export function useDriversImport() {
   const queryClient = useQueryClient();
@@ -295,10 +306,17 @@ export function useDriversImport() {
     mutationFn: async (file: File): Promise<ImportResult> => {
       const formData = new FormData();
       formData.append('file', file);
-      const { data } = await api.POST('/drivers/import', {
-        body: formData as unknown as { file: string },
-      });
-      return data?.data ?? {};
+      try {
+        const { data } = await api.POST('/drivers/import', {
+          body: formData as unknown as { file: string },
+        });
+        return data?.data ?? {};
+      } catch (err) {
+        if (isApiError(err) && err.status === 422 && isImportResultPayload(err.payload)) {
+          return err.payload.data ?? {};
+        }
+        throw err;
+      }
     },
     onSuccess: (result) => {
       if ((result.imported ?? 0) > 0) {

@@ -13,7 +13,7 @@
 import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 
 import { api } from '@/api/client';
-import type { ApiError } from '@/lib/errors';
+import { isApiError, type ApiError } from '@/lib/errors';
 import type {
   ListResponse,
   Unit,
@@ -220,15 +220,27 @@ export function useUnitsImportTemplate() {
 }
 
 /**
+ * Swagger `422` javobini ham `200` bilan bir xil `ImportResultEnvelope`
+ * (`{data:{imported,total,errors[]}}`) deb belgilaydi — umumiy `{error:{...}}`
+ * konvertidan farqli (D-f9). `client.ts`dagi `errorMiddleware` bu holatni
+ * `STRUCTURED_ERROR_RESPONSE_PATHS` ro'yxati orqali taniydi va butun JSON
+ * tanani `ApiError.payload`ga saqlaydi — shu yerda o'sha shakl tekshiriladi.
+ */
+function isImportResultPayload(payload: unknown): payload is { data?: ImportResult } {
+  return typeof payload === 'object' && payload !== null && 'data' in payload;
+}
+
+/**
  * `POST /units/import` (`units.import`, multipart) — all-or-nothing (fe §11/F83).
  *
- * ⚠️ **Ma'lum cheklov**: swagger `422` javobini ham `ImportResultEnvelope`
- * (`{data:{imported,total,errors[]}}`) deb belgilaydi — umumiy `{error:{...}}`
- * konvertidan farqli. `client.ts`dagi umumiy `errorMiddleware` faqat `error`
- * blokini biladi, shuning uchun `422` da bu hook **muvaffaqiyatsiz** tugaydi
- * (`ApiError`, qator xatolari yo'qoladi) — `errors[]` hozircha UI'ga
- * yetkazilmaydi. Tuzatish `client.ts`ni o'zgartirishni talab qiladi (bu
- * agentning fayl egaligidan tashqarida) — CR sifatida qayd etilgan (W9 hisobot).
+ * `422` (qator xatolari bor) ham, `200` (barcha qatorlar import qilindi) ham
+ * bir xil `ImportResult` qaytaradi — chaqiruvchi ekran faqat `result.errors`
+ * bo'sh yoki yo'qligiga qarab natija/jadval ko'rsatadi:
+ *
+ * ```ts
+ * const { mutate, data } = useUnitsImport();
+ * // data?.errors?.length ? <ImportErrorTable errors={data.errors} /> : <SuccessToast />
+ * ```
  */
 export function useUnitsImport() {
   const queryClient = useQueryClient();
@@ -236,10 +248,17 @@ export function useUnitsImport() {
     mutationFn: async (file: File): Promise<ImportResult> => {
       const formData = new FormData();
       formData.append('file', file);
-      const { data } = await api.POST('/units/import', {
-        body: formData as unknown as { file: string },
-      });
-      return data?.data ?? {};
+      try {
+        const { data } = await api.POST('/units/import', {
+          body: formData as unknown as { file: string },
+        });
+        return data?.data ?? {};
+      } catch (err) {
+        if (isApiError(err) && err.status === 422 && isImportResultPayload(err.payload)) {
+          return err.payload.data ?? {};
+        }
+        throw err;
+      }
     },
     onSuccess: (result) => {
       if ((result.imported ?? 0) > 0) {

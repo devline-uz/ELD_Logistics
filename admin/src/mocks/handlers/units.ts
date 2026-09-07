@@ -227,10 +227,10 @@ export const unitsImportHandler = http.post(url('/units/import'), () =>
 );
 
 /**
- * `POST /units/import` — `422` all-or-nothing (F83). ⚠️ `errors[]` shu javobda
- * bor, lekin `units.ts`dagi izohga ko'ra `client.ts`ning umumiy
- * `errorMiddleware`si buni hozircha `ApiError`ga aylantiradi, `errors[]`
- * chaqiruvchiga yetmaydi (CR nomzodi).
+ * `POST /units/import` — `422` all-or-nothing (F83, D-f9). `errors[]`
+ * `client.ts`ning `errorMiddleware`si orqali `ApiError.payload`da saqlanadi
+ * va `useUnitsImport` uni `ImportResult` sifatida qaytaradi (bu javobda bir
+ * qator xato ko'rsatilgan, real hollarda hammasi ro'yxatlanadi).
  */
 export const unitsImportValidationErrorHandler = http.post(url('/units/import'), () =>
   HttpResponse.json(
@@ -238,7 +238,10 @@ export const unitsImportValidationErrorHandler = http.post(url('/units/import'),
       data: {
         imported: 0,
         total: 3,
-        errors: [{ row: 2, field: 'unit_number', message: 'required' }],
+        errors: [
+          { row: 2, field: 'unit_number', message: 'required' },
+          { row: 3, field: 'vin', message: 'must be 17 characters' },
+        ],
       } satisfies ImportResult,
     },
     { status: 422 },

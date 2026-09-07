@@ -279,19 +279,29 @@ Tuzatildi: `.claude/skills/{fe-design-system,fe-testing}`, `docs/tz/07-8-reports
   `id` orqali `PATCH` javobini takroriy ishlatib bo'lmaydi — chunki View ekran `PATCH`
   chaqirmasdan ochiladi), View/Edit ekranlari kesh holatiga bog'liq bo'lishdan xalos bo'ladi.
 
-**2. `POST /units/import` va `POST /drivers/import` — `422` javobi umumiy xato konvertini buzadi.**
+**2. `POST /units/import` va `POST /drivers/import` — `422` javobi umumiy xato konvertini buzadi.
+✅ Hal qilindi (2026-09-07, `fe-architect`).**
 
 - Spec: muvaffaqiyatli holatda ham, `422` (all-or-nothing, F83) holatida ham javob bir xil shaklda —
   `ImportResultEnvelope` (`{data:{imported,total,errors[{row,field,message}]}}`). Bu boshqa barcha
   endpointlardagi xato konvertidan (`{error:{code,message,details}}`) farq qiladi.
-- `src/api/client.ts`dagi umumiy `errorMiddleware` faqat `{error:...}` shaklini biladi va har qanday
-  `!response.ok` javobini `ApiError`ga aylantiradi — `422` uchun `body.error` yo'qligi sababli
-  `errors[]` batamom yo'qoladi (`ApiError.fields` bo'sh qoladi, faqat status/generic xabar qoladi).
-- **Natija:** `src/api/queries/units.ts`ning `useUnitsImport()` va `drivers.ts`ning
-  `useDriversImport()` hozircha faqat "import failed" umumiy xabarini bera oladi — qator-qator
-  xatolar jadvali (F83 talabi: "Fix N errors and try again" + CSV yuklab olish) UI'ga yetib
-  bormaydi.
-- **Tuzatish** `client.ts`ga tegishli (bu agentning fayl egaligidan tashqarida): `errorMiddleware`
-  import endpointlari uchun istisno qilib, `422` javobini o'qib `ImportResult`ni `ApiError.fields`
-  yoki alohida joyga saqlashi kerak — yoki import hooklari alohida (middleware'siz) klient bilan
-  chaqirilishi kerak (`refresh.ts`dagi naqsh kabi). Keyingi bosqichda hal qilinishi kerak.
+- **Yechim:** `src/api/client.ts`dagi `errorMiddleware` ro'yxat/predikat asosida ishlaydi —
+  `STRUCTURED_ERROR_RESPONSE_PATHS` (`/units/import`, `/drivers/import`) ga mos so'rov uchun butun
+  JSON tanani `ApiError.payload`ga saqlaydi (standart `code`/`status`/`message` normalizatsiyasi
+  baribir ishlaydi, faqat `fields` bo'sh qoladi). Boshqa endpointlar uchun `errorMiddleware`
+  o'zgarmadi (regressiya testi bilan tasdiqlangan). `ApiError`ga yangi `readonly payload?: unknown`
+  maydoni qo'shildi.
+- `src/api/queries/units.ts`ning `useUnitsImport()` va `drivers.ts`ning `useDriversImport()` `422`ni
+  `catch` qilib, `ApiError.payload`dan generatsiya qilingan `ImportResult` tipini (`@/api/types`,
+  `schema.d.ts`dan) o'qiydi va uni **muvaffaqiyat natijasi** sifatida qaytaradi — ekran faqat
+  `result.errors.length`ga qarab jadval yoki muvaffaqiyat holatini ko'rsatadi:
+  ```ts
+  const { mutate, data } = useUnitsImport();
+  // data?.errors?.length ? <ImportErrorTable errors={data.errors} /> : <SuccessToast />
+  ```
+- Kengaytiriladi: keyingi bosqichda shunga o'xshash "structured error" endpoint chiqsa,
+  `STRUCTURED_ERROR_RESPONSE_PATHS`ga bitta predikat qo'shiladi — qattiq kodlangan
+  `if (url === ...)` yo'q.
+- MSW handlerlari (`unitsImportValidationErrorHandler`, `driversImportValidationErrorHandler`) ikkita
+  qator xatosi bilan yangilandi; `src/api/client.test.ts` (yangi) + `units.test.ts`/`drivers.test.ts`
+  `useUnitsImport`/`useDriversImport` bloklarida to'liq qamrov bor.

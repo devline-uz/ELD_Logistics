@@ -76,14 +76,47 @@ export const idempotencyMiddleware: Middleware = {
 };
 
 /**
+ * Endpointlar ro'yxati — muvaffaqiyatsiz javobda ham standart `{error:...}`
+ * konverti **emas**, domenga xos tanani qaytaradi (TZ 2.3/D-f9, masalan
+ * `POST /units/import` va `POST /drivers/import` 422 da `ImportResultEnvelope`
+ * — `{data:{imported,total,errors[]}}` — qaytaradi, chunki all-or-nothing
+ * import qator xatolarini shu shaklda hisobot qiladi).
+ *
+ * `errorMiddleware` bunday so'rovlar uchun butun JSON tanani `ApiError.payload`
+ * ga saqlaydi (standart normalizatsiya — `code`/`status`/`message` — baribir
+ * ishlaydi, faqat `fields` bo'sh qoladi, chunki tana `error.details[]` shaklida
+ * emas). Chaqiruvchi (masalan `useUnitsImport`) `payload`ni o'zi generatsiya
+ * qilingan tipga o'qiydi.
+ *
+ * Kengaytirish: yangi "structured error" endpoint chiqsa (masalan keyingi
+ * bosqichdagi bulk operatsiyalar) shu ro'yxatga bitta predikat qo'shiladi —
+ * `errorMiddleware`ning o'zi o'zgarmaydi.
+ */
+const STRUCTURED_ERROR_RESPONSE_PATHS: ReadonlyArray<(schemaPath: string) => boolean> = [
+  (schemaPath) => schemaPath === '/units/import',
+  (schemaPath) => schemaPath === '/drivers/import',
+];
+
+function hasStructuredErrorBody(schemaPath: string): boolean {
+  return STRUCTURED_ERROR_RESPONSE_PATHS.some((matches) => matches(schemaPath));
+}
+
+/**
  * 4. Xato normalizatsiyasi — muvaffaqiyatsiz javob `ApiError` sifatida otiladi,
  * shunda TanStack Query `error` yagona shaklda oladi (`lib/errors.ts`).
  */
 export const errorMiddleware: Middleware = {
-  async onResponse({ response }) {
+  async onResponse({ response, schemaPath }) {
     if (response.ok) return undefined;
 
-    throw new ApiError(await normalizeError(response));
+    const payload: unknown = hasStructuredErrorBody(schemaPath)
+      ? await response
+          .clone()
+          .json()
+          .catch(() => undefined)
+      : undefined;
+
+    throw new ApiError(await normalizeError(response), payload);
   },
   onError({ error }) {
     if (error instanceof ApiError) return error;

@@ -83,17 +83,17 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** 7 ekranda CRUD to'liq ishlaydi, permission testlari o'tadi, import xato hisoboti ko'rinadi, license reveal audit bilan.
 
 ```markdown
-- [ ] 2.1 `api/queries/units.ts`, `drivers.ts`, `eldDevices.ts`, `trailers.ts`, `shippingDocuments.ts`, `users.ts`, `roles.ts`, `permissions.ts`
-- [ ] 2.2 Unit: ro'yxat (tablar, filtrlar, saralash, ustun tanlash) + Add/Edit modal + View + Activities + Diagnostics
-- [ ] 2.3 Unit import/export (shablon yuklab olish, all-or-nothing xato jadvali)
-- [ ] 2.4 Driver: ro'yxat + Add/Edit + View (Information/Activities/Daily logs) + co-driver boshqaruvi
-- [ ] 2.5 Driver: `Send password reset` (dizayndagi parol modali o'rniga) + license reveal (30 s, audit)
-- [ ] 2.6 ELD devices CRUD + `assign-unit` 🎨
-- [ ] 2.7 Trailers, Shipping documents CRUD 🎨
-- [ ] 2.8 Users: ro'yxat + invite + edit + activate/deactivate + resend invitation + reset password
-- [ ] 2.9 Roles: ro'yxat + Add/Edit (105 kalit, 26 guruh, `scope` tanlovi) + system rol himoyasi + 409 ishlovi
-- [ ] 2.10 Barcha formalarda `Password` maydoni yo'qligi tekshiriladi (D2)
-- [ ] 2.11 Integratsiya testlari (MSW): har modul uchun ro'yxat + filtr + forma + xato + permission
+- [x] 2.1 `api/queries/units.ts`, `drivers.ts`, `eldDevices.ts`, `trailers.ts`, `shippingDocuments.ts`, `users.ts`, `roles.ts`, `permissions.ts`
+- [x] 2.2 Unit: ro'yxat (tablar, filtrlar, saralash, ustun tanlash) + Add/Edit modal + View + Activities + Diagnostics
+- [x] 2.3 Unit import/export (shablon yuklab olish, all-or-nothing xato jadvali)
+- [x] 2.4 Driver: ro'yxat + Add/Edit + View (Information/Activities/Daily logs) + co-driver boshqaruvi
+- [x] 2.5 Driver: `Send password reset` (dizayndagi parol modali o'rniga) + license reveal (30 s, audit)
+- [x] 2.6 ELD devices CRUD + `assign-unit` 🎨
+- [x] 2.7 Trailers, Shipping documents CRUD 🎨
+- [x] 2.8 Users: ro'yxat + invite + edit + activate/deactivate + resend invitation + reset password
+- [x] 2.9 Roles: ro'yxat + Add/Edit (105 kalit, 26 guruh, `scope` tanlovi) + system rol himoyasi + 409 ishlovi
+- [x] 2.10 Barcha formalarda `Password` maydoni yo'qligi tekshiriladi (D2)
+- [x] 2.11 Integratsiya testlari (MSW): har modul uchun ro'yxat + filtr + forma + xato + permission
 - [ ] 2.12 `frontend-security-reviewer` (PII, mass-assignment, ruxsat) + `frontend-code-reviewer`
 ```
 

@@ -10,11 +10,13 @@ import {
   unitCreateHandler,
   unitFixture,
   unitGetNotFoundHandler,
+  unitsImportHandler,
+  unitsImportValidationErrorHandler,
   unitsListErrorHandler,
   unitsListHandler,
 } from '@/mocks/handlers/units';
 
-import { useUnit, useUnitCreate, useUnitsList } from './units';
+import { useUnit, useUnitCreate, useUnitsImport, useUnitsList } from './units';
 import { withQueryClient } from './test-utils';
 
 describe('useUnitsList', () => {
@@ -82,4 +84,39 @@ describe('useUnitCreate', () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error?.status).toBe(409);
   });
+});
+
+describe('useUnitsImport', () => {
+  it('200 da barcha qatorlar importlanganini qaytaradi', async () => {
+    server.use(unitsImportHandler);
+    const { result } = renderHook(() => useUnitsImport(), { wrapper: withQueryClient() });
+
+    result.current.mutate(new File(['unit_number\n1021'], 'units.csv', { type: 'text/csv' }));
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual({ imported: 3, total: 3, errors: [] });
+  });
+
+  it(
+    "422 all-or-nothing javobida qator xatolarini (row/field/message) to'liq qaytaradi " +
+      '(D-f9: ImportResultEnvelope standart {error:...} konverti emas)',
+    async () => {
+      server.use(unitsImportValidationErrorHandler);
+      const { result } = renderHook(() => useUnitsImport(), { wrapper: withQueryClient() });
+
+      result.current.mutate(new File(['unit_number\n,'], 'units.csv', { type: 'text/csv' }));
+
+      // Muvaffaqiyatsiz import ham hook darajasida "success" (ImportResult
+      // qaytariladi) — ekran `result.errors`ga qarab jadval chizadi.
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      expect(result.current.data).toEqual({
+        imported: 0,
+        total: 3,
+        errors: [
+          { row: 2, field: 'unit_number', message: 'required' },
+          { row: 3, field: 'vin', message: 'must be 17 characters' },
+        ],
+      });
+    },
+  );
 });

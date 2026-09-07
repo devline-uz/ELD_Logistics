@@ -247,14 +247,20 @@ export const driversImportHandler = http.post(url('/drivers/import'), () =>
   HttpResponse.json({ data: { imported: 2, total: 2, errors: [] } satisfies ImportResult }),
 );
 
-/** `POST /drivers/import` — `422` all-or-nothing (F83, xuddi units kabi CR eslatmasi). */
+/**
+ * `POST /drivers/import` — `422` all-or-nothing (F83, D-f9, xuddi units
+ * kabi — `useDriversImport` `ApiError.payload`dan `ImportResult`ni o'qiydi).
+ */
 export const driversImportValidationErrorHandler = http.post(url('/drivers/import'), () =>
   HttpResponse.json(
     {
       data: {
         imported: 0,
         total: 2,
-        errors: [{ row: 1, field: 'username', message: 'must be 4-32 characters of [a-z0-9._]' }],
+        errors: [
+          { row: 1, field: 'username', message: 'must be 4-32 characters of [a-z0-9._]' },
+          { row: 2, field: 'license_no', message: 'required' },
+        ],
       } satisfies ImportResult,
     },
     { status: 422 },
