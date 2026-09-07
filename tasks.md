@@ -32,11 +32,11 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] 0.8 `src/api/types.ts` — 165 schema-backed alias, 30+ domen. `Dto<>` helper nom spec'da yo'q bo'lsa kompilyatsiya xatosi beradi
 - [x] 0.9 `src/api/client.ts` — `openapi-fetch` + 4 middleware (auth, company, idempotency, error)
 - [x] 0.10 `src/lib/errors.ts` — `normalizeError`, kod → i18n kaliti xaritasi
-- [ ] 0.11 `src/features/auth/` — login, forgot/reset password, invitation accept, 2FA
-- [ ] 0.12 Auth store (Zustand): access token xotirada, refresh `sessionStorage` da
-- [ ] 0.13 Refresh mutex + proaktiv (80 % TTL) + reaktiv (401) yangilash; reuse → to'liq logout
-- [ ] 0.14 `GET /app/config` bootstrap: soat siljishi, feature flags
-- [ ] 0.15 `GET /me` — profil, ruxsatlar, company (region, unit_system, regulation_profile, timezone)
+- [x] 0.11 `src/features/auth/` — LoginPage, 2FA setup/verify, forgot/reset password, invitation accept + `AuthLayout` + zod sxemalari
+- [x] 0.12 Auth store (Zustand): access token **faqat xotirada**, refresh `sessionStorage` (`eld.rt`) da
+- [x] 0.13 Refresh mutex (single-flight) + proaktiv 80% TTL + reaktiv 401→refresh→retry; reuse → to'liq logout; refresh 401 halqasi yo'q (5 test)
+- [x] 0.14 `GET /app/config` bootstrap: soat siljishi, feature flags (`BootstrapGate`)
+- [x] 0.15 `GET /me` — profil → ruxsatlar `PermissionsProvider` ga, company → company store
 - [x] 0.16 `src/lib/permissions.ts` — **104 haqiqiy kalit** (TZ dagi 105 noto'g'ri), 28 guruh + `usePermission()` + `PermissionGate`
 - [x] 0.17 `permissions.catalog.test.ts` — `swagger.json` dagi `x-permission` bilan ikki tomonlama solishtirish (8 test), OR istisnolari hujjatlashtirildi
 - [x] 0.18 `AppLayout` — 3 qatlamli header (brend + nav + breadcrumb), profil menyusi
