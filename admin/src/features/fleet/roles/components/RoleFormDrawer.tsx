@@ -8,7 +8,7 @@
  * `Duplicate` — system roldan nusxa olib yangi (tizim bo'lmagan) rol
  * yaratish yo'li.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +23,7 @@ import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Drawer } from '@/components/ui/Drawer';
+import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
 
 import { roleFormSchema, type RoleFormValues } from '../schemas';
 import { RolePermissionGroups } from './RolePermissionGroups';
@@ -72,13 +73,13 @@ export function RoleFormDrawer({
     defaultValues,
   });
 
-  useEffect(() => {
-    if (open) {
-      form.reset(defaultValues);
-      setFormError(undefined);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, role?.id, duplicateFrom]);
+  useResetFormOnOpen(
+    form,
+    open,
+    () => defaultValues,
+    [role?.id, duplicateFrom],
+    () => setFormError(undefined),
+  );
 
   const handleClose = () => {
     if (!isSystemLocked && form.formState.isDirty) {

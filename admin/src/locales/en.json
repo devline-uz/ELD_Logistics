@@ -122,6 +122,13 @@
     "boolean": {
       "yes": "Yes",
       "no": "No"
+    },
+    "fields": {
+      "branch": "Branch"
+    },
+    "filters": {
+      "branch": "Branch",
+      "allBranches": "All branches"
     }
   },
   "enums": {
@@ -881,11 +888,43 @@
     "actions": {
       "addDriver": "Add Driver",
       "sendPasswordReset": "Send password reset",
-      "rowMenuLabel": "Actions for {{name}}"
+      "rowMenuLabel": "Actions for {{name}}",
+      "export": "Export Drivers",
+      "import": "Import Drivers"
     },
     "filters": {
       "searchPlaceholder": "Search drivers…",
       "fleetManager": "Fleet Manager"
+    },
+    "import": {
+      "title": "Import drivers",
+      "downloadTemplateLabel": "Download a template to get started:",
+      "dragHint": "Drag and drop a CSV or XLSX file here, or",
+      "fileInputLabel": "Choose a file to import",
+      "errorsTitle": "Row errors",
+      "nothingImported": "Nothing was imported. Fix {{count}} errors and try again.",
+      "summary": "Imported {{imported}} of {{total}} rows.",
+      "actions": {
+        "downloadCsv": "Download CSV",
+        "downloadXlsx": "Download XLSX",
+        "browse": "Browse files",
+        "upload": "Upload",
+        "downloadErrors": "Download errors as CSV"
+      },
+      "columns": {
+        "row": "Row",
+        "field": "Field",
+        "message": "Message"
+      },
+      "errors": {
+        "invalidType": "Only CSV or XLSX files are accepted.",
+        "tooLarge": "File must be 10 MB or smaller.",
+        "templateFailed": "Could not download the template",
+        "genericFailure": "Import failed. Please try again."
+      },
+      "toast": {
+        "success": "{{count}} drivers imported"
+      }
     },
     "columns": {
       "firstName": "First Name",
@@ -959,7 +998,8 @@
       "deactivated": "Driver deactivated",
       "deactivateFailed": "Could not deactivate this driver.",
       "passwordResetSent": "Password reset link sent",
-      "passwordResetFailed": "Could not send the password reset link."
+      "passwordResetFailed": "Could not send the password reset link.",
+      "exportFailed": "Could not export drivers."
     },
     "detail": {
       "tabsLabel": "Driver detail",
@@ -967,6 +1007,21 @@
         "information": "Information",
         "activities": "Activities",
         "dailyLogs": "Daily logs"
+      },
+      "hosSummary": {
+        "title": "Hours of Service",
+        "breakLeft": "Break",
+        "driveLeft": "Drive",
+        "shiftLeft": "Shift",
+        "cycleLeft": "Cycle",
+        "violationTypes": {
+          "drive_limit": "Drive limit",
+          "shift_limit": "Shift limit",
+          "break_required": "Break required",
+          "cycle_limit": "Cycle limit",
+          "form_manner_trailer": "Form & manner: trailer",
+          "form_manner_doc": "Form & manner: document"
+        }
       },
       "notFound": "This driver could not be found.",
       "backToList": "Back to Driver Management",

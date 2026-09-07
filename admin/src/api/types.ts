@@ -442,3 +442,38 @@ export type ShippingDocumentsListParams = NonNullable<
 export type UsersListParams = NonNullable<paths['/users']['get']['parameters']['query']>;
 
 export type RolesListParams = NonNullable<paths['/roles']['get']['parameters']['query']>;
+
+/**
+ * `GET /company/branches` — `scope=company` administratori uchun filial
+ * tanlovi (Unit/Driver/User Add/Edit formalari va ro'yxat filtrlari,
+ * `docs/tz/07-3-fleet.md` §7.3.1/§7.3.4/§7.3.9, bosqich 2 ko'rigi B1).
+ */
+export type BranchesListParams = NonNullable<
+  paths['/company/branches']['get']['parameters']['query']
+>;
+
+/** `GET /drivers/{id}/daily-logs` — Logs By Driver oynasi (3.1). */
+export type DriverDailyLogsParams = NonNullable<
+  paths['/drivers/{id}/daily-logs']['get']['parameters']['query']
+>;
+
+/** `GET /drivers/{id}/hos-summary` — `date` (YYYY-MM-DD), default bugun. */
+export type HosSummaryParams = NonNullable<
+  paths['/drivers/{id}/hos-summary']['get']['parameters']['query']
+>;
+
+/** `GET /log-edit-requests` — `status`/`driver_id` filtri + pagination. */
+export type LogEditRequestsListParams = NonNullable<
+  paths['/log-edit-requests']['get']['parameters']['query']
+>;
+
+/** `GET /tracking/live` — Logs By Unit asosiy manbai (F95). */
+export type TrackingLiveParams = NonNullable<paths['/tracking/live']['get']['parameters']['query']>;
+
+/** `GET /unidentified-events` — Unassigned Driving ro'yxati. */
+export type UnidentifiedEventsListParams = NonNullable<
+  paths['/unidentified-events']['get']['parameters']['query']
+>;
+
+/** `GET /violations` — 10 turdagi filtr + `severity`/`resolved`/sana oralig'i. */
+export type ViolationsListParams = NonNullable<paths['/violations']['get']['parameters']['query']>;

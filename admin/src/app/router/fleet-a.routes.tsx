@@ -10,11 +10,12 @@ import type { RouteObject } from 'react-router-dom';
 import { guardedRoute } from '@/app/router/route-helpers';
 import { PERM } from '@/lib/permissions';
 
-const loadUnits = () => import('@/features/fleet/units/UnitListPage');
-const loadUnitDetail = () => import('@/features/fleet/units/UnitDetailPage');
-const loadEldDevices = () => import('@/features/fleet/eld/EldDeviceListPage');
-const loadTrailers = () => import('@/features/fleet/trailers/TrailerListPage');
-const loadShippingDocuments = () => import('@/features/fleet/documents/ShippingDocumentListPage');
+const loadUnits = () => import('@/features/fleet/units/pages/UnitListPage');
+const loadUnitDetail = () => import('@/features/fleet/units/pages/UnitDetailPage');
+const loadEldDevices = () => import('@/features/fleet/eld/pages/EldDeviceListPage');
+const loadTrailers = () => import('@/features/fleet/trailers/pages/TrailerListPage');
+const loadShippingDocuments = () =>
+  import('@/features/fleet/documents/pages/ShippingDocumentListPage');
 
 export const fleetARoutes: RouteObject[] = [
   guardedRoute('units', async () => (await loadUnits()).UnitListPage, {

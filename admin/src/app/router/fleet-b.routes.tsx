@@ -16,6 +16,10 @@ const loadDriverList = () =>
   import('@/features/fleet/drivers/pages/DriverListPage').then((m) => m.DriverListPage);
 const loadDriverDetail = () =>
   import('@/features/fleet/drivers/pages/DriverDetailPage').then((m) => m.DriverDetailPage);
+const loadDriverActivities = () =>
+  import('@/features/fleet/drivers/pages/DriverDetailPage').then((m) => m.DriverActivitiesPage);
+const loadDriverDailyLogs = () =>
+  import('@/features/fleet/drivers/pages/DriverDetailPage').then((m) => m.DriverDailyLogsPage);
 const loadUserList = () =>
   import('@/features/fleet/users/pages/UserListPage').then((m) => m.UserListPage);
 const loadRoleList = () =>
@@ -24,6 +28,12 @@ const loadRoleList = () =>
 export const fleetBRoutes: RouteObject[] = [
   guardedRoute('drivers', loadDriverList, { permission: PERM.driversRead }),
   guardedRoute('drivers/:driverId', loadDriverDetail, { permission: PERM.driversRead }),
+  guardedRoute('drivers/:driverId/activities', loadDriverActivities, {
+    permission: PERM.driversRead,
+  }),
+  guardedRoute('drivers/:driverId/logs', loadDriverDailyLogs, {
+    permission: PERM.driversRead,
+  }),
   guardedRoute('users', loadUserList, { permission: PERM.usersRead }),
   guardedRoute('roles', loadRoleList, {
     anyOf: [PERM.permissionsRead, PERM.rolesRead],

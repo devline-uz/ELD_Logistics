@@ -305,3 +305,33 @@ Tuzatildi: `.claude/skills/{fe-design-system,fe-testing}`, `docs/tz/07-8-reports
 - MSW handlerlari (`unitsImportValidationErrorHandler`, `driversImportValidationErrorHandler`) ikkita
   qator xatosi bilan yangilandi; `src/api/client.test.ts` (yangi) + `units.test.ts`/`drivers.test.ts`
   `useUnitsImport`/`useDriversImport` bloklarida to'liq qamrov bor.
+
+
+### Q17 — `POST /unidentified-events/{id}/assign` swagger'da buzuq (backend CR nomzodi)
+
+**Muammo:** endpoint ikkita `in: body` parametrini e'lon qiladi (`id` va haqiqiy tana).
+`swagger2openapi` ularni bitta `requestBody` ga yig'adi va **`{id}` path parametrini jim tashlab yuboradi**.
+
+**Dalil:** `openapi3.json` da `x-s2o-warning: "... has multiple requestBodies"`;
+`schema.d.ts` da `path: never`, `requestBody: string`.
+
+**Vaqtinchalik yechim (frontend):** `api/queries/unidentified.ts` da hujjatlashtirilgan
+`as unknown as <shape>` tip kasti — `units.ts` dagi import multipart nomuvofiqligi uchun
+ishlatilgan naqshning aynan o'zi. `openapi-fetch` manbasida tasdiqlangan: `params.path`
+almashinuvi ish vaqtida TS tipidan **mustaqil** bajariladi, ya'ni yechim funksional
+jihatdan to'g'ri, shunchaki tipni bosish emas.
+
+**Backend CR taklifi:** `id` ni `in: path` deb e'lon qilish (swaggo annotatsiyasi),
+shunda generator to'g'ri tip beradi va kast olib tashlanadi.
+
+---
+
+### D28 — `POST /daily-logs/{id}/events` admin amali EMAS
+
+Swagger tavsifi bu endpointni **haydovchining o'z tuzatishi** deb belgilaydi.
+Admin panel undan **foydalanmaydi** (§1.1, Q26/Q31 — admin hech qachon haydovchi
+nomidan log yozmaydi). Admin ekranlari **faqat** `useLogEditRequestPropose`
+(taklif → haydovchi tasdig'i) orqali ishlaydi — F100.
+
+`useLogAddEvent` hooki yozilgan, lekin izohida shu ogohlantirish bor.
+Ekran agentlari uni **chaqirmasligi** kerak.

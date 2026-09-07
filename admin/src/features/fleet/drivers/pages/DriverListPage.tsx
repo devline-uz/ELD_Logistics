@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { ColumnDef } from '@tanstack/react-table';
 
+import { useBranchesList } from '@/api/queries/branches';
 import {
   useDriverActivate,
   useDriverCreate,
@@ -17,6 +18,7 @@ import {
   useDriverDelete,
   useDriverResetPassword,
   useDriverUpdate,
+  useDriversExport,
   useDriversList,
 } from '@/api/queries/drivers';
 import { useUsersList } from '@/api/queries/users';
@@ -32,11 +34,14 @@ import { PermissionGate } from '@/components/ui/PermissionGate';
 import { useToast } from '@/components/feedback/toast-context';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
+import { useIsCompanyScope } from '@/hooks/useScope';
 import { useWriteGuard } from '@/hooks/useWriteGuard';
 import { PERM } from '@/lib/permissions';
 
+import { RowActionsMenu, type RowActionItem } from '@/components/data/RowActionsMenu';
+
 import { DriverFormModal } from '../components/DriverFormModal';
-import { RowActionsMenu, type RowAction } from '../components/RowActionsMenu';
+import { DriverImportModal } from '../components/DriverImportModal';
 
 type DriverTab = 'active' | 'inactive';
 
@@ -62,6 +67,7 @@ export function DriverListPage() {
 
   const [tab, setTab] = useState<DriverTab>('active');
   const [formOpen, setFormOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [editingDriver, setEditingDriver] = useState<Driver | undefined>();
   const [deactivateTarget, setDeactivateTarget] = useState<Driver | undefined>();
   const [deleteTarget, setDeleteTarget] = useState<Driver | undefined>();
@@ -78,7 +84,6 @@ export function DriverListPage() {
       branch_id: listParams.filters.branch_id,
       fleet_manager_id: listParams.filters.fleet_manager_id,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [listParams, tab],
   );
 
@@ -89,8 +94,27 @@ export function DriverListPage() {
   const deactivateMutation = useDriverDeactivate();
   const deleteMutation = useDriverDelete();
   const resetPasswordMutation = useDriverResetPassword();
+  const exportDrivers = useDriversExport();
+
+  const handleExport = async (format: 'csv' | 'xlsx') => {
+    try {
+      const blob = await exportDrivers.mutateAsync({ format });
+      const objectUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = `drivers.${format}`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(objectUrl);
+    } catch {
+      toast.show({ variant: 'error', message: t('fleetDrivers.toast.exportFailed') });
+    }
+  };
 
   const managersQuery = useUsersList({ per_page: 50 });
+  const isCompanyScope = useIsCompanyScope();
+  const branchesQuery = useBranchesList({ per_page: 50 }, { enabled: isCompanyScope });
   const filters: FilterDef[] = [
     {
       key: 'fleet_manager_id',
@@ -101,6 +125,19 @@ export function DriverListPage() {
       })),
       placeholder: t('fleetDrivers.filters.fleetManager'),
     },
+    ...(isCompanyScope
+      ? [
+          {
+            key: 'branch_id',
+            label: t('common.filters.branch'),
+            options: (branchesQuery.data?.data ?? []).map((branch) => ({
+              value: branch.id ?? '',
+              label: branch.name ?? branch.id ?? '',
+            })),
+            placeholder: t('common.filters.branch'),
+          } satisfies FilterDef,
+        ]
+      : []),
   ];
 
   const columns = useMemo<ColumnDef<Driver, unknown>[]>(
@@ -174,10 +211,10 @@ export function DriverListPage() {
   const rows = driversQuery.data?.data ?? [];
   const total = driversQuery.data?.meta?.total ?? 0;
 
-  const buildRowActions = (driver: Driver): RowAction[] => {
+  const buildRowActions = (driver: Driver): RowActionItem[] => {
     const id = driver.id ?? '';
     const name = `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim();
-    const actions: RowAction[] = [
+    const actions: RowActionItem[] = [
       {
         key: 'view',
         label: t('common.actions.view'),
@@ -251,16 +288,34 @@ export function DriverListPage() {
       <ListScreen
         title={t('pages.drivers.title')}
         actions={
-          <PermissionGate permission={PERM.driversCreate}>
-            <Button
-              onClick={() => {
-                setEditingDriver(undefined);
-                setFormOpen(true);
-              }}
-            >
-              {t('fleetDrivers.actions.addDriver')}
-            </Button>
-          </PermissionGate>
+          <>
+            <PermissionGate permission={PERM.driversExport}>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  void handleExport('csv');
+                }}
+                loading={exportDrivers.isPending}
+              >
+                {t('fleetDrivers.actions.export')}
+              </Button>
+            </PermissionGate>
+            <PermissionGate permission={PERM.driversImport}>
+              <Button variant="secondary" onClick={() => setImportOpen(true)}>
+                {t('fleetDrivers.actions.import')}
+              </Button>
+            </PermissionGate>
+            <PermissionGate permission={PERM.driversCreate}>
+              <Button
+                onClick={() => {
+                  setEditingDriver(undefined);
+                  setFormOpen(true);
+                }}
+              >
+                {t('fleetDrivers.actions.addDriver')}
+              </Button>
+            </PermissionGate>
+          </>
         }
         tabs={[
           { key: 'active', label: t('fleetDrivers.tabs.active') },
@@ -306,7 +361,7 @@ export function DriverListPage() {
             getRowId={(driver, index) => driver.id ?? String(index)}
             rowActions={(driver) => (
               <RowActionsMenu
-                actions={buildRowActions(driver)}
+                items={buildRowActions(driver)}
                 ariaLabel={t('fleetDrivers.actions.rowMenuLabel', {
                   name: `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim(),
                 })}
@@ -341,6 +396,10 @@ export function DriverListPage() {
             toast.show({ variant: 'success', message: t('fleetDrivers.toast.updated') });
           }}
         />
+      ) : null}
+
+      {importOpen ? (
+        <DriverImportModal open={importOpen} onClose={() => setImportOpen(false)} />
       ) : null}
 
       <ConfirmDialog

@@ -7,6 +7,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '@/app/i18n';
 import {
   driverCreateHandler,
+  driversExportHandler,
+  driversImportTemplateHandler,
   driversListEmptyHandler,
   driversListErrorHandler,
   driversListHandler,
@@ -82,5 +84,27 @@ describe('DriverListPage', () => {
     const dialog = await screen.findByRole('dialog');
     expect(within(dialog).queryByLabelText(/password/i)).not.toBeInTheDocument();
     expect(dialog.querySelector('input[type="password"]')).toBeNull();
+  });
+
+  it("Export/Import tugmalari ruxsat bo'lsa ko'rinadi va Import modalni ochadi (B2)", async () => {
+    server.use(driversListHandler, usersListHandler, driversExportHandler, driversImportTemplateHandler);
+    const user = userEvent.setup();
+    renderPage([PERM.driversRead, PERM.driversExport, PERM.driversImport]);
+
+    await waitFor(() => expect(screen.getByText('John')).toBeInTheDocument());
+
+    expect(screen.getByRole('button', { name: /export drivers/i })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /import drivers/i }));
+
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+  });
+
+  it("`drivers.export`/`drivers.import` bo'lmasa tugmalar DOM'da yo'q", async () => {
+    server.use(driversListHandler, usersListHandler);
+    renderPage([PERM.driversRead]);
+
+    await waitFor(() => expect(screen.getByText('John')).toBeInTheDocument());
+    expect(screen.queryByRole('button', { name: /export drivers/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /import drivers/i })).not.toBeInTheDocument();
   });
 });

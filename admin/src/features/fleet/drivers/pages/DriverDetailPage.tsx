@@ -1,7 +1,11 @@
 /**
  * Driver View — `/drivers/:driverId` (2.4, TZ 7.3.5).
  *
- * Tablar: Information (+ Co-Drivers bloki) · Activities · Daily logs.
+ * Tablar: Information (+ Co-Drivers va HOS summary bloklari) · Activities ·
+ * Daily logs. Activities/Daily logs — **haqiqiy marshrutlar**
+ * (`/drivers/:id/activities`, `/drivers/:id/logs`; bosqich 2 ko'rigi B4,
+ * `fleet-b.routes.tsx`dagi `DriverActivitiesPage`/`DriverDailyLogsPage`
+ * `tab` propi bilan shu komponentni ishlatadi — `UnitDetailPage` naqshi).
  *
  * `GET /drivers/{id}` haqiqiy tarmoq so'rovi (`drivers.read`) — Users/Roles
  * dan farqli, bu endpoint swaggerda bor. Cross-tenant/o'chirilgan haydovchi
@@ -12,14 +16,17 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useDriver, useDriverActivities, useDriverUpdate } from '@/api/queries/drivers';
+import { useHosSummary } from '@/api/queries/hos';
 import { Badge } from '@/components/ui/Badge';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { ErrorState } from '@/components/feedback/ErrorState';
+import { PermissionGate } from '@/components/ui/PermissionGate';
 import { Skeleton } from '@/components/feedback/Skeleton';
 import { Tabs } from '@/components/ui/Tabs';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { PERM } from '@/lib/permissions';
 
 import { CoDriversPanel } from '../components/CoDriversPanel';
 import { DriverFormModal } from '../components/DriverFormModal';
@@ -28,7 +35,85 @@ import { useDriverDailyLogs } from '../hooks/useDriverDailyLogs';
 import { useToast } from '@/components/feedback/toast-context';
 import type { DriverUpdate } from '@/api/types';
 
-type DetailTab = 'information' | 'activities' | 'dailyLogs';
+export type DriverDetailTab = 'information' | 'activities' | 'dailyLogs';
+
+const TAB_PATH: Record<DriverDetailTab, string> = {
+  information: '',
+  activities: '/activities',
+  dailyLogs: '/logs',
+};
+
+/**
+ * HOS summary — Information tab ichidagi blok (F98 [MUST]: raqamlar
+ * FAQAT backenddan, frontend hech qanday chegara hisoblamaydi).
+ */
+function HosSummaryBlock({ driverId }: { driverId: string }) {
+  const { t } = useTranslation();
+  const { formatDuration } = useDateFormat();
+  const hosQuery = useHosSummary(driverId);
+
+  if (hosQuery.isLoading) {
+    return <Skeleton variant="card" />;
+  }
+
+  if (hosQuery.isError) {
+    if (hosQuery.error?.status === 404) {
+      return null;
+    }
+    return (
+      <ErrorState
+        message={hosQuery.error?.message}
+        onRetry={() => void hosQuery.refetch()}
+      />
+    );
+  }
+
+  const summary = hosQuery.data;
+  if (!summary) return null;
+
+  const counters = summary.counters ?? {};
+  const violations = summary.violations ?? [];
+
+  return (
+    <div className="flex flex-col gap-3 rounded-lg border border-stroke p-4">
+      <h2 className="text-body font-semibold text-neutral-900">
+        {t('fleetDrivers.detail.hosSummary.title')}
+      </h2>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <InfoRow
+          label={t('fleetDrivers.detail.hosSummary.breakLeft')}
+          value={formatDuration(counters.break_left_min)}
+        />
+        <InfoRow
+          label={t('fleetDrivers.detail.hosSummary.driveLeft')}
+          value={formatDuration(counters.drive_left_min)}
+        />
+        <InfoRow
+          label={t('fleetDrivers.detail.hosSummary.shiftLeft')}
+          value={formatDuration(counters.shift_left_min)}
+        />
+        <InfoRow
+          label={t('fleetDrivers.detail.hosSummary.cycleLeft')}
+          value={formatDuration(counters.cycle_left_min)}
+        />
+      </div>
+      {violations.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {violations.map((violation, index) => (
+            <Badge
+              key={`${violation.type ?? 'violation'}-${index}`}
+              tone={violation.severity === 'violation' ? 'error' : 'warning'}
+            >
+              {t(`fleetDrivers.detail.hosSummary.violationTypes.${violation.type}`, {
+                defaultValue: violation.type ?? '',
+              })}
+            </Badge>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
@@ -39,14 +124,13 @@ function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   );
 }
 
-export function DriverDetailPage() {
+export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTab }) {
   const { t } = useTranslation();
   const { formatDateTime, formatDate } = useDateFormat();
   const { driverId } = useParams<{ driverId: string }>();
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [tab, setTab] = useState<DetailTab>('information');
   const [editOpen, setEditOpen] = useState(false);
 
   const driverQuery = useDriver(driverId);
@@ -107,16 +191,18 @@ export function DriverDetailPage() {
             {t(`enums.driver_status.${driver.status}`, { defaultValue: driver.status ?? '' })}
           </Badge>
         </div>
-        <Button variant="secondary" onClick={() => setEditOpen(true)}>
-          {t('common.actions.edit')}
-        </Button>
+        <PermissionGate permission={PERM.driversUpdate}>
+          <Button variant="secondary" onClick={() => setEditOpen(true)}>
+            {t('common.actions.edit')}
+          </Button>
+        </PermissionGate>
       </div>
 
       <Tabs
         ariaLabel={t('fleetDrivers.detail.tabsLabel')}
         idPrefix="driver-detail"
         activeId={tab}
-        onChange={(id) => setTab(id as DetailTab)}
+        onChange={(id) => navigate(`/drivers/${driverId}${TAB_PATH[id as DriverDetailTab]}`)}
         tabs={[
           { id: 'information', label: t('fleetDrivers.detail.tabs.information') },
           { id: 'activities', label: t('fleetDrivers.detail.tabs.activities') },
@@ -155,6 +241,8 @@ export function DriverDetailPage() {
               value={formatDate(driver.activated_on)}
             />
           </div>
+
+          <HosSummaryBlock driverId={driverId} />
 
           <CoDriversPanel driverId={driverId} />
         </div>
@@ -318,6 +406,16 @@ export function DriverDetailPage() {
       ) : null}
     </div>
   );
+}
+
+/** `/drivers/:driverId/activities` — marshrut darajasida alohida komponent (route-helpers `ComponentType`). */
+export function DriverActivitiesPage() {
+  return <DriverDetailPage tab="activities" />;
+}
+
+/** `/drivers/:driverId/logs` — marshrut darajasida alohida komponent. */
+export function DriverDailyLogsPage() {
+  return <DriverDetailPage tab="dailyLogs" />;
 }
 
 export default DriverDetailPage;

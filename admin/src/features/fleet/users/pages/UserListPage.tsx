@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ColumnDef } from '@tanstack/react-table';
 
+import { useBranchesList } from '@/api/queries/branches';
 import {
   useUserActivate,
   useUserCreate,
@@ -30,10 +31,11 @@ import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { PermissionGate } from '@/components/ui/PermissionGate';
 import { useToast } from '@/components/feedback/toast-context';
 import { useListParams } from '@/hooks/useListParams';
+import { useIsCompanyScope } from '@/hooks/useScope';
 import { useWriteGuard } from '@/hooks/useWriteGuard';
 import { PERM } from '@/lib/permissions';
 
-import { RowActionsMenu, type RowAction } from '@/features/fleet/drivers/components/RowActionsMenu';
+import { RowActionsMenu, type RowActionItem } from '@/components/data/RowActionsMenu';
 import { UserFormModal } from '../components/UserFormModal';
 
 const DATA_TABLE_TO_API_SORT: Record<string, UsersListParams['sort']> = {
@@ -65,6 +67,7 @@ export function UserListPage() {
       order: listParams.order,
       status: (listParams.filters.status as UsersListParams['status']) || undefined,
       role_id: listParams.filters.role_id || undefined,
+      branch_id: listParams.filters.branch_id || undefined,
     }),
     [listParams],
   );
@@ -78,6 +81,9 @@ export function UserListPage() {
   const resendInvitationMutation = useUserResendInvitation();
   const resetPasswordMutation = useUserResetPassword();
 
+  const isCompanyScope = useIsCompanyScope();
+  const branchesQuery = useBranchesList({ per_page: 50 }, { enabled: isCompanyScope });
+
   const filters: FilterDef[] = [
     {
       key: 'status',
@@ -89,6 +95,19 @@ export function UserListPage() {
       ],
       placeholder: t('fleetUsers.filters.status'),
     },
+    ...(isCompanyScope
+      ? [
+          {
+            key: 'branch_id',
+            label: t('common.filters.branch'),
+            options: (branchesQuery.data?.data ?? []).map((branch) => ({
+              value: branch.id ?? '',
+              label: branch.name ?? branch.id ?? '',
+            })),
+            placeholder: t('common.filters.branch'),
+          } satisfies FilterDef,
+        ]
+      : []),
   ];
 
   const columns = useMemo<ColumnDef<User, unknown>[]>(
@@ -154,9 +173,9 @@ export function UserListPage() {
   const rows = usersQuery.data?.data ?? [];
   const total = usersQuery.data?.meta?.total ?? 0;
 
-  const buildRowActions = (user: User): RowAction[] => {
+  const buildRowActions = (user: User): RowActionItem[] => {
     const name = `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim();
-    const actions: RowAction[] = [];
+    const actions: RowActionItem[] = [];
 
     if (canWrite(PERM.usersUpdate)) {
       actions.push({
@@ -295,7 +314,7 @@ export function UserListPage() {
             getRowId={(user, index) => user.id ?? String(index)}
             rowActions={(user) => (
               <RowActionsMenu
-                actions={buildRowActions(user)}
+                items={buildRowActions(user)}
                 ariaLabel={t('fleetUsers.actions.rowMenuLabel', {
                   name: `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
                 })}

@@ -7,11 +7,12 @@
  * joriy qiymatni saqlaydi; to'ldirilsa yangilanadi (`license_no_masked`
  * hech qachon formaga qaytarilmaydi — u ochiq qiymatni bilmaydi).
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 
+import { useBranchesList } from '@/api/queries/branches';
 import { useUnitsList } from '@/api/queries/units';
 import { useUsersList } from '@/api/queries/users';
 import type { Driver, DriverCreate, DriverUpdate } from '@/api/types';
@@ -23,6 +24,8 @@ import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
+import { useIsCompanyScope } from '@/hooks/useScope';
 
 import {
   driverCreateSchema,
@@ -99,6 +102,8 @@ export function DriverFormModal({
 
   const unitsQuery = useUnitsList({ status: 'active', per_page: 50 });
   const managersQuery = useUsersList({ per_page: 50 });
+  const isCompanyScope = useIsCompanyScope();
+  const branchesQuery = useBranchesList({ per_page: 50 }, { enabled: isCompanyScope });
 
   const unitOptions = useMemo(
     () =>
@@ -116,6 +121,15 @@ export function DriverFormModal({
         label: user.full_name ?? `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
       })),
     [managersQuery.data],
+  );
+
+  const branchOptions = useMemo(
+    () =>
+      (branchesQuery.data?.data ?? []).map((branch) => ({
+        value: branch.id ?? '',
+        label: branch.name ?? branch.id ?? '',
+      })),
+    [branchesQuery.data],
   );
 
   const defaultValues: DriverCreateFormValues | DriverUpdateFormValues = useMemo(
@@ -147,13 +161,13 @@ export function DriverFormModal({
     defaultValues,
   });
 
-  useEffect(() => {
-    if (open) {
-      form.reset(defaultValues);
-      setFormError(undefined);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, driver?.id]);
+  useResetFormOnOpen(
+    form,
+    open,
+    () => defaultValues,
+    [driver?.id],
+    () => setFormError(undefined),
+  );
 
   const handleClose = () => {
     if (form.formState.isDirty) {
@@ -267,6 +281,17 @@ export function DriverFormModal({
               searchable
               loading={managersQuery.isLoading}
             />
+            {isCompanyScope ? (
+              <FormSelect
+                name="branch_id"
+                control={form.control}
+                label={t('common.fields.branch')}
+                options={branchOptions}
+                clearable
+                searchable
+                loading={branchesQuery.isLoading}
+              />
+            ) : null}
             <FormInput
               name="home_terminal"
               control={form.control}

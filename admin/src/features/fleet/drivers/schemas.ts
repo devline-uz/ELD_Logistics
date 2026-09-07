@@ -11,9 +11,13 @@
  */
 import { z } from 'zod';
 
-const USERNAME_RE = /^[a-z0-9._]{4,32}$/;
-const REQUIRED = { message: 'This field is required.' };
-const EMAIL_OR_PHONE = { message: 'Enter an email or a phone number.' };
+import {
+  EMAIL_OR_PHONE_ISSUE,
+  hasEmailOrPhone,
+  notesField,
+  REQUIRED,
+  usernameField,
+} from '@/lib/validation';
 
 /** Har ikkala forma (Add/Edit) uchun umumiy maydonlar. */
 const baseDriverFields = {
@@ -36,27 +40,17 @@ const baseDriverFields = {
   zip: z.string().trim().max(16).optional().or(z.literal('')),
   address1: z.string().trim().max(120).optional().or(z.literal('')),
   address2: z.string().trim().max(120).optional().or(z.literal('')),
-  notes: z
-    .string()
-    .trim()
-    .max(60, { message: 'Notes must be 60 characters or fewer.' })
-    .optional()
-    .or(z.literal('')),
+  notes: notesField,
 };
 
 /** Add — `username`/`license_no` majburiy, kiritilgach o'zgarmas (F86/F87). */
 export const driverCreateSchema = z
   .object({
     ...baseDriverFields,
-    username: z.string().trim().regex(USERNAME_RE, {
-      message: 'Username must be 4-32 characters: lowercase letters, digits, "." or "_".',
-    }),
+    username: usernameField(true),
     license_no: z.string().trim().min(1, REQUIRED).max(40),
   })
-  .refine((value) => Boolean(value.email) || Boolean(value.phone), {
-    ...EMAIL_OR_PHONE,
-    path: ['email'],
-  });
+  .refine(hasEmailOrPhone, EMAIL_OR_PHONE_ISSUE);
 
 /** Edit — `username` PATCH'da yuborilmaydi (backend `UserUpdate` da yo'q). */
 export const driverUpdateSchema = z
@@ -64,10 +58,7 @@ export const driverUpdateSchema = z
     ...baseDriverFields,
     license_no: z.string().trim().min(1, REQUIRED).max(40).optional().or(z.literal('')),
   })
-  .refine((value) => Boolean(value.email) || Boolean(value.phone), {
-    ...EMAIL_OR_PHONE,
-    path: ['email'],
-  });
+  .refine(hasEmailOrPhone, EMAIL_OR_PHONE_ISSUE);
 
 export type DriverCreateFormValues = z.infer<typeof driverCreateSchema>;
 export type DriverUpdateFormValues = z.infer<typeof driverUpdateSchema>;

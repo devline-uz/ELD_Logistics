@@ -3,11 +3,12 @@
  *
  * D2 [MUST]: hech qanday `type="password"` maydon yo'q.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 
+import { useBranchesList } from '@/api/queries/branches';
 import { useRolesList } from '@/api/queries/roles';
 import type { User, UserCreate, UserUpdate } from '@/api/types';
 import { applyServerErrors } from '@/components/form/applyServerErrors';
@@ -17,6 +18,8 @@ import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Modal } from '@/components/ui/Modal';
+import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
+import { useIsCompanyScope } from '@/hooks/useScope';
 
 import {
   userCreateSchema,
@@ -56,6 +59,17 @@ export function UserFormModal({
     [rolesQuery.data],
   );
 
+  const isCompanyScope = useIsCompanyScope();
+  const branchesQuery = useBranchesList({ per_page: 50 }, { enabled: isCompanyScope });
+  const branchOptions = useMemo(
+    () =>
+      (branchesQuery.data?.data ?? []).map((branch) => ({
+        value: branch.id ?? '',
+        label: branch.name ?? branch.id ?? '',
+      })),
+    [branchesQuery.data],
+  );
+
   const defaultValues: UserCreateFormValues | UserUpdateFormValues = useMemo(
     () => ({
       first_name: user?.first_name ?? '',
@@ -75,13 +89,13 @@ export function UserFormModal({
     defaultValues,
   });
 
-  useEffect(() => {
-    if (open) {
-      form.reset(defaultValues);
-      setFormError(undefined);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, user?.id]);
+  useResetFormOnOpen(
+    form,
+    open,
+    () => defaultValues,
+    [user?.id],
+    () => setFormError(undefined),
+  );
 
   const handleClose = () => {
     if (form.formState.isDirty) {
@@ -182,6 +196,17 @@ export function UserFormModal({
               searchable
               loading={rolesQuery.isLoading}
             />
+            {isCompanyScope ? (
+              <FormSelect
+                name="branch_id"
+                control={form.control}
+                label={t('common.fields.branch')}
+                options={branchOptions}
+                clearable
+                searchable
+                loading={branchesQuery.isLoading}
+              />
+            ) : null}
           </div>
         </form>
       </Modal>

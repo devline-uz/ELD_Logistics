@@ -195,3 +195,42 @@ To'liq jadval: `docs/tz/16-17-registry-open-questions.md`. Kod yozishda tez-tez 
 - `docs/tz-admin-frontend.md` §18.0–18.1 (W1–W10, agent/skill jadvali) — qatorlar 1886–1946
 - `docs/tz-admin-frontend.md` §18.4 (Definition of Done) — qatorlar 2204–2245
 - `docs/tz/16-17-registry-open-questions.md` — to'liq §16 nomuvofiqliklar reestri va §17 ochiq savollar
+
+
+## Token tejash qoidalari (W12–W14) **[MUST]**
+
+O'lchangan fakt: subagent token sarfi **tool chaqiruvlari soniga chiziqli** bog'liq
+(~2000 token/chaqiruv, 22 agent bo'yicha barqaror). Ya'ni qimmat narsa — bitta katta
+o'qish emas, **takroriy chaqiruvlar va shovqinli chiqish**.
+
+**W12 — Tekshiruvlarni birlashtir.** `typecheck`, `lint`, `test`, `build` ni alohida-alohida
+va bir necha marta yugurtirma. Ish oxirida **bir marta** zanjir bilan:
+```bash
+npm run typecheck && npm run lint && npm run test && npm run build
+```
+Oraliq tekshiruv kerak bo'lsa faqat o'zgargan qismga: `npx vitest run src/features/<modul>`.
+
+**W13 — Katta fayllarni to'liq o'qima.** Hajmlari (o'lchangan):
+
+| Fayl | Taxminiy token |
+|---|---|
+| `admin/src/api/schema.d.ts` | ~199k |
+| `admin/openapi/openapi3.json` | ~209k |
+| `admin/openapi/swagger.json` | ~176k |
+| `admin/package-lock.json` | ~102k |
+| `docs/tz-admin-frontend.md` | ~43k |
+
+Bularni **hech qachon** `Read` bilan to'liq ochma. Endpoint shaklini topish uchun:
+```bash
+python3 -c "import json;d=json.load(open('openapi/swagger.json'));print(json.dumps(d['paths']['/units/{id}'],indent=1))"
+```
+`swagger.json` da bitta qator 1030 belgigacha — `grep` natijasi ham qimmat, `cut -c1-200` bilan qirq.
+
+**W14 — Chiqishni filtrla.** `npm run test` ning to'liq chiqishi ~3k token (ilgari 15k edi —
+`vitest.setup.ts` da React Router future-flag ogohlantirishi va jsdom canvas xatosi
+bostirilgandan keyin). Baribir kerak bo'lsa xulosani ol:
+```bash
+npm run test 2>&1 | tail -5
+npm run typecheck 2>&1 | grep "error TS" | head -20
+```
+Muvaffaqiyatli buyruq chiqishini umuman o'qish shart emas: `npm run build >/dev/null 2>&1 && echo OK`.

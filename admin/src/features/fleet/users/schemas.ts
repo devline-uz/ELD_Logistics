@@ -5,8 +5,7 @@
  */
 import { z } from 'zod';
 
-const REQUIRED = { message: 'This field is required.' };
-const USERNAME_RE = /^[a-z0-9._]{4,32}$/;
+import { EMAIL_OR_PHONE_ISSUE, hasEmailOrPhone, REQUIRED, usernameField } from '@/lib/validation';
 
 const baseUserFields = {
   first_name: z.string().trim().min(1, REQUIRED).max(60),
@@ -26,32 +25,17 @@ const baseUserFields = {
 export const userCreateSchema = z
   .object({
     ...baseUserFields,
-    username: z.string().trim().regex(USERNAME_RE, {
-      message: 'Username must be 4-32 characters: lowercase letters, digits, "." or "_".',
-    }),
+    username: usernameField(true),
   })
-  .refine((value) => Boolean(value.email) || Boolean(value.phone), {
-    message: 'Enter an email or a phone number.',
-    path: ['email'],
-  });
+  .refine(hasEmailOrPhone, EMAIL_OR_PHONE_ISSUE);
 
 /** Edit — `username` ixtiyoriy o'zgartirish (`UserUpdate.username?: string`). */
 export const userUpdateSchema = z
   .object({
     ...baseUserFields,
-    username: z
-      .string()
-      .trim()
-      .regex(USERNAME_RE, {
-        message: 'Username must be 4-32 characters: lowercase letters, digits, "." or "_".',
-      })
-      .optional()
-      .or(z.literal('')),
+    username: usernameField(false),
   })
-  .refine((value) => Boolean(value.email) || Boolean(value.phone), {
-    message: 'Enter an email or a phone number.',
-    path: ['email'],
-  });
+  .refine(hasEmailOrPhone, EMAIL_OR_PHONE_ISSUE);
 
 export type UserCreateFormValues = z.infer<typeof userCreateSchema>;
 export type UserUpdateFormValues = z.infer<typeof userUpdateSchema>;

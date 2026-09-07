@@ -28,7 +28,7 @@ import { useListParams } from '@/hooks/useListParams';
 import { useWriteGuard } from '@/hooks/useWriteGuard';
 import { PERM } from '@/lib/permissions';
 
-import { RowActionsMenu, type RowAction } from '@/features/fleet/drivers/components/RowActionsMenu';
+import { RowActionsMenu, type RowActionItem } from '@/components/data/RowActionsMenu';
 import { RoleFormDrawer } from '../components/RoleFormDrawer';
 
 export function RoleListPage() {
@@ -123,9 +123,9 @@ export function RoleListPage() {
   const rows = rolesQuery.data?.data ?? [];
   const total = rolesQuery.data?.meta?.total ?? 0;
 
-  const buildRowActions = (role: Role): RowAction[] => {
+  const buildRowActions = (role: Role): RowActionItem[] => {
     const isSystem = Boolean(role.is_system);
-    const actions: RowAction[] = [
+    const actions: RowActionItem[] = [
       {
         key: 'edit',
         label: t('common.actions.edit'),
@@ -223,7 +223,7 @@ export function RoleListPage() {
             getRowId={(role, index) => role.id ?? String(index)}
             rowActions={(role) => (
               <RowActionsMenu
-                actions={buildRowActions(role)}
+                items={buildRowActions(role)}
                 ariaLabel={t('fleetRoles.actions.rowMenuLabel', { name: role.name ?? '' })}
               />
             )}

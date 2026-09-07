@@ -132,6 +132,16 @@ export function selectIsSuperAdmin(state: AuthState): boolean {
   return state.profile?.is_super_admin === true;
 }
 
+/**
+ * Sessiya `scope`i (`company | branch | self`) — Branch select/filtrini
+ * faqat `scope=company` administratoriga ko'rsatish uchun (bosqich 2
+ * ko'rigi B1). `branch`/`self` uchun backend baribir o'z filialiga
+ * cheklaydi, shuning uchun UI select shunchaki keraksiz.
+ */
+export function selectScope(state: AuthState): Profile['scope'] {
+  return state.profile?.scope;
+}
+
 /** `subscription_readonly` / `replacedSession` — `useWriteGuard`, `SubscriptionBanner` uchun. */
 export function selectSessionFlags(
   state: AuthState,
