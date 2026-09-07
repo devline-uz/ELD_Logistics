@@ -261,3 +261,37 @@ butunlay almashtirildi.**
 
 Tuzatildi: `.claude/skills/{fe-design-system,fe-testing}`, `docs/tz/07-8-reports.md`,
 `docs/tz/07-13-settings-admin.md`, shu reestr.
+
+### D-f9 — Users/Roles: bitta-element `GET` yo'q; import `422` konvert nomuvofiqligi (2026-09-07, Bosqich 2.1)
+
+**1. `GET /users/{id}` va `GET /roles/{id}` swagger'da yo'q.**
+
+- `users` uchun faqat `GET /users` (ro'yxat), `PATCH/DELETE /users/{id}`, `POST /users/{id}/
+  activate|deactivate|resend-invitation|reset-password` bor. `roles` uchun faqat `GET /roles`
+  (ro'yxat), `POST /roles`, `PATCH/DELETE /roles/{id}` bor.
+- **MVP yechimi (frontend):** `src/api/queries/users.ts`ning `useUser(id)` va
+  `src/api/queries/roles.ts`ning `useRole(id)` tarmoqqa so'rov yubormaydi — `['users','list',*]`/
+  `['roles','list',*]` TanStack Query keshidan `id` bo'yicha qidiradi. Ro'yxat sahifasidan
+  o'tilganda ishlaydi (kesh to'ldirilgan bo'ladi); to'g'ridan-to'g'ri havola bilan (deep link,
+  sahifa yangilash) kirilganda kesh bo'sh bo'lishi mumkin va hook `undefined` qaytaradi — View/Edit
+  ekrani bu holatni ro'yxatga qaytarish yoki ro'yxatni oldindan yuklash bilan hal qilishi kerak.
+- **Tavsiya (CR):** backend `GET /users/{id}` va `GET /roles/{id}` qo'shsa (yoki mavjud DTO'da
+  `id` orqali `PATCH` javobini takroriy ishlatib bo'lmaydi — chunki View ekran `PATCH`
+  chaqirmasdan ochiladi), View/Edit ekranlari kesh holatiga bog'liq bo'lishdan xalos bo'ladi.
+
+**2. `POST /units/import` va `POST /drivers/import` — `422` javobi umumiy xato konvertini buzadi.**
+
+- Spec: muvaffaqiyatli holatda ham, `422` (all-or-nothing, F83) holatida ham javob bir xil shaklda —
+  `ImportResultEnvelope` (`{data:{imported,total,errors[{row,field,message}]}}`). Bu boshqa barcha
+  endpointlardagi xato konvertidan (`{error:{code,message,details}}`) farq qiladi.
+- `src/api/client.ts`dagi umumiy `errorMiddleware` faqat `{error:...}` shaklini biladi va har qanday
+  `!response.ok` javobini `ApiError`ga aylantiradi — `422` uchun `body.error` yo'qligi sababli
+  `errors[]` batamom yo'qoladi (`ApiError.fields` bo'sh qoladi, faqat status/generic xabar qoladi).
+- **Natija:** `src/api/queries/units.ts`ning `useUnitsImport()` va `drivers.ts`ning
+  `useDriversImport()` hozircha faqat "import failed" umumiy xabarini bera oladi — qator-qator
+  xatolar jadvali (F83 talabi: "Fix N errors and try again" + CSV yuklab olish) UI'ga yetib
+  bormaydi.
+- **Tuzatish** `client.ts`ga tegishli (bu agentning fayl egaligidan tashqarida): `errorMiddleware`
+  import endpointlari uchun istisno qilib, `422` javobini o'qib `ImportResult`ni `ApiError.fields`
+  yoki alohida joyga saqlashi kerak — yoki import hooklari alohida (middleware'siz) klient bilan
+  chaqirilishi kerak (`refresh.ts`dagi naqsh kabi). Keyingi bosqichda hal qilinishi kerak.

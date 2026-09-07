@@ -10,8 +10,21 @@
  * kompilyatsiya xatosi beradi — `unknown`/`any` ga sirg'alib ketmaydi.
  */
 import type { components, operations, paths } from './schema';
+import type { ApiError } from '@/lib/errors';
 
 export type { components, operations, paths };
+
+/**
+ * TanStack Query v5 `Register` kengaytmasi — `useQuery`/`useMutation`ning
+ * standart xato tipini `ApiError` qiladi (2.1). Shu bilan `api/queries/**`
+ * dagi har bir hook `error`ni alohida generic bermasdan `ApiError` sifatida
+ * oladi (`errorMiddleware` har doim `ApiError` otadi — `client.ts`, §6).
+ */
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: ApiError;
+  }
+}
 
 type Schemas = components['schemas'];
 type SchemaName = keyof Schemas;
@@ -391,3 +404,41 @@ export type PresignRequest = Dto<'files', 'PresignRequest'>;
 export type PresignResponse = Dto<'files', 'PresignResponse'>;
 export type ImportResult = Dto<'files', 'ImportResult'>;
 export type ImportRowError = Dto<'files', 'ImportRowError'>;
+
+/* ------------------------------------------------------------------ *
+ * Ro'yxat/eksport so'rov parametrlari — `paths` dan (2.1).
+ *
+ * Bular DTO emas, query-string shakllari, shuning uchun `Dto<>` orqali
+ * emas — bevosita generatsiya qilingan `paths` tipidan olinadi. `openapi`
+ * yangilansa (`npm run api`) va bu yo'l o'zgarsa — TypeScript shu yerda
+ * xato beradi (`paths['/units']` `never` ga sirg'alib ketmaydi).
+ * ------------------------------------------------------------------ */
+
+export type UnitsListParams = NonNullable<paths['/units']['get']['parameters']['query']>;
+export type UnitHistoryParams = NonNullable<
+  paths['/units/{id}/history']['get']['parameters']['query']
+>;
+export type UnitsExportParams = NonNullable<paths['/units/export']['get']['parameters']['query']>;
+export type UnitsImportTemplateParams = NonNullable<
+  paths['/units/import-template']['get']['parameters']['query']
+>;
+
+export type DriversListParams = NonNullable<paths['/drivers']['get']['parameters']['query']>;
+export type DriversExportParams = NonNullable<
+  paths['/drivers/export']['get']['parameters']['query']
+>;
+export type DriversImportTemplateParams = NonNullable<
+  paths['/drivers/import-template']['get']['parameters']['query']
+>;
+
+export type EldDevicesListParams = NonNullable<paths['/eld-devices']['get']['parameters']['query']>;
+
+export type TrailersListParams = NonNullable<paths['/trailers']['get']['parameters']['query']>;
+
+export type ShippingDocumentsListParams = NonNullable<
+  paths['/shipping-documents']['get']['parameters']['query']
+>;
+
+export type UsersListParams = NonNullable<paths['/users']['get']['parameters']['query']>;
+
+export type RolesListParams = NonNullable<paths['/roles']['get']['parameters']['query']>;
