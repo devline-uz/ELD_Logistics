@@ -94,7 +94,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] 2.9 Roles: ro'yxat + Add/Edit (105 kalit, 26 guruh, `scope` tanlovi) + system rol himoyasi + 409 ishlovi
 - [x] 2.10 Barcha formalarda `Password` maydoni yo'qligi tekshiriladi (D2)
 - [x] 2.11 Integratsiya testlari (MSW): har modul uchun ro'yxat + filtr + forma + xato + permission
-- [ ] 2.12 `frontend-security-reviewer` (PII, mass-assignment, ruxsat) + `frontend-code-reviewer`
+- [x] 2.12 `frontend-security-reviewer` (kritik 0; license reveal va mass-assignment toza) + `frontend-code-reviewer` (dublikat 0, qatlam buzilishi 0)
 ```
 
 ### Bosqich 3 — Logs va HOS
@@ -279,8 +279,8 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 | -1 | Tayyorgarlik | ✅ | `main` |
 | 0 | Karkas va autentifikatsiya | ✅ | `feat/stage-0-skeleton` |
 | 1 | Dizayn tizimi | ✅ | `feat/stage-0-skeleton` |
-| 2 | Fleet moduli | 🔄 jarayonda | `feat/stage-2-fleet` |
-| 3 | Logs va HOS | ⬜ | `feat/stage-3-logs` |
+| 2 | Fleet moduli | ✅ | `feat/stage-2-fleet` |
+| 3 | Logs va HOS | 🔄 jarayonda | `feat/stage-3-logs` |
 | 4 | Tracking va xarita | ⬜ | `feat/stage-4-tracking` |
 | 5 | DVIR va Maintenance | ⬜ | `feat/stage-5-dvir-maintenance` |
 | 6 | Reports va eksport | ⬜ | `feat/stage-6-reports` |
