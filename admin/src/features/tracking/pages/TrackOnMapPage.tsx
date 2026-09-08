@@ -57,7 +57,7 @@ import {
 import { DriverInfoPanel } from '../components/DriverInfoPanel';
 import type { UnitLastStateEvent } from '../hooks/useTrackingChannel';
 import { TripHistoryTimeline } from '../components/TripHistoryTimeline';
-import { DUTY_STATUS_TONE, ONLINE_STATUS_TONE } from '../components/trackingColumns';
+import { dutyStatusTone, onlineStatusTone } from '@/lib/statusTone';
 import { UnitDiagnosticsPanel } from '../components/UnitDiagnosticsPanel';
 import { useTrackingChannel } from '../hooks/useTrackingChannel';
 
@@ -194,13 +194,13 @@ export function TrackOnMapPage() {
     buildPopupProps: (u) => ({
       driverName: formatPersonName(u.driver, t('common.na')),
       dutyStatus: u.duty_status ?? 'OFF',
-      dutyStatusTone: DUTY_STATUS_TONE[u.duty_status ?? 'OFF'] ?? 'neutral',
+      dutyStatusTone: dutyStatusTone(u.duty_status),
       unitNumber: u.unit_number ?? t('common.na'),
       odometer: formatDistance(u.odometer_m),
       location: `${formatCoordinate(u.lat)}, ${formatCoordinate(u.lng)}`,
       hasCoordinates: typeof u.lat === 'number' && typeof u.lng === 'number',
       relativeTime: formatRelative(u.last_seen_at),
-      onlineTone: ONLINE_STATUS_TONE[u.online_status ?? 'offline'] ?? 'neutral',
+      onlineTone: onlineStatusTone(u.online_status),
       onlineLabel: t(`enums.connection_status.${u.online_status ?? 'offline'}`, {
         defaultValue: u.online_status ?? 'offline',
       }),

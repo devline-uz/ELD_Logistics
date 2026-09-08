@@ -13,7 +13,7 @@ import { formatCoordinatePair, formatPersonName, NA } from '@/lib/format';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 
-import { ONLINE_STATUS_TONE } from './trackingColumns';
+import { onlineStatusTone } from '@/lib/statusTone';
 
 export interface DriverInfoPanelProps {
   unit: LiveUnit | undefined;
@@ -50,7 +50,7 @@ export function DriverInfoPanel({
 
   const driverName = formatPersonName(unit?.driver, t('common.na'));
   const onlineStatus = unit?.online_status ?? 'offline';
-  const onlineTone: BadgeTone = ONLINE_STATUS_TONE[onlineStatus] ?? 'neutral';
+  const onlineTone: BadgeTone = onlineStatusTone(onlineStatus);
   const shiftLeftMin = hosSummary?.counters?.shift_left_min;
 
   return (

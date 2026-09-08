@@ -2,15 +2,16 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { ProfileMenu } from '@/components/layout/ProfileMenu';
+import { PermissionGate } from '@/components/ui/PermissionGate';
+import { NotificationsDropdown } from '@/features/notifications/components/NotificationsDropdown';
+import { PERM } from '@/lib/permissions';
 
 export interface BrandBarProps {
-  /** O'qilmagan bildirishnomalar soni (Bosqich 7 da WS bilan to'ldiriladi). */
-  unreadCount?: number;
   onSignOut?: () => void;
 }
 
 /** QATLAM 1 — brend panel (`--color-primary`): logotip · global qidiruv · qo'ng'iroq · profil. */
-export function BrandBar({ unreadCount = 0, onSignOut }: BrandBarProps) {
+export function BrandBar({ onSignOut }: BrandBarProps) {
   const { t } = useTranslation();
 
   return (
@@ -33,32 +34,9 @@ export function BrandBar({ unreadCount = 0, onSignOut }: BrandBarProps) {
         />
       </search>
 
-      <button
-        type="button"
-        className="relative rounded p-1"
-        aria-label={
-          unreadCount > 0
-            ? t('nav.brand.notificationsUnread', { count: unreadCount })
-            : t('nav.brand.notifications')
-        }
-      >
-        <svg
-          aria-hidden="true"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        >
-          <path d="M10 3a4 4 0 0 0-4 4v3l-1.5 2.5h11L14 10V7a4 4 0 0 0-4-4Z" />
-          <path d="M8.5 15a1.5 1.5 0 0 0 3 0" />
-        </svg>
-        {unreadCount > 0 ? (
-          <span className="absolute -end-1 -top-1 rounded-full bg-white px-1 text-[10px] font-semibold text-[var(--color-primary)]">
-            {unreadCount}
-          </span>
-        ) : null}
-      </button>
+      <PermissionGate permission={PERM.notificationsRead}>
+        <NotificationsDropdown />
+      </PermissionGate>
 
       <ProfileMenu onSignOut={onSignOut} />
     </div>

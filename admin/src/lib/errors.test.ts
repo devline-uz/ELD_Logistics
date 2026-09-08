@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import en from '@/locales/en.json';
+import { enResources as en } from '@/app/i18n';
 
 import {
   ApiError,

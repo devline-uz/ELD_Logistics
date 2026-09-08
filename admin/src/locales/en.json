@@ -2517,5 +2517,14 @@
         "filteredDescription": "No records match your filters"
       }
     }
+  },
+  "realtime": {
+    "banner": {
+      "title": "Live updates paused",
+      "description": "Reconnecting… data still refreshes automatically every 60 seconds.",
+      "attempt_one": "Attempt {{count}}",
+      "attempt_other": "Attempt {{count}}",
+      "retryNow": "Retry now"
+    }
   }
 }

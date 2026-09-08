@@ -21,6 +21,13 @@ const AUTO_DISMISS_MS: Record<ToastVariant, number | null> = {
 };
 
 const MAX_VISIBLE = 3;
+/**
+ * Navbat chegarasi: `error` toastlari o'zi yopilmaydi, shuning uchun WS
+ * hodisalari toshqinida navbat cheksiz o'sib ketardi (xotira + foydalanuvchi
+ * hech qachon tugata olmaydigan toast oqimi). Chegaradan oshgan toast
+ * jimgina tashlab yuboriladi.
+ */
+const MAX_QUEUED = 10;
 
 const VARIANT_ICON: Record<ToastVariant, typeof CheckCircle2> = {
   success: CheckCircle2,
@@ -91,7 +98,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           scheduleDismiss(next);
           return [...current, next];
         }
-        queue.current.push(next);
+        if (queue.current.length < MAX_QUEUED) queue.current.push(next);
         return current;
       });
       return id;

@@ -11,26 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { StatusChip } from '@/components/ui/StatusChip';
 import type { UseDateFormatResult } from '@/hooks/useDateFormat';
 import { formatPersonName } from '@/lib/format';
-
-const ONLINE_STATUS_TONE: Record<
-  NonNullable<LiveUnit['online_status']>,
-  'success' | 'neutral' | 'error'
-> = {
-  online: 'success',
-  offline: 'neutral',
-  disconnected: 'error',
-  malfunction: 'error',
-};
-
-const DUTY_STATUS_TONE: Record<
-  NonNullable<LiveUnit['duty_status']>,
-  'success' | 'neutral' | 'info' | 'warning'
-> = {
-  OFF: 'neutral',
-  SB: 'warning',
-  DR: 'success',
-  ON: 'info',
-};
+import { dutyStatusTone, onlineStatusTone } from '@/lib/statusTone';
 
 export interface LogsByUnitColumnsOptions {
   startIndex: number;
@@ -66,7 +47,7 @@ export function buildLogsByUnitColumns(
       cell: ({ row }) => {
         const status = row.original.online_status ?? 'offline';
         return (
-          <Badge tone={ONLINE_STATUS_TONE[status]}>{t(`logs.byUnit.onlineStatus.${status}`)}</Badge>
+          <Badge tone={onlineStatusTone(status)}>{t(`logs.byUnit.onlineStatus.${status}`)}</Badge>
         );
       },
     },
@@ -86,7 +67,7 @@ export function buildLogsByUnitColumns(
       header: t('logs.byUnit.columns.status'),
       cell: ({ row }) => {
         const status = row.original.duty_status ?? 'OFF';
-        return <StatusChip status={status} tone={DUTY_STATUS_TONE[status]} />;
+        return <StatusChip status={status} tone={dutyStatusTone(status)} />;
       },
     },
     {

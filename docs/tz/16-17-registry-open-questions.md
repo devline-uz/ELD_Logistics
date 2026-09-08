@@ -489,3 +489,89 @@ shu kundagi asosiy unit'i) va `totals` (`drive_s`/`on_duty_s`/`off_duty_s`/
 qilingan tarzda amalga oshirildi — tugma doim `disabled`, tooltipda
 «Reminders are not available yet» (`reports.uncertifiedLogs.actions.
 sendReminderUnavailable`). Yangi mutatsiya yozilmadi (endpoint hamon yo'q).
+
+### D34 — Dashboard: `route.status` enum farqi, KPI tone bo'shlig'i, xarita tarix filtri (Bosqich 7.7)
+
+`docs/tz/07-2-dashboard.md` §7.2 bo'yicha uchta kichik qoldiq topildi:
+
+1. **`GET /dashboard/summary` dagi `routes[].status` enum'i besh qiymatli**
+   (`planned | in_progress | completed | not_completed | cancelled`,
+   `github_com_devline_onebook-eld_internal_domain_dashboard_dto.Route`),
+   holbuki TZ jadvali va `/routes` domenining o'z enum'i (`enums.route_status`
+   kalitlari) faqat to'rtta qiymat biladi: `ongoing | completed |
+   not_completed | cancelled`. **MVP yechimi**
+   (`src/features/dashboard/lib/routeStatus.ts`,
+   `resolveDashboardRouteDisplayStatus`): `planned` va `in_progress`
+   ikkalasi ham `ongoing` (sariq) sifatida ko'rsatiladi — TZ §7.2 jadvalidagi
+   yagona "hali tugallanmagan" holat shu. **Backend CR nomzodi:** ikkala
+   domenning `Route.status` enum'ini bittalashtirish (yoki hech bo'lmasa bir
+   xil qiymat to'plamiga tushirish).
+2. **`KpiCard` (`src/components/ui/KpiCard.tsx`, bu modul egaligidan
+   tashqarida) tone enum'i** faqat `primary/success/warning/error/info/
+   neutral` biladi — fe-design-system §1 "KPI: Total Units to'q sariq"
+   (`decorative-orange`) talabini qondiradigan variant yo'q. `Active Units`
+   kartasi shu sabab eng yaqin ton — `warning` (issiq amber) bilan
+   chizilgan. **Component CR nomzodi:** `KpiCard`ga `orange` tone qo'shish
+   (`bg-decorative-orange`), keyingi bosqichda `components/ui` egasi
+   tomonidan.
+3. **Units Tracking bloki vaqt filtri (`Today`/`This week`)** TZ §7.2 da
+   «faqat marker tarixi uchun, jonli holat doim joriy» deb ta'riflangan,
+   lekin na `GET /dashboard/summary`, na `GET /tracking/live` hech qanday
+   tarixiy marker/trail endpointi bermaydi (`useUnitTrips`/`/units/{id}/trips`
+   faqat bitta unit uchun, dashboard darajasidagi jamlangan xarita uchun
+   emas). **MVP yechimi** (`UnitsTrackingCard`): filtr hozircha faqat
+   vizual tanlov (`aria-pressed` bilan) — jonli marker to'plami har ikkala
+   holatda ham bir xil. **Backend CR nomzodi:** `GET /dashboard/summary`
+   yoki alohida endpointga oynaga bog'liq marker/trail agregatsiyasi
+   qo'shish.
+
+### D35 — Notifications: `GET /notifications` da `user_id` filtri yo'q (Bosqich 7.8)
+
+`tasks.md` 7.8 topshirig'i "`user_id` filtri" talab qiladi, lekin
+`admin/openapi/swagger.json` dagi `GET /notifications` faqat `page`,
+`per_page`, `read`, `alert_type` so'rov parametrlarini biladi — `user_id`
+yo'q. Bu tasodifiy emas: endpoint tavsifi ("TZ A§19 / Q87 — the caller's own
+inbox... there is no way to read another user's notifications") shaxsiy
+inboxni ataylab shunday loyihalagan — backend chaqiruvchining o'z
+`user_id`sini token orqali oladi, boshqa foydalanuvchining bildirishnomasini
+so'rash imkoni umuman yo'q (cross-user enumeratsiyaning oldini olish).
+**MVP yechimi:** `user_id` filtri **amalga oshirilmadi** — sahifada faqat
+`read` va `alert_type` filtrlari bor (`src/features/notifications/pages/NotificationsPage.tsx`).
+**Backend CR nomzodi:** kerak emas — bu ataylab qilingan xavfsizlik qarori,
+faqat `tasks.md`dagi talab noto'g'ri yozilgan.
+
+### D36 — Chat: bir nechta swagger bo'shlig'i (Bosqich 7.9/7.10)
+
+`docs/tz/07-9-chat-support-audit.md` §7.9 spetsifikatsiyasi bilan
+`admin/openapi/swagger.json` solishtirilganda uchta bo'shliq topildi:
+
+1. **`GET /chat/threads` da `search` parametri yo'q** — chap paneldagi
+   «Search driver» maydoni uchun faqat `page`, `per_page`, `with_messages`
+   so'rov parametrlari mavjud. **MVP yechimi:** qidiruv **mijoz tomonida**
+   amalga oshirildi — `ChatThreadListPanel` joriy sahifadagi threadlarni
+   `driver_name` bo'yicha filtrlaydi
+   (`src/features/chat/components/ChatThreadListPanel.tsx`). Bu ko'p
+   sahifali ro'yxatda haydovchini boshqa sahifada topa olmaslik degani
+   (sahifalash bilan birga ishlatilganda cheglov). **Backend CR nomzodi:**
+   `GET /chat/threads`ga `search` (haydovchi ismi bo'yicha) parametri
+   qo'shilsa server-side qidiruv imkon beradi.
+2. **Chat endpointlari haydovchining joriy `duty_status`ini qaytarmaydi** —
+   F133 talab qilgan pre-send bloklovchi tekshiruv («haydash rejimida
+   ekanini oldindan bilib, yozishdan oldin ogohlantirish») imkonsiz.
+   **MVP yechimi:** `ChatComposer` doimiy eslatma ko'rsatadi
+   (`chat.composer.drivingModeHint`), haqiqiy blok esa backend `409
+   DRIVING_MODE_BLOCKED` javobi orqali amalga oshadi (xabar yuborilgandan
+   keyin) — `src/features/chat/components/ChatComposer.tsx`,
+   `ChatConversationPanel.tsx`. **Backend CR nomzodi:** `GET
+   /chat/threads`dagi har thread uchun `driver_duty_status` maydoni.
+3. **Fayl kaliti (`file_key`) uchun asl fayl nomini o'qish endpointi yo'q**
+   — `POST /files/presign` faqat yuklash URL'ini beradi, `key`dan asl
+   nomni qaytaruvchi `GET` yo'q. **MVP yechimi:**
+   `storageFileNameFromKey()` kalitning oxirgi segmentini (server tomonidan
+   generatsiya qilingan, inson o'qiy olmaydigan) ko'rsatadi; haqiqiy fayl
+   nomi faqat shu sessiyada yuklagan tomon uchun `fileMetaByKey` mahalliy
+   keshida saqlanadi (`src/lib/storage.ts`,
+   `ChatConversationPanel.tsx`). Sahifa qayta yuklanganda yoki boshqa
+   foydalanuvchida — faqat kalit segmenti ko'rinadi. **Backend CR
+   nomzodi:** `Message.file_name` maydonini `MessageCreate`/`Message`
+   DTO'siga qo'shish.

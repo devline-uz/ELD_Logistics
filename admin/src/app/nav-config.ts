@@ -286,6 +286,8 @@ export const EXTRA_ROUTE_TITLES: Readonly<Record<string, string>> = Object.freez
   '/settings/company': 'pages.settingsCompany.title',
   '/settings/hos': 'pages.settingsHos.title',
   '/settings/security': 'pages.settingsSecurity.title',
+  // Nav tashqarisidagi ekran — faqat qo'ng'iroq dropdown'idan ochiladi (7.8).
+  '/notifications': 'notifications.page.title',
 });
 
 export interface VisibleNavLeaf extends NavLeaf {

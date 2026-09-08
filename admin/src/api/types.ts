@@ -536,3 +536,18 @@ export type ReportsUncertifiedLogsParams = NonNullable<
 export type ExportJobsListParams = NonNullable<
   paths['/reports/export-jobs']['get']['parameters']['query']
 >;
+
+/** `GET /notifications` — `page/per_page/read/alert_type` filtri (7.11, A§19/Q87). */
+export type NotificationsListParams = NonNullable<
+  paths['/notifications']['get']['parameters']['query']
+>;
+
+/** `GET /chat/threads` — `page/per_page/with_messages` filtri (7.9, §15.4). */
+export type ChatThreadsListParams = NonNullable<
+  paths['/chat/threads']['get']['parameters']['query']
+>;
+
+/** `GET /chat/threads/{driver_id}/messages` — kursorli `before`/`limit` (7.9, §15.4). */
+export type ChatMessagesParams = NonNullable<
+  paths['/chat/threads/{driver_id}/messages']['get']['parameters']['query']
+>;

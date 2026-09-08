@@ -8,7 +8,7 @@
  */
 import { useTranslation } from 'react-i18next';
 
-import { resolveStorageUrl } from '../lib/storage';
+import { resolveStorageUrl } from '@/lib/storage';
 
 export interface SignatureViewProps {
   label: string;

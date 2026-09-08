@@ -19,6 +19,7 @@ import type { PresignResponse } from '@/api/types';
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/feedback/Spinner';
+import { formatFileSize } from '@/lib/storage';
 import { checkUploadTarget, sanitizeUploadHeaders } from '@/lib/upload-url';
 
 /** Backend `kind` enum'i (fe-api §8 oq ro'yxati). */
@@ -104,11 +105,9 @@ function matchesExtension(file: File, extensions: string[]): boolean {
   return extensions.some((extension) => lower.endsWith(extension));
 }
 
+/** `lib/storage.ts` dagi yagona yaxlitlash — bu yerda `undefined` bo'lmaydi. */
 function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  const kb = bytes / 1024;
-  if (kb < 1024) return `${kb.toFixed(0)} KB`;
-  return `${(kb / 1024).toFixed(1)} MB`;
+  return formatFileSize(bytes) ?? '';
 }
 
 /**

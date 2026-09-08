@@ -196,18 +196,18 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** 4 kanal ishlaydi, qayta ulanish va `since` backfill tekshirilgan, dublikat toast yo'q, token URL'da emasligi testda majburlangan.
 
 ```markdown
-- [ ] 7.1 `lib/ws.ts` — `reconnecting-websocket`, `auth` freymi, `welcome` kutish, kanal registri
-- [ ] 7.2 **Test: URL'da hech qanday token yo'q** (`?token=`, `?access_token=` … ) — majburiy negativ test
-- [ ] 7.3 `useChannel(channel, filter, onEvent)` hook'i — mount/unmount da subscribe/unsubscribe
-- [ ] 7.4 `since` kuzatuvi (kanal bo'yicha oxirgi `ts`), `replay: true` da toast bosilmaydi
-- [ ] 7.5 Ulanish holati store + «Live updates paused» banneri + polling fallback (60 s)
-- [ ] 7.6 60 s amaliy `ping`, `visibilitychange` bo'yicha 5 daqiqadan keyin uzish
-- [ ] 7.7 Dashboard — 9 KPI karta, status bloki, xarita, Route's Details, WS `dashboard`
-- [ ] 7.8 Notifications — header dropdown + sahifa, `entity_type` bo'yicha navigatsiya, `user_id` filtri
-- [ ] 7.9 Chat — threadlar, kursorli yuklash (`before`), yuborish, o'qilgan belgisi (IntersectionObserver)
-- [ ] 7.10 Chat: fayl biriktirish (`kind=chat`), haydash rejimi ogohlantirishi 🎨
-- [ ] 7.11 Testlar: qayta ulanish, backfill dublikati, `FORBIDDEN` kanalga qayta urinmaslik
-- [ ] 7.12 `frontend-security-reviewer` (WS auth, tenant izolyatsiyasi) + `frontend-code-reviewer`
+- [x] 7.1 `lib/ws.ts` — `reconnecting-websocket`, `auth` freymi, `welcome` kutish, kanal registri
+- [x] 7.2 **Test: URL'da hech qanday token yo'q** (`?token=`, `?access_token=` … ) — majburiy negativ test
+- [x] 7.3 `useChannel(channel, filter, onEvent)` hook'i — mount/unmount da subscribe/unsubscribe
+- [x] 7.4 `since` kuzatuvi (kanal bo'yicha oxirgi `ts`), `replay: true` da toast bosilmaydi
+- [x] 7.5 Ulanish holati store + «Live updates paused» banneri + polling fallback (60 s)
+- [x] 7.6 60 s amaliy `ping`, `visibilitychange` bo'yicha 5 daqiqadan keyin uzish
+- [x] 7.7 Dashboard — 9 KPI karta, status bloki, xarita, Route's Details, WS `dashboard`
+- [x] 7.8 Notifications — header dropdown + sahifa, `entity_type` bo'yicha navigatsiya (`user_id` filtri **bajarilmadi** — backend `GET /notifications`da yo'q, ataylab shaxsiy inbox, D35)
+- [x] 7.9 Chat — threadlar, kursorli yuklash (`before`), yuborish, o'qilgan belgisi (IntersectionObserver)
+- [x] 7.10 Chat: fayl biriktirish (`kind=chat`), haydash rejimi ogohlantirishi 🎨
+- [x] 7.11 Testlar: qayta ulanish, backfill dublikati, `FORBIDDEN` kanalga qayta urinmaslik
+- [x] 7.12 `frontend-security-reviewer` (kritik 1 -> 0: sessiya almashganda kanal holati tozalanadi; marshrut in'ektsiyasi, toast toshqini) + `frontend-code-reviewer` (dublikat 0: lib/storage.ts, lib/statusTone.ts)
 ```
 
 ### Bosqich 8 — Settings, Support, Audit
@@ -329,4 +329,13 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [ ] TD12 `api/queries/dvir.ts` PDF yuklab olish — `Content-Type` tekshirilmaydi; server HTML xato sahifasi `.pdf` nomi bilan saqlanishi mumkin.
 
 - [ ] TD13 `VITE_FILES_UPLOAD_HOST` / `VITE_FILES_BASE_URL` prod muhitda to'ldirilishi shart — aks holda yuklash host oq ro'yxati o'chiq qoladi.
+
+- [ ] TD14 `components/layout/BrandBar.tsx` -> `features/notifications` importi (qatlam yo'nalishi teskari).
+      To'g'ri yechim: widget'ni `app/layouts` da kompozitsiya qilish. Bosqich 8 da.
+
+- [ ] TD15 `features/chat/lib/dateGroups.ts` va `features/notifications/lib/groupByDay.ts` —
+      "Today/Yesterday" ikki xil algoritm bilan. Birlashtirish katta refaktor.
+
+- [ ] TD16 dev-bog'liqliklar `npm audit`: vitest/@vitest/coverage-v8 (critical), vite (high).
+      Bundle'ga tushmaydi. 9.10 da yangilanadi.
 

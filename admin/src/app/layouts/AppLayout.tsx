@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { clearSession } from '@/api/session';
+import { LiveUpdatesBanner } from '@/components/feedback/LiveUpdatesBanner';
 import { BrandBar } from '@/components/layout/BrandBar';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { IdleTimeoutDialog } from '@/components/layout/IdleTimeoutDialog';
@@ -44,6 +45,7 @@ export function AppLayout() {
         />
         <MainNav />
         <SubscriptionBanner />
+        <LiveUpdatesBanner />
         <Breadcrumbs />
       </header>
 

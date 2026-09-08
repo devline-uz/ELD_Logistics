@@ -13,7 +13,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { IconButton } from '@/components/ui/IconButton';
 import { Modal } from '@/components/ui/Modal';
 
-import { resolveStorageUrl } from '../lib/storage';
+import { resolveStorageUrl } from '@/lib/storage';
 
 export interface PhotoLightboxProps {
   open: boolean;

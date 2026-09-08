@@ -59,7 +59,8 @@ admin/
 │  │  └─ auth/
 │  ├─ hooks/                  # usePermission, useUnitSystem, useDateFormat…
 │  ├─ lib/                    # format.ts, units.ts, hos.ts, errors.ts, ws.ts, permissions.ts
-│  ├─ locales/en.json
+│  ├─ locales/en.json         # umumiy kalitlar (common.*, errors.*, nav.*, enums.*)
+│  ├─ locales/en/<modul>.json # modul fragmentlari — `app/i18n.ts` chuqur birlashtiradi
 │  ├─ styles/index.css
 │  └─ main.tsx
 ├─ e2e/                       # Playwright
@@ -133,7 +134,8 @@ Ilova **offline ishlamaydi** (onlayn vosita). Tarmoq yo'qolganda: banner + keshd
 - **W3** — Har bosqich oxirida to'rt tekshiruv yashil: `npm run typecheck`, `npm run lint`, `npm run test`, `npm run build`. Bittasi qizil bo'lsa bosqich tugallanmagan.
 - **W4** — Har bosqich oxirida ikki ko'rik: `frontend-security-reviewer` (fe-security chek-listi) va `frontend-code-reviewer` (konventsiyalar, dublikat, qatlam buzilishi).
 - **W5** — Katta fayl bo'lak-bo'lak yoziladi. 500 qatordan uzun fayl bitta `Write` bilan emas, mantiqiy bo'laklarga bo'linadi.
-- **W6** — Har o'zgarishdan keyin i18n. Yangi matn qo'shilsa `en.json` ham o'sha commit'da yangilanadi. `npm run i18n:extract` yo'qolgan kalitni topadi.
+- **W6** — Har o'zgarishdan keyin i18n. Yangi matn qo'shilsa o'sha commit'da tarjima kaliti ham qo'shiladi. `npm run i18n:extract` yo'qolgan kalitni topadi.
+  **Yangi modul kalitlari `src/locales/en/<modul>.json` ga yoziladi** (fayl `app/i18n.ts` da `import.meta.glob` orqali avtomatik yuklanadi va `en.json` ustiga chuqur birlashtiriladi) — shu tufayli parallel agentlar bir-birini bloklamaydi. Faqat umumiy kalitlar (`common.*`, `errors.*`, `nav.*`, `enums.*`) markaziy `src/locales/en.json` da qoladi. Bir xil to'liq kalit ikki manbada bo'lsa — dev konsolida `[i18n] duplicate keys` ogohlantirishi.
 - **W7** — `schema.d.ts` ga qo'lda tegilmaydi. Faqat `npm run api` orqali yangilanadi.
 - **W8** — Migratsiya yo'q, backend o'zgarmaydi. Frontend agenti `backend/` papkasiga yozmaydi. Backend bo'shlig'i topilsa — §17.2 jadvaliga qator qo'shiladi va MVP yechimi yoziladi.
 - **W9** — Har vazifadan keyin qisqa hisobot: nima qilindi, qaysi fayllar, qaysi tekshiruvlar o'tdi, nima ochiq qoldi.

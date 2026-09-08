@@ -51,7 +51,7 @@ import {
   canRecordRepair,
   isRepairBlockedByMissingSignature,
 } from '../lib/status';
-import { resolveStorageUrl } from '../lib/storage';
+import { resolveStorageUrl } from '@/lib/storage';
 
 function Field({ label, value }: { label: string; value: ReactNode }) {
   return (

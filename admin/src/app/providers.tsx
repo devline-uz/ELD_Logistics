@@ -8,6 +8,7 @@ import { QueryProvider } from '@/app/providers/QueryProvider';
 import { SessionFlagsProvider } from '@/app/providers/SessionFlagsProvider';
 import type { SessionFlags } from '@/app/providers/session-flags-context';
 import { ToastProvider } from '@/components/feedback/ToastProvider';
+import { NotificationsRealtimeProvider } from '@/features/notifications/components/NotificationsRealtimeProvider';
 import { useAuthStore } from '@/store/auth-store';
 
 export interface AppProvidersProps {
@@ -32,14 +33,19 @@ export interface AppProvidersProps {
 }
 
 /**
- * Provayderlar tartibi (0.12–0.15):
+ * Provayderlar tartibi (0.12–0.15, 7.8):
  *
  * `QueryProvider` → `ToastProvider` → `BootstrapGate` → `PermissionsProvider`
- * → `SessionFlagsProvider`.
+ * → `SessionFlagsProvider` → `NotificationsRealtimeProvider`.
  *
  * `BootstrapGate` ruxsat provayderidan **yuqorida** turadi: `GET /me` javobi
  * kelmaguncha hech qanday ekran (va ruxsat tekshiruvi) render qilinmaydi,
  * aks holda ruxsatlar bo'sh bo'lgan bir lahzada 403 ekrani chaqnab ketardi.
+ *
+ * `NotificationsRealtimeProvider` — F156: `notifications` WS kanaliga ildiz
+ * darajasida **bir marta** obuna (ekran almashganda unmount bo'lmaydi).
+ * `PermissionsProvider` ostida turadi — obuna faqat `notifications.read`
+ * kaliti bor foydalanuvchida yoqiladi (`usePermission()` kerak).
  */
 export function AppProviders({
   permissions,
@@ -62,7 +68,9 @@ export function AppProviders({
       <ToastProvider>
         <BootstrapGate skip={skipBootstrap}>
           <PermissionsProvider isSuperAdmin={isSuperAdmin} permissions={permissions}>
-            <SessionFlagsProvider>{children}</SessionFlagsProvider>
+            <SessionFlagsProvider>
+              <NotificationsRealtimeProvider>{children}</NotificationsRealtimeProvider>
+            </SessionFlagsProvider>
           </PermissionsProvider>
         </BootstrapGate>
       </ToastProvider>

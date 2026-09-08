@@ -8,6 +8,7 @@ import { dashboardRoutes } from '@/app/router/dashboard.routes';
 import { fleetRoutes } from '@/app/router/fleet.routes';
 import { logsRoutes } from '@/app/router/logs.routes';
 import { maintenanceRoutes } from '@/app/router/maintenance.routes';
+import { notificationsRoutes } from '@/app/router/notifications.routes';
 import { reportsRoutes } from '@/app/router/reports.routes';
 import { settingsRoutes } from '@/app/router/settings.routes';
 import { supportRoutes } from '@/app/router/support.routes';
@@ -37,6 +38,7 @@ export const routes: RouteObject[] = [
       ...reportsRoutes,
       ...supportRoutes,
       ...chatRoutes,
+      ...notificationsRoutes,
       ...settingsRoutes,
       // Mavjud bo'lmagan manzil — 404 (403 dan qat'iy farqlanadi).
       { path: '*', element: <NotFoundScreen /> },

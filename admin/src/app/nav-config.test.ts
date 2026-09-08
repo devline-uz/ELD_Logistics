@@ -8,7 +8,7 @@ import {
   resolveNavLabelKey,
   routeTitleKey,
 } from '@/app/nav-config';
-import en from '@/locales/en.json';
+import { enResources as en } from '@/app/i18n';
 import { PERM, createPermissionChecker } from '@/lib/permissions';
 
 /** Nuqta bilan ajratilgan kalitni (`nav.fleet.units`) `en.json` ichidan topadi. */

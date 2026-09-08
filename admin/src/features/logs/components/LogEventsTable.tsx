@@ -25,20 +25,11 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import type { UseDateFormatResult } from '@/hooks/useDateFormat';
 import type { UseUnitSystemResult } from '@/hooks/useUnitSystem';
 import { PERM } from '@/lib/permissions';
+import { dutyStatusTone } from '@/lib/statusTone';
 
 import { buildEditableDutySegments, isEventEditable } from '../lib/logEditRequest';
 
 type LogEvent = NonNullable<DailyLogDetail['events']>[number];
-
-const DUTY_STATUS_TONE: Record<
-  NonNullable<LogEvent['status']>,
-  'success' | 'neutral' | 'info' | 'warning'
-> = {
-  OFF: 'neutral',
-  SB: 'warning',
-  DR: 'success',
-  ON: 'info',
-};
 
 export interface LogEventsTableProps {
   events: LogEvent[];
@@ -122,10 +113,7 @@ export function LogEventsTable({
                 <td className="sticky left-0 bg-surface px-3 py-2">{index + 1}</td>
                 <td className="px-3 py-2">
                   {isDuty ? (
-                    <StatusChip
-                      status={event.status ?? ''}
-                      tone={DUTY_STATUS_TONE[event.status ?? 'OFF']}
-                    />
+                    <StatusChip status={event.status ?? ''} tone={dutyStatusTone(event.status)} />
                   ) : (
                     <Badge tone="neutral">{t(`logs.events.eventType.${event.event_type}`)}</Badge>
                   )}

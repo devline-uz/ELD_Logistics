@@ -9,24 +9,10 @@ import type { TFunction } from 'i18next';
 import type { ReactNode } from 'react';
 
 import type { LiveUnit } from '@/api/types';
-import { Badge, type BadgeTone } from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/Badge';
 import { NA, formatCoordinatePair, formatPersonName } from '@/lib/format';
-import { StatusChip, type StatusChipTone } from '@/components/ui/StatusChip';
-
-export const DUTY_STATUS_TONE: Record<string, StatusChipTone> = {
-  OFF: 'neutral',
-  SB: 'info',
-  DR: 'success',
-  ON: 'warning',
-};
-
-export const ONLINE_STATUS_TONE: Record<string, BadgeTone> = {
-  online: 'success',
-  idle: 'warning',
-  offline: 'neutral',
-  disconnected: 'error',
-  malfunction: 'error',
-};
+import { StatusChip } from '@/components/ui/StatusChip';
+import { dutyStatusTone, onlineStatusTone } from '@/lib/statusTone';
 
 export function driverFullName(unit: LiveUnit): string {
   return formatPersonName(unit.driver);
@@ -100,7 +86,7 @@ export function buildTrackingColumns(
           <HighlightCell highlighted={helpers.isHighlighted(row.original)}>
             <StatusChip
               status={status}
-              tone={DUTY_STATUS_TONE[status] ?? 'neutral'}
+              tone={dutyStatusTone(status)}
               label={t(`enums.duty_status.${status}`, { defaultValue: status })}
             />
           </HighlightCell>
@@ -115,7 +101,7 @@ export function buildTrackingColumns(
         return (
           <HighlightCell highlighted={helpers.isHighlighted(row.original)}>
             <div className="flex flex-col gap-0.5">
-              <Badge tone={ONLINE_STATUS_TONE[status] ?? 'neutral'} variant="dot">
+              <Badge tone={onlineStatusTone(status)} variant="dot">
                 {t(`enums.connection_status.${status}`, { defaultValue: status })}
               </Badge>
               <span className="text-body-sm text-neutral-500">
