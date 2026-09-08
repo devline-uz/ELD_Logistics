@@ -136,13 +136,23 @@ void main() {
         ),
         overrides: m4Overrides(duty: duty, home: home),
       );
+      expect(find.text('Inspection Report'), findsOneWidget);
+      expect(find.text('Switch to Co-driver'), findsOneWidget);
       expect(find.text('Permissions'), findsOneWidget);
       expect(find.text('Check Network'), findsOneWidget);
       expect(find.text('Diagnosis of Device'), findsOneWidget);
+      await scrollTo(tester, find.text('App Updates'));
       expect(find.text('App Updates'), findsOneWidget);
+      await scrollTo(tester, find.text('Zoom'));
       expect(find.text('Zoom'), findsOneWidget);
       expect(find.text('Dark mode'), findsOneWidget);
+      await scrollTo(tester, find.text('Leave the Truck'));
+      expect(find.text('Leave the Truck'), findsOneWidget);
+      // Figma (`1202:9259`): `Privacy Policy`/`Terms of Use` — Logout'dan
+      // keyin, ro'yxat bandi uslubida (M-10 VERIFY).
       expect(find.text('Logout'), findsOneWidget);
+      expect(find.text('Privacy Policy'), findsOneWidget);
+      expect(find.text('Terms of Use'), findsOneWidget);
       expect(find.text('Maintenance'), findsNothing);
     });
 

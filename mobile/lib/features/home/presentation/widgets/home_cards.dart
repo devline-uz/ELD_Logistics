@@ -161,31 +161,54 @@ class HomeStatusCard extends StatelessWidget {
       DutySpecial.none => '',
     };
 
+    // Figma: karta pastida quyuqroq teal "footer" polosa taymer uchun
+    // ajratilgan (ikonka/label ustki qismda qoladi).
+    final Color footerColor = Color.lerp(c.decoTeal, Colors.black, 0.18) ?? c.decoTeal;
+
     return HomeCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
-            decoration: BoxDecoration(color: c.decoTeal, borderRadius: Radii.cardRadius),
+          ClipRRect(
+            borderRadius: Radii.cardRadius,
             child: Column(
               children: <Widget>[
-                // Figma: ikonka oq doira badge ichida.
                 Container(
-                  padding: const EdgeInsets.all(Spacing.s10),
-                  decoration: BoxDecoration(color: c.surface, shape: BoxShape.circle),
-                  child: Icon(Icons.local_shipping, color: c.decoTeal, size: Spacing.s20),
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
+                  color: c.decoTeal,
+                  child: Column(
+                    children: <Widget>[
+                      // Figma: ikonka oq doira badge ichida, holatga bog'liq.
+                      Container(
+                        padding: const EdgeInsets.all(Spacing.s10),
+                        decoration: BoxDecoration(color: c.surface, shape: BoxShape.circle),
+                        child: Icon(
+                          homeStatusIcon(current),
+                          color: c.decoTeal,
+                          size: Spacing.s20,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.s10),
+                      Text(label, style: context.text.body11.copyWith(color: c.onPrimary)),
+                      if (specialLabel.isNotEmpty)
+                        Text(specialLabel, style: context.text.body16.copyWith(color: c.onPrimary)),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: Spacing.s10),
-                Text(label, style: context.text.body11.copyWith(color: c.onPrimary)),
-                if (specialLabel.isNotEmpty)
-                  Text(specialLabel, style: context.text.body16.copyWith(color: c.onPrimary)),
-                const SizedBox(height: Spacing.s5),
-                Text(
-                  homeElapsedLabel(l10n, elapsed),
-                  style: context.text.body16.copyWith(
-                    color: c.onPrimary,
-                    fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.s10),
+                  color: footerColor,
+                  alignment: Alignment.center,
+                  child: Text(
+                    // §11.0.7: davomiylik formati TZ bo'yicha `10h 45m 32s`
+                    // (Figma `10:45²³` emas) — TZ Figma dan ustun (M2).
+                    homeElapsedLabel(l10n, elapsed),
+                    style: context.text.body16.copyWith(
+                      color: c.onPrimary,
+                      fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                    ),
                   ),
                 ),
               ],

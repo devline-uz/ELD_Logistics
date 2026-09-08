@@ -128,6 +128,7 @@ void main() {
             sampleEvent(status: DutyStatus.off, hour: 0),
             sampleEvent(id: 'e2', status: DutyStatus.dr, hour: 6),
             sampleEvent(id: 'e3', status: DutyStatus.on, hour: 9, edited: true),
+            sampleEvent(id: 'e4', status: DutyStatus.sb, hour: 15),
           ],
           alerts: const <LogAlert>[
             LogAlert(level: LogAlertLevel.warning, type: ViolationType.formMannerTrailer),
@@ -227,6 +228,9 @@ void main() {
           CertifyDay(date: DateTime(2026, 9, 6), status: CertifyStatus.uncertified),
           CertifyDay(date: DateTime(2026, 9, 5), status: CertifyStatus.notReady),
           CertifyDay(date: DateTime(2026, 9, 4), status: CertifyStatus.certified),
+          CertifyDay(date: DateTime(2026, 9, 3), status: CertifyStatus.certified),
+          CertifyDay(date: DateTime(2026, 9, 2), status: CertifyStatus.certified),
+          CertifyDay(date: DateTime(2026, 9, 1), status: CertifyStatus.certified),
         ],
       ),
     ),

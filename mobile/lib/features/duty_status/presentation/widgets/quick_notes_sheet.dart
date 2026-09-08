@@ -13,6 +13,7 @@ import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/ui/ui.dart';
 import '../../data/duty_status_providers.dart';
 import '../../domain/duty_status_models.dart';
+import 'duty_form_widgets.dart';
 
 /// M54 kanonik fallback to'plami (10 band).
 List<QuickNoteOption> fallbackQuickNotes(AppLocalizations l10n) => <QuickNoteOption>[
@@ -80,10 +81,15 @@ class _QuickNotesPickerState extends ConsumerState<QuickNotesPicker> {
               shrinkWrap: true,
               children: <Widget>[
                 for (final QuickNoteOption option in options)
+                  // Figma `1170:2313`: qator qadami ~40 dp, checkbox chetdan
+                  // ~25 dp — standart `CheckboxListTile` balandligi (56)dan
+                  // ancha ixcham, shu sabab `dense` + kichik kontent padding.
                   CheckboxListTile(
                     value: _selected.contains(option.label),
                     controlAffinity: ListTileControlAffinity.leading,
-                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    visualDensity: VisualDensity.compact,
+                    contentPadding: const EdgeInsets.only(left: Spacing.s5),
                     title: Text(
                       option.label,
                       style: context.text.body13.copyWith(color: c.textPrimary),
@@ -122,7 +128,7 @@ class _QuickNotesPickerState extends ConsumerState<QuickNotesPicker> {
           Row(
             children: <Widget>[
               Expanded(
-                child: AppButton.secondary(
+                child: DutyOutlineButton(
                   label: l10n.commonCancel,
                   onPressed: () => Navigator.of(context).pop(),
                 ),

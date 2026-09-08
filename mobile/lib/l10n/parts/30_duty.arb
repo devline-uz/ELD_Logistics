@@ -446,7 +446,7 @@
   "@quickNotePickup": {
     "description": "M-13 fallback quick note"
   },
-  "quickNoteDropOff": "Drop off",
+  "quickNoteDropOff": "Dropoff",
   "@quickNoteDropOff": {
     "description": "M-13 fallback quick note"
   },
@@ -458,7 +458,7 @@
   "@quickNoteInspection": {
     "description": "M-13 fallback quick note"
   },
-  "quickNoteCheckIn": "Check in",
+  "quickNoteCheckIn": "Checkin",
   "@quickNoteCheckIn": {
     "description": "M-13 fallback quick note"
   },
@@ -466,7 +466,7 @@
   "@quickNoteFueling": {
     "description": "M-13 fallback quick note"
   },
-  "quickNoteCheckOut": "Check out",
+  "quickNoteCheckOut": "Checkout",
   "@quickNoteCheckOut": {
     "description": "M-13 fallback quick note"
   },

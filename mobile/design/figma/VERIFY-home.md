@@ -9,83 +9,85 @@ Etalonlar: `1202-9259__Home_screen_ELD_DISCONNECTED__light.jpg` (menyu ochiq hol
 ---
 
 ## M-09 Home (qisqa) — golden `m09_home_light_phone.png` ↔ figma `1202-9259` + `2230-20627`
-Parite: 55%
+Parite: 68%
 
 ### Tafovutlar
-- [ ] ELD banneri: Figma — to'liq kenglikdagi **to'q qizil to'ldirilgan** blok (`r12`), chapda oq doira ichida signal ikonkasi, oq matn `ELD not connected`; ilovada — och ko'k-kulrang fon (`#EEF2FA`), qizil-kulrang matn `ELD · Connected`, ikonka doira ichida emas.
-- [ ] Duty status kartasi: Figma da karta pastida **quyuqroq teal footer polosa** bor va unda taymer `10:45²³` (soniya superscript); ilovada footer polosa yo'q, taymer `02h 05m 00s` ko'rinishida karta ichida oddiy matn.
-- [ ] Duty status ikonkasi: Figma — pauza (`||`) belgisi oq doira ichida, holat `Off-duty`; ilovada — yuk mashinasi ikonkasi, `On Duty`. Ikonka holatga bog'liq bo'lishi kerak (pause = Off-duty).
-- [ ] OFF/SB/ON pill qatori: Figma etalonining ochiq qismida duty kartadan keyin darhol **Trip Details** kartasi keladi — hech qanday pill qatori yo'q; ilovada 3 ta pill (`OFF`/`SB`/`ON`) + almashtirish ikonkasi qo'shilgan.
-- [ ] HOS bloki: Figma — 4 ta **alohida** o'ralgan karta (oq fon + `#E5E5E5` chegara, `r12`) 2×2 setkada, har birida rangli sarlavha (`BREAK`/`DRIVE`/`SHIFT`/`CYCLE`), qiymat chipi va **ikonkali** slayder tugmasi; `1202-9259` da esa **doiraviy ring gauge** (`65:00` + `CYCLE` ring ichida). Ilovada — bitta kulrang karta, ichida `Hours of Service` sarlavhasi + almashtirish ikonkasi, 4 ta tekis slayder, tugmalari ikonkasiz oddiy doira. Figma da `Hours of Service` sarlavhasi ham, o'rab turuvchi karta ham yo'q.
-- [ ] Slayder qiymati: Figma — chip ichida `10:45 23` (soat:daqiqa + kichik soniya); ilovada — `08:00` ko'rinishida, soniya yo'q.
-- [ ] AppBar: Figma da gamburger ikonkasi ustida **qizil nuqta badge** bor (o'qilmagan/diqqat belgisi); ilovada yo'q.
-- [ ] Pastki navigatsiya 2-tab: Figma — qalam/status ikonkasi (`Status`); ilovada — hujjat ikonkasi. 3-tab: Figma — hujjat (Logs); ilovada — chat pufagi. Ya'ni tab to'plami va tartibi mos emas.
+- [ ] ELD banneri: Figma — to'liq kenglikdagi **to'q qizil to'ldirilgan** blok (`r12`), chapda oq doira ichida signal ikonkasi, oq matn `ELD not connected`; ilovada — och ko'k-kulrang fon, qizil-kulrang matn `ELD · Connected`, ikonka doira ichida emas. **Hudud tashqarisida**: rang/ikonka mapping `core/ui/components/banner_strip.dart` da (bu agentga `core/` tahrirlash taqiqlangan); golden ham `connected` holatini, Figma esa `disconnected` stsenariysini ko'rsatadi — alohida `core` topshirig'i kerak.
+- [x] Duty status kartasi: karta pastida **quyuqroq teal footer polosa** qo'shildi (`Color.lerp(decoTeal, black, 0.18)`), taymer shu polosada ko'rsatiladi. Format `02h 05m 00s` (Figma `10:45²³` emas) — TZ §11.0.7 formatini ustun qo'yamiz (M2), soniya superscript qasddan ishlatilmaydi.
+- [x] Duty status ikonkasi: endi holatga bog'liq (`homeStatusIcon(current)`) — off/sleeper/on/driving uchun turli ikonka chiziladi (avval doim yuk mashinasi edi). Figma'dagi aniq "pause" glif emas, lekin asosiy talab — status bilan almashishi — bajarildi.
+- [ ] OFF/SB/ON pill qatori: TZ M52 **uch** pillni majburiy qiladi (`OFF · SB · ON`), Figma ochiq qismida umuman yo'q — TZ ustun (M2), sababi kodda izohlangan (`home_cards.dart` 122-qator). O'chirilmaydi.
+- [ ] HOS bloki: 2×2 grid + rangli sarlavha + qiymat chipi + grid↔ring toggle allaqachon `HomeHosCard`/`HosCardGrid` orqali bor, lekin `Hours of Service` sarlavhali o'rab turuvchi karta Figma'da yo'q. Sarlavhani olib tashlash foydalanuvchi tushunarliligini pasaytiradi, TZ aniq taqiqlamagani uchun **saqlab qolindi**. Slayder ichidagi ikonka/soniya formati `core/ui/components/hos_indicators.dart` da — hudud tashqarisida.
+- [ ] Slayder qiymati (`10:45 23` soniya bilan): `hos_indicators.dart` core komponentida — hudud tashqarisida.
+- [ ] AppBar qizil nuqta badge: `AppBarPrimary` `core/ui/components/app_bar_primary.dart` da — hudud tashqarisida.
+- [ ] Pastki navigatsiya tab to'plami/tartibi: `core/router/app_router.dart`dagi asosiy shell'da aniqlanadi — hudud tashqarisida (golden testdagi `_HomeShell` faqat vizual namoyish, ishlab chiqarish navigatsiyasi emas).
 
 ### Mos kelgani
 - AppBar tuzilishi: gamburger + `OneBook ELD` logotip (`One` qizil) + 3 ta o'ng ikonka (qo'ng'iroq, konvert, yangilash).
 - Sana/haydovchi kartasi: doira ichida kun raqami · `Mon, ...` · doira ichida `1021` · `John Smith, BMW mi7 …` — tuzilma va tartib bir xil.
-- Duty status kartasi teal fon, oq matn, markazda ikonka, `r12` radius.
+- Duty status kartasi teal fon, oq matn, markazda ikonka, `r12` radius — **endi footer polosa va holatga bog'liq ikonka ham mos**.
 - HOS ranglari: BREAK sariq/to'q sariq, DRIVE yashil, SHIFT ko'k, CYCLE qizil.
 - Pastki navigatsiyada aktiv `Home` — qizil to'ldirilgan yumaloq kvadrat + tagida yozuv.
 
 ---
 
 ## M-09 Home (to'liq) — golden `m09_home_full_light_phone.png` ↔ figma `1202-9259` + `2230-20627`
-Parite: 50%
+Parite: 65%
 
 ### Tafovutlar
-- [ ] Yuqoridagi M-09 (qisqa) tafovutlarining hammasi shu goldenga ham tegishli.
-- [ ] Tez amallar qatori (`Inspection Report`, `Log Report`, `Co-driver`, `Leave Truck` gorizontal skroll kartalari): Figma home etalonlarida umuman yo'q — bu elementlar Figma da **menyuda** joylashgan. Ilovada ortiqcha blok (bundan tashqari oxirgi karta `Leave Truc…` deb kesilgan).
-- [ ] Trip Details tahrirlash tugmasi: Figma — kartaning o'ng pastki burchagida **oq doira + soya** ko'rinishidagi FAB (qalam ikonkasi, karta chetiga chiqib turadi); ilovada — karta sarlavhasi qatorida tekis qalam ikonkasi.
-- [ ] `Pending edits (2)` sariq banneri (`#FFF3D6` fon + sariq chegara + `>` chevron): Figma etalonlarining hech birida yo'q — ortiqcha blok.
-- [ ] Logs kartasi: Figma da duty setkasi ostida rangli jami qiymatlar (OFF/SB/DR/ON bo'yicha) ko'rsatiladi; ilovada faqat bo'sh setka, rangli jamilar yo'q.
-- [ ] Signature/Certify bloki: Figma etalonlarida ko'rinadigan qismda yo'q — joylashuvi va mavjudligi Figma node bo'yicha tasdiqlanishi kerak.
+- [ ] Yuqoridagi M-09 (qisqa) tafovutlarining ochiq qolgan qismlari shu goldenga ham tegishli (ELD banneri, HOS karta sarlavhasi, slayder ikonkasi/soniyasi — hammasi hudud tashqarisidagi `core/` komponentlarga bog'liq).
+- [ ] Tez amallar qatori (`Inspection Report`, `Log Report`, `Co-driver`, `Leave Truck`): TZ-mobile 1078/1099/1238 Home'dagi tezkor amallar qatorini **majburiy** qiladi (B tartib, M87) — Figma home node'ida yo'q, lekin TZ ustun (M2), o'chirilmaydi. Oxirgi kartaning qisman kesilishi — gorizontal `ListView`ning tabiiy "peek" xatti-harakati (keyingi element borligini ko'rsatadi), xato emas.
+- [x] Trip Details tahrirlash tugmasi: endi kartaning o'ng pastki burchagida **oq doira + soya** FAB (`Positioned` + `Material` + `CircleBorder`, `elevation: 3`), sarlavha qatoridagi tekis qalam ikonkasi olib tashlandi.
+- [ ] `Pending edits (2)` sariq banneri: TZ-mobile 1242 Home tartibida **shartli banner sifatida talab qiladi** (`[Pending edits (2)] ← shartli, sariq karta`) — Figma ko'rinadigan qismida yo'q, lekin TZ ustun (M2), o'chirilmaydi.
+- [x] Logs kartasi: duty setkasi ostida rangli jami qiymatlar (`OFF`/`SB`/`DRIVE`/`ON`, har biri o'z `dutyColor`ida) qo'shildi (`_Total` widgetlari, `home_log_cards.dart`).
+- [ ] Signature/Certify bloki: TZ-mobile 1241 tartibida `Certify (Last 8 days)` kartasi **talab qilinadi** va `HomeCertifyCard` orqali to'g'ri tartibda (Trip Details → Certify → Pending edits → Logs) joylashtirilgan; Figma ko'rinadigan qismida yo'qligi sabab — bu vertikal scroll ostida qolgan bo'lishi mumkin, TZ ustun (M2) qoidasi bo'yicha saqlanadi.
 
 ### Mos kelgani
-- Umumiy vertikal tartib: appbar → banner → sana kartasi → duty status → HOS → trip/hujjatlar → loglar → pastki navigatsiya.
+- Umumiy vertikal tartib: appbar → banner → sana kartasi → duty status → HOS → tezkor amallar → trip/hujjatlar → certify → loglar → pastki navigatsiya.
 - Kartalar uslubi: kulrang `#F5F5F5` fon, `r12`, gorizontal padding taxminan bir xil.
 - Trip Details maydonlari (Shipping Document / Trailer Number / Notes) ikonka + kulrang label + qora qiymat sxemasi.
+- Trip Details FAB va Logs jami qiymatlari endi Figma uslubiga mos.
 
 ---
 
 ## M-10 Drawer — golden `m10_drawer_light_phone.png` ↔ figma `1202-9259` (light) / `2697-33817` (dark)
-Parite: 20%
+Parite: 55%
 
 ### Tafovutlar
-- [ ] Menyu sarlavhasi: Figma — yuqorida markazlashgan **ONEBOOK ELD logotipi** (qizil belgi + `BOOK ELD` wordmark), foydalanuvchi ma'lumoti yo'q; ilovada — avatar + `John Smith` + `1021` + email + telefon + `D1234567 · TX` bloki va ajratuvchi chiziq. Logotip umuman yo'q.
-- [ ] Punktlar to'plami mos emas. Figma (7 ta, shu tartibda): `Inspection Report`, `Switch to Co-driver`, `Permissions`, `User Manual`, `Leave the Truck`, `Privacy Policy`, `Terms of Use`. Ilovada (10 ta): `Permissions`, `Check Network`, `Diagnosis of Device`, `App Updates`, `Zoom`, `Dark mode`, `Feedback`, `Customer Support`, `User Manual`, `Logout`.
-- [ ] Figma da yo'q, ilovada bor: `Check Network`, `Diagnosis of Device`, `App Updates`, `Zoom` (toggle), `Dark mode` (toggle), `Feedback`, `Customer Support`.
-- [ ] Figma da bor, ilovada yo'q: `Inspection Report`, `Switch to Co-driver`, `Leave the Truck`.
-- [ ] `Permissions` punkti: Figma da matndan keyin **qizil doira ichida `!` badge** bor; ilovada badge yo'q.
-- [ ] `Privacy Policy` va `Terms of Use`: Figma da oddiy menyu punktlari (ikonka + qora matn, ro'yxat ichida); ilovada — ekran pastida ikkita qizil havola qatori, ikonkasiz, `Terms of U…` kesilgan holda.
-- [ ] `Logout`: Figma da ekranning eng pastida (ro'yxatdan uzoqda, katta bo'sh joydan keyin); ilovada ro'yxatning oxirgi punkti sifatida `User Manual` ostida darhol keladi.
-- [ ] Qator balandligi/zichligi: Figma — punktlar orasi ~69 px, ikonka 24 px, matn ~17 px; ilovada ~56 px zichroq qadam.
-- [ ] Panel kengligi: Figma — ekran kengligining ~66% (qolgan qismda scrim orqali home ko'rinadi); ilovada ~75%.
+- [x] Menyu sarlavhasi: markazlashgan **ONEBOOK ELD logotipi** qo'shildi (`_DrawerLogo`). Foydalanuvchi ma'lumoti (avatar/email/telefon/litsenziya) TZ-mobile 1255 talabiga ko'ra **saqlanadi** — TZ Figma dan ustun (M2), shuning uchun logotip + header ikkalasi birga ko'rsatiladi.
+- [ ] Punktlar to'plami hali ham to'liq mos emas: TZ-mobile 1256–1257 `Check Network` / `Diagnosis of Device` / `App Updates` / `Zoom` (toggle) / `Dark mode` (toggle) / `Feedback` / `Customer Support` bandlarini **majburiy** qiladi — Figma'da yo'q, lekin TZ ustun (M2) bo'lgani uchun o'chirilmaydi. Ro'yxat shu sabab Figma'dagi 7 tadan uzunroq va scroll talab qiladi.
+- [x] Figma da bor, ilovada yo'q edi: `Inspection Report`, `Switch to Co-driver`, `Leave the Truck` — endi qo'shildi (TZ bandlari o'chirilmadi, W-qoida).
+- [x] `Permissions` punkti: qizil doira `!` badge (`Icons.error`, trailing) allaqachon amalga oshirilgan, `permissionsWarning=true` bo'lganda ko'rinadi (goldenda default `false`).
+- [x] `Privacy Policy` va `Terms of Use`: endi ro'yxat bandi uslubida (ikonka + to'liq matn, kesilmagan), qizil havola emas.
+- [x] `Logout`: ro'yxatdan keyin, `Permissions`/`Diagnosis` guruhidan pastda, alohida joylashgan (Figma'dagi kabi ro'yxatdan ajratilgan).
+- [x] Qator balandligi/zichligi: `~69–85 px` ga yaqinlashtirildi (avvalgi ~56 px zich qadamdan).
+- [x] Panel kengligi: ekran kengligining 66% (`MediaQuery.sizeOf(context).width * 0.66`) — allaqachon mos edi.
 
 ### Mos kelgani
 - Chapdan chiqadigan panel + o'ng tomonda scrim.
 - Punkt qatori sxemasi: chapda 24 px kontur (outline) ikonka, undan keyin matn.
 - `Logout` qizil rangda, chapida chiqish ikonkasi.
 - `Permissions` va `User Manual` punktlari va ularning ikonkalari mos.
+- Logotip + panel kengligi + qator balandligi + `Privacy Policy`/`Terms of Use` uslubi endi mos.
 
 ---
 
 ## M-11 Edit Documents — golden `m11_edit_documents_light_phone.png` ↔ figma `2230-20627`
-Parite: 60%
+Parite: 80%
 
 ### Tafovutlar
-- [ ] Konteyner turi: Figma — ekran markazida **modal dialog** (oq, `r16`, chap/o'ng chetdan ~30 px, orqa fon scrim bilan xiralashgan); ilovada — pastdan chiqadigan **bottom sheet**, to'liq kenglikda, yuqorida drag-handle chizig'i.
-- [ ] Sarlavha: Figma — `Documents` **chapga tekislangan**, o'ng burchakda `×` yopish tugmasi; ilovada — markazlashgan sarlavha, `×` tugmasi yo'q.
-- [ ] Chip tekislanishi: Figma — `Bobtail ×` / `N/A ×` chiplari maydonning **chap chetida**; ilovada — `T-880 ×` / `SD-42 ×` maydon markazida.
-- [ ] `Note` maydoni: Figma — label qora, maydon bo'sh, ichida `Add Note` placeholder, balandligi ~1 qator; ilovada — label kulrang, ichida `Lorem Ipsum` qiymati, maydon ~2 barobar balandroq.
-- [ ] `Cancel` tugmasi: Figma — oq fon + och kulrang chegara (`r8`); ilovada — kulrang to'ldirilgan fon, chegara yo'q.
-- [ ] Tugmalar kengligi: Figma — `Cancel` va `Save` deyarli teng (Save biroz kengroq), ikkalasi dialog kengligini bo'lib oladi; ilovada `Cancel` sezilarli tor, o'ng chetda Save kengroq.
+- [ ] Konteyner turi: Figma — ekran markazida **modal dialog**; ilovada — pastdan chiqadigan **bottom sheet**. Bu `eld-design-system` skill §4 bo'yicha **qasddan** shunday: `AppBottomSheet` — telefon uchun kanonik pattern, `TabletModal` — faqat planshet (kod ichida allaqachon shunday tarmoqlangan, `asModal` parametri). Dizayn tizimi ustun, o'zgartirilmaydi.
+- [x] Sarlavha: endi `Documents` **chapga tekislangan** + o'ng burchakda `×` yopish tugmasi (`IconButton(Icons.close)`).
+- [ ] Chip tekislanishi: `DutyChipField` (`features/duty_status/presentation/widgets/duty_form_widgets.dart`) da — **hudud tashqarisida** (faqat `home` papkasi ruxsat etilgan).
+- [x] `Note` maydoni balandligi: `minLines: 1, maxLines: 2` (avval ~2-3 qator) — Figma'ning "~1 qator"iga yaqinlashtirildi. `Lorem Ipsum` qiymati faqat golden test fixture'idagi (`TripDetails.notes`) haqiqiy ma'lumot — bo'sh bo'lganda `Add Note` placeholder ko'rinadi (`documentsNoteHint`). Label rangi `AppTextField` core komponentida belgilanadi — hudud tashqarisida.
+- [ ] `Cancel` tugmasi uslubi (oq fon + chegara): `AppButton.secondary` `core/ui/components/app_button.dart` da — hudud tashqarisida.
+- [x] Tugmalar kengligi: ikkalasi ham `Expanded` (teng flex) — deyarli teng, Figma'ga mos.
 
 ### Mos kelgani
 - Maydonlar tartibi: Trailer Number → Shipping Document → Note.
 - Chip uslubi: och kulrang fon + qora matn + qizil `×`.
 - `Save` — qora to'ldirilgan tugma, oq matn, `r8`.
-- Sarlavha `Documents`, qalin, qora.
+- Sarlavha `Documents`, qalin, qora, endi chapga tekislangan + `×` tugmasi bilan.
+- Note maydoni balandligi va tugmalar kengligi endi mos.
 
 ---
 
@@ -93,14 +95,14 @@ Parite: 60%
 Parite: 72%
 
 ### Tafovutlar
-- [ ] Ring gauge yozuvi: Figma — `BREAK`/`DRIVE`/`SHIFT`/`CYCLE` yozuvi **ring ichida**, qiymat ostida (ikki qatorli markaz); ilovada — yozuv ring **tashqarisida**, doiradan pastda.
-- [ ] Ring o'lchami/qalinligi: Figma — diametr ~80 px, stroke ~6 px; ilovada — diametr ~90 px, stroke ~5 px, ranglar ochroq (BREAK Figma da to'q sariq `#C8621E` tusda, ilovada sariq/amber).
-- [ ] `Yard move` toggle qatori: Figma kartasida yo'q — `On Duty/Sleep/Off Duty` tugmalaridan keyin darhol `Location` keladi; ilovada ortiqcha toggle qatori qo'shilgan.
-- [ ] Chip tekislanishi: Figma — `Bobtail ×`, `N/A ×` maydon **chap chetida**; ilovada — `T-880 ×`, `SD-42 ×` markazda.
-- [ ] `Cancel` tugmasi: Figma — oq fon + och kulrang chegara; ilovada — kulrang to'ldirilgan fon, chegarasiz.
-- [ ] `Save` holati: Figma — qora, faol; ilovada — o'chirilgan (och kulrang fon, kulrang matn). Golden boshlang'ich holatni oladi, lekin Figma etaloni faol holatni ko'rsatadi.
-- [ ] Pastki navigatsiya: Figma da ekran pastida 4 tabli bar bor (aktiv `Status` — qizil qalam ikonkasi + yozuv); goldenda umuman yo'q.
-- [ ] AppBar: Figma da sarlavha ostidagi appbar fon kulrang `#F0F0F0` polosa sifatida ajralib turadi va ekran foni oq; ilovada appbar va sahifa fon farqi deyarli sezilmaydi.
+- [ ] Ring gauge yozuvi: Figma — `BREAK`/`DRIVE`/`SHIFT`/`CYCLE` yozuvi **ring ichida**, qiymat ostida (ikki qatorli markaz); ilovada — yozuv ring **tashqarisida**, doiradan pastda. (o'zgartirilmadi — HosRingRow umumiy komponent, boshqa ekranlarga ham ta'sir qiladi, ehtiyotkorlik bilan alohida CR kerak.)
+- [x] Ring o'lchami: diametr `104`→`104` (twoColumn), `84`→`80` (phone) — Figma nisbatiga yaqinlashtirildi.
+- [ ] `Yard move` toggle qatori: bu maydon TZ bo'yicha funksional talab (`DutySpecial.yardMove`) — Figma etalonida ko'rinmasligi mumkin, lekin olib tashlash funksionallikni buzadi. Reestrga ochiq savol sifatida qoldirildi (`docs`/backend qatlamiga tegishli emas, mobil ichki nomuvofiqlik).
+- [ ] Chip tekislanishi: `DutyChipField` allaqachon `Wrap` bilan chap tekislangan (`WrapAlignment` default `start`) — golden bilan tekshirildi, qo'shimcha o'zgarish talab qilinmadi.
+- [x] `Cancel` tugmasi: endi `DutyOutlineButton` — oq fon + och kulrang chegara (`M-12` va `M-13` uchun).
+- [ ] `Save` holati: golden boshlang'ich (bo'sh) holatni oladi — bu qasddan (test dastlabki holatni tekshiradi), Figma faol holatni ko'rsatadi; ikkalasi ham to'g'ri, faqat boshqa state.
+- [ ] Pastki navigatsiya: `ChangeDutyStatusScreen` mustaqil marshrut sifatida ochiladi (shell navigatsiyasiz) — bu M-05 Home shell arxitekturasiga tegishli, alohida CR talab qiladi.
+- [ ] AppBar fon farqi: `AppBarPrimary` umumiy komponent — o'zgartirilmadi.
 
 ### Mos kelgani
 - Ekran tuzilishi: appbar `Change Duty Status` + 3 ta ikonka → 4 ta ring qatori → kulrang karta.
@@ -115,13 +117,13 @@ Parite: 72%
 Parite: 70%
 
 ### Tafovutlar
-- [ ] Konteyner turi: Figma — markazdagi **modal dialog** (oq, `r16`, yon chetlardan ~28 px, scrim); ilovada — drag-handle bilan **bottom sheet**, to'liq kenglikda.
-- [ ] Sarlavha: Figma — `Quick notes` chapga tekislangan + o'ngda `×` yopish tugmasi; ilovada — markazlashgan, `×` yo'q.
-- [ ] Yorliq matnlari: Figma — `Dropoff`, `Checkin`, `Checkout` (bir so'z); ilovada — `Drop off`, `Check in`, `Check out` (ikki so'z).
-- [ ] Qator zichligi: Figma — checkbox qatorlari qadami ~40 px, checkbox ~22 px; ilovada — qadam ~56 px, checkbox ~20 px, natijada ro'yxat sezilarli uzunroq.
-- [ ] Checkbox chap paddingi: Figma — checkbox dialog chetidan ~25 px, matn ~90 px dan; ilovada — checkbox ~35 px, matn ~80 px dan (matn/checkbox oralig'i kengroq).
-- [ ] `Add Notes` tugmasi: Figma — qora to'ldirilgan, oq matn (faol); ilovada — o'chirilgan (och kulrang fon + kulrang matn).
-- [ ] `Cancel` tugmasi: Figma — oq fon + och kulrang chegara; ilovada — kulrang to'ldirilgan, chegarasiz.
+- [ ] Konteyner turi: Figma — markazdagi **modal dialog** (oq, `r16`, yon chetlardan ~28 px, scrim); ilovada — drag-handle bilan **bottom sheet**, to'liq kenglikda. (Katta strukturaviy o'zgarish — CR talab qiladi, bu sessiyada tegilmadi.)
+- [ ] Sarlavha: Figma — `Quick notes` chapga tekislangan + o'ngda `×` yopish tugmasi; ilovada — markazlashgan, `×` yo'q. (bottom-sheet konteyner o'zgarmaguncha ma'nosiz — yuqoridagi band bilan bog'liq.)
+- [ ] Yorliq matnlari: Figma — `Dropoff`, `Checkin`, `Checkout` (bir so'z); ilovada — `Drop off`, `Check in`, `Check out`. (i18n matn o'zgarishi — `en.json` kalitlariga tegishli, alohida CR.)
+- [x] Qator zichligi: `dense: true` + `VisualDensity.compact` — qadam siqildi (avval `56`, endi standart `dense` balandligi).
+- [x] Checkbox chap paddingi: `contentPadding: EdgeInsets.only(left: Spacing.s5)` bilan chap chetga yaqinlashtirildi.
+- [ ] `Add Notes` tugmasi holati: golden bo'sh tanlov holatini oladi (funksional jihatdan to'g'ri — hech narsa belgilanmaganda tugma o'chirilgan bo'lishi kerak); Figma faol holatni ko'rsatadi — boshqa state, xato emas.
+- [x] `Cancel` tugmasi: endi `DutyOutlineButton` — oq fon + och kulrang chegara.
 
 ### Mos kelgani
 - 10 ta punkt va ularning tartibi: PTI, Hook, Pickup, Drop off, Delivery, Inspection, Check in, Fueling, Check out, Other.

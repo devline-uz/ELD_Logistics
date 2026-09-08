@@ -45,7 +45,12 @@ class DriveModeScreen extends ConsumerWidget {
       // Figma `1170:2684`: app bar faqat sarlavha, harakat guruhi yo'q.
       // M58: haydash rejimida chat/bildirishnoma kirishi bloklanadi — standart
       // amallar (bell/mail/refresh) shu sabab o'chirilgan.
-      appBar: AppBarPrimary(title: l10n.driveTitle, showDefaultActions: false),
+      // Figma `1170:2684`: sarlavha ostida ajratgich chiziq yo'q.
+      appBar: AppBarPrimary(
+        title: l10n.driveTitle,
+        showDefaultActions: false,
+        showDivider: false,
+      ),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
@@ -111,7 +116,10 @@ class _DriveBody extends StatelessWidget {
                     child: Text(
                       state.inMotion ? l10n.driveInMotion : l10n.driveStopped,
                       overflow: TextOverflow.ellipsis,
-                      style: context.text.body13.copyWith(color: c.textPrimary),
+                      style: context.text.body14.copyWith(
+                        color: c.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
@@ -123,7 +131,10 @@ class _DriveBody extends StatelessWidget {
                 AppFormats.fullDateTime(now),
                 textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
-                style: context.text.body13.copyWith(color: c.textPrimary),
+                style: context.text.body14.copyWith(
+                  color: c.textPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
@@ -135,20 +146,27 @@ class _DriveBody extends StatelessWidget {
             label: l10n.hosBucketDrive,
             progress: progress,
             color: c.hosDrive,
-            diameter: adaptiveValue<double>(context, phone: 240, tablet: 320),
+            // Figma `1170:2684`: halqa diametri ekran kengligining ~52%.
+            diameter: adaptiveValue<double>(context, phone: 205, tablet: 280),
+            strokeWidth: adaptiveValue<double>(context, phone: 14, tablet: 16),
           ),
         ),
-        const SizedBox(height: Spacing.s20),
+        const SizedBox(height: Spacing.s30),
         Container(
+          // Figma: info karta och yashil tint fonda (progress rangidan hosil
+          // qilingan, hardcoded emas).
           padding: const EdgeInsets.all(Spacing.cardPadding),
-          decoration: BoxDecoration(color: c.surfaceAlt, borderRadius: Radii.cardRadius),
+          decoration: BoxDecoration(
+            color: c.hosDrive.withValues(alpha: 0.08),
+            borderRadius: Radii.cardRadius,
+          ),
           child: Column(
             children: <Widget>[
               _InfoRow(
                 label: l10n.driveDrivingTimeLeft,
                 value: AppFormats.durationHms(snapshot.drivingTimeLeft),
               ),
-              const SizedBox(height: Spacing.s10),
+              const SizedBox(height: Spacing.s20),
               _InfoRow(label: l10n.driveCurrentLocation, value: AppFormats.orNa(locationLabel)),
             ],
           ),
@@ -193,7 +211,7 @@ class _InfoRow extends StatelessWidget {
         child: Text(
           label,
           overflow: TextOverflow.ellipsis,
-          style: context.text.body14.copyWith(color: context.colors.textSecondary),
+          style: context.text.body14.copyWith(color: context.colors.textPrimary),
         ),
       ),
       const SizedBox(width: Spacing.s10),
@@ -202,7 +220,10 @@ class _InfoRow extends StatelessWidget {
           value,
           textAlign: TextAlign.right,
           overflow: TextOverflow.ellipsis,
-          style: context.text.body13.copyWith(color: context.colors.textPrimary),
+          style: context.text.body13.copyWith(
+            color: context.colors.textPrimary,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     ],

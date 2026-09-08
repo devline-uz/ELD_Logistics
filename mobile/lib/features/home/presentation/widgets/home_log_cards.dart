@@ -23,28 +23,52 @@ class HomeTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
-    return HomeCard(
-      title: l10n.homeTripDetails,
-      trailing: IconButton(
-        tooltip: l10n.homeEditDocuments,
-        onPressed: onEdit,
-        icon: const Icon(Icons.edit_outlined),
-      ),
-      child: Column(
-        children: <Widget>[
-          _TripRow(
-            icon: Icons.description_outlined,
-            label: l10n.documentsShippingDocument,
-            value: trip.shippingDocs.join(', '),
+    final AppColors c = context.colors;
+    // Figma: tahrirlash FAB'i kartaning o'ng pastki burchagiga chiqib turadi
+    // (oq doira + soya), sarlavha qatorida qalam ikonkasi yo'q.
+    return Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        HomeCard(
+          title: l10n.homeTripDetails,
+          child: Column(
+            children: <Widget>[
+              _TripRow(
+                icon: Icons.description_outlined,
+                label: l10n.documentsShippingDocument,
+                value: trip.shippingDocs.join(', '),
+              ),
+              _TripRow(
+                icon: Icons.local_shipping_outlined,
+                label: l10n.documentsTrailerNumber,
+                value: trip.trailers.join(', '),
+              ),
+              _TripRow(icon: Icons.notes_outlined, label: l10n.dutyNotesLabel, value: trip.notes),
+            ],
           ),
-          _TripRow(
-            icon: Icons.local_shipping_outlined,
-            label: l10n.documentsTrailerNumber,
-            value: trip.trailers.join(', '),
+        ),
+        Positioned(
+          right: Spacing.s10,
+          bottom: -Spacing.s15,
+          child: Semantics(
+            button: true,
+            label: l10n.homeEditDocuments,
+            child: Material(
+              color: c.surface,
+              shape: const CircleBorder(),
+              elevation: 3,
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: onEdit,
+                child: Padding(
+                  padding: const EdgeInsets.all(Spacing.s10),
+                  child: Icon(Icons.edit_outlined, size: Spacing.s20, color: c.textPrimary),
+                ),
+              ),
+            ),
           ),
-          _TripRow(icon: Icons.notes_outlined, label: l10n.dutyNotesLabel, value: trip.notes),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

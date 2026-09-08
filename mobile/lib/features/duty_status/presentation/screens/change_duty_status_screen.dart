@@ -94,7 +94,7 @@ class _Body extends StatelessWidget {
     // chiziqli variant emas) — Figma `1083:10550`.
     final Widget indicators = Padding(
       padding: const EdgeInsets.symmetric(vertical: Spacing.s15),
-      child: HosRingRow(gauges: hosGauges(context, snapshot), diameter: twoColumn ? 104 : 84),
+      child: HosRingRow(gauges: hosGauges(context, snapshot), diameter: twoColumn ? 104 : 80),
     );
     final Widget form = _FormCard(
       state: state,
@@ -256,7 +256,7 @@ class _FormCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: AppButton.secondary(
+                child: DutyOutlineButton(
                   label: l10n.commonCancel,
                   onPressed: () => Navigator.of(context).maybePop(),
                 ),

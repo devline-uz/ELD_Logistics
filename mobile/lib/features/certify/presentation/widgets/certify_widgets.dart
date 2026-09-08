@@ -60,6 +60,9 @@ class CertifyDayTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
     final bool enabled = day.selectable;
+    // Figma `1102:397`: sertifikatlangan kun checkbox'i **to'ldirilgan**
+    // ko'rinadi (bajarilgan belgisi) — o'chirilgan bo'lsa ham (#B-25).
+    final bool checked = selected || day.status == CertifyStatus.certified;
 
     return Semantics(
       selected: selected,
@@ -69,14 +72,14 @@ class CertifyDayTile extends StatelessWidget {
         borderRadius: Radii.badgeRadius,
         child: Row(
           children: <Widget>[
-            AppCheckbox(value: selected, onChanged: enabled ? (bool _) => onToggle() : null),
+            AppCheckbox(value: checked, onChanged: enabled ? (bool _) => onToggle() : null),
             const SizedBox(width: Spacing.s10),
             Expanded(
               child: Text(
                 AppFormats.listHeaderOf(day.date),
-                style: context.text.body15.copyWith(
-                  color: enabled ? c.textPrimary : c.textSecondary,
-                ),
+                // Figma: barcha sana matnlari bir xil (to'q) rangda —
+                // o'chirilgan qator ham xiralashtirilmaydi (#B-25).
+                style: context.text.body15.copyWith(color: c.textPrimary),
               ),
             ),
             certifyBadge(context, day.status),

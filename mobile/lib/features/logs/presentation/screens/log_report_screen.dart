@@ -7,9 +7,11 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/ui/ui.dart';
+import '../../../dvir/presentation/dvir_routes.dart';
 import '../../domain/day_timeline.dart';
 import '../../domain/log_models.dart';
 import '../controllers/log_report_controller.dart';
@@ -84,8 +86,16 @@ class _Body extends ConsumerWidget {
           padding: EdgeInsets.symmetric(horizontal: padding),
           child: _TabBar(active: state.tab, onSelected: controller.selectTab),
         ),
-        const SizedBox(height: Spacing.s10),
-        _DateStrip(strip: strip, selected: state.selectedDate, onSelected: controller.selectDate),
+        // Figma `1087-14921` (M-24 DVIR): sana strip DVIR tabida umuman
+        // ko'rsatilmaydi — segmentdan keyin to'g'ridan-to'g'ri kontent keladi.
+        if (state.tab != LogTab.dvir) ...<Widget>[
+          const SizedBox(height: Spacing.s10),
+          _DateStrip(
+            strip: strip,
+            selected: state.selectedDate,
+            onSelected: controller.selectDate,
+          ),
+        ],
         const SizedBox(height: Spacing.s10),
         Expanded(
           child: Padding(
@@ -297,34 +307,83 @@ class _DvirTab extends ConsumerWidget {
     final AppLocalizations l10n = context.l10n;
     final AsyncValue<List<DvirListItem>> items = ref.watch(logDvirProvider);
 
-    return asyncView<List<DvirListItem>>(
-      items,
-      loading: const LoadingSkeleton(itemCount: 4),
-      error: (Object _) => ErrorState(
-        message: l10n.errUnknown,
-        retryLabel: l10n.commonRetry,
-        onRetry: () => ref.invalidate(logsRepositoryProvider),
+    return Stack(
+      children: <Widget>[
+        asyncView<List<DvirListItem>>(
+          items,
+          loading: const LoadingSkeleton(itemCount: 4),
+          error: (Object _) => ErrorState(
+            message: l10n.errUnknown,
+            retryLabel: l10n.commonRetry,
+            onRetry: () => ref.invalidate(logsRepositoryProvider),
+          ),
+          data: (List<DvirListItem> list) => list.isEmpty
+              ? EmptyState(
+                  title: l10n.logsDvirEmptyTitle,
+                  message: l10n.logsDvirEmptyMessage,
+                  illustration: const DvirEmptyIllustration(),
+                )
+              : twoColumn
+              ? GridView.builder(
+                  padding: const EdgeInsets.only(bottom: Spacing.s20),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: Spacing.s20,
+                    mainAxisSpacing: Spacing.s10,
+                    mainAxisExtent: 88,
+                  ),
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext _, int index) => DvirListTile(item: list[index]),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.only(bottom: Spacing.s20),
+                  itemCount: list.length,
+                  separatorBuilder: (BuildContext _, int _) => const Divider(height: 1),
+                  itemBuilder: (BuildContext _, int index) => DvirListTile(item: list[index]),
+                ),
+        ),
+        // Figma `1087-14921`: pastki o'ng burchakda `+` FAB — `M-32 Add DVIR`.
+        Positioned(
+          right: 0,
+          bottom: Spacing.s20,
+          child: _DvirAddFab(onTap: () => context.push(DvirRoute.add)),
+        ),
+      ],
+    );
+  }
+}
+
+/// `M-24` pastki o'ng burchakdagi qo'shish tugmasi (#B-24) — Figma `56px`
+/// qizil doira + oq `+`.
+class _DvirAddFab extends StatelessWidget {
+  const _DvirAddFab({required this.onTap});
+
+  final VoidCallback onTap;
+
+  static const double _size = 56;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = context.l10n;
+    final AppColors c = context.colors;
+
+    return Semantics(
+      button: true,
+      label: l10n.logsDvirAdd,
+      child: Material(
+        color: c.error,
+        shape: const CircleBorder(),
+        elevation: 4,
+        child: InkWell(
+          onTap: onTap,
+          customBorder: const CircleBorder(),
+          child: SizedBox(
+            width: _size,
+            height: _size,
+            child: Icon(Icons.add, color: c.onPrimary, size: Spacing.s20),
+          ),
+        ),
       ),
-      data: (List<DvirListItem> list) => list.isEmpty
-          ? EmptyState(title: l10n.logsDvirEmptyTitle, message: l10n.logsDvirEmptyMessage)
-          : twoColumn
-          ? GridView.builder(
-              padding: const EdgeInsets.only(bottom: Spacing.s20),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: Spacing.s20,
-                mainAxisSpacing: Spacing.s10,
-                mainAxisExtent: 88,
-              ),
-              itemCount: list.length,
-              itemBuilder: (BuildContext _, int index) => DvirListTile(item: list[index]),
-            )
-          : ListView.separated(
-              padding: const EdgeInsets.only(bottom: Spacing.s20),
-              itemCount: list.length,
-              separatorBuilder: (BuildContext _, int _) => const Divider(height: 1),
-              itemBuilder: (BuildContext _, int index) => DvirListTile(item: list[index]),
-            ),
     );
   }
 }

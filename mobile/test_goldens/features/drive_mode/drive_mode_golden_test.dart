@@ -4,6 +4,7 @@ library;
 
 import 'package:eld_mobile/core/location/location_models.dart';
 import 'package:eld_mobile/features/drive_mode/presentation/screens/drive_mode_screen.dart';
+import 'package:eld_mobile/features/drive_mode/presentation/widgets/idle_prompt_dialog.dart';
 import 'package:eld_mobile/features/duty_status/domain/duty_status_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -34,9 +35,18 @@ void main() {
   );
 }
 
+// M-16: controller taymeri golden ichida ishlamaydi (real vaqtga bog'liq),
+// shu sabab dialog M-15 ustiga to'g'ridan-to'g'ri qatlam sifatida chiziladi —
+// `DriveModeScreen` orqa fon, `IdlePromptOverlay` esa haqiqiy holatdagi kabi
+// ustida ko'rinadi.
 class _IdlePromptGolden extends StatelessWidget {
   const _IdlePromptGolden();
 
   @override
-  Widget build(BuildContext context) => const DriveModeScreen();
+  Widget build(BuildContext context) => Stack(
+    children: <Widget>[
+      const DriveModeScreen(),
+      IdlePromptOverlay(onStillDriving: () {}, onNotDriving: () {}),
+    ],
+  );
 }

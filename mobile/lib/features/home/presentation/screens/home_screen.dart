@@ -199,6 +199,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       return;
     }
     final String target = switch (action) {
+      HomeDrawerAction.inspectionReport => HomeLinks.inspection,
+      HomeDrawerAction.switchCoDriver => HomeLinks.coDriver,
+      HomeDrawerAction.leaveTruck => HomeLinks.leaveTruck,
       HomeDrawerAction.permissions => HomeLinks.permissions,
       HomeDrawerAction.checkNetwork => HomeLinks.checkNetwork,
       HomeDrawerAction.diagnosis => HomeLinks.diagnosis,

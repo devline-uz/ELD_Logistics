@@ -146,6 +146,53 @@ class _StatusTile extends StatelessWidget {
   }
 }
 
+/// Ikkilamchi CTA — oq fon + och kulrang chegara (Figma dialoglaridagi
+/// `Cancel` uslubi, #B-14 dagi `fillSubtle` variantidan farqli).
+///
+/// `AppButton.secondary` core komponenti to'ldirilgan fon beradi — modal
+/// dialoglar (`M-12`/`M-13`/`M-14`) uchun konturli variant kerak, shu sabab
+/// shu yerda lokal ravishda ta'riflangan (core o'zgartirilmaydi).
+class DutyOutlineButton extends StatelessWidget {
+  const DutyOutlineButton({required this.label, required this.onPressed, super.key});
+
+  final String label;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    final double height = touchTarget(context);
+    return Semantics(
+      button: true,
+      enabled: onPressed != null,
+      label: label,
+      child: Material(
+        color: c.surface,
+        borderRadius: Radii.buttonRadius,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: Radii.buttonRadius,
+          child: Container(
+            constraints: BoxConstraints(minHeight: height),
+            decoration: BoxDecoration(
+              borderRadius: Radii.buttonRadius,
+              border: Border.all(color: c.stroke, width: Strokes.thin),
+            ),
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: Spacing.s20),
+            child: Text(
+              label,
+              style: context.text.body12.copyWith(color: c.textSecondary),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Chip'lar maydoni (`Trailer Number`, `Shipping Document`) — `×` bilan.
 class DutyChipField extends StatelessWidget {
   const DutyChipField({

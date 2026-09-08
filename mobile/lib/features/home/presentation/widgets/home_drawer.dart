@@ -12,6 +12,8 @@ import '../../../duty_status/domain/duty_status_models.dart';
 
 /// Drawer bandini bosganda chaqiriladigan amal.
 enum HomeDrawerAction {
+  inspectionReport,
+  switchCoDriver,
   permissions,
   checkNetwork,
   diagnosis,
@@ -19,6 +21,7 @@ enum HomeDrawerAction {
   feedback,
   customerSupport,
   userManual,
+  leaveTruck,
   logout,
   termsOfUse,
   privacyPolicy,
@@ -45,17 +48,35 @@ class HomeDrawer extends ConsumerWidget {
     final AppUiSettings settings = ref.watch(appUiSettingsProvider);
     final AppUiSettingsNotifier ui = ref.read(appUiSettingsProvider.notifier);
 
+    // M-10 (Figma `1202:9259`/`2697:33817`): panel ekran kengligining ~66%
+    // ini egallaydi (qolgan qismda scrim orqali home ko'rinadi).
+    final double width = MediaQuery.sizeOf(context).width * 0.66;
+
     return Drawer(
+      width: width,
       backgroundColor: c.sidebar,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            const _DrawerLogo(),
             _Header(driver: driver),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(vertical: Spacing.s10),
                 children: <Widget>[
+                  // Figma'da mavjud, TZ-mobile 1255 da tilga olinmagan
+                  // bandlar — qo'shildi, TZ bandlari o'chirilmadi (W-qoida).
+                  _Item(
+                    icon: Icons.fact_check_outlined,
+                    label: l10n.drawerInspectionReport,
+                    onTap: () => onAction(HomeDrawerAction.inspectionReport),
+                  ),
+                  _Item(
+                    icon: Icons.swap_horiz,
+                    label: l10n.drawerSwitchCoDriver,
+                    onTap: () => onAction(HomeDrawerAction.switchCoDriver),
+                  ),
                   _Item(
                     icon: Icons.verified_user_outlined,
                     label: l10n.drawerPermissions,
@@ -112,35 +133,71 @@ class HomeDrawer extends ConsumerWidget {
                     onTap: () => onAction(HomeDrawerAction.userManual),
                   ),
                   _Item(
-                    icon: Icons.logout,
-                    label: l10n.drawerLogout,
-                    destructive: true,
-                    onTap: () => onAction(HomeDrawerAction.logout),
+                    icon: Icons.directions_walk,
+                    label: l10n.drawerLeaveTruck,
+                    onTap: () => onAction(HomeDrawerAction.leaveTruck),
                   ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(Spacing.s15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Expanded(
-                    child: AppButton.text(
-                      label: l10n.drawerTermsOfUse,
-                      onPressed: () => onAction(HomeDrawerAction.termsOfUse),
-                    ),
-                  ),
-                  Expanded(
-                    child: AppButton.text(
-                      label: l10n.drawerPrivacyPolicy,
-                      onPressed: () => onAction(HomeDrawerAction.privacyPolicy),
-                    ),
-                  ),
-                ],
-              ),
+            // Figma: `Logout` ro'yxatdan ajratilgan holda pastda turadi.
+            _Item(
+              icon: Icons.logout,
+              label: l10n.drawerLogout,
+              destructive: true,
+              onTap: () => onAction(HomeDrawerAction.logout),
             ),
+            // Figma (`1202:9259`): `Privacy Policy`/`Terms of Use` ro'yxat
+            // ichidagi oddiy bandlar kabi (ikonka + to'liq matn, kesilmagan);
+            // TZ 1258: joylashuvi Logout'dan pastda saqlanadi.
+            _Item(
+              icon: Icons.privacy_tip_outlined,
+              label: l10n.drawerPrivacyPolicy,
+              onTap: () => onAction(HomeDrawerAction.privacyPolicy),
+            ),
+            _Item(
+              icon: Icons.description_outlined,
+              label: l10n.drawerTermsOfUse,
+              onTap: () => onAction(HomeDrawerAction.termsOfUse),
+            ),
+            SizedBox(height: MediaQuery.paddingOf(context).bottom + Spacing.s10),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Figma `1202:9259`/`2697:33817`: markazlashgan ONEBOOK ELD logotipi
+/// menyu sarlavhasida. `HomeBrandLockup` bilan bir xil rang sxemasi,
+/// drawer uchun kattaroq shrift.
+class _DrawerLogo extends StatelessWidget {
+  const _DrawerLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    final AppLocalizations l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.only(top: Spacing.s20, bottom: Spacing.s10),
+      child: Center(
+        child: Semantics(
+          header: true,
+          label: l10n.appTitle,
+          child: ExcludeSemantics(
+            child: RichText(
+              text: TextSpan(
+                style: context.text.body9.copyWith(color: c.textPrimary),
+                children: <InlineSpan>[
+                  TextSpan(
+                    text: l10n.homeBrandOne,
+                    style: TextStyle(color: c.primary),
+                  ),
+                  TextSpan(text: l10n.homeBrandRest),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -229,7 +286,10 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
     final Color color = destructive ? c.error : c.textPrimary;
+    // Figma: qator balandligi ~69 px (standart ListTile'dan zichroq emas).
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: Spacing.s15, vertical: Spacing.s10),
+      minVerticalPadding: Spacing.s15,
       leading: Icon(icon, color: color),
       title: Text(label, style: context.text.body13.copyWith(color: color)),
       trailing: warning ? Icon(Icons.error, color: c.error, size: Spacing.s20) : null,

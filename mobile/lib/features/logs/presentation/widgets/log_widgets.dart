@@ -174,10 +174,15 @@ class LogTableHeader extends StatelessWidget {
         .withWeight(FontWeight.w500)
         .copyWith(color: c.textSecondary);
 
-    return Padding(
+    // Figma: sarlavha qatori `#F5F5F5` fonda, pastda 1px ajratuvchi (#B-24).
+    return Container(
+      decoration: BoxDecoration(
+        color: c.surfaceAlt,
+        border: Border(bottom: BorderSide(color: c.stroke, width: Strokes.thin)),
+      ),
       padding: const EdgeInsets.fromLTRB(
         LogTableMetrics.rowPadding,
-        0,
+        Spacing.s10,
         LogTableMetrics.rowPadding,
         Spacing.s10,
       ),
@@ -274,6 +279,61 @@ class LogTableRow extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// `M-24` bo'sh holat illyustratsiyasi — Figma `1087:14921`: uchta
+/// karta-siluet ustma-ust + lupa, ochiq kulrang chiziqlar (#B-24).
+///
+/// Rasm asseti yo'q (offline, hech qanday tarmoq/fayl talab qilinmaydi) —
+/// `core/ui` primitivlari (`Container` + `Icon`) bilan chizilgan.
+class DvirEmptyIllustration extends StatelessWidget {
+  const DvirEmptyIllustration({super.key});
+
+  static const double _size = 140;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    Widget card(double dx, double dy, double angle) => Positioned(
+      left: _size / 2 - 44 + dx,
+      top: _size / 2 - 30 + dy,
+      child: Transform.rotate(
+        angle: angle,
+        child: Container(
+          width: 88,
+          height: 60,
+          decoration: BoxDecoration(
+            color: c.surface,
+            borderRadius: Radii.cardRadius,
+            border: Border.all(color: c.stroke, width: Strokes.thin),
+          ),
+        ),
+      ),
+    );
+
+    return SizedBox(
+      width: _size,
+      height: _size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Container(
+            width: _size,
+            height: _size,
+            decoration: BoxDecoration(color: c.surfaceAlt, shape: BoxShape.circle),
+          ),
+          card(-10, -8, -0.12),
+          card(10, 2, 0.08),
+          card(0, 10, 0),
+          Positioned(
+            right: _size / 2 - 60,
+            bottom: _size / 2 - 60,
+            child: Icon(Icons.search, size: 34, color: c.textSecondary),
+          ),
+        ],
       ),
     );
   }
