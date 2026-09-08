@@ -10,13 +10,15 @@
  * - `bounds` o'zgarishi hech qachon `GET /tracking/live`ni qayta chaqirmaydi
  *   (F168) — bu hook faqat client tomonda mavjud `units`ni chizadi.
  */
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import type { Root } from 'react-dom/client';
 import type { GeoJSONSource, Map as MapLibreMap, MapGeoJSONFeature } from 'maplibre-gl';
 import maplibregl from 'maplibre-gl';
 
 import type { LiveUnit } from '@/api/types';
 
 import { buildLiveUnitsGeoJson, type LiveUnitFeatureProperties } from './liveUnitsGeoJson';
+import { whenStyleReady } from './mapReady';
 import { registerDutyStatusIcons } from './markerIcons';
 import { mountUnitMarkerCard, type UnitMarkerCardProps } from './UnitMarkerCard';
 
@@ -41,7 +43,10 @@ export interface UseLiveUnitsLayerOptions {
 const buildGeoJson = buildLiveUnitsGeoJson;
 
 /** `online_status` → halqa rangi (fe-map: online yashil, offline kulrang, disconnected qizil). */
-const ONLINE_RING_COLOR: Record<'online' | 'idle' | 'offline' | 'disconnected' | 'malfunction', string> = {
+const ONLINE_RING_COLOR: Record<
+  'online' | 'idle' | 'offline' | 'disconnected' | 'malfunction',
+  string
+> = {
   online: '#1AA05D',
   idle: '#F6BA47',
   offline: '#8A94A6',
@@ -143,23 +148,48 @@ export function useLiveUnitsLayer(
   const optionsRef = useRef(options);
   optionsRef.current = options;
   const popupRef = useRef<InstanceType<typeof maplibregl.Popup> | null>(null);
+  /**
+   * Popup ichidagi React root — `popup.remove()` faqat DOM'ni oladi, root
+   * `unmount()` qilinmasa uzilgan React daraxti va uning i18n obunasi
+   * xotirada qolib ketadi (har marker bosilishida bittadan).
+   */
+  const popupRootRef = useRef<Root | null>(null);
+
+  /** Popup'ni yopadi va React root'ni bo'shatadi (render tsiklidan tashqarida). */
+  const destroyPopup = useCallback(() => {
+    const root = popupRootRef.current;
+    popupRootRef.current = null;
+    popupRef.current?.remove();
+    popupRef.current = null;
+    // `unmount()` render/commit fazasida chaqirilmasligi kerak — mikrotaskda.
+    if (root) queueMicrotask(() => root.unmount());
+  }, []);
 
   // Qatlamlarni bir marta qo'shish + hodisa handler'lari.
   useEffect(() => {
     if (!map) return undefined;
 
-    const ensure = () => addLayers(map);
-    if (map.isStyleLoaded()) ensure();
-    else void map.once('load', ensure);
+    const cancelReady = whenStyleReady(map, addLayers);
 
-    const showPopup = (lngLat: [number, number], props: Parameters<typeof mountUnitMarkerCard>[1]) => {
-      popupRef.current?.remove();
+    const showPopup = (
+      lngLat: [number, number],
+      props: Parameters<typeof mountUnitMarkerCard>[1],
+    ) => {
+      destroyPopup();
       const container = document.createElement('div');
-      mountUnitMarkerCard(container, props);
-      popupRef.current = new maplibregl.Popup({ closeButton: true, maxWidth: '220px' })
+      popupRootRef.current = mountUnitMarkerCard(container, props);
+      const popup = new maplibregl.Popup({ closeButton: true, maxWidth: '220px' })
         .setLngLat(lngLat)
         .setDOMContent(container)
         .addTo(map);
+      // Foydalanuvchi popup'ni yopganda ham root bo'shatiladi.
+      void popup.once('close', () => {
+        const root = popupRootRef.current;
+        popupRootRef.current = null;
+        if (popupRef.current === popup) popupRef.current = null;
+        if (root) queueMicrotask(() => root.unmount());
+      });
+      popupRef.current = popup;
     };
 
     const onPointClick = (event: { features?: MapGeoJSONFeature[] }) => {
@@ -192,7 +222,7 @@ export function useLiveUnitsLayer(
         container.appendChild(row);
       }
 
-      popupRef.current?.remove();
+      destroyPopup();
       popupRef.current = new maplibregl.Popup({ closeButton: true, maxWidth: '240px' })
         .setLngLat(lngLat)
         .setDOMContent(container)
@@ -249,25 +279,44 @@ export function useLiveUnitsLayer(
       map.off('mouseleave', POINT_LAYER, onLeave);
       map.off('mouseenter', CLUSTER_LAYER, onEnter);
       map.off('mouseleave', CLUSTER_LAYER, onLeave);
-      popupRef.current?.remove();
+      cancelReady();
+      destroyPopup();
     };
-  }, [map]);
+  }, [map, destroyPopup]);
 
   // Ma'lumot yangilanganda source'ni yangilash (bounds o'zgarishi trigger qilmaydi — F168).
+  //
+  // Chaqiruvchi har render'da yangi massiv beradi (`unit ? [unit] : []`), shuning
+  // uchun effekt bog'liqligi massiv identifikatori emas, mazmun bo'yicha
+  // **barqaror imzo** (signature) — aks holda 15 s'lik stale-taymer har
+  // render'da nolga qaytardi va F166 qayta hisobi hech qachon otilmasdi.
+  const unitsSignature = units
+    .map(
+      (unit) =>
+        `${unit.unit_id ?? ''}:${unit.lat ?? ''}:${unit.lng ?? ''}:${unit.heading_deg ?? ''}:${
+          unit.duty_status ?? ''
+        }:${unit.online_status ?? ''}:${unit.last_seen_at ?? ''}`,
+    )
+    .join('|');
+
+  const updateData = useCallback(() => {
+    if (!map) return;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
+    const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
+    source?.setData(buildGeoJson(unitsRef.current));
+  }, [map]);
+
+  // Ma'lumot o'zgarganda — bir marta qo'llash.
   useEffect(() => {
     if (!map) return undefined;
+    // `unitsSignature` — mazmun bo'yicha bog'liqlik (yuqoridagi izohga qarang).
+    return whenStyleReady(map, updateData);
+  }, [map, updateData, unitsSignature]);
 
-    const update = () => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
-      const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
-      source?.setData(buildGeoJson(unitsRef.current));
-    };
-
-    if (map.isStyleLoaded() && map.getSource(SOURCE_ID)) update();
-    else void map.once('load', update);
-
-    // 60s'dan eski nuqta shaffofligini yangi fetch bo'lmasa ham yangilash (F166).
-    const interval = window.setInterval(update, STALE_RECOMPUTE_INTERVAL_MS);
+  // 60s'dan eski nuqta shaffofligini yangi fetch bo'lmasa ham yangilash (F166).
+  useEffect(() => {
+    if (!map) return undefined;
+    const interval = window.setInterval(updateData, STALE_RECOMPUTE_INTERVAL_MS);
     return () => window.clearInterval(interval);
-  }, [map, units]);
+  }, [map, updateData]);
 }

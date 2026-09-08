@@ -158,9 +158,14 @@ export function useMaintenanceScheduleDelete() {
 /**
  * `GET /maintenance/due` — `Due` tabi **va** reja ichidagi "N Units" ekrani
  * (`schedule_id` filtri bilan qayta ishlatiladi, `maintenance.read`).
+ *
+ * `options.enabled` — so'rov faqat kerak bo'lganda yuboriladi (masalan
+ * `Schedule` tabida biriktirilgan unitlar **faqat** tahrirlash modali
+ * ochilganda kerak; aks holda har tab ochilishida ortiqcha so'rov ketardi).
  */
 export function useMaintenanceDue(
   params: MaintenanceDueParams = {},
+  options: { enabled?: boolean } = {},
 ): UseQueryResult<ListResponse<MaintenanceScheduleUnit>, ApiError> {
   return useQuery({
     queryKey: maintenanceKeys.due(params),
@@ -168,6 +173,7 @@ export function useMaintenanceDue(
       const { data } = await api.GET('/maintenance/due', { params: { query: params } });
       return data ?? {};
     },
+    enabled: options.enabled ?? true,
   });
 }
 

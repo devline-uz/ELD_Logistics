@@ -77,7 +77,11 @@ describe('useMaintenanceScheduleCreate', () => {
       wrapper: withQueryClient(),
     });
 
-    result.current.mutate({ name: 'Engine oil change', interval_unit: 'km', interval_value: 25000 });
+    result.current.mutate({
+      name: 'Engine oil change',
+      interval_unit: 'km',
+      interval_value: 25000,
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.id).toBe('schedule-new');

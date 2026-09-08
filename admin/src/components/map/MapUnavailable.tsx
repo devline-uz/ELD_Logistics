@@ -18,9 +18,7 @@ export function MapUnavailable({ className }: MapUnavailableProps) {
       className={`flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-stroke bg-surface-muted px-6 py-16 text-center ${className ?? ''}`}
     >
       <MapPinOff aria-hidden="true" className="h-10 w-10 text-neutral-400" />
-      <h3 className="text-body-lg font-semibold text-neutral-900">
-        {t('map.unavailable.title')}
-      </h3>
+      <h3 className="text-body-lg font-semibold text-neutral-900">{t('map.unavailable.title')}</h3>
       <p className="max-w-sm text-body text-neutral-500">{t('map.unavailable.description')}</p>
     </div>
   );

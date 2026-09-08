@@ -229,3 +229,56 @@ export function formatRelative(
   const suffix = date.getTime() <= now.getTime() ? 'ago' : 'from now';
   return `${formatDistanceStrict(date, now, { roundingMethod: 'round' })} ${suffix}`;
 }
+
+/* ------------------------------------------------------------------ *
+ * Koordinatalar
+ * ------------------------------------------------------------------ */
+
+/**
+ * `first_name` + `last_name` → ko'rsatish uchun bitta ism. Ikkalasi ham bo'sh
+ * bo'lsa `fallback` (standart — `N/A`, §16). Ism birlashtirish bir necha
+ * ekranda takrorlanmasligi uchun yagona manba shu funksiya.
+ */
+export function formatPersonName(
+  person: { first_name?: string | null; last_name?: string | null } | null | undefined,
+  fallback: string = NA,
+): string {
+  const name = `${person?.first_name ?? ''} ${person?.last_name ?? ''}`.trim();
+  return name || fallback;
+}
+
+/** Bitta koordinata — 7 xonali o'nlik (§16 format qoidasi, F101). */
+export function formatCoordinate(value: number | null | undefined): string {
+  return typeof value === 'number' && Number.isFinite(value) ? value.toFixed(7) : NA;
+}
+
+/**
+ * Koordinata juftligi — `31.5200000, 74.3500000` (F101: `toFixed(7)`, vergul
+ * ajratgich). Ikkalasidan biri yo'q bo'lsa — `N/A` (§16).
+ */
+export function formatCoordinatePair(
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+): string {
+  if (
+    typeof lat !== 'number' ||
+    typeof lng !== 'number' ||
+    !Number.isFinite(lat) ||
+    !Number.isFinite(lng)
+  ) {
+    return NA;
+  }
+  return `${lat.toFixed(7)}, ${lng.toFixed(7)}`;
+}
+
+/**
+ * Mahalliy kalendar sanasini `YYYY-MM-DD` qatoriga aylantiradi — API `date=`
+ * parametri uchun. `toISOString().slice(0,10)` **ishlatilmaydi**: u UTC ga
+ * o'tkazadi va manfiy ofsetli zonada (masalan `America/Chicago`) bir kunga
+ * xato beradi.
+ */
+export function toDateParam(date: Date): string {
+  if (!isValid(date)) return NA;
+  const pad = (n: number): string => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}

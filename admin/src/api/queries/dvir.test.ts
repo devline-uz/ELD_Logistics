@@ -50,7 +50,7 @@ describe('useDvirList', () => {
 });
 
 describe('useDvirPendingCertification', () => {
-  it("`repaired` holatidagi hisobotlarni qaytaradi", async () => {
+  it('`repaired` holatidagi hisobotlarni qaytaradi', async () => {
     server.use(dvirPendingCertificationHandler);
     const { result } = renderHook(() => useDvirPendingCertification(), {
       wrapper: withQueryClient(),

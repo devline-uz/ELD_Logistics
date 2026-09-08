@@ -30,11 +30,35 @@ const ONLINE_STATUS_OPTIONS = ['online', 'idle', 'offline', 'disconnected'] as c
 /** Highlight muddati — F115. */
 const HIGHLIGHT_MS = 600;
 
-/** WS `unit_last_state.data`ni `LiveUnit` maydonlariga (mavjudlarini) ko'chiradi. */
+/**
+ * WS `unit_last_state.data` da kelishi mumkin bo'lgan `LiveUnit` maydonlari —
+ * **aniq oq ro'yxat**. Ilgari sikl `Object.keys(existing)` bo'yicha ketardi:
+ * REST javobida maydon umuman bo'lmasa (masalan unit hali `speed_kmh`
+ * bermagan) WS patch'i hech qachon qo'llanilmasdi. Oq ro'yxat shu bo'shliqni
+ * yopadi va ayni paytda begona kalitlarni keshga tushirmaydi.
+ */
+const LIVE_UNIT_PATCH_FIELDS = [
+  'duty_status',
+  'eld_device_id',
+  'eld_device_serial',
+  'engine_hours',
+  'heading_deg',
+  'last_seen_at',
+  'lat',
+  'lng',
+  'malfunction_codes',
+  'odometer_m',
+  'online_status',
+  'out_of_service',
+  'speed_kmh',
+  'unit_number',
+] as const satisfies readonly (keyof LiveUnit)[];
+
+/** WS `unit_last_state.data`ni `LiveUnit` maydonlariga ko'chiradi (F115). */
 function mergeLiveUnit(existing: LiveUnit, patch: Record<string, unknown>): LiveUnit {
   const next: LiveUnit = { ...existing };
-  for (const key of Object.keys(existing) as (keyof LiveUnit)[]) {
-    if (key in patch) {
+  for (const key of LIVE_UNIT_PATCH_FIELDS) {
+    if (key in patch && patch[key] !== undefined) {
       (next as Record<string, unknown>)[key] = patch[key];
     }
   }
@@ -56,10 +80,16 @@ export function TrackingListPage() {
     () => ({
       per_page: listParams.perPage,
       page: listParams.page,
-      online_status: (listParams.filters.online_status as TrackingLiveParams['online_status']) || undefined,
+      online_status:
+        (listParams.filters.online_status as TrackingLiveParams['online_status']) || undefined,
       include_inactive: listParams.filters.include_inactive === 'true' ? true : undefined,
     }),
-    [listParams.perPage, listParams.page, listParams.filters.online_status, listParams.filters.include_inactive],
+    [
+      listParams.perPage,
+      listParams.page,
+      listParams.filters.online_status,
+      listParams.filters.include_inactive,
+    ],
   );
 
   const list = useTrackingLive(queryParams);

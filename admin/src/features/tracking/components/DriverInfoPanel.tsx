@@ -7,8 +7,9 @@
 import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import type { HosSummary, LiveUnit } from '@/api/types';
+import type { HosSummary, LiveUnit, UnitTelemetry } from '@/api/types';
 import { Badge, type BadgeTone } from '@/components/ui/Badge';
+import { formatCoordinatePair, NA } from '@/lib/format';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 
@@ -18,18 +19,37 @@ export interface DriverInfoPanelProps {
   unit: LiveUnit | undefined;
   hosSummary: HosSummary | undefined;
   hasMalfunction: boolean;
+  /**
+   * `GET /units/{id}/diagnostics` → `telemetry{}`. Batareya §7.7.2 ning
+   * 1-blokida talab qilinadi, lekin `tracking.LiveUnit` DTO'sida batareya
+   * maydoni yo'q — yagona manba `fleet.UnitTelemetry`
+   * (`battery_pct` / `battery_voltage_v`).
+   */
+  telemetry?: UnitTelemetry | undefined;
 }
 
-function formatCoordinate(value: number | undefined | null): string {
-  return typeof value === 'number' ? value.toFixed(7) : 'N/A';
+/** Batareya — foiz (mavjud bo'lsa) + kuchlanish; ikkalasi ham yo'q bo'lsa `N/A`. */
+function formatBattery(telemetry: UnitTelemetry | undefined): string {
+  const pct = telemetry?.battery_pct;
+  const volts = telemetry?.battery_voltage_v;
+  const parts: string[] = [];
+  if (typeof pct === 'number' && Number.isFinite(pct)) parts.push(`${Math.round(pct)}%`);
+  if (typeof volts === 'number' && Number.isFinite(volts)) parts.push(`${volts.toFixed(1)} V`);
+  return parts.length > 0 ? parts.join(' · ') : NA;
 }
 
-export function DriverInfoPanel({ unit, hosSummary, hasMalfunction }: DriverInfoPanelProps) {
+export function DriverInfoPanel({
+  unit,
+  hosSummary,
+  hasMalfunction,
+  telemetry,
+}: DriverInfoPanelProps) {
   const { t } = useTranslation();
   const { formatSpeed } = useUnitSystem();
   const { formatDateTime, formatDuration } = useDateFormat();
 
-  const driverName = `${unit?.driver?.first_name ?? ''} ${unit?.driver?.last_name ?? ''}`.trim() || 'N/A';
+  const driverName =
+    `${unit?.driver?.first_name ?? ''} ${unit?.driver?.last_name ?? ''}`.trim() || 'N/A';
   const onlineStatus = unit?.online_status ?? 'offline';
   const onlineTone: BadgeTone = ONLINE_STATUS_TONE[onlineStatus] ?? 'neutral';
   const shiftLeftMin = hosSummary?.counters?.shift_left_min;
@@ -54,9 +74,11 @@ export function DriverInfoPanel({ unit, hosSummary, hasMalfunction }: DriverInfo
       <dl className="mt-2 flex flex-col gap-1 text-body-sm">
         <div className="flex justify-between">
           <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.location')}</dt>
-          <dd className="text-neutral-900">
-            {formatCoordinate(unit?.lat)}, {formatCoordinate(unit?.lng)}
-          </dd>
+          <dd className="text-neutral-900">{formatCoordinatePair(unit?.lat, unit?.lng)}</dd>
+        </div>
+        <div className="flex justify-between">
+          <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.battery')}</dt>
+          <dd className="text-neutral-900">{formatBattery(telemetry)}</dd>
         </div>
         <div className="flex justify-between">
           <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.speed')}</dt>

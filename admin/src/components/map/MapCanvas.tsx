@@ -16,13 +16,7 @@
  * olingan `maplibregl.Map` instansiyasi ustida ishlaydi. `MapCanvas`ning o'zi
  * faqat konteyner, boshqaruvlar va hayot davri (lifecycle) uchun javobgar.
  */
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  type CSSProperties,
-} from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, type CSSProperties } from 'react';
 import maplibregl, { type LngLatLike, type Map as MapLibreMap } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -34,6 +28,8 @@ export interface MapCanvasProps {
   /** `VITE_MAP_STYLE_URL` — bo'sh bo'lishi mumkin emas, chaqiruvchi oldindan tekshiradi. */
   styleUrl: string;
   ariaLabel: string;
+  /** Xarita ma'lumotining jadval ekvivalenti (`MapDataTable`) `id`si — F171/a11y. */
+  ariaDescribedBy?: string;
   initialCenter?: LngLatLike;
   initialZoom?: number;
   className?: string;
@@ -54,7 +50,16 @@ export function easeDurationMs(): number {
 }
 
 export const MapCanvas = forwardRef<MapCanvasHandle, MapCanvasProps>(function MapCanvas(
-  { styleUrl, ariaLabel, initialCenter = [0, 20], initialZoom = 3, className, style, onLoad },
+  {
+    styleUrl,
+    ariaLabel,
+    ariaDescribedBy,
+    initialCenter = [0, 20],
+    initialZoom = 3,
+    className,
+    style,
+    onLoad,
+  },
   ref,
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,11 +83,11 @@ export const MapCanvas = forwardRef<MapCanvasHandle, MapCanvasProps>(function Ma
       cooperativeGestures: false,
     });
 
+    // `GeolocateControl` **qo'shilmaydi**: TZ §13 majburiy
+    // `Permissions-Policy: geolocation=()` header'i uni baribir bloklaydi
+    // (bosilganda jim ishlamaydigan tugma), spetsifikatsiyada talab
+    // qilinmagan va operatorning aniq joylashuvi (PII) yig'iladi.
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
-    map.addControl(
-      new maplibregl.GeolocateControl({ positionOptions: { enableHighAccuracy: true } }),
-      'top-right',
-    );
 
     mapRef.current = map;
 
@@ -103,6 +108,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, MapCanvasProps>(function Ma
       ref={containerRef}
       role="application"
       aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
       className={className}
       style={{ width: '100%', height: '100%', ...style }}
     />

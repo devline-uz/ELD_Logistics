@@ -10,6 +10,7 @@ import type { ReactNode } from 'react';
 
 import type { LiveUnit } from '@/api/types';
 import { Badge, type BadgeTone } from '@/components/ui/Badge';
+import { formatCoordinatePair } from '@/lib/format';
 import { StatusChip, type StatusChipTone } from '@/components/ui/StatusChip';
 
 export const DUTY_STATUS_TONE: Record<string, StatusChipTone> = {
@@ -26,10 +27,6 @@ export const ONLINE_STATUS_TONE: Record<string, BadgeTone> = {
   disconnected: 'error',
   malfunction: 'error',
 };
-
-export function formatCoordinate(value: number | undefined | null): string {
-  return typeof value === 'number' ? value.toFixed(7) : 'N/A';
-}
 
 export function driverFullName(unit: LiveUnit): string {
   const first = unit.driver?.first_name ?? '';
@@ -147,9 +144,7 @@ export function buildTrackingColumns(
       cell: ({ row }) => (
         <HighlightCell highlighted={helpers.isHighlighted(row.original)}>
           <div className="flex flex-col gap-0.5">
-            <span>
-              {formatCoordinate(row.original.lat)}, {formatCoordinate(row.original.lng)}
-            </span>
+            <span>{formatCoordinatePair(row.original.lat, row.original.lng)}</span>
             <span className="text-body-sm text-neutral-500">
               {helpers.formatRelative(row.original.last_seen_at)}
             </span>

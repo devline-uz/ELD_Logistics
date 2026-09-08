@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
 import maplibregl, { LngLatBounds } from 'maplibre-gl';
 
+import { whenStyleReady } from './mapReady';
 import type { LngLatTuple } from './polyline';
 
 const OVERVIEW_SOURCE_ID = 'trip-overview-lines';
@@ -81,10 +82,9 @@ export function useTripPolylineLayer(
 
   useEffect(() => {
     if (!map) return undefined;
-    const ensure = () => addLayers(map);
-    if (map.isStyleLoaded()) ensure();
-    else void map.once('load', ensure);
-    return undefined;
+    // `once('load')` cleanup'siz qolib ketmasligi uchun — `whenStyleReady`
+    // handler'ni cleanup'da `off` qiladi (B2).
+    return whenStyleReady(map, addLayers);
   }, [map]);
 
   useEffect(() => {
@@ -92,7 +92,8 @@ export function useTripPolylineLayer(
 
     const apply = () => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
-      const overviewSource = map.getSource(OVERVIEW_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
+      const overviewSource = map.getSource(OVERVIEW_SOURCE_ID) as
+        maplibregl.GeoJSONSource | undefined;
       overviewSource?.setData({
         type: 'FeatureCollection',
         features: toLineFeatures(options.overviewLines ?? []),
@@ -126,8 +127,14 @@ export function useTripPolylineLayer(
       }
     };
 
-    if (map.isStyleLoaded() && map.getSource(ACTIVE_SOURCE_ID)) apply();
-    else void map.once('load', apply);
+    if (map.getSource(ACTIVE_SOURCE_ID)) {
+      apply();
+      return undefined;
+    }
+    return whenStyleReady(map, () => {
+      addLayers(map);
+      apply();
+    });
   }, [map, options.overviewLines, options.activeLine, options.stops, options.fitOnChange]);
 
   useEffect(

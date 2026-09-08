@@ -7,6 +7,7 @@
 import { useEffect } from 'react';
 import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
 
+import { whenStyleReady } from './mapReady';
 import type { LngLatTuple } from './polyline';
 
 const GEOFENCE_SOURCE = 'route-geofence';
@@ -121,7 +122,7 @@ export function useGeofenceLayer(map: MapLibreMap | null, options: UseGeofenceLa
       }
     };
 
-    if (map.isStyleLoaded()) apply();
-    else void map.once('load', apply);
+    // `once('load')` cleanup'siz qolib ketmasligi uchun (B2).
+    return whenStyleReady(map, apply);
   }, [map, options.destination, options.geofenceM, options.directions]);
 }

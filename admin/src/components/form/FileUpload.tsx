@@ -19,19 +19,45 @@ import type { PresignResponse } from '@/api/types';
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/feedback/Spinner';
+import { checkUploadTarget, sanitizeUploadHeaders } from '@/lib/upload-url';
 
 /** Backend `kind` enum'i (fe-api §8 oq ro'yxati). */
 export type FileUploadKind = 'dvir_photo' | 'invoice' | 'signature' | 'logo' | 'chat' | 'import';
 
-/** `kind` bo'yicha MIME + hajm cheklovi — haqiqiy chegara presign javobidan olinadi. */
-const KIND_RULES: Record<FileUploadKind, { accept: string[]; maxBytes: number }> = {
-  dvir_photo: { accept: ['image/jpeg', 'image/png'], maxBytes: 5 * 1024 * 1024 },
-  invoice: { accept: ['application/pdf', 'image/jpeg', 'image/png'], maxBytes: 10 * 1024 * 1024 },
-  signature: { accept: ['image/png'], maxBytes: 1 * 1024 * 1024 },
-  logo: { accept: ['image/png', 'image/jpeg', 'image/svg+xml'], maxBytes: 2 * 1024 * 1024 },
-  chat: { accept: ['image/*', 'application/pdf'], maxBytes: 10 * 1024 * 1024 },
+/**
+ * `kind` bo'yicha MIME + kengaytma + hajm cheklovi (fe-security §12 — MIME
+ * **va** kengaytma ikkalasi tekshiriladi; `file.type` brauzer taxmini bo'lib,
+ * uni o'zgartirish oson). Haqiqiy hajm chegarasi presign javobidagi
+ * `max_bytes` bilan qayta tasdiqlanadi.
+ */
+const KIND_RULES: Record<
+  FileUploadKind,
+  { accept: string[]; extensions: string[]; maxBytes: number }
+> = {
+  dvir_photo: {
+    accept: ['image/jpeg', 'image/png'],
+    extensions: ['.jpg', '.jpeg', '.png'],
+    maxBytes: 5 * 1024 * 1024,
+  },
+  invoice: {
+    accept: ['application/pdf', 'image/jpeg', 'image/png'],
+    extensions: ['.pdf', '.jpg', '.jpeg', '.png'],
+    maxBytes: 10 * 1024 * 1024,
+  },
+  signature: { accept: ['image/png'], extensions: ['.png'], maxBytes: 1 * 1024 * 1024 },
+  logo: {
+    accept: ['image/png', 'image/jpeg', 'image/svg+xml'],
+    extensions: ['.png', '.jpg', '.jpeg', '.svg'],
+    maxBytes: 2 * 1024 * 1024,
+  },
+  chat: {
+    accept: ['image/*', 'application/pdf'],
+    extensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf'],
+    maxBytes: 10 * 1024 * 1024,
+  },
   import: {
     accept: ['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+    extensions: ['.csv', '.xlsx'],
     maxBytes: 10 * 1024 * 1024,
   },
 };
@@ -72,6 +98,12 @@ function matchesAccept(file: File, patterns: string[]): boolean {
   });
 }
 
+/** Kengaytma oq ro'yxati — `file.type` bilan bir vaqtda tekshiriladi. */
+function matchesExtension(file: File, extensions: string[]): boolean {
+  const lower = file.name.toLowerCase();
+  return extensions.some((extension) => lower.endsWith(extension));
+}
+
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   const kb = bytes / 1024;
@@ -79,17 +111,23 @@ function formatBytes(bytes: number): string {
   return `${(kb / 1024).toFixed(1)} MB`;
 }
 
-/** `PUT` to'g'ridan-to'g'ri storage'ga — XHR bilan progress uchun (F13 istisnosi). */
+/**
+ * `PUT` to'g'ridan-to'g'ri storage'ga — XHR bilan progress uchun (F13 istisnosi).
+ *
+ * Manzil va header'lar bu yerga **tekshirilgan holda** keladi
+ * (`checkUploadTarget` / `sanitizeUploadHeaders`) — presign javobi ishonchli
+ * manba emas (fe-security §2, §12).
+ */
 function uploadViaXhr(
-  presign: PresignResponse,
+  target: { url: string; method: 'PUT' | 'POST' },
+  headers: Record<string, string>,
   file: File,
   onProgress: (percent: number) => void,
 ): { promise: Promise<void>; abort: () => void } {
   const xhr = new XMLHttpRequest();
   const promise = new Promise<void>((resolve, reject) => {
-    xhr.open(presign.method ?? 'PUT', presign.upload_url ?? '', true);
+    xhr.open(target.method, target.url, true);
 
-    const headers = presign.headers ?? { 'Content-Type': file.type };
     for (const [name, value] of Object.entries(headers)) {
       xhr.setRequestHeader(name, value);
     }
@@ -130,7 +168,7 @@ export function FileUpload({
 
   const validate = useCallback(
     (file: File): string | undefined => {
-      if (!matchesAccept(file, rules.accept)) {
+      if (!matchesAccept(file, rules.accept) || !matchesExtension(file, rules.extensions)) {
         return t('ui.data.fileUpload.errors.invalidType', { types: rules.accept.join(', ') });
       }
       if (file.size > rules.maxBytes) {
@@ -169,7 +207,18 @@ export function FileUpload({
           return;
         }
 
-        const { promise, abort } = uploadViaXhr(presign, file, (progress) => {
+        // Presign javobi ishonchli manba emas: sxema/metod/host tekshiriladi,
+        // header'lar oq ro'yxat bo'yicha filtrlanadi (fe-security §2, §12).
+        const target = checkUploadTarget(presign.upload_url, presign.method);
+        if (!target.ok) {
+          const message = t('ui.data.fileUpload.errors.uploadFailed');
+          setState({ status: 'error', filename: file.name, message });
+          onError?.(message);
+          return;
+        }
+        const headers = sanitizeUploadHeaders(presign.headers, file.type);
+
+        const { promise, abort } = uploadViaXhr(target, headers, file, (progress) => {
           setState((prev) => (prev.status === 'uploading' ? { ...prev, progress } : prev));
         });
         abortRef.current = abort;

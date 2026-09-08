@@ -34,6 +34,7 @@
 import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 
 import { api } from '@/api/client';
+import { unitsKeys } from '@/api/queries/units';
 import type { ApiError } from '@/lib/errors';
 import type {
   DvirCertify,
@@ -121,6 +122,8 @@ export function useDvirRepair() {
     onSuccess: (_data, { id }) => {
       void queryClient.invalidateQueries({ queryKey: dvirKeys.lists() });
       void queryClient.invalidateQueries({ queryKey: dvirKeys.detail(id) });
+      // `repaired` — sertifikatlash kutilayotgan hisobot: pending ro'yxati o'zgaradi.
+      void queryClient.invalidateQueries({ queryKey: dvirKeys.pendingCertifications() });
     },
   });
 }
@@ -145,7 +148,7 @@ export function useDvirCertify() {
       void queryClient.invalidateQueries({ queryKey: dvirKeys.lists() });
       void queryClient.invalidateQueries({ queryKey: dvirKeys.detail(id) });
       void queryClient.invalidateQueries({ queryKey: dvirKeys.pendingCertifications() });
-      void queryClient.invalidateQueries({ queryKey: ['units'] });
+      void queryClient.invalidateQueries({ queryKey: unitsKeys.all });
     },
   });
 }

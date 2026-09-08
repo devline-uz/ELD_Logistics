@@ -11,6 +11,7 @@ import type { Trip } from '@/api/types';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { Skeleton } from '@/components/feedback/Skeleton';
+import { formatCoordinatePair } from '@/lib/format';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 
@@ -21,11 +22,6 @@ export interface TripHistoryTimelineProps {
   isLoading: boolean;
   isError: boolean;
   onRetry: () => void;
-}
-
-function formatCoordinatePair(lat: number | undefined, lng: number | undefined): string {
-  if (typeof lat !== 'number' || typeof lng !== 'number') return 'N/A';
-  return `${lat.toFixed(7)}, ${lng.toFixed(7)}`;
 }
 
 export function TripHistoryTimeline({
@@ -92,7 +88,11 @@ export function TripHistoryTimeline({
               </div>
               <div className="flex items-center justify-between text-neutral-900">
                 <span>{formatCoordinatePair(trip.end_lat, trip.end_lng)}</span>
-                <span>{trip.end_at ? formatTime(trip.end_at) : t('tracking.trackOnMap.histories.ongoing')}</span>
+                <span>
+                  {trip.end_at
+                    ? formatTime(trip.end_at)
+                    : t('tracking.trackOnMap.histories.ongoing')}
+                </span>
               </div>
             </button>
           </li>

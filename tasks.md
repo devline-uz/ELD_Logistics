@@ -129,18 +129,19 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 ```markdown
 - [x] 4.1 ✅ Q1 hal qilindi — **MapTiler Cloud** (MVP), chiqish yo'li Protomaps/PMTiles. Qaror: `docs/tz/16-17-registry-open-questions.md` → D-Q1. Qoladi: buyurtmachidan domen bo'yicha cheklangan kalit → `VITE_MAP_STYLE_URL`
-- [ ] 4.2 `components/map/MapCanvas.tsx` — MapLibre wrapper, lazy chunk, `prefers-reduced-motion`
-- [ ] 4.3 GeoJSON source + klasterlash (radius 50, maxZoom 14) + duty status ikonkalari
-- [ ] 4.4 `UnitMarkerCard` popup (dizayn 200×217 tarkibi)
-- [ ] 4.5 Tracking ro'yxati — filtrlar, satr yangilanishi joyida (WS), `Track on Map` amali
-- [ ] 4.6 Track on Map — ikki kirish yo'li, breadcrumb, sana navigatori, `Refresh`
-- [ ] 4.7 Yon panel: haydovchi bloki + **Unit Diagnostics** + Histories (trip timeline)
-- [ ] 4.8 Trip polyline (`include_polyline=true` faqat kerakda), segment tanlash, `fitBounds`
-- [ ] 4.9 Routes CRUD + geofence doirasi + `not-completed` sabab modali + `directions`
-- [ ] 4.10 Trip Planner tabini xarita bilan yakunlash (3.10 dan davomi)
-- [ ] 4.11 Xarita a11y: `role="application"`, klaviatura, jadval ekvivalenti
-- [ ] 4.12 Performans o'lchovi: 500 marker sinov ma'lumoti bilan fps va bundle hisoboti
-- [ ] 4.13 `frontend-code-reviewer`
+- [x] 4.2 `components/map/MapCanvas.tsx` — MapLibre wrapper, lazy chunk, `prefers-reduced-motion`
+- [x] 4.3 GeoJSON source + klasterlash (radius 50, maxZoom 14) + duty status ikonkalari
+- [x] 4.4 `UnitMarkerCard` popup (dizayn 200×217 tarkibi)
+- [x] 4.5 Tracking ro'yxati — filtrlar, satr yangilanishi joyida (WS), `Track on Map` amali
+- [x] 4.6 Track on Map — ikki kirish yo'li, breadcrumb, sana navigatori, `Refresh`
+- [x] 4.7 Yon panel: haydovchi bloki + **Unit Diagnostics** + Histories (trip timeline)
+- [x] 4.8 Trip polyline (`include_polyline=true` faqat kerakda), segment tanlash, `fitBounds`
+- [x] 4.9 Routes CRUD + geofence doirasi + `not-completed` sabab modali + `directions`
+- [x] 4.10 Trip Planner tabini xarita bilan yakunlash (3.10 dan davomi)
+- [x] 4.11 Xarita a11y: `role="application"`, klaviatura, jadval ekvivalenti
+- [x] 4.12 Performans o'lchovi: 500 marker sinov ma'lumoti bilan fps va bundle hisoboti (`docs/perf-stage-4.md`)
+- [x] 4.13 `frontend-code-reviewer` + `frontend-security-reviewer` — kritik 2 → **0**, yuqori 2 → 0,
+      muhim 10 → 0; qolgan kichik topilmalar TD5-TD8 ga o'tkazildi (`docs/perf-stage-4.md` yangilandi)
 ```
 
 ### Bosqich 5 — DVIR va Maintenance
@@ -150,20 +151,22 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** DVIR holat mashinasi to'g'ri (6 holat), admin DVIR yaratmaydi, maintenance birlik konvertatsiyasi ikki tomonlama to'g'ri.
 
 ```markdown
-- [ ] 5.1 `api/queries/dvir.ts`, `maintenance.ts`, `defectTypes.ts`
-- [ ] 5.2 DVIR ro'yxati — filtrlar, 6 holat badge'i, `Pending certification` tabi
-- [ ] 5.3 DVIR detali — nuqsonlar, fotolar (lightbox), imzolar (ko'rish), holat tarixi
-- [ ] 5.4 `Record repair` (izoh + invoice fayl) va `Certify` amallari (tasdiq bilan)
-- [ ] 5.5 DVIR PDF yuklab olish; kritik nuqson → `out_of_service` banneri
-- [ ] 5.6 Maintenance 3 tab (Schedule / Due / History), ustunlar §7.6 bo'yicha, bo'sh va to'la holat **bir xil ustunlar**
-- [ ] 5.7 Add/Edit — single va multiple rejimi, `Select All`, alert bloki
-- [ ] 5.8 **Birlik konvertatsiyasi** — kiritishda `parseDistance`, ko'rsatishda `formatDistance`; birlik yorlig'i doim ko'rinadi
-- [ ] 5.9 View (single/multiple), guruh ichiga kirish (`N Units` → alohida ekran)
-- [ ] 5.10 `Mark as Complete` modali (invoice PDF/JPG/PNG ≤ 10 MB) va `Cancel` (sabab)
-- [ ] 5.11 History detali + `PRE/POST-TRIP INSPECTION` bloklari DVIR'lar bilan to'ldiriladi
-- [ ] 5.12 Defect Types CRUD (dublikat `Engine` va `Refresh` yo'q) 🎨
-- [ ] 5.13 Testlar: holat mashinasi, konvertatsiya chegaraviy qiymatlari, fayl yuklash
-- [ ] 5.14 `frontend-security-reviewer` (fayl yuklash, MIME) + `frontend-code-reviewer`
+- [x] 5.1 `api/queries/dvir.ts`, `maintenance.ts`, `defectTypes.ts`
+- [x] 5.2 DVIR ro'yxati — filtrlar, 6 holat badge'i, `Pending certification` tabi
+- [x] 5.3 DVIR detali — nuqsonlar, fotolar (lightbox), imzolar (ko'rish), holat tarixi
+- [x] 5.4 `Record repair` (izoh + invoice + **mexanik imzosi**, tasdiq bilan).
+      ⚠️ `Certify` admin paneldan **olib tashlandi** — backend uni haydovchi endpointi deb belgilaydi
+      (chaqiruvchidan driver record talab qiladi, imzo haydovchiniki). §16 D-Q2 ga yozildi.
+- [x] 5.5 DVIR PDF yuklab olish; kritik nuqson → `out_of_service` banneri
+- [x] 5.6 Maintenance 3 tab (Schedule / Due / History), ustunlar §7.6 bo'yicha, bo'sh va to'la holat **bir xil ustunlar**
+- [x] 5.7 Add/Edit — single va multiple rejimi, `Select All`, alert bloki
+- [x] 5.8 **Birlik konvertatsiyasi** — kiritishda `parseDistance`, ko'rsatishda `formatDistance`; birlik yorlig'i doim ko'rinadi
+- [x] 5.9 View (single/multiple), guruh ichiga kirish (`N Units` → alohida ekran)
+- [x] 5.10 `Mark as Complete` modali (invoice PDF/JPG/PNG ≤ 10 MB) va `Cancel` (sabab)
+- [x] 5.11 History detali + `PRE/POST-TRIP INSPECTION` bloklari DVIR'lar bilan to'ldiriladi
+- [x] 5.12 Defect Types CRUD (dublikat `Engine` va `Refresh` yo'q) 🎨
+- [x] 5.13 Testlar: holat mashinasi, konvertatsiya chegaraviy qiymatlari, fayl yuklash
+- [x] 5.14 `frontend-security-reviewer` (kritik 1 -> 0: presign URL tekshiruvi ulandi, kengaytma oq ro'yxati, storage URL sanitizatsiyasi) + `frontend-code-reviewer` (dublikat 0, qatlam buzilishi 0)
 ```
 
 ### Bosqich 6 — Reports va eksport
@@ -173,7 +176,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** export job oqimi to'liq (yaratish → polling → download → muddati o'tishi), `regulation_profile` bo'yicha nomlar to'g'ri almashadi, print stillari ishlaydi.
 
 ```markdown
-- [ ] 6.1 `api/queries/reports.ts` + `useExportJob(id)` polling hook'i (2→5→10 s, maks. 5 daq)
+- [x] 6.1 `api/queries/reports.ts` + `useExportJob(id)` polling hook'i (2→5→10 s, maks. 5 daq)
 - [ ] 6.2 Activity Report (Drivers/Units tablari) + detal ekrani + `Print`
 - [ ] 6.3 Distance by Region / IFTA — ko'rsatkichlar, Units/Regions tablari, Generate modali (shartli `Units` maydoni)
 - [ ] 6.4 Regulator Export / FMCSA — job ro'yxati, Generate modali (8 kun / Custom Range)
@@ -281,7 +284,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 | 1 | Dizayn tizimi | ✅ | `feat/stage-0-skeleton` |
 | 2 | Fleet moduli | ✅ | `feat/stage-2-fleet` |
 | 3 | Logs va HOS | ✅ | `feat/stage-3-logs` |
-| 4 | Tracking va xarita | 🔄 jarayonda | `feat/stage-4-tracking` |
+| 4 | Tracking va xarita | ✅ | `feat/stage-2-fleet` |
 | 5 | DVIR va Maintenance | ⬜ | `feat/stage-5-dvir-maintenance` |
 | 6 | Reports va eksport | ⬜ | `feat/stage-6-reports` |
 | 7 | Real-vaqt, Chat, Dashboard | ⬜ | `feat/stage-7-realtime` |
@@ -293,12 +296,37 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 ## Texnik qarz (bosqich oxirida hal qilinadi)
 
-- [ ] TD1 `features/logs/lib/tripPlannerApi.ts` → `api/queries/routes.ts` ga ko'chirish
-      (qatlam buzilishi — tasdiqlangan; `map-engineer` `routes.ts` ni tugatgach mexanik ko'chirish)
+- [x] TD1 `features/logs/lib/tripPlannerApi.ts` → `api/queries/{tracking,routes}.ts` ga ko'chirildi
+      (fayl o'chirildi; `TripPlannerTab` markaziy `useUnitTrips` + `useRouteCreate` ga o'tdi —
+      markaziy `useRouteCreate` `/routes` ro'yxatini ham invalidatsiya qiladi)
 - [ ] TD2 `batchSettled<T,R>(items, fn, concurrency)` yordamchisini `lib/` ga chiqarish
       (`api/queries/hos.ts` va `features/logs/lib/hosByDate.ts` da chunking algoritmi takrorlangan)
 - [ ] TD3 Qidiruv faqat joriy sahifada ishlashini UI'da ko'rsatish
       (`LogsByUnitPage`, `ViolationsPage`, `UnassignedDrivingPage` — backend `search` parametri yo'q,
       lekin pagination `total` filtrlanmagan holda keladi → foydalanuvchi chalg'ishi mumkin)
 - [ ] TD4 `ConfirmDialog` da sabab uzunligi (3–500) tekshirilmaydi — faqat bo'sh emasligi
-      (13 ekran ishlatadi; backend yakuniy hakam, lekin klient tekshiruvi foydali)
+- [ ] TD5 Zod xabarlari inglizcha hardcode (`features/routes/schemas.ts`, `features/auth/schemas.ts`)
+      — i18n kalitlariga o'tkazish loyiha bo'ylab **yagona qaror** sifatida rejalashtirilsin
+      (4.13 ko'rigi; bitta modulda yakka tuzatish naqshni yanada chalkashtiradi)
+- [ ] TD6 Koordinata formatlagichi `features/routes/components/RouteDirectionsDrawer.tsx` da
+      hali ham inline — `lib/format.ts` dagi `formatCoordinatePair` ga o'tkazish
+      (qolgan 5 nusxa 4.13 da birlashtirildi)
+- [ ] TD7 `RouteListPage` qator bosilishi `/tracking/units/:id` ga olib boradi — `routes.read`
+      ruxsati bor, lekin `tracking.view_live` yo'q foydalanuvchi 403 ekranga tushadi
+      (havolani ruxsatga qarab yashirish yoki 403 ni oldindan tushuntirish)
+- [ ] TD8 `build.sourcemap: 'hidden'` — `.map` fayllar hamon `dist/` ga chiqadi (91 ta);
+      deploy skriptida ular serverga **yuklanmasligi** shart (F211) — 9-bosqich CI vazifasi
+      ∆(13 ekran ishlatadi; backend yakuniy hakam, lekin klient tekshiruvi foydali)
+
+- [ ] TD9 Bo'sh qiymat uchun 3 idioma: `t('common.na')` (42), `'N/A'` literal (24), `lib/format` dagi `NA`.
+      Qoida: React komponentda `t('common.na')`, sof funksiyalarda `NA`. `logs/tracking/fleet` migratsiyasi qoldi.
+
+- [ ] TD10 `formatPersonName` faqat `dvir` da ishlatiladi; `logs`, `tracking`, `fleet` da ism konkatenatsiyasi qoldi.
+
+- [ ] TD11 `npm audit`: react-router 2 critical + 1 high (GHSA-337j-9hxr-rhxg, GHSA-wrjc-x8rr-h8h6).
+      `react-router-dom@7.18.3` — breaking major. 9.10 da hal qilinadi.
+
+- [ ] TD12 `api/queries/dvir.ts` PDF yuklab olish — `Content-Type` tekshirilmaydi; server HTML xato sahifasi `.pdf` nomi bilan saqlanishi mumkin.
+
+- [ ] TD13 `VITE_FILES_UPLOAD_HOST` / `VITE_FILES_BASE_URL` prod muhitda to'ldirilishi shart — aks holda yuklash host oq ro'yxati o'chiq qoladi.
+

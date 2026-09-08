@@ -94,6 +94,7 @@
       "confirm": "Confirm",
       "goHome": "Go to dashboard",
       "reload": "Reload the page",
+      "refresh": "Refresh",
       "save": "Save",
       "search": "Search",
       "signOut": "Sign out",
@@ -134,7 +135,10 @@
   "enums": {
     "connection_status": {
       "offline": "Offline",
-      "online": "Online"
+      "online": "Online",
+      "idle": "Idle",
+      "disconnected": "Disconnected",
+      "malfunction": "Malfunction"
     },
     "duty_status": {
       "DR": "Driving",
@@ -163,6 +167,78 @@
       "invited": "Invited",
       "active": "Active",
       "inactive": "Inactive"
+    },
+    "connection_type": {
+      "bluetooth": "Bluetooth",
+      "wifi": "Wi-Fi",
+      "cellular": "Cellular",
+      "usb": "USB"
+    },
+    "route_status": {
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "not_completed": "Not completed",
+      "cancelled": "Cancelled"
+    },
+    "dvir_status": {
+      "draft": "In Progress",
+      "submitted_no_defects": "Submitted - No Defects",
+      "submitted_defects_found": "Submitted - Defects Found",
+      "repaired": "Repaired",
+      "certified": "Certified",
+      "closed_no_certification": "Closed - No Certification"
+    },
+    "dvir_type": {
+      "pre_trip": "Pre-trip",
+      "post_trip": "Post-trip"
+    },
+    "dvir_source": {
+      "app": "Driver app",
+      "paper_import": "Paper import"
+    },
+    "defect_category": {
+      "truck": "Truck",
+      "trailer": "Trailer"
+    },
+    "maintenance_type": {
+      "oil_change": "Oil Change",
+      "tyre": "Tyre",
+      "engine_oil_change": "Engine Oil Change",
+      "lights_change": "Lights Change",
+      "lease_expiry": "Lease Expiry",
+      "grease": "Grease"
+    },
+    "maintenance_alert_type": {
+      "notification": "Notification",
+      "email": "Email",
+      "sms": "SMS",
+      "none": "None"
+    },
+    "maintenance_delivery_method": {
+      "push": "Push",
+      "email": "Email",
+      "sms": "SMS",
+      "in_app": "In-app"
+    },
+    "maintenance_schedule_status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "maintenance_unit_status": {
+      "scheduled": "Scheduled",
+      "due": "Due",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "maintenance_record_status": {
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "maintenance_interval_unit": {
+      "km": "Kilometres",
+      "mi": "Miles",
+      "days": "Days",
+      "engine_hours": "Engine hours"
     }
   },
   "errors": {
@@ -1391,7 +1467,6 @@
         "errorTitle": "Could not load the PDF"
       },
       "tripPlanner": {
-        "mapPlaceholder": "Map view is coming in a later stage.",
         "segmentsTitle": "Trip segments",
         "noTrips": "No trips recorded for this day.",
         "formTitle": "Plan a Trip",
@@ -1406,6 +1481,13 @@
         },
         "toast": {
           "created": "Route created and sent to the driver"
+        },
+        "mapAriaLabel": "Trip map for the selected day",
+        "table": {
+          "caption": "Trip segments shown on the map",
+          "index": "#",
+          "start": "Start",
+          "end": "End"
         }
       }
     },
@@ -1547,6 +1629,638 @@
         "resolvedAt": "Resolved at",
         "resolvedReason": "Resolved reason"
       }
+    }
+  },
+  "map": {
+    "unavailable": {
+      "title": "Map unavailable",
+      "description": "The map style is not configured yet. Set VITE_MAP_STYLE_URL to enable the live map."
+    },
+    "markerCard": {
+      "unitNumber": "Unit #",
+      "odometer": "Odometer",
+      "location": "Location",
+      "viewTracking": "View Tracking ›"
+    },
+    "clusterPopup": {
+      "title": "Units in this area"
+    },
+    "dataTable": {
+      "show": "Show as table",
+      "hide": "Hide table"
+    }
+  },
+  "tracking": {
+    "list": {
+      "title": "Tracking",
+      "columns": {
+        "index": "#",
+        "driverName": "Driver Name",
+        "unitNumber": "Unit #",
+        "status": "Status",
+        "device": "Device",
+        "speed": "Speed",
+        "location": "Last Known Location"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by driver or unit #",
+        "onlineStatus": "Device status",
+        "includeInactive": "Include inactive units"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "actions": {
+        "trackOnMap": "Track on Map"
+      }
+    },
+    "trackOnMap": {
+      "heading": "Unit # {{unitNumber}}",
+      "breadcrumbLeaf": "Track on Map",
+      "mapAriaLabel": "Live map for unit {{unitNumber}}",
+      "sidePanelLabel": "Unit tracking details",
+      "collapsePanel": "Collapse panel",
+      "expandPanel": "Expand panel",
+      "driver": {
+        "location": "Location",
+        "battery": "Battery",
+        "speed": "Speed",
+        "timestamp": "Timestamp",
+        "shiftEnds": "Shift ends in",
+        "malfunctionWarning": "Malfunction reported"
+      },
+      "diagnostics": {
+        "title": "Unit Diagnostics",
+        "vin": "VIN",
+        "deviceSerial": "Device Serial",
+        "engineHours": "Engine Hours",
+        "odometer": "Odometer",
+        "fuel": "Fuel",
+        "bus": "Bus",
+        "coolantLevel": "Coolant Level %",
+        "coolantTemperature": "Coolant Temperature",
+        "oilLevel": "Oil Level %",
+        "malfunctions": "Malfunction codes"
+      },
+      "histories": {
+        "title": "Histories",
+        "range": "Range",
+        "duration": "Duration",
+        "ongoing": "Ongoing",
+        "previousDay": "Previous day",
+        "nextDay": "Next day",
+        "emptyTitle": "No trips",
+        "emptyDescription": "No trips recorded for this day",
+        "error": "Could not load trip history"
+      },
+      "table": {
+        "caption": "Trip segments shown on the map",
+        "index": "#",
+        "start": "Start",
+        "end": "End",
+        "range": "Range",
+        "duration": "Duration",
+        "empty": "No trips recorded for this day"
+      },
+      "error": "Could not load live tracking data"
+    }
+  },
+  "routes": {
+    "list": {
+      "title": "Routes",
+      "columns": {
+        "index": "#",
+        "unitNumber": "Unit #",
+        "driver": "Driver",
+        "from": "From",
+        "to": "To",
+        "sequence": "Sequence",
+        "geofence": "Geofence",
+        "started": "Started",
+        "completed": "Completed",
+        "status": "Status"
+      },
+      "filters": {
+        "searchPlaceholder": "Search routes",
+        "status": "Status"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "actions": {
+        "create": "Create route",
+        "edit": "Edit",
+        "closeNotCompleted": "Close as not completed",
+        "delete": "Delete",
+        "directions": "Directions"
+      },
+      "rowActionsLabel": "Actions for route {{routeId}}",
+      "toast": {
+        "created": "Route created",
+        "updated": "Route updated",
+        "deleted": "Route deleted",
+        "closedNotCompleted": "Route closed as not completed"
+      },
+      "confirm": {
+        "deleteDescription": "This action cannot be undone. Are you sure you want to delete this route?"
+      }
+    },
+    "form": {
+      "addTitle": "Create route",
+      "editTitle": "Edit route",
+      "fields": {
+        "unit": "Unit",
+        "driver": "Driver",
+        "originText": "Origin",
+        "destinationText": "Destination",
+        "geofenceM": "Geofence radius (m)",
+        "sequence": "Sequence",
+        "note": "Note"
+      },
+      "errors": {
+        "unitRequired": "Select a unit.",
+        "driverRequired": "Select a driver.",
+        "originRequired": "Enter the origin address.",
+        "destinationRequired": "Enter the destination address.",
+        "geofenceRange": "Geofence radius must be between 50 and 20000 meters."
+      }
+    },
+    "notCompleted": {
+      "title": "Close as not completed",
+      "description": "Choose a reason for closing this route without reaching the destination.",
+      "reasonLabel": "Reason",
+      "noteLabel": "Note",
+      "noteRequired": "A note is required when the reason is \"Other\".",
+      "reasons": {
+        "breakdown": "Breakdown",
+        "cancelled": "Cancelled",
+        "load_rejected": "Load rejected",
+        "road_closed": "Road closed",
+        "driver_change": "Driver change",
+        "other": "Other"
+      }
+    },
+    "directions": {
+      "unavailable": "No route directions available.",
+      "distance": "Distance",
+      "duration": "Duration",
+      "table": {
+        "caption": "Route points shown on the map",
+        "point": "Point",
+        "label": "Name",
+        "coordinates": "Coordinates",
+        "origin": "Origin",
+        "destination": "Destination",
+        "geofence": "Geofence radius",
+        "empty": "This route has no coordinates"
+      }
+    }
+  },
+  "dvir": {
+    "list": {
+      "title": "DVIR",
+      "tabs": {
+        "all": "All",
+        "pendingCertification": "Pending certification"
+      },
+      "filters": {
+        "searchPlaceholder": "Search driver or unit…",
+        "unit": "Unit",
+        "driver": "Driver",
+        "type": "Type",
+        "status": "Status",
+        "dateRange": "Created at"
+      },
+      "columns": {
+        "index": "#",
+        "driver": "Driver Name",
+        "unit": "Unit # / Trailer",
+        "type": "Type",
+        "defects": "Defects",
+        "location": "Location",
+        "createdAt": "Created At",
+        "status": "Status",
+        "action": "Action"
+      },
+      "defectsCount_one": "{{count}} defect",
+      "criticalDefectTitle": "Critical defect — unit is out of service",
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredTitle": "No results",
+        "filteredDescription": "No records match your filters",
+        "pendingTitle": "Nothing pending certification",
+        "pendingDescription": "Every repaired report has already been certified by a driver"
+      },
+      "defectsCount_other": "{{count}} defects"
+    },
+    "detail": {
+      "notFound": "This DVIR report does not exist or is not available to you.",
+      "sections": {
+        "summary": "Inspection",
+        "defects": "Defects",
+        "signatures": "Signatures",
+        "history": "Status history",
+        "repair": "Repair"
+      },
+      "fields": {
+        "unit": "Unit #",
+        "trailers": "Trailers",
+        "type": "Type",
+        "performedAt": "Performed at",
+        "createdAt": "Created at",
+        "location": "Location",
+        "coordinates": "Coordinates",
+        "odometer": "Odometer",
+        "engineHours": "Engine hours",
+        "driver": "Driver",
+        "source": "Source",
+        "mechanicNote": "Mechanic note",
+        "repairedAt": "Repaired at",
+        "certifiedAt": "Certified at",
+        "closedAt": "Closed at",
+        "closedReason": "Closed reason"
+      },
+      "defects": {
+        "empty": "No defects were reported in this inspection.",
+        "critical": "Critical",
+        "note": "Note",
+        "photos": "Photos",
+        "photoAlt": "Defect photo {{index}} of {{name}}",
+        "openPhoto": "Open photo {{index}} of {{name}}"
+      },
+      "signatures": {
+        "driver": "Driver signature",
+        "mechanic": "Mechanic signature",
+        "certification": "Certification signature",
+        "viewOnly": "Signatures are captured in the driver app and are read only here — the admin panel never signs a DVIR.",
+        "missing": "Not signed",
+        "alt": "{{label}} image"
+      },
+      "history": {
+        "submitted": "Submitted by driver",
+        "repaired": "Repair recorded",
+        "certified": "Certified by driver",
+        "closed": "Closed without certification",
+        "by": "by {{name}}",
+        "empty": "No status changes yet."
+      },
+      "preview": {
+        "unavailable": "Preview is not available in this environment.",
+        "key": "Storage key: {{key}}"
+      },
+      "certification": {
+        "awaitingTitle": "Awaiting driver certification",
+        "awaitingDescription": "The repair is recorded. The driver certifies it in the mobile app — the admin panel never signs on their behalf."
+      }
+    },
+    "lightbox": {
+      "title": "Photo",
+      "close": "Close photo",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "position": "{{current}} of {{total}}"
+    },
+    "outOfService": {
+      "title": "Out of service",
+      "description": "This inspection reported a critical defect. The unit stays out of service until the repair is recorded and a driver certifies the report."
+    },
+    "actions": {
+      "recordRepair": "Record repair",
+      "certify": "Certify",
+      "downloadPdf": "Download PDF",
+      "view": "View",
+      "back": "Back to DVIR"
+    },
+    "repair": {
+      "title": "Record repair",
+      "mechanicNote": "Mechanic note",
+      "mechanicNotePlaceholder": "Describe the repair that was carried out",
+      "vendor": "Vendor",
+      "invoiceNo": "Invoice #",
+      "cost": "Cost",
+      "invoice": "Invoice file",
+      "invoiceDescription": "PDF, JPEG or PNG, up to 10 MB. Optional.",
+      "invoiceUploaded": "Invoice attached: {{filename}}",
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "The repair will be recorded on this DVIR and the report moves to Repaired. Are you sure you want to continue?",
+      "submit": "Record repair",
+      "signatureMissing": "Mechanic signature required — captured in the driver app"
+    },
+    "certify": {
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "Certifying closes this DVIR. The admin panel never signs on behalf of a driver — only the driver's own certification signature is stored. Are you sure you want to continue?"
+    },
+    "toast": {
+      "repairRecorded": "Repair recorded on DVIR for unit {{unit}}",
+      "repairFailed": "The repair could not be recorded",
+      "certified": "DVIR for unit {{unit}} certified",
+      "certifyFailed": "The report could not be certified",
+      "pdfDownloaded": "DVIR PDF downloaded",
+      "pdfFailed": "The PDF could not be downloaded",
+      "uploadFailed": "The invoice could not be uploaded"
+    },
+    "errors": {
+      "invalidTransition": "This report is no longer in a state that allows this action. Reload the page to see its current status.",
+      "systemLocked": "Standard defect types cannot be edited. Create a company defect type instead.",
+      "duplicateName": "A defect type with this name already exists in this category."
+    },
+    "guards": {
+      "repairUnavailable": "Only a report with defects found can move to Repaired.",
+      "certifyUnavailable": "Only a repaired report can be certified."
+    },
+    "defectTypes": {
+      "title": "Defect Types",
+      "add": "Add defect type",
+      "filters": {
+        "category": "Category",
+        "isActive": "Active",
+        "isCritical": "Critical"
+      },
+      "columns": {
+        "name": "Name",
+        "category": "Category",
+        "critical": "Critical",
+        "active": "Active",
+        "action": "Action"
+      },
+      "system": "Standard",
+      "systemHint": "Standard FMCSA defect types are read only.",
+      "form": {
+        "addTitle": "Add defect type",
+        "editTitle": "Edit defect type",
+        "name": "Name",
+        "category": "Category",
+        "isCritical": "Critical defect",
+        "isCriticalDescription": "A critical defect puts the unit out of service until the repair is certified.",
+        "isActive": "Active",
+        "isActiveDescription": "Inactive types stay on historic reports but are no longer offered to drivers.",
+        "sortOrder": "Sort order"
+      },
+      "deactivate": {
+        "title": "Are you absolutely sure?",
+        "description": "Are you sure you want to deactivate the defect type {{name}}?"
+      },
+      "toast": {
+        "created": "Defect type {{name}} created",
+        "updated": "Defect type {{name}} updated",
+        "deactivated": "Defect type {{name}} deactivated",
+        "activated": "Defect type {{name}} activated",
+        "failed": "The defect type could not be saved"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredTitle": "No results",
+        "filteredDescription": "No records match your filters"
+      }
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMax": "Name must be at most 120 characters",
+      "mechanicNoteRequired": "A mechanic note is required",
+      "mechanicNoteMax": "The note must be at most 2000 characters",
+      "vendorMax": "Vendor must be at most 200 characters",
+      "invoiceNoMax": "Invoice # must be at most 64 characters",
+      "costMin": "Cost cannot be negative",
+      "sortOrderRange": "Sort order must be between 0 and 10000",
+      "signatureRequired": "A mechanic signature from the driver app is required"
+    }
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "tabs": {
+      "schedules": "Schedule",
+      "due": "Due",
+      "history": "History"
+    },
+    "schedules": {
+      "columns": {
+        "index": "#",
+        "unit": "Unit #",
+        "type": "Type",
+        "name": "Schedule Name",
+        "frequency": "Maintenance Frequency",
+        "status": "Status"
+      },
+      "filters": {
+        "searchPlaceholder": "Search schedules",
+        "status": "Status"
+      },
+      "unitCount_one": "{{count}} Unit",
+      "unitCount_other": "{{count}} Units",
+      "noUnits": "N/A",
+      "rowActionsLabel": "Actions for schedule {{name}}"
+    },
+    "due": {
+      "columns": {
+        "index": "#",
+        "unit": "Unit #",
+        "licensePlate": "License Plate",
+        "type": "Type",
+        "name": "Schedule Name",
+        "remainingFrequency": "Remaining Frequency",
+        "reminderSent": "Reminder Sent"
+      },
+      "filters": {
+        "status": "Status",
+        "searchPlaceholder": "Search units"
+      },
+      "reminderNotSent": "Not sent",
+      "overdue": "Overdue",
+      "rowActionsLabel": "Actions for unit {{unit}}"
+    },
+    "history": {
+      "columns": {
+        "date": "Maintenance Date",
+        "unit": "Unit #",
+        "driver": "Driver Name",
+        "makeModel": "Make & Model",
+        "type": "Type",
+        "status": "Status",
+        "invoiceNo": "Invoice #",
+        "vendor": "Vendor Name",
+        "cost": "Cost",
+        "scheduleName": "Schedule Name",
+        "odometer": "Odometer",
+        "engineHours": "Engine Hours",
+        "attachment": "Attachment"
+      },
+      "filters": {
+        "status": "Status",
+        "searchPlaceholder": "Search records"
+      },
+      "attachmentPresent": "Invoice",
+      "attachmentNone": "N/A",
+      "rowActionsLabel": "Actions for maintenance record of unit {{unit}}"
+    },
+    "group": {
+      "title": "{{count}} Units",
+      "breadcrumbDue": "Due",
+      "refresh": "Refresh"
+    },
+    "actions": {
+      "add": "Add Maintenance",
+      "view": "View",
+      "markComplete": "Mark as Complete",
+      "cancel": "Cancel",
+      "downloadInvoice": "Download invoice"
+    },
+    "empty": {
+      "title": "No Data Found",
+      "description": "There is no data to show you right now",
+      "filteredDescription": "No records match your filters"
+    },
+    "units": {
+      "km": "km",
+      "mi": "mi",
+      "days_one": "{{count}} day",
+      "days_other": "{{count}} days",
+      "engineHours_one": "{{count}} engine hour",
+      "engineHours_other": "{{count}} engine hours",
+      "label": "Unit"
+    },
+    "form": {
+      "addTitle": "Add Maintenance",
+      "editTitle": "Edit Maintenance",
+      "sectionTitle": "MAINTENANCE DETAILS",
+      "alert": "The schedule only produces reminders once the unit reports telemetry. Values you enter are stored in the unit shown next to each field.",
+      "fields": {
+        "type": "Maintenance Type",
+        "mode": "Mode",
+        "unit": "Unit #",
+        "units": "Units",
+        "intervalValue": "Maintenance Frequency",
+        "intervalUnit": "Frequency unit",
+        "reminderBefore": "Set Reminder (before service due)",
+        "name": "Schedule Name",
+        "lastServiceValue": "Current Frequency",
+        "alertType": "Alert Type",
+        "deliveryMethods": "Delivery Method",
+        "notifyCoDriver": "Notify co-driver",
+        "notes": "Notes",
+        "status": "Status"
+      },
+      "hints": {
+        "lastServiceValue": "Last service value — the odometer or engine hour reading recorded at the last completed service.",
+        "unitsSelectAll": "Select All",
+        "distanceUnit": "Values are entered and shown in {{unit}}."
+      },
+      "modes": {
+        "single": "Single Unit",
+        "multiple": "Multiple Units"
+      },
+      "unitsPlaceholder": "Select units",
+      "unitPlaceholder": "Select a unit",
+      "unitsSelected_one": "{{count}} unit selected",
+      "unitsSelected_other": "{{count}} units selected",
+      "errors": {
+        "unitRequired": "Select a unit",
+        "unitsRequired": "Select at least one unit",
+        "intervalRequired": "Enter a maintenance frequency",
+        "intervalPositive": "Maintenance frequency must be greater than 0",
+        "reminderNegative": "Reminder cannot be negative",
+        "nameRequired": "Enter a schedule name",
+        "typeRequired": "Select a maintenance type",
+        "alertTypeRequired": "Select an alert type",
+        "deliveryRequired": "Select at least one delivery method",
+        "notesMax": "Notes cannot be longer than 60 characters"
+      }
+    },
+    "view": {
+      "title": "Maintenance schedule",
+      "unitsSectionTitle": "UNITS",
+      "fields": {
+        "unit": "Unit #",
+        "name": "Schedule Name",
+        "type": "Maintenance type",
+        "lastServiceValue": "Last service value",
+        "interval": "Maintenance Frequency",
+        "nextFrequency": "Next Frequency",
+        "remindBefore": "Remind before",
+        "alertType": "Alert Type",
+        "deliveryMethods": "Delivery Method",
+        "notifyCoDriver": "Notify co-driver",
+        "notes": "Notes",
+        "status": "Status"
+      },
+      "unitsColumns": {
+        "unit": "Unit",
+        "lastServiceValue": "Last service value",
+        "nextFrequency": "Next Frequency",
+        "remaining": "Remaining"
+      },
+      "openUnits": "Open the unit list",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "record": {
+      "title": "Maintenance record",
+      "fields": {
+        "unit": "Unit #",
+        "scheduleName": "Schedule Name",
+        "type": "Type",
+        "status": "Status",
+        "performedAt": "Maintenance Date",
+        "invoiceNo": "Invoice #",
+        "vendor": "Vendor Name",
+        "cost": "Cost",
+        "odometer": "Odometer",
+        "engineHours": "Engine Hours",
+        "notes": "Notes",
+        "cancelledReason": "Cancellation reason",
+        "attachment": "Invoice"
+      },
+      "notFound": "This maintenance record is not available."
+    },
+    "inspections": {
+      "preTrip": "PRE-TRIP INSPECTION",
+      "postTrip": "POST-TRIP INSPECTION",
+      "empty": "No inspection recorded for this unit on this date",
+      "error": "Inspections could not be loaded",
+      "defects_one": "{{count}} defect",
+      "defects_other": "{{count}} defects",
+      "openReport": "Open DVIR report"
+    },
+    "complete": {
+      "title": "MARK MAINTENANCE AS COMPLETE",
+      "fields": {
+        "invoiceNo": "Invoice #",
+        "vendor": "Vendor Name",
+        "cost": "Cost",
+        "performedAt": "Maintenance Date",
+        "invoice": "Invoice"
+      },
+      "invoiceHint": "PDF, JPG or PNG, up to 10 MB",
+      "submit": "Mark as Complete",
+      "errors": {
+        "invoiceNoMax": "Invoice # cannot be longer than 64 characters",
+        "vendorMax": "Vendor name cannot be longer than 200 characters",
+        "costNegative": "Cost cannot be negative",
+        "dateRequired": "Select the maintenance date",
+        "conflict": "This maintenance row is already completed or cancelled",
+        "noReading": "This unit has never reported a reading, so the service cannot be closed automatically"
+      }
+    },
+    "cancelDialog": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. Are you sure you want to cancel the maintenance for unit {{unit}}?",
+      "reasonLabel": "Reason"
+    },
+    "confirm": {
+      "deleteDescription": "This action cannot be undone. Are you sure you want to delete the schedule {{name}}?"
+    },
+    "toast": {
+      "created": "Maintenance schedule {{name}} created",
+      "updated": "Maintenance schedule {{name}} updated",
+      "deleted": "Maintenance schedule {{name}} deleted",
+      "completed": "Maintenance for unit {{unit}} marked as complete",
+      "cancelled": "Maintenance for unit {{unit}} cancelled",
+      "uploadFailed": "The invoice could not be uploaded"
     }
   }
 }

@@ -60,7 +60,13 @@ export function RouteListPage() {
       order: listParams.order,
       status: (listParams.filters.status as RoutesListParams['status']) || undefined,
     }),
-    [listParams.page, listParams.perPage, listParams.sort, listParams.order, listParams.filters.status],
+    [
+      listParams.page,
+      listParams.perPage,
+      listParams.sort,
+      listParams.order,
+      listParams.filters.status,
+    ],
   );
 
   const list = useRoutesList(queryParams);

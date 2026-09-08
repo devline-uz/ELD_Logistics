@@ -209,19 +209,17 @@ export const exportJobFailedHandler = http.get(url('/reports/export-jobs/:id'), 
 );
 
 /** `GET /reports/export-jobs/{id}` — `done`, lekin `expires_at` o'tib ketgan (Q75). */
-export const exportJobDoneExpiredHandler = http.get(
-  url('/reports/export-jobs/:id'),
-  ({ params }) =>
-    HttpResponse.json({
-      data: exportJobFixture({
-        id: params.id as string,
-        status: 'done',
-        started_at: '2026-09-04T05:12:03Z',
-        finished_at: '2026-09-04T05:12:31Z',
-        download_url: 'https://storage.example.com/onebook/job-1.xlsx',
-        expires_at: '2026-09-05T05:12:31Z',
-      }),
+export const exportJobDoneExpiredHandler = http.get(url('/reports/export-jobs/:id'), ({ params }) =>
+  HttpResponse.json({
+    data: exportJobFixture({
+      id: params.id as string,
+      status: 'done',
+      started_at: '2026-09-04T05:12:03Z',
+      finished_at: '2026-09-04T05:12:31Z',
+      download_url: 'https://storage.example.com/onebook/job-1.xlsx',
+      expires_at: '2026-09-05T05:12:31Z',
     }),
+  }),
 );
 
 /** `GET /reports/export-jobs/{id}` — `404` (boshqa kompaniyaning job'i, fe-api §1). */

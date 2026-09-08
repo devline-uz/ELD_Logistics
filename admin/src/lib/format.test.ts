@@ -11,7 +11,10 @@ import {
   formatTime,
   formatTimezoneAbbreviation,
   formatWeekday,
+  formatCoordinate,
+  formatCoordinatePair,
   resolveDateFormatProfile,
+  toDateParam,
 } from './format';
 
 const GENERIC = { timezone: 'UTC', regulationProfile: 'generic' };
@@ -256,5 +259,51 @@ describe('formatRelative', () => {
 
   it('defaults "now" to the current time when not provided', () => {
     expect(formatRelative(new Date().toISOString())).toBe('just now');
+  });
+});
+
+describe('formatCoordinate / formatCoordinatePair', () => {
+  it('renders 7 decimal places (F101)', () => {
+    expect(formatCoordinate(23.9746455)).toBe('23.9746455');
+    expect(formatCoordinatePair(31.52, 74.35)).toBe('31.5200000, 74.3500000');
+  });
+
+  it('returns N/A when either side is missing or not finite', () => {
+    expect(formatCoordinate(undefined)).toBe(NA);
+    expect(formatCoordinatePair(31.52, undefined)).toBe(NA);
+    expect(formatCoordinatePair(null, 74.35)).toBe(NA);
+    expect(formatCoordinatePair(Number.NaN, 74.35)).toBe(NA);
+  });
+});
+
+describe('toDateParam', () => {
+  it('uses the LOCAL calendar date, not the UTC one', () => {
+    // Runner zonasidan qat'i nazar mahalliy kun qaytadi. Eski
+    // `toISOString().slice(0,10)` implementatsiyasi ofset noldan farq
+    // qilganda kunni siljitardi — quyidagi taqqoslash aynan shuni ushlaydi.
+    const evening = new Date(2026, 8, 7, 22, 30, 0);
+    expect(toDateParam(evening)).toBe('2026-09-07');
+
+    // Sun'iy ravishda manfiy ofsetli holatni modellashtiramiz: mahalliy
+    // 23:30 UTC bo'yicha ertangi kunga tushadigan payt.
+    const nearMidnight = new Date(2026, 8, 7, 23, 59, 0);
+    expect(toDateParam(nearMidnight)).toBe('2026-09-07');
+    if (nearMidnight.getTimezoneOffset() > 0) {
+      // UTC-X zonada eski usul boshqa kun berardi.
+      expect(nearMidnight.toISOString().slice(0, 10)).not.toBe(toDateParam(nearMidnight));
+    }
+  });
+
+  it('handles the early-morning boundary in positive-offset zones', () => {
+    const earlyMorning = new Date(2026, 0, 1, 0, 15, 0);
+    expect(toDateParam(earlyMorning)).toBe('2026-01-01');
+  });
+
+  it('pads month and day to two digits', () => {
+    expect(toDateParam(new Date(2026, 2, 5, 12, 0, 0))).toBe('2026-03-05');
+  });
+
+  it('returns N/A for an invalid date', () => {
+    expect(toDateParam(new Date('nope'))).toBe(NA);
   });
 });

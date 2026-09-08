@@ -79,7 +79,11 @@ export function RouteFormModal({ open, onClose, route }: RouteFormModalProps) {
   );
 
   const unitOptions: SelectOption[] = useMemo(
-    () => (units.data?.data ?? []).map((unit) => ({ value: unit.id ?? '', label: unit.unit_number ?? unit.id ?? '' })),
+    () =>
+      (units.data?.data ?? []).map((unit) => ({
+        value: unit.id ?? '',
+        label: unit.unit_number ?? unit.id ?? '',
+      })),
     [units.data],
   );
 

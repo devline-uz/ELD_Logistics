@@ -205,6 +205,72 @@ describe('FileUpload', () => {
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
   });
 
+  it('refuses to send the file when the presign target is not a secure URL', async () => {
+    const onPresign = vi.fn().mockResolvedValue({
+      upload_url: 'http://attacker.example/collect',
+      method: 'PUT',
+      key: 'k',
+      max_bytes: 5 * 1024 * 1024,
+    });
+    const onError = vi.fn();
+
+    render(
+      <FileUpload
+        kind="dvir_photo"
+        label="Defect photo"
+        onPresign={onPresign}
+        onUploaded={vi.fn()}
+        onError={onError}
+      />,
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await userEvent.upload(input, makeFile('front.jpg', 'image/jpeg', 1024));
+
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(FakeXhr.instances).toHaveLength(0);
+    expect(onError).toHaveBeenCalled();
+  });
+
+  it('rejects a file whose extension does not match the allowed list', async () => {
+    const onPresign = vi.fn();
+
+    render(
+      <FileUpload kind="invoice" label="Invoice" onPresign={onPresign} onUploaded={vi.fn()} />,
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await userEvent.upload(input, makeFile('payload.svg', 'application/pdf', 1024));
+
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(onPresign).not.toHaveBeenCalled();
+  });
+
+  it('forces the validated Content-Type and drops unexpected presign headers', async () => {
+    const onPresign = vi.fn().mockResolvedValue({
+      upload_url: 'https://storage.example/upload',
+      method: 'PUT',
+      key: 'k',
+      headers: { Authorization: 'Bearer leaked', 'Content-Type': 'text/html' },
+      max_bytes: 5 * 1024 * 1024,
+    });
+
+    render(
+      <FileUpload
+        kind="dvir_photo"
+        label="Defect photo"
+        onPresign={onPresign}
+        onUploaded={vi.fn()}
+      />,
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await userEvent.upload(input, makeFile('front.jpg', 'image/jpeg', 1024));
+
+    await waitFor(() => expect(FakeXhr.instances).toHaveLength(1));
+    expect(FakeXhr.instances[0]!.requestHeaders).toEqual({ 'Content-Type': 'image/jpeg' });
+  });
+
   it('cancels an in-flight upload via the Cancel button', async () => {
     const onPresign = vi.fn().mockResolvedValue({
       upload_url: 'https://storage.example/upload',

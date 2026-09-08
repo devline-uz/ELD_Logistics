@@ -4,6 +4,16 @@ import { afterAll, afterEach, beforeAll } from 'vitest';
 import { server } from '@/test/msw-server';
 
 /**
+ * i18n — barcha testlar uchun **bir marta** shu yerda init qilinadi
+ * (modulning yon ta'siri). Aks holda `useTranslation()` ishlatadigan har bir
+ * test faylida `@/app/i18n` ni qo'lda import qilish kerak bo'lardi va uni
+ * unutgan test kalitning o'zini (`tracking.list.title`) ko'rsatib yiqilardi.
+ * Barcha kalitlar `src/locales/en.json` da — modul bo'laklari bosqich oxirida
+ * shu faylga birlashtiriladi (W11).
+ */
+import '@/app/i18n';
+
+/**
  * MSW (fe-testing §MSW) — `server.listen()` **shu yerda, sinxron** chaqiriladi
  * (`beforeAll` ichida emas).
  *
@@ -67,3 +77,18 @@ afterAll(() => {
  */
 HTMLCanvasElement.prototype.getContext = (() =>
   null) as typeof HTMLCanvasElement.prototype.getContext;
+
+/**
+ * jsdom `URL.createObjectURL` ni bermaydi, `maplibre-gl` esa modul yuklanish
+ * vaqtida (top-level) uni chaqiradi — worker URL'ini yasash uchun. Xarita
+ * qatlam hook'larini (`useTripPolylineLayer`, `useGeofenceLayer`) import
+ * qiladigan har qanday ekran testi shu sababli import bosqichida yiqilardi.
+ *
+ * Testlarda xarita hech qachon chizilmaydi (`VITE_MAP_STYLE_URL` bo'sh →
+ * `LazyMapCanvas` `MapUnavailable`ni ko'rsatadi), shuning uchun bo'sh (no-op)
+ * stub yetarli.
+ */
+if (typeof URL.createObjectURL !== 'function') {
+  URL.createObjectURL = () => 'blob:map-worker';
+  URL.revokeObjectURL = () => undefined;
+}

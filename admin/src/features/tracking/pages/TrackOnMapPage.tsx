@@ -11,37 +11,81 @@
  * `<dl>` maydonlari + `Histories` vertikal ro'yxati (`role="application"`
  * xaritaning o'zi, lekin barcha ma'lumot alohida matn sifatida ham mavjud).
  */
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { useUnitDiagnostics } from '@/api/queries/units';
+import { useUnit, useUnitDiagnostics } from '@/api/queries/units';
 import { useHosSummary } from '@/api/queries/hos';
-import { useTrackingLive, useTrackingRefresh, useUnitTrips, useTrip } from '@/api/queries/tracking';
+import {
+  trackingKeys,
+  useTrackingLive,
+  useTrackingRefresh,
+  useUnitTrips,
+  useTrip,
+} from '@/api/queries/tracking';
+import type { ListResponse, LiveUnit } from '@/api/types';
+import { ErrorState } from '@/components/feedback/ErrorState';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Button } from '@/components/ui/Button';
 import { DatePicker } from '@/components/ui/DatePicker';
 import { IconButton } from '@/components/ui/IconButton';
 import { PermissionGate } from '@/components/ui/PermissionGate';
 import { PERM } from '@/lib/permissions';
-import { LazyMapCanvas } from '@/components/map/LazyMapCanvas';
-import type { MapCanvasHandle } from '@/components/map/MapCanvas';
-import type { Map as MapLibreMap } from 'maplibre-gl';
-import { useLiveUnitsLayer } from '@/components/map/useLiveUnitsLayer';
-import { useTripPolylineLayer, type TripStopMarker } from '@/components/map/useTripPolylineLayer';
+import { LazyTrackingMapPanel } from '@/components/map/LazyTrackingMapPanel';
+import { MapDataTable } from '@/components/map/MapDataTable';
+import type { UseLiveUnitsLayerOptions } from '@/components/map/useLiveUnitsLayer';
+import type { TripStopMarker } from '@/components/map/useTripPolylineLayer';
 import { decodePolyline } from '@/components/map/polyline';
+import { formatCoordinatePair, toDateParam } from '@/lib/format';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
-import { ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen, RefreshCw } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  PanelRightClose,
+  PanelRightOpen,
+  RefreshCw,
+} from 'lucide-react';
 
 import { DriverInfoPanel } from '../components/DriverInfoPanel';
+import type { UnitLastStateEvent } from '../hooks/useTrackingChannel';
 import { TripHistoryTimeline } from '../components/TripHistoryTimeline';
 import { DUTY_STATUS_TONE, ONLINE_STATUS_TONE } from '../components/trackingColumns';
 import { UnitDiagnosticsPanel } from '../components/UnitDiagnosticsPanel';
 import { useTrackingChannel } from '../hooks/useTrackingChannel';
 
-function toDateParam(date: Date): string {
-  return date.toISOString().slice(0, 10);
+/**
+ * WS `unit_last_state.data` dan keshga ko'chiriladigan `LiveUnit` maydonlari
+ * (F115 naqshi — `TrackingListPage` bilan bir xil). Oq ro'yxat: REST javobida
+ * yo'q maydon ham qo'llanadi, begona kalitlar esa keshga tushmaydi.
+ */
+const LIVE_UNIT_PATCH_FIELDS = [
+  'duty_status',
+  'eld_device_id',
+  'eld_device_serial',
+  'engine_hours',
+  'heading_deg',
+  'last_seen_at',
+  'lat',
+  'lng',
+  'malfunction_codes',
+  'odometer_m',
+  'online_status',
+  'out_of_service',
+  'speed_kmh',
+  'unit_number',
+] as const satisfies readonly (keyof LiveUnit)[];
+
+function mergeLiveUnit(existing: LiveUnit, patch: Record<string, unknown>): LiveUnit {
+  const next: LiveUnit = { ...existing };
+  for (const key of LIVE_UNIT_PATCH_FIELDS) {
+    if (key in patch && patch[key] !== undefined) {
+      (next as Record<string, unknown>)[key] = patch[key];
+    }
+  }
+  return next;
 }
 
 export function TrackOnMapPage() {
@@ -51,20 +95,47 @@ export function TrackOnMapPage() {
   const { unitId } = useParams<{ unitId: string }>();
   const { formatDate, formatRelative } = useDateFormat();
   const { formatDistance } = useUnitSystem();
+  const queryClient = useQueryClient();
+  const mapTableId = useId();
 
   const [panelOpen, setPanelOpen] = useState(true);
   const [date, setDate] = useState<Date>(new Date());
   const [selectedTripId, setSelectedTripId] = useState<string | undefined>(undefined);
-  const mapRef = useRef<MapCanvasHandle>(null);
-  // Ref o'zgarishi qayta render'ni trigger qilmaydi — qatlam hook'lari uchun
-  // xarita instansiyasi `onLoad` orqali holatga olinadi.
-  const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null);
 
-  const live = useTrackingLive({ unit_ids: unitId ?? '' }, { enabled: Boolean(unitId) });
+  const liveParams = useMemo(() => ({ unit_ids: unitId ?? '' }), [unitId]);
+  const live = useTrackingLive(liveParams, { enabled: Boolean(unitId) });
   const unit = live.data?.data?.find((u) => u.unit_id === unitId);
 
-  useTrackingChannel({ enabled: Boolean(unitId), unitIds: unitId ? [unitId] : undefined, onEvent: () => void live.refetch() });
+  /**
+   * F115 — WS hodisasi keshni **joyida** yangilaydi. Ilgari bu yerda
+   * `live.refetch()` chaqirilardi: har `unit_last_state` bitta
+   * `GET /tracking/live` so'roviga aylanib so'rov bo'roniga olib kelardi.
+   */
+  const liveQueryKey = useMemo(() => trackingKeys.liveList(liveParams), [liveParams]);
+  const handleWsEvent = useCallback(
+    (event: UnitLastStateEvent) => {
+      const eventUnitId = typeof event.data.unit_id === 'string' ? event.data.unit_id : undefined;
+      if (!eventUnitId || eventUnitId !== unitId) return;
 
+      queryClient.setQueryData<ListResponse<LiveUnit>>(liveQueryKey, (current) => {
+        if (!current?.data) return current;
+        const index = current.data.findIndex((u) => u.unit_id === eventUnitId);
+        if (index === -1) return current;
+        const nextData = [...current.data];
+        nextData[index] = mergeLiveUnit(nextData[index]!, event.data);
+        return { ...current, data: nextData };
+      });
+    },
+    [liveQueryKey, queryClient, unitId],
+  );
+
+  useTrackingChannel({
+    enabled: Boolean(unitId),
+    unitIds: unitId ? [unitId] : undefined,
+    onEvent: handleWsEvent,
+  });
+
+  const unitDetail = useUnit(unitId);
   const diagnostics = useUnitDiagnostics(unitId);
   const hosSummary = useHosSummary(unit?.driver?.id);
   const trips = useUnitTrips(unitId, { date: toDateParam(date) });
@@ -102,7 +173,11 @@ export function TrackOnMapPage() {
     if (!selectedTrip) return [];
     const result: TripStopMarker[] = [];
     if (typeof selectedTrip.start_lat === 'number' && typeof selectedTrip.start_lng === 'number') {
-      result.push({ index: 1, lngLat: [selectedTrip.start_lng, selectedTrip.start_lat], label: '1' });
+      result.push({
+        index: 1,
+        lngLat: [selectedTrip.start_lng, selectedTrip.start_lat],
+        label: '1',
+      });
     }
     if (typeof selectedTrip.end_lat === 'number' && typeof selectedTrip.end_lng === 'number') {
       result.push({ index: 2, lngLat: [selectedTrip.end_lng, selectedTrip.end_lat], label: '2' });
@@ -110,9 +185,7 @@ export function TrackOnMapPage() {
     return result;
   }, [selectedTrip]);
 
-  const map = mapInstance;
-
-  useLiveUnitsLayer(map, unit ? [unit] : [], {
+  const liveOptions: UseLiveUnitsLayerOptions = {
     buildPopupProps: (u) => ({
       driverName: `${u.driver?.first_name ?? ''} ${u.driver?.last_name ?? ''}`.trim() || 'N/A',
       dutyStatus: u.duty_status ?? 'OFF',
@@ -130,15 +203,16 @@ export function TrackOnMapPage() {
     }),
     formatListEntry: (u) => u.unit_number ?? 'N/A',
     listPopupTitle: t('map.clusterPopup.title'),
-  });
-
-  useTripPolylineLayer(map, { overviewLines, activeLine, stops });
+  };
 
   const breadcrumbItems =
     location.state?.from === 'units'
       ? [
           { label: t('fleet.units.title'), href: '/units' },
-          { label: t('fleet.units.detail.breadcrumb', { unitNumber: unit?.unit_number ?? unitId }), href: `/units/${unitId}` },
+          {
+            label: t('fleet.units.detail.breadcrumb', { unitNumber: unit?.unit_number ?? unitId }),
+            href: `/units/${unitId}`,
+          },
           { label: t('tracking.trackOnMap.breadcrumbLeaf') },
         ]
       : [
@@ -176,84 +250,137 @@ export function TrackOnMapPage() {
         </div>
       </div>
 
-      <div className="relative flex min-h-[520px] flex-1 gap-3">
-        <div className="relative flex-1 overflow-hidden rounded-lg">
-          <LazyMapCanvas
-            mapRef={mapRef}
-            onLoad={setMapInstance}
-            ariaLabel={t('tracking.trackOnMap.mapAriaLabel', { unitNumber: unit?.unit_number ?? unitId })}
-            initialCenter={
-              typeof unit?.lng === 'number' && typeof unit?.lat === 'number'
-                ? [unit.lng, unit.lat]
-                : undefined
-            }
-            initialZoom={typeof unit?.lat === 'number' ? 12 : undefined}
-          />
-          <IconButton
-            icon={panelOpen ? PanelRightClose : PanelRightOpen}
-            aria-label={
-              panelOpen
-                ? t('tracking.trackOnMap.collapsePanel')
-                : t('tracking.trackOnMap.expandPanel')
-            }
-            variant="secondary"
-            className="absolute right-3 top-3 z-10"
-            onClick={() => setPanelOpen((open) => !open)}
+      {live.isError ? (
+        /* fe-screens §7 (2-daraja) — `/tracking/live` yiqilsa bo'sh xarita
+           qolmaydi: blok o'rnida ErrorState + retry, sarlavha/breadcrumb joyida. */
+        <div className="flex min-h-[520px] flex-1 items-center justify-center rounded-lg border border-stroke bg-surface">
+          <ErrorState
+            message={live.error?.message ?? t('tracking.trackOnMap.error')}
+            onRetry={() => void live.refetch()}
           />
         </div>
-
-        {panelOpen ? (
-          <aside
-            aria-label={t('tracking.trackOnMap.sidePanelLabel')}
-            className="flex w-80 shrink-0 flex-col gap-4 overflow-y-auto rounded-lg border border-stroke bg-surface p-4"
-          >
-            <DriverInfoPanel
-              unit={unit}
-              hosSummary={hosSummary.data}
-              hasMalfunction={(unit?.malfunction_codes?.length ?? 0) > 0}
+      ) : (
+        <div className="relative flex min-h-[520px] flex-1 gap-3">
+          <div className="relative flex-1 overflow-hidden rounded-lg">
+            <LazyTrackingMapPanel
+              ariaLabel={t('tracking.trackOnMap.mapAriaLabel', {
+                unitNumber: unit?.unit_number ?? unitId,
+              })}
+              ariaDescribedBy={mapTableId}
+              units={unit ? [unit] : []}
+              liveOptions={liveOptions}
+              overviewLines={overviewLines}
+              activeLine={activeLine}
+              stops={stops}
+              initialCenter={
+                typeof unit?.lng === 'number' && typeof unit?.lat === 'number'
+                  ? [unit.lng, unit.lat]
+                  : undefined
+              }
+              initialZoom={typeof unit?.lat === 'number' ? 12 : undefined}
             />
+            {/* F171 — xarita ma'lumotining jadval ekvivalenti (trip segmentlari). */}
+            <MapDataTable
+              id={mapTableId}
+              className="absolute bottom-3 left-3 z-10 max-w-[min(28rem,60%)] rounded-md bg-surface/95 p-2"
+              caption={t('tracking.trackOnMap.table.caption')}
+              emptyLabel={t('tracking.trackOnMap.table.empty')}
+              rows={trips.data?.data ?? []}
+              getRowKey={(trip, index) => trip.id ?? String(index)}
+              columns={[
+                {
+                  key: 'index',
+                  header: t('tracking.trackOnMap.table.index'),
+                  cell: (_trip, index) => index + 1,
+                },
+                {
+                  key: 'start',
+                  header: t('tracking.trackOnMap.table.start'),
+                  cell: (trip) => formatCoordinatePair(trip.start_lat, trip.start_lng),
+                },
+                {
+                  key: 'end',
+                  header: t('tracking.trackOnMap.table.end'),
+                  cell: (trip) => formatCoordinatePair(trip.end_lat, trip.end_lng),
+                },
+                {
+                  key: 'range',
+                  header: t('tracking.trackOnMap.table.range'),
+                  cell: (trip) => formatDistance(trip.distance_m ?? undefined),
+                },
+              ]}
+            />
+            <IconButton
+              icon={panelOpen ? PanelRightClose : PanelRightOpen}
+              aria-label={
+                panelOpen
+                  ? t('tracking.trackOnMap.collapsePanel')
+                  : t('tracking.trackOnMap.expandPanel')
+              }
+              variant="secondary"
+              className="absolute right-3 top-3 z-10"
+              onClick={() => setPanelOpen((open) => !open)}
+            />
+          </div>
 
-            <PermissionGate permission={PERM.unitsDiagnostics}>
-              <UnitDiagnosticsPanel diagnostics={diagnostics.data} isLoading={diagnostics.isLoading} />
-            </PermissionGate>
+          {panelOpen ? (
+            <aside
+              aria-label={t('tracking.trackOnMap.sidePanelLabel')}
+              className="flex w-80 shrink-0 flex-col gap-4 overflow-y-auto rounded-lg border border-stroke bg-surface p-4"
+            >
+              <DriverInfoPanel
+                unit={unit}
+                hosSummary={hosSummary.data}
+                hasMalfunction={(unit?.malfunction_codes?.length ?? 0) > 0}
+                telemetry={diagnostics.data?.telemetry}
+              />
 
-            <PermissionGate permission={PERM.trackingViewHistory}>
-              <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <h3 className="text-body-sm font-semibold uppercase tracking-wide text-neutral-500">
-                    {t('tracking.trackOnMap.histories.title')}
-                  </h3>
-                  <div className="flex items-center gap-1">
-                    <IconButton
-                      icon={ChevronLeft}
-                      size="sm"
-                      variant="ghost"
-                      aria-label={t('tracking.trackOnMap.histories.previousDay')}
-                      onClick={() => setDate((d) => new Date(d.getTime() - 86_400_000))}
-                    />
-                    <span className="text-body-sm text-neutral-700">{formatDate(date)}</span>
-                    <IconButton
-                      icon={ChevronRight}
-                      size="sm"
-                      variant="ghost"
-                      aria-label={t('tracking.trackOnMap.histories.nextDay')}
-                      onClick={() => setDate((d) => new Date(d.getTime() + 86_400_000))}
-                    />
-                  </div>
-                </div>
-                <TripHistoryTimeline
-                  trips={trips.data?.data ?? []}
-                  selectedTripId={selectedTripId}
-                  onSelect={setSelectedTripId}
-                  isLoading={trips.isLoading}
-                  isError={trips.isError}
-                  onRetry={() => void trips.refetch()}
+              <PermissionGate permission={PERM.unitsDiagnostics}>
+                <UnitDiagnosticsPanel
+                  diagnostics={diagnostics.data}
+                  isLoading={diagnostics.isLoading}
+                  vin={unitDetail.data?.vin}
                 />
-              </div>
-            </PermissionGate>
-          </aside>
-        ) : null}
-      </div>
+              </PermissionGate>
+
+              <PermissionGate permission={PERM.trackingViewHistory}>
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <h3 className="text-body-sm font-semibold uppercase tracking-wide text-neutral-500">
+                      {t('tracking.trackOnMap.histories.title')}
+                    </h3>
+                    <div className="flex items-center gap-1">
+                      <IconButton
+                        icon={ChevronLeft}
+                        size="sm"
+                        variant="ghost"
+                        aria-label={t('tracking.trackOnMap.histories.previousDay')}
+                        onClick={() => setDate((d) => new Date(d.getTime() - 86_400_000))}
+                      />
+                      <span className="text-body-sm text-neutral-700">{formatDate(date)}</span>
+                      <IconButton
+                        icon={ChevronRight}
+                        size="sm"
+                        variant="ghost"
+                        aria-label={t('tracking.trackOnMap.histories.nextDay')}
+                        onClick={() => setDate((d) => new Date(d.getTime() + 86_400_000))}
+                      />
+                    </div>
+                  </div>
+                  <TripHistoryTimeline
+                    trips={trips.data?.data ?? []}
+                    selectedTripId={selectedTripId}
+                    onSelect={setSelectedTripId}
+                    isLoading={trips.isLoading}
+                    isError={trips.isError}
+                    onRetry={() => void trips.refetch()}
+                  />
+                </div>
+              </PermissionGate>
+            </aside>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,8 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import '@/app/i18n';
-
 import { UnitMarkerCard } from './UnitMarkerCard';
 
 function renderCard(onViewTracking = vi.fn()) {

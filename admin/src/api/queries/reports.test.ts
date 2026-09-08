@@ -49,9 +49,12 @@ afterEach(() => {
 describe('useReportsActivity', () => {
   it('Activity Report qatorlarini {data, meta} shaklida qaytaradi', async () => {
     server.use(reportsActivityHandler);
-    const { result } = renderHook(() => useReportsActivity({ subject: 'units', from: '2026-09-01', to: '2026-09-07' }), {
-      wrapper: withQueryClient(),
-    });
+    const { result } = renderHook(
+      () => useReportsActivity({ subject: 'units', from: '2026-09-01', to: '2026-09-07' }),
+      {
+        wrapper: withQueryClient(),
+      },
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -72,7 +75,7 @@ describe('useReportsActivity', () => {
 });
 
 describe('useReportsDistanceByRegion', () => {
-  it("hisobotni davr `meta`si bilan qaytaradi (F123 — darhol tayyor)", async () => {
+  it('hisobotni davr `meta`si bilan qaytaradi (F123 — darhol tayyor)', async () => {
     server.use(reportsDistanceByRegionHandler);
     const { result } = renderHook(() => useReportsDistanceByRegion({ quarter: 3, year: 2026 }), {
       wrapper: withQueryClient(),
@@ -138,7 +141,7 @@ describe('useExportJobsList', () => {
 });
 
 describe('useExportJobCreate', () => {
-  it('202 javobida navbatga qo\'yilgan job\'ni qaytaradi', async () => {
+  it("202 javobida navbatga qo'yilgan job'ni qaytaradi", async () => {
     server.use(exportJobCreateHandler);
     const { result } = renderHook(() => useExportJobCreate(), { wrapper: withQueryClient() });
 
@@ -148,7 +151,7 @@ describe('useExportJobCreate', () => {
     expect(result.current.data?.status).toBe('queued');
   });
 
-  it('422 (masalan noto\'g\'ri format) ApiError bilan tugaydi', async () => {
+  it("422 (masalan noto'g'ri format) ApiError bilan tugaydi", async () => {
     server.use(exportJobCreateErrorHandler);
     const { result } = renderHook(() => useExportJobCreate(), { wrapper: withQueryClient() });
 
@@ -171,7 +174,7 @@ describe('useExportJobCreate', () => {
 });
 
 describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
-  it('interval 2s → 5s → 10s bo\'yicha o\'sadi va holat o\'zgarishini kuzatadi', async () => {
+  it("interval 2s → 5s → 10s bo'yicha o'sadi va holat o'zgarishini kuzatadi", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     server.use(createExportJobProgressionHandler());
 
@@ -190,7 +193,7 @@ describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
     await waitFor(() => expect(result.current.data?.status).toBe('done'));
   });
 
-  it('`done` bo\'lganda polling to\'xtaydi (keyingi vaqt o\'tishi qayta so\'rov yubormaydi)', async () => {
+  it("`done` bo'lganda polling to'xtaydi (keyingi vaqt o'tishi qayta so'rov yubormaydi)", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     server.use(exportJobDoneHandler);
 
@@ -207,7 +210,7 @@ describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
     expect(result.current.isFetching).toBe(false);
   });
 
-  it('`failed` bo\'lganda polling to\'xtaydi va xato matni bor', async () => {
+  it("`failed` bo'lganda polling to'xtaydi va xato matni bor", async () => {
     server.use(exportJobFailedHandler);
     const { result } = renderHook(() => useExportJob('job-1'), { wrapper: withQueryClient() });
 
@@ -215,7 +218,7 @@ describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
     expect(result.current.data?.error).toBe('the map provider is unavailable');
   });
 
-  it('5 daqiqadan keyin polling to\'xtaydi va `pollingTimedOut: true` beriladi', async () => {
+  it("5 daqiqadan keyin polling to'xtaydi va `pollingTimedOut: true` beriladi", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     server.use(
       http.get(url('/reports/export-jobs/:id'), ({ params }) =>
@@ -237,7 +240,7 @@ describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
     await waitFor(() => expect(result.current.pollingTimedOut).toBe(true));
   });
 
-  it('unmount bo\'lganda taymer tozalanadi (keyingi so\'rov yuborilmaydi)', async () => {
+  it("unmount bo'lganda taymer tozalanadi (keyingi so'rov yuborilmaydi)", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     let callCount = 0;
     server.use(
@@ -264,7 +267,7 @@ describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
     expect(callCount).toBe(1);
   });
 
-  it('cross-tenant/mavjud bo\'lmagan job uchun 404 qaytaradi', async () => {
+  it("cross-tenant/mavjud bo'lmagan job uchun 404 qaytaradi", async () => {
     server.use(exportJobNotFoundHandler);
     const { result } = renderHook(() => useExportJob('job-999'), { wrapper: withQueryClient() });
 
@@ -274,7 +277,7 @@ describe('useExportJob — polling shartnomasi (fe-api §9)', () => {
 });
 
 describe('isExportJobDownloadExpired', () => {
-  it('`download_url`/`expires_at` bo\'lmasa false qaytaradi', () => {
+  it("`download_url`/`expires_at` bo'lmasa false qaytaradi", () => {
     expect(isExportJobDownloadExpired(undefined)).toBe(false);
     expect(isExportJobDownloadExpired(exportJobFixture({ download_url: undefined }))).toBe(false);
   });
@@ -295,7 +298,7 @@ describe('isExportJobDownloadExpired', () => {
     vi.useRealTimers();
   });
 
-  it('statik `exportJobDoneExpiredHandler` orqali muddati o\'tgan job simulyatsiyasi', async () => {
+  it("statik `exportJobDoneExpiredHandler` orqali muddati o'tgan job simulyatsiyasi", async () => {
     server.use(exportJobDoneExpiredHandler);
     const { result } = renderHook(() => useExportJob('job-1'), { wrapper: withQueryClient() });
 

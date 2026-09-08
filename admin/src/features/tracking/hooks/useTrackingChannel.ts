@@ -13,10 +13,20 @@
  * Token URL'da yuborilmaydi (F154). Oddiy eksponensial backoff bilan
  * qayta ulanadi; `document.visibilityState==='hidden'` 5 daqiqadan uzoq
  * bo'lsa ulanish yopiladi (F161).
+ *
+ * Xavfsizlik (fe-security §11):
+ * - Sessiya tugaganda (`onSessionEnded` — logout yoki refresh-reuse) soket
+ *   `1000` kodi bilan **darhol** yopiladi va qayta ulanish to'xtatiladi;
+ *   aks holda logoutdan keyin ochiq soket qolib ketardi (F160).
+ * - Access token bo'lmasa umuman ulanilmaydi — aks holda server handshake'ni
+ *   uzadi va cheksiz reconnect sikli hosil bo'lardi.
+ * - `welcome` 10 soniyada kelmasa soket yopiladi (auth deadline), `auth_error`
+ *   kelsa qayta urinilmaydi, ketma-ket muvaffaqiyatsiz urinishlar soni
+ *   `MAX_FAILED_ATTEMPTS` dan oshsa ulanish `offline` holatida to'xtaydi.
  */
 import { useEffect, useRef } from 'react';
 
-import { getAccessToken } from '@/api/session';
+import { getAccessToken, onSessionEnded } from '@/api/session';
 
 export interface UnitLastStateEvent {
   type: 'unit_last_state';
@@ -38,6 +48,10 @@ const MIN_RECONNECT_DELAY_MS = 1000;
 const MAX_RECONNECT_DELAY_MS = 30_000;
 const GROW_FACTOR = 1.5;
 const HIDDEN_CLOSE_MS = 5 * 60_000;
+/** `fe-realtime`: upgrade'dan keyin auth deadline — 10 s. */
+const WELCOME_TIMEOUT_MS = 10_000;
+/** Ketma-ket `welcome`siz yopilishlar chegarasi — cheksiz sikldan himoya. */
+const MAX_FAILED_ATTEMPTS = 5;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
@@ -63,15 +77,41 @@ export function useTrackingChannel({
     if (!enabled || !wsUrl) return undefined;
 
     let socket: WebSocket | undefined;
-    let closedByEffect = false;
+    /** Effekt (unmount/logout) tomonidan yopildi — qayta ulanish qilinmaydi. */
+    let stopped = false;
     let reconnectDelay = MIN_RECONNECT_DELAY_MS;
     let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
     let hiddenTimer: ReturnType<typeof setTimeout> | undefined;
+    let welcomeTimer: ReturnType<typeof setTimeout> | undefined;
+    /** Ketma-ket `welcome`gacha yetib bormagan urinishlar soni. */
+    let failedAttempts = 0;
 
     const setStatus = (status: ChannelStatus) => onStatusRef.current?.(status);
 
+    const clearWelcomeTimer = () => {
+      if (welcomeTimer) {
+        clearTimeout(welcomeTimer);
+        welcomeTimer = undefined;
+      }
+    };
+
+    /** Qayta ulanishni butunlay to'xtatadi (logout, auth xatosi, urinishlar chegarasi). */
+    const stop = (reason: string) => {
+      stopped = true;
+      clearWelcomeTimer();
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      reconnectTimer = undefined;
+      socket?.close(1000, reason);
+      socket = undefined;
+      setStatus('offline');
+    };
+
     const scheduleReconnect = () => {
-      if (closedByEffect) return;
+      if (stopped) return;
+      if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+        stop('too-many-failed-attempts');
+        return;
+      }
       setStatus('reconnecting');
       reconnectTimer = setTimeout(() => {
         reconnectDelay = Math.min(
@@ -83,13 +123,30 @@ export function useTrackingChannel({
     };
 
     function connect() {
+      if (stopped) return;
+      // Token yo'q bo'lsa ulanmaymiz: server handshake'ni uzadi va bu cheksiz
+      // reconnect siklini hosil qiladi (X2).
+      const token = getAccessToken();
+      if (!token) {
+        stop('no-token');
+        return;
+      }
+
       setStatus('connecting');
       const ws = new WebSocket(wsUrl);
       socket = ws;
+      /** Shu ulanish `welcome`gacha yetib bordimi (urinishlar hisobi uchun). */
+      let welcomed = false;
 
       ws.onopen = () => {
-        const token = getAccessToken();
-        if (token) ws.send(JSON.stringify({ type: 'auth', token }));
+        ws.send(JSON.stringify({ type: 'auth', token }));
+        // Auth deadline (10 s): `welcome` kelmasa soketni yopamiz va
+        // reconnect sxemasiga o'tamiz (X3).
+        clearWelcomeTimer();
+        welcomeTimer = setTimeout(() => {
+          welcomeTimer = undefined;
+          ws.close(4000, 'welcome-timeout');
+        }, WELCOME_TIMEOUT_MS);
       };
 
       ws.onmessage = (message) => {
@@ -102,6 +159,9 @@ export function useTrackingChannel({
         if (!isRecord(parsed)) return;
 
         if (parsed.type === 'welcome') {
+          welcomed = true;
+          clearWelcomeTimer();
+          failedAttempts = 0;
           reconnectDelay = MIN_RECONNECT_DELAY_MS;
           setStatus('open');
           ws.send(
@@ -111,6 +171,15 @@ export function useTrackingChannel({
               filter: unitIdsRef.current?.length ? { unit_ids: unitIdsRef.current } : undefined,
             }),
           );
+          return;
+        }
+
+        // Auth rad etildi — qayta urinish foydasiz (token yangilanmaguncha).
+        if (
+          parsed.type === 'auth_error' ||
+          (parsed.type === 'error' && parsed.code === 'UNAUTHORIZED')
+        ) {
+          stop('auth-error');
           return;
         }
 
@@ -125,7 +194,10 @@ export function useTrackingChannel({
       };
 
       ws.onclose = () => {
-        if (!closedByEffect) scheduleReconnect();
+        // `welcome`gacha yetib bormagan ulanish — muvaffaqiyatsiz urinish.
+        if (!welcomed) failedAttempts += 1;
+        clearWelcomeTimer();
+        if (!stopped) scheduleReconnect();
       };
       ws.onerror = () => {
         ws.close();
@@ -133,6 +205,11 @@ export function useTrackingChannel({
     }
 
     connect();
+
+    // Logout / refresh-reuse: soket darhol yopiladi (fe-security §11, F160).
+    const offSessionEnded = onSessionEnded(() => {
+      stop('session-ended');
+    });
 
     const onVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
@@ -144,12 +221,10 @@ export function useTrackingChannel({
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     return () => {
-      closedByEffect = true;
+      offSessionEnded();
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      if (reconnectTimer) clearTimeout(reconnectTimer);
       if (hiddenTimer) clearTimeout(hiddenTimer);
-      socket?.close(1000, 'unmount');
-      setStatus('offline');
+      stop('unmount');
     };
   }, [enabled, unitIdsKey]);
 }

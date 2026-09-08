@@ -26,7 +26,7 @@ export function maintenanceScheduleFixture(
     created_at: '2026-09-06T05:12:00Z',
     updated_at: '2026-09-06T05:12:00Z',
     ...overrides,
-  } as MaintenanceSchedule;
+  };
 }
 
 export function maintenanceScheduleUnitFixture(
@@ -49,7 +49,7 @@ export function maintenanceScheduleUnitFixture(
     overdue: false,
     reminder_due: false,
     ...overrides,
-  } as MaintenanceScheduleUnit;
+  };
 }
 
 export function maintenanceRecordFixture(
@@ -68,7 +68,7 @@ export function maintenanceRecordFixture(
     performed_at: '2026-09-06T15:04:05Z',
     created_at: '2026-09-06T15:04:05Z',
     ...overrides,
-  } as MaintenanceRecord;
+  };
 }
 
 /* ------------------------------------------------------------------ *
@@ -80,10 +80,14 @@ export const maintenanceSchedulesListHandler = http.get(url('/maintenance-schedu
   HttpResponse.json({ data: [maintenanceScheduleFixture()], meta: listMeta() }),
 );
 
+/** `GET /maintenance-schedules` — bo'sh natija (ustunlar baribir ko'rinadi, N11). */
+export const maintenanceSchedulesListEmptyHandler = http.get(url('/maintenance-schedules'), () =>
+  HttpResponse.json({ data: [], meta: listMeta({ total: 0 }) }),
+);
+
 /** `GET /maintenance-schedules` — `422`. */
-export const maintenanceSchedulesListErrorHandler = http.get(
-  url('/maintenance-schedules'),
-  () => jsonError('VALIDATION_ERROR', 'invalid status filter', 422),
+export const maintenanceSchedulesListErrorHandler = http.get(url('/maintenance-schedules'), () =>
+  jsonError('VALIDATION_ERROR', 'invalid status filter', 422),
 );
 
 /** `GET /maintenance-schedules/{id}` — muvaffaqiyatli. */
@@ -101,10 +105,7 @@ export const maintenanceScheduleGetNotFoundHandler = http.get(
 
 /** `POST /maintenance-schedules` — muvaffaqiyatli yaratish. */
 export const maintenanceScheduleCreateHandler = http.post(url('/maintenance-schedules'), () =>
-  HttpResponse.json(
-    { data: maintenanceScheduleFixture({ id: 'schedule-new' }) },
-    { status: 201 },
-  ),
+  HttpResponse.json({ data: maintenanceScheduleFixture({ id: 'schedule-new' }) }, { status: 201 }),
 );
 
 /** `POST /maintenance-schedules` — `422` (majburiy maydon yo'q). */

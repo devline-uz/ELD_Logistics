@@ -3,7 +3,7 @@ import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,8 +15,21 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    // F211: `.map` fayllari prod'da **yuklanmaydi** — 'hidden' sourcemap'ni
+    // yozadi, lekin bundle'ga `//# sourceMappingURL` izohini qo'ymaydi
+    // (xato monitoringiga qo'lda yuklash uchun qoladi, brauzer so'ramaydi).
+    sourcemap: 'hidden',
   },
+  // F206: prod bundle'da `console.*` qolmaydi. `console.error` xato
+  // monitoringi uchun saqlanadi — shuning uchun butun `console` drop
+  // qilinmaydi, faqat qolgan metodlar `pure` sifatida olib tashlanadi.
+  esbuild:
+    mode === 'production'
+      ? {
+          drop: ['debugger'],
+          pure: ['console.log', 'console.info', 'console.debug', 'console.warn', 'console.trace'],
+        }
+      : {},
   test: {
     globals: true,
     environment: 'jsdom',
@@ -36,4 +49,4 @@ export default defineConfig({
       exclude: ['src/**/*.d.ts', 'src/main.tsx', 'src/api/schema.d.ts'],
     },
   },
-});
+}));

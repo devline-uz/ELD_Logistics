@@ -37,7 +37,7 @@ export function dvirReportFixture(overrides: Partial<DvirReport> = {}): DvirRepo
       },
     ],
     ...overrides,
-  } as DvirReport;
+  };
 }
 
 /** `GET /dvir-reports` — muvaffaqiyatli, bitta yozuv bilan. */
@@ -74,6 +74,21 @@ export const dvirPendingCertificationForbiddenHandler = http.get(
 /** `GET /dvir-reports/{id}` — muvaffaqiyatli. */
 export const dvirGetHandler = http.get(url('/dvir-reports/:id'), ({ params }) =>
   HttpResponse.json({ data: dvirReportFixture({ id: params.id as string }) }),
+);
+
+/**
+ * `GET /dvir-reports/{id}` — mexanik imzosi mobil ilovada allaqachon olingan
+ * hisobot (**D30**): faqat shunda `Record repair` amali ochiladi.
+ */
+export const dvirGetWithMechanicSignatureHandler = http.get(
+  url('/dvir-reports/:id'),
+  ({ params }) =>
+    HttpResponse.json({
+      data: dvirReportFixture({
+        id: params.id as string,
+        mechanic_signature_key: 'c1/signature/2026/09/06/mech.png',
+      }),
+    }),
 );
 
 /** `GET /dvir-reports/{id}` — cross-tenant/mavjud bo'lmagan → `404` (403 emas). */
