@@ -26,6 +26,7 @@ import { useUnitSystem } from '@/hooks/useUnitSystem';
 
 import { useHosSummariesByDate } from '../lib/hosByDate';
 import { buildLogsByDriverColumns } from '../components/logsByDriverColumns';
+import { formatPersonName } from '@/lib/format';
 
 function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
@@ -65,7 +66,7 @@ export function LogsByDriverPage() {
     () =>
       (drivers.data?.data ?? []).map((driver) => ({
         value: driver.id ?? '',
-        label: `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim() || (driver.id ?? ''),
+        label: formatPersonName(driver, driver.id ?? ''),
       })),
     [drivers.data],
   );

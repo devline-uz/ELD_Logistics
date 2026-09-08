@@ -23,6 +23,7 @@ import type { SelectOption } from '@/components/ui/Select';
 import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
 
 import { routeFormDefaultValues, routeFormSchema, type RouteFormValues } from '../schemas';
+import { formatPersonName } from '@/lib/format';
 
 export interface RouteFormModalProps {
   open: boolean;
@@ -91,7 +92,7 @@ export function RouteFormModal({ open, onClose, route }: RouteFormModalProps) {
     () =>
       (drivers.data?.data ?? []).map((driver) => ({
         value: driver.id ?? '',
-        label: `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim() || (driver.id ?? ''),
+        label: formatPersonName(driver, driver.id ?? ''),
       })),
     [drivers.data],
   );

@@ -10,7 +10,7 @@ import type { ReactNode } from 'react';
 
 import type { LiveUnit } from '@/api/types';
 import { Badge, type BadgeTone } from '@/components/ui/Badge';
-import { formatCoordinatePair } from '@/lib/format';
+import { NA, formatCoordinatePair, formatPersonName } from '@/lib/format';
 import { StatusChip, type StatusChipTone } from '@/components/ui/StatusChip';
 
 export const DUTY_STATUS_TONE: Record<string, StatusChipTone> = {
@@ -29,10 +29,7 @@ export const ONLINE_STATUS_TONE: Record<string, BadgeTone> = {
 };
 
 export function driverFullName(unit: LiveUnit): string {
-  const first = unit.driver?.first_name ?? '';
-  const last = unit.driver?.last_name ?? '';
-  const name = `${first} ${last}`.trim();
-  return name || 'N/A';
+  return formatPersonName(unit.driver);
 }
 
 export interface TrackingColumnsHelpers {
@@ -90,7 +87,7 @@ export function buildTrackingColumns(
       header: t('tracking.list.columns.unitNumber'),
       cell: ({ row }) => (
         <HighlightCell highlighted={helpers.isHighlighted(row.original)}>
-          {row.original.unit_number ?? 'N/A'}
+          {row.original.unit_number ?? NA}
         </HighlightCell>
       ),
     },
@@ -122,7 +119,7 @@ export function buildTrackingColumns(
                 {t(`enums.connection_status.${status}`, { defaultValue: status })}
               </Badge>
               <span className="text-body-sm text-neutral-500">
-                {row.original.eld_device_serial ?? 'N/A'}
+                {row.original.eld_device_serial ?? NA}
               </span>
             </div>
           </HighlightCell>

@@ -177,16 +177,16 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 ```markdown
 - [x] 6.1 `api/queries/reports.ts` + `useExportJob(id)` polling hook'i (2→5→10 s, maks. 5 daq)
-- [ ] 6.2 Activity Report (Drivers/Units tablari) + detal ekrani + `Print`
-- [ ] 6.3 Distance by Region / IFTA — ko'rsatkichlar, Units/Regions tablari, Generate modali (shartli `Units` maydoni)
-- [ ] 6.4 Regulator Export / FMCSA — job ro'yxati, Generate modali (8 kun / Custom Range)
-- [ ] 6.5 DVIR Report — filtr + eksport (imzo formasi **yo'q**)
-- [ ] 6.6 Uncertified Logs hisoboti + `Send reminder`
-- [ ] 6.7 Export Jobs ekrani (`mine` toggle, muddati o'tgan havola ishlovi)
-- [ ] 6.8 `regulation_profile` ga bog'liq nom almashinuvi (i18n bilan) — testda ikkala profil
-- [ ] 6.9 `@media print` stillari
-- [ ] 6.10 Testlar: job oqimi (queued→running→done→expired), format kombinatsiyalari
-- [ ] 6.11 `frontend-code-reviewer`
+- [x] 6.2 Activity Report (Drivers/Units tablari) + detal ekrani + `Print`
+- [x] 6.3 Distance by Region / IFTA — ko'rsatkichlar, Units/Regions tablari, Generate modali (shartli `Units` maydoni)
+- [x] 6.4 Regulator Export / FMCSA — job ro'yxati, Generate modali (8 kun / Custom Range)
+- [x] 6.5 DVIR Report — filtr + eksport (imzo formasi **yo'q**)
+- [x] 6.6 Uncertified Logs hisoboti + `Send reminder`
+- [x] 6.7 Export Jobs ekrani (`mine` toggle, muddati o'tgan havola ishlovi)
+- [x] 6.8 `regulation_profile` ga bog'liq nom almashinuvi (i18n bilan) — testda ikkala profil
+- [x] 6.9 `@media print` stillari
+- [x] 6.10 Testlar: job oqimi (queued→running→done→expired), format kombinatsiyalari
+- [x] 6.11 `frontend-code-reviewer`
 ```
 
 ### Bosqich 7 — Real-vaqt, Chat, Notifications, Dashboard
@@ -318,10 +318,10 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
       deploy skriptida ular serverga **yuklanmasligi** shart (F211) — 9-bosqich CI vazifasi
       ∆(13 ekran ishlatadi; backend yakuniy hakam, lekin klient tekshiruvi foydali)
 
-- [ ] TD9 Bo'sh qiymat uchun 3 idioma: `t('common.na')` (42), `'N/A'` literal (24), `lib/format` dagi `NA`.
+- [x] TD9 Bo'sh qiymat uchun 3 idioma: `t('common.na')` (42), `'N/A'` literal (24), `lib/format` dagi `NA`.
       Qoida: React komponentda `t('common.na')`, sof funksiyalarda `NA`. `logs/tracking/fleet` migratsiyasi qoldi.
 
-- [ ] TD10 `formatPersonName` faqat `dvir` da ishlatiladi; `logs`, `tracking`, `fleet` da ism konkatenatsiyasi qoldi.
+- [x] TD10 `formatPersonName` faqat `dvir` da ishlatiladi; `logs`, `tracking`, `fleet` da ism konkatenatsiyasi qoldi.
 
 - [ ] TD11 `npm audit`: react-router 2 critical + 1 high (GHSA-337j-9hxr-rhxg, GHSA-wrjc-x8rr-h8h6).
       `react-router-dom@7.18.3` — breaking major. 9.10 da hal qilinadi.

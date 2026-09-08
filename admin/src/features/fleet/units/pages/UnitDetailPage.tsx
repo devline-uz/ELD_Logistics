@@ -32,10 +32,11 @@ import { UnitAssignDriverModal } from '../components/UnitAssignDriverModal';
 type UnitTab = 'info' | 'activities' | 'diagnostics';
 
 function DetailField({ label, value }: { label: string; value: ReactNode }) {
+  const { t } = useTranslation();
   return (
     <div>
       <dt className="text-body-sm text-neutral-500">{label}</dt>
-      <dd className="text-body text-neutral-900">{value ?? 'N/A'}</dd>
+      <dd className="text-body text-neutral-900">{value ?? t('common.na')}</dd>
     </div>
   );
 }
@@ -112,7 +113,7 @@ export function UnitDetailPage({ tab = 'info' }: { tab?: UnitTab }) {
 
       {tab === 'info' ? (
         <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <DetailField label={t('fleet.units.detail.fields.drivers')} value="N/A" />
+          <DetailField label={t('fleet.units.detail.fields.drivers')} value={t('common.na')} />
           <DetailField label={t('fleet.units.detail.fields.eld')} value={data.eld_device_serial} />
           <DetailField
             label={t('fleet.units.detail.fields.activatedOn')}
@@ -208,15 +209,15 @@ export function UnitDetailPage({ tab = 'info' }: { tab?: UnitTab }) {
                     <td className="px-3 py-2">
                       {t(`fleet.units.detail.activities.actions.${entry.action ?? 'update'}`)}
                     </td>
-                    <td className="px-3 py-2">{entry.actor_name ?? 'N/A'}</td>
+                    <td className="px-3 py-2">{entry.actor_name ?? t('common.na')}</td>
                     <td className="px-3 py-2">
                       {entry.field
                         ? t('fleet.units.detail.activities.fieldChange', {
                             field: entry.field,
-                            oldValue: entry.old_value ?? 'N/A',
-                            newValue: entry.new_value ?? 'N/A',
+                            oldValue: entry.old_value ?? t('common.na'),
+                            newValue: entry.new_value ?? t('common.na'),
                           })
-                        : 'N/A'}
+                        : t('common.na')}
                     </td>
                   </tr>
                 ))

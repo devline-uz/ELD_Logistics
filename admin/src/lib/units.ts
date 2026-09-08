@@ -16,6 +16,8 @@
  * ochiq qaror).
  */
 
+import { NA } from '@/lib/format';
+
 /** `GET /me` → `company.unit_system`. */
 export type UnitSystem = 'metric' | 'imperial';
 
@@ -57,7 +59,7 @@ export function convertDistance(meters: number, unitSystem: UnitSystem): number 
 
 /** Masofa — masalan `120.5 mi` yoki `193.9 km`. `null`/`undefined`/`NaN` → `N/A`. */
 export function formatDistance(meters: Num, unitSystem: UnitSystem = 'metric'): string {
-  if (!isValidNumber(meters)) return 'N/A';
+  if (!isValidNumber(meters)) return NA;
   const value = round(convertDistance(meters, unitSystem), 1);
   const label = unitSystem === 'imperial' ? 'mi' : 'km';
   return `${formatNumber(value, 1)} ${label}`;
@@ -82,7 +84,7 @@ export function convertSpeed(kmh: number, unitSystem: UnitSystem): number {
 
 /** Tezlik — masalan `62 mph` yoki `100 km/h`. */
 export function formatSpeed(kmh: Num, unitSystem: UnitSystem = 'metric'): string {
-  if (!isValidNumber(kmh)) return 'N/A';
+  if (!isValidNumber(kmh)) return NA;
   const value = round(convertSpeed(kmh, unitSystem), 0);
   const label = unitSystem === 'imperial' ? 'mph' : 'km/h';
   return `${formatNumber(value, 0)} ${label}`;
@@ -104,7 +106,7 @@ export function convertTemperature(celsius: number, unitSystem: UnitSystem): num
 
 /** Harorat — masalan `98 °F` yoki `37 °C`. */
 export function formatTemperature(celsius: Num, unitSystem: UnitSystem = 'metric'): string {
-  if (!isValidNumber(celsius)) return 'N/A';
+  if (!isValidNumber(celsius)) return NA;
   const value = round(convertTemperature(celsius, unitSystem), 0);
   const label = unitSystem === 'imperial' ? '°F' : '°C';
   return `${formatNumber(value, 0)} ${label}`;
@@ -126,7 +128,7 @@ export function convertVolume(liters: number, unitSystem: UnitSystem): number {
 
 /** Hajm — masalan `52.8 gal` yoki `200.0 L`. */
 export function formatVolume(liters: Num, unitSystem: UnitSystem = 'metric'): string {
-  if (!isValidNumber(liters)) return 'N/A';
+  if (!isValidNumber(liters)) return NA;
   const value = round(convertVolume(liters, unitSystem), 1);
   const label = unitSystem === 'imperial' ? 'gal' : 'L';
   return `${formatNumber(value, 1)} ${label}`;
@@ -148,7 +150,7 @@ export function convertWeight(kg: number, unitSystem: UnitSystem): number {
 
 /** Og'irlik — masalan `4409 lb` yoki `2000 kg`. */
 export function formatWeight(kg: Num, unitSystem: UnitSystem = 'metric'): string {
-  if (!isValidNumber(kg)) return 'N/A';
+  if (!isValidNumber(kg)) return NA;
   const value = round(convertWeight(kg, unitSystem), 0);
   const label = unitSystem === 'imperial' ? 'lb' : 'kg';
   return `${formatNumber(value, 0)} ${label}`;

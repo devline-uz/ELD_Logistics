@@ -33,6 +33,7 @@ import {
   type DriverCreateFormValues,
   type DriverUpdateFormValues,
 } from '../schemas';
+import { formatPersonName } from '@/lib/format';
 
 export interface DriverFormModalProps {
   open: boolean;
@@ -118,7 +119,7 @@ export function DriverFormModal({
     () =>
       (managersQuery.data?.data ?? []).map((user) => ({
         value: user.id ?? '',
-        label: user.full_name ?? `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
+        label: user.full_name ?? formatPersonName(user, ''),
       })),
     [managersQuery.data],
   );

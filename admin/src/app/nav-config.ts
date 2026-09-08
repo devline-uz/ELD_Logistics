@@ -10,15 +10,34 @@
  */
 
 import { PERM, type Permission } from '@/lib/permissions';
+import type { ProfileLabelBucket } from '@/lib/profileLabel';
 
 export interface NavLeaf {
   id: string;
   path: string;
   labelKey: string;
+  /**
+   * Base i18n kalit — mavjud bo'lsa, ko'rsatiladigan nom `labelKey` o'rniga
+   * `${profileLabelKey}.${bucket}` orqali hal qilinadi (`regulation_profile`
+   * bucketiga qarab, D32). Masalan Distance by Region / IFTA Report,
+   * Regulator Export / FMCSA Report — `resolveNavLabelKey()` bilan birga.
+   */
+  profileLabelKey?: string;
   /** Flyout punktining tavsif matni (dizayndagi lorem ipsum o'rniga). */
   descriptionKey?: string;
   /** Ko'rinish sharti — kamida bittasi yetarli. */
   anyOf: readonly Permission[];
+}
+
+/**
+ * Nav/breadcrumb elementi uchun ko'rsatiladigan i18n kalitni hal qiladi (D32).
+ * `profileLabelKey` mavjud bo'lsa profilga bog'liq kalit, aks holda statik `labelKey`.
+ */
+export function resolveNavLabelKey(
+  entry: Pick<NavLeaf, 'labelKey' | 'profileLabelKey'>,
+  bucket: ProfileLabelBucket,
+): string {
+  return entry.profileLabelKey ? `${entry.profileLabelKey}.${bucket}` : entry.labelKey;
 }
 
 export interface NavGroup {
@@ -184,6 +203,9 @@ export const NAV_ENTRIES: readonly NavEntry[] = [
         id: 'report-distance-by-region',
         path: '/reports/distance-by-region',
         labelKey: 'nav.reports.distanceByRegion',
+        // D32: profil bo'yicha "IFTA Report" (us_fmcsa) / "Distance by Region" (generic) —
+        // sahifa h1 bilan bir xil i18n kalit (`reports.distanceByRegion.screenName.*`).
+        profileLabelKey: 'reports.distanceByRegion.screenName',
         descriptionKey: 'nav.reports.distanceByRegionDescription',
         anyOf: [PERM.reportsRead],
       },
@@ -191,6 +213,8 @@ export const NAV_ENTRIES: readonly NavEntry[] = [
         id: 'report-regulator',
         path: '/reports/regulator',
         labelKey: 'nav.reports.regulator',
+        // D32: profil bo'yicha "FMCSA Report" (us_fmcsa) / "Regulator Export" (generic).
+        profileLabelKey: 'reports.regulator.screenName',
         descriptionKey: 'nav.reports.regulatorDescription',
         anyOf: [PERM.reportsRead],
       },
@@ -317,10 +341,19 @@ export function flattenNav(entries: readonly NavEntry[] = NAV_ENTRIES): NavLeaf[
   return entries.flatMap((entry) => (isNavGroup(entry) ? [...entry.children] : [entry]));
 }
 
-/** `pathname` → sarlavha i18n kaliti (breadcrumb oxirgi bo'g'ini uchun). */
-export function routeTitleKey(pathname: string): string | undefined {
+/**
+ * `pathname` → sarlavha i18n kaliti (breadcrumb oxirgi bo'g'ini uchun).
+ * `bucket` faqat `profileLabelKey`ga ega leaf'lar uchun ishlatiladi (D32).
+ */
+export function routeTitleKey(
+  pathname: string,
+  bucket: ProfileLabelBucket = 'generic',
+): string | undefined {
   const leaf = flattenNav().find((item) => item.path === pathname);
-  return leaf?.labelKey ?? EXTRA_ROUTE_TITLES[pathname];
+  if (leaf) {
+    return resolveNavLabelKey(leaf, bucket);
+  }
+  return EXTRA_ROUTE_TITLES[pathname];
 }
 
 /** `pathname` qaysi nav guruhiga tegishli (breadcrumbning o'rta bo'g'ini). */

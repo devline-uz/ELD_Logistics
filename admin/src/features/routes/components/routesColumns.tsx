@@ -7,6 +7,7 @@ import type { TFunction } from 'i18next';
 
 import type { Route } from '@/api/types';
 import { StatusChip, type StatusChipTone } from '@/components/ui/StatusChip';
+import { NA } from '@/lib/format';
 
 export const ROUTE_STATUS_TONE: Record<string, StatusChipTone> = {
   ongoing: 'info',
@@ -36,22 +37,22 @@ export function buildRoutesColumns(
     {
       id: 'unit_number',
       header: t('routes.list.columns.unitNumber'),
-      cell: ({ row }) => row.original.unit_number ?? 'N/A',
+      cell: ({ row }) => row.original.unit_number ?? NA,
     },
     {
       id: 'driver',
       header: t('routes.list.columns.driver'),
-      cell: ({ row }) => row.original.driver_name ?? 'N/A',
+      cell: ({ row }) => row.original.driver_name ?? NA,
     },
     {
       id: 'from',
       header: t('routes.list.columns.from'),
-      cell: ({ row }) => row.original.origin?.text ?? 'N/A',
+      cell: ({ row }) => row.original.origin?.text ?? NA,
     },
     {
       id: 'to',
       header: t('routes.list.columns.to'),
-      cell: ({ row }) => row.original.destination?.text ?? 'N/A',
+      cell: ({ row }) => row.original.destination?.text ?? NA,
     },
     {
       id: 'sequence',

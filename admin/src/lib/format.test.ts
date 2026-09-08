@@ -7,6 +7,7 @@ import {
   formatDateTime,
   formatDateWithWeekday,
   formatDuration,
+  formatPersonName,
   formatRelative,
   formatTime,
   formatTimezoneAbbreviation,
@@ -305,5 +306,29 @@ describe('toDateParam', () => {
 
   it('returns N/A for an invalid date', () => {
     expect(toDateParam(new Date('nope'))).toBe(NA);
+  });
+});
+
+describe('formatPersonName', () => {
+  it('joins first and last name', () => {
+    expect(formatPersonName({ first_name: 'John', last_name: 'Doe' })).toBe('John Doe');
+  });
+
+  it('tolerates a missing half of the name', () => {
+    expect(formatPersonName({ first_name: 'John', last_name: null })).toBe('John');
+    expect(formatPersonName({ first_name: undefined, last_name: 'Doe' })).toBe('Doe');
+  });
+
+  it('falls back to NA when the person is empty, null or undefined', () => {
+    expect(formatPersonName({})).toBe(NA);
+    expect(formatPersonName(null)).toBe(NA);
+    expect(formatPersonName(undefined)).toBe(NA);
+  });
+
+  it('uses the provided fallback instead of NA', () => {
+    expect(formatPersonName(null, '')).toBe('');
+    expect(formatPersonName({ first_name: '  ', last_name: '  ' }, 'unassigned')).toBe(
+      'unassigned',
+    );
   });
 });

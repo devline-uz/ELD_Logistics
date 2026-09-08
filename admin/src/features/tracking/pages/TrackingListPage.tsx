@@ -24,6 +24,7 @@ import { useUnitSystem } from '@/hooks/useUnitSystem';
 
 import { buildTrackingColumns } from '../components/trackingColumns';
 import { useTrackingChannel, type UnitLastStateEvent } from '../hooks/useTrackingChannel';
+import { formatPersonName } from '@/lib/format';
 
 const ONLINE_STATUS_OPTIONS = ['online', 'idle', 'offline', 'disconnected'] as const;
 
@@ -140,7 +141,7 @@ export function TrackingListPage() {
     const data = list.data?.data ?? [];
     if (!search) return data;
     return data.filter((unit) => {
-      const driverName = `${unit.driver?.first_name ?? ''} ${unit.driver?.last_name ?? ''}`;
+      const driverName = formatPersonName(unit.driver, '');
       return (
         driverName.toLowerCase().includes(search) ||
         (unit.unit_number ?? '').toLowerCase().includes(search)

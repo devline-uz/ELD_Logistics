@@ -19,6 +19,7 @@ import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
 import { isApiError } from '@/lib/errors';
 
 import { unitAssignDriverSchema, type UnitAssignDriverFormValues } from '../schemas';
+import { formatPersonName } from '@/lib/format';
 
 export interface UnitAssignDriverModalProps {
   open: boolean;
@@ -46,10 +47,7 @@ export function UnitAssignDriverModal({ open, onClose, unitId }: UnitAssignDrive
     () =>
       (drivers.data?.data ?? []).map((driver) => ({
         value: driver.id ?? '',
-        label:
-          [driver.first_name, driver.last_name].filter(Boolean).join(' ') ||
-          driver.username ||
-          (driver.id ?? ''),
+        label: formatPersonName(driver, driver.username || (driver.id ?? '')),
       })),
     [drivers.data],
   );

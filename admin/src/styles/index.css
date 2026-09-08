@@ -100,3 +100,106 @@ body {
     Arial,
     sans-serif;
 }
+
+/*
+ * Chop etish (`@media print`) — Bosqich 6.9, TZ §5.6/§7.
+ *
+ * Faqat `[data-print-root]` ichidagi kontent chop etiladi (sahifa sarlavhasi,
+ * KPI kartalari, jadval) — nav/header, breadcrumb, filtr paneli, amal
+ * tugmalari, sahifalash, modal foni va toast shu daraxtdan tashqarida
+ * qoladi (Modal/Drawer `document.body`ga portal qiladi — u ham tashqarida).
+ * Ekranga xos selektor yo'q: faqat semantik teg/`role` va dizayn tizimi
+ * token-nomlari (`bg-success-*` va h.k., fe-design-system §1) ishlatiladi —
+ * yangi ekran `data-print-root` qo'ysa shu qoidalar avtomatik ishlaydi.
+ */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  [data-print-root],
+  [data-print-root] * {
+    visibility: visible;
+  }
+
+  [data-print-root] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+  }
+
+  /* Ehtiyot chorasi: nav/header/sidebar hech qachon chop etilmaydi, hatto
+     kelajakda `[data-print-root]` ichiga tushib qolsa ham. */
+  header,
+  nav,
+  aside {
+    display: none !important;
+  }
+
+  /* Modal/Drawer/Toast `document.body`ga portal qiladi — normal holda
+     yuqoridagi `visibility` qoidasi bilan allaqachon yashirin; bu qat'iy
+     zaxira qoidasi. */
+  [role='dialog'],
+  [role='alertdialog'],
+  [role='status'],
+  [role='alert'] {
+    display: none !important;
+  }
+
+  /* Filtr paneli, tab boshqaruvi, amal tugmalari, sahifalash — interaktiv
+     boshqaruv, chop etilmaydi. Jadval sarlavhasidagi saralash tugmasi
+     (`thead button`) bundan mustasno — ustun nomi shu tugma ichida. */
+  [data-print-root] [role='tablist'],
+  [data-print-root] [role='combobox'],
+  [data-print-root] [role='listbox'],
+  [data-print-root] input,
+  [data-print-root] select,
+  [data-print-root] button:not(thead button) {
+    display: none !important;
+  }
+
+  /* Jadval: gorizontal scroll konteyneri kesmaydi, birinchi ustun sticky
+     emas oddiy ustunga aylanadi, sarlavha har sahifada takrorlanadi, qator
+     sahifa chegarasida bo'linmaydi. */
+  [data-print-root] .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  [data-print-root] table {
+    width: 100% !important;
+  }
+
+  [data-print-root] .sticky {
+    position: static !important;
+  }
+
+  [data-print-root] thead {
+    display: table-header-group;
+  }
+
+  [data-print-root] tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Oq fon / qora matn — `[data-print-root]` o'zi uchun standart, lekin
+     holat ranglari (badge, KPI chizig'i) o'z rangini saqlaydi: brauzer
+     standart holatda fon rangini chop etmaydi (`color-adjust: economy`),
+     shuning uchun ma'no tashuvchi holat ranglari uchun aniq
+     `print-color-adjust: exact` beriladi (fe-a11y §3 — rang yagona ma'no
+     manbai emas, lekin chop etilganda ham ko'rinishi kerak). */
+  [data-print-root] {
+    background: var(--color-surface);
+    color: var(--color-neutral-900);
+  }
+
+  [data-print-root] [class*='bg-success'],
+  [data-print-root] [class*='bg-warning'],
+  [data-print-root] [class*='bg-error'],
+  [data-print-root] [class*='bg-primary'],
+  [data-print-root] [class*='bg-decorative'],
+  [data-print-root] [class*='bg-neutral'] {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

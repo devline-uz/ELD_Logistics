@@ -2,18 +2,20 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 
 import { navGroupOf, routeTitleKey } from '@/app/nav-config';
+import { useProfileLabelBucket } from '@/lib/profileLabel';
 
 /** QATLAM 3 — breadcrumb (faqat ichki ekranlarda; `/` da ko'rsatilmaydi). */
 export function Breadcrumbs() {
   const { t } = useTranslation();
   const { pathname } = useLocation();
+  const bucket = useProfileLabelBucket();
 
   if (pathname === '/') {
     return null;
   }
 
   const group = navGroupOf(pathname);
-  const titleKey = routeTitleKey(pathname);
+  const titleKey = routeTitleKey(pathname, bucket);
 
   return (
     <nav

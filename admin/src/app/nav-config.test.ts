@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { NAV_ENTRIES, filterNav, isNavGroup, navGroupOf, routeTitleKey } from '@/app/nav-config';
+import {
+  NAV_ENTRIES,
+  filterNav,
+  isNavGroup,
+  navGroupOf,
+  resolveNavLabelKey,
+  routeTitleKey,
+} from '@/app/nav-config';
 import en from '@/locales/en.json';
 import { PERM, createPermissionChecker } from '@/lib/permissions';
 
@@ -15,15 +22,18 @@ function resolveI18nKey(key: string): unknown {
     );
 }
 
-/** `NAV_ENTRIES` daraxtidan har bir `labelKey`/`descriptionKey`ni yig'ib chiqadi. */
+/** `NAV_ENTRIES` daraxtidan har bir `labelKey`/`descriptionKey`/`profileLabelKey`ni yig'ib chiqadi. */
 function collectNavI18nKeys(entries: typeof NAV_ENTRIES): string[] {
   const keys: string[] = [];
   for (const entry of entries) {
     keys.push(entry.labelKey);
     if (isNavGroup(entry)) {
       keys.push(...collectNavI18nKeys(entry.children));
-    } else if (entry.descriptionKey) {
-      keys.push(entry.descriptionKey);
+    } else {
+      if (entry.descriptionKey) keys.push(entry.descriptionKey);
+      if (entry.profileLabelKey) {
+        keys.push(`${entry.profileLabelKey}.us_fmcsa`, `${entry.profileLabelKey}.generic`);
+      }
     }
   }
   return keys;
@@ -73,6 +83,41 @@ describe('breadcrumb helpers', () => {
   it('finds the owning group, including nested paths', () => {
     expect(navGroupOf('/units/42')?.id).toBe('fleet');
     expect(navGroupOf('/chat')).toBeUndefined();
+  });
+});
+
+describe("D32 — regulation_profile bo'yicha nav/breadcrumb nomi", () => {
+  it("resolveNavLabelKey profileLabelKey mavjud bo'lsa bucket bo'yicha kalit tanlaydi", () => {
+    const leaf = {
+      labelKey: 'nav.reports.distanceByRegion',
+      profileLabelKey: 'reports.distanceByRegion.screenName',
+    };
+    expect(resolveNavLabelKey(leaf, 'us_fmcsa')).toBe(
+      'reports.distanceByRegion.screenName.us_fmcsa',
+    );
+    expect(resolveNavLabelKey(leaf, 'generic')).toBe('reports.distanceByRegion.screenName.generic');
+  });
+
+  it("resolveNavLabelKey profileLabelKey bo'lmasa statik labelKey qaytaradi", () => {
+    expect(resolveNavLabelKey({ labelKey: 'nav.fleet.units' }, 'us_fmcsa')).toBe('nav.fleet.units');
+  });
+
+  it('routeTitleKey Distance by Region / IFTA Report uchun bucketga qarab almashadi', () => {
+    expect(routeTitleKey('/reports/distance-by-region', 'us_fmcsa')).toBe(
+      'reports.distanceByRegion.screenName.us_fmcsa',
+    );
+    expect(routeTitleKey('/reports/distance-by-region', 'generic')).toBe(
+      'reports.distanceByRegion.screenName.generic',
+    );
+  });
+
+  it('routeTitleKey Regulator Export / FMCSA Report uchun bucketga qarab almashadi', () => {
+    expect(routeTitleKey('/reports/regulator', 'us_fmcsa')).toBe(
+      'reports.regulator.screenName.us_fmcsa',
+    );
+    expect(routeTitleKey('/reports/regulator', 'generic')).toBe(
+      'reports.regulator.screenName.generic',
+    );
   });
 });
 

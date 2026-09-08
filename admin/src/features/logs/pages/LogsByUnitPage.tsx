@@ -37,6 +37,7 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
 
 import { buildLogsByUnitColumns } from '../components/logsByUnitColumns';
+import { formatPersonName } from '@/lib/format';
 
 function todayIsoDate(): string {
   return new Date().toISOString().slice(0, 10);
@@ -106,8 +107,7 @@ export function LogsByUnitPage() {
     let filtered = all;
     if (searchTerm) {
       filtered = filtered.filter((unit) => {
-        const name =
-          `${unit.driver?.first_name ?? ''} ${unit.driver?.last_name ?? ''}`.toLowerCase();
+        const name = formatPersonName(unit.driver, '').toLowerCase();
         return (
           name.includes(searchTerm) || (unit.unit_number ?? '').toLowerCase().includes(searchTerm)
         );

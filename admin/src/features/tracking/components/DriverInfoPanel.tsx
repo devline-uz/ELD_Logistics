@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { HosSummary, LiveUnit, UnitTelemetry } from '@/api/types';
 import { Badge, type BadgeTone } from '@/components/ui/Badge';
-import { formatCoordinatePair, NA } from '@/lib/format';
+import { formatCoordinatePair, formatPersonName, NA } from '@/lib/format';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 
@@ -48,8 +48,7 @@ export function DriverInfoPanel({
   const { formatSpeed } = useUnitSystem();
   const { formatDateTime, formatDuration } = useDateFormat();
 
-  const driverName =
-    `${unit?.driver?.first_name ?? ''} ${unit?.driver?.last_name ?? ''}`.trim() || 'N/A';
+  const driverName = formatPersonName(unit?.driver, t('common.na'));
   const onlineStatus = unit?.online_status ?? 'offline';
   const onlineTone: BadgeTone = ONLINE_STATUS_TONE[onlineStatus] ?? 'neutral';
   const shiftLeftMin = hosSummary?.counters?.shift_left_min;
@@ -93,7 +92,7 @@ export function DriverInfoPanel({
           <dd className="text-neutral-900">
             {typeof shiftLeftMin === 'number'
               ? formatDuration(shiftLeftMin, { withSeconds: true })
-              : 'N/A'}
+              : t('common.na')}
           </dd>
         </div>
       </dl>

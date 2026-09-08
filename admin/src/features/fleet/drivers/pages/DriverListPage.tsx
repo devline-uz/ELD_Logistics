@@ -42,6 +42,7 @@ import { RowActionsMenu, type RowActionItem } from '@/components/data/RowActions
 
 import { DriverFormModal } from '../components/DriverFormModal';
 import { DriverImportModal } from '../components/DriverImportModal';
+import { formatPersonName } from '@/lib/format';
 
 type DriverTab = 'active' | 'inactive';
 
@@ -121,7 +122,7 @@ export function DriverListPage() {
       label: t('fleetDrivers.filters.fleetManager'),
       options: (managersQuery.data?.data ?? []).map((user) => ({
         value: user.id ?? '',
-        label: user.full_name ?? `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
+        label: user.full_name ?? formatPersonName(user, ''),
       })),
       placeholder: t('fleetDrivers.filters.fleetManager'),
     },
@@ -213,7 +214,7 @@ export function DriverListPage() {
 
   const buildRowActions = (driver: Driver): RowActionItem[] => {
     const id = driver.id ?? '';
-    const name = `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim();
+    const name = formatPersonName(driver, '');
     const actions: RowActionItem[] = [
       {
         key: 'view',
@@ -363,7 +364,7 @@ export function DriverListPage() {
               <RowActionsMenu
                 items={buildRowActions(driver)}
                 ariaLabel={t('fleetDrivers.actions.rowMenuLabel', {
-                  name: `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim(),
+                  name: formatPersonName(driver, ''),
                 })}
               />
             )}
@@ -424,7 +425,7 @@ export function DriverListPage() {
         }}
         title={t('ui.overlay.confirmDialog.title')}
         description={t('fleetDrivers.confirm.deactivate', {
-          name: `${deactivateTarget?.first_name ?? ''} ${deactivateTarget?.last_name ?? ''}`.trim(),
+          name: formatPersonName(deactivateTarget, ''),
         })}
       />
 
@@ -448,7 +449,7 @@ export function DriverListPage() {
         }}
         title={t('ui.overlay.confirmDialog.title')}
         description={t('fleetDrivers.confirm.delete', {
-          name: `${deleteTarget?.first_name ?? ''} ${deleteTarget?.last_name ?? ''}`.trim(),
+          name: formatPersonName(deleteTarget, ''),
         })}
       />
 
@@ -477,7 +478,7 @@ export function DriverListPage() {
         }}
         title={t('fleetDrivers.confirm.resetPasswordTitle')}
         description={t('fleetDrivers.confirm.resetPassword', {
-          name: `${resetPasswordTarget?.first_name ?? ''} ${resetPasswordTarget?.last_name ?? ''}`.trim(),
+          name: formatPersonName(resetPasswordTarget, ''),
         })}
       />
     </>

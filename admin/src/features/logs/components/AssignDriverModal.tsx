@@ -22,6 +22,7 @@ import { FormTextarea } from '@/components/form/FormTextarea';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import type { SelectOption } from '@/components/ui/Select';
+import { formatPersonName } from '@/lib/format';
 
 const assignSchema = z.object({
   driver_id: z.string().min(1, 'required'),
@@ -47,7 +48,7 @@ export function AssignDriverModal({ open, onClose, event, onAssigned }: AssignDr
     () =>
       (drivers.data?.data ?? []).map((driver) => ({
         value: driver.id ?? '',
-        label: `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim() || (driver.id ?? ''),
+        label: formatPersonName(driver, driver.id ?? ''),
       })),
     [drivers.data],
   );

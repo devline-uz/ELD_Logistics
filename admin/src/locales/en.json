@@ -401,24 +401,6 @@
     "maintenance": {
       "title": "Maintenance"
     },
-    "reportActivity": {
-      "title": "Activity Report"
-    },
-    "reportDistanceByRegion": {
-      "title": "Distance by Region"
-    },
-    "reportDvir": {
-      "title": "DVIR Report"
-    },
-    "reportExports": {
-      "title": "Export Jobs"
-    },
-    "reportRegulator": {
-      "title": "Regulator Export"
-    },
-    "reportUncertified": {
-      "title": "Uncertified Logs"
-    },
     "resetPassword": {
       "title": "Reset password"
     },
@@ -2261,6 +2243,279 @@
       "completed": "Maintenance for unit {{unit}} marked as complete",
       "cancelled": "Maintenance for unit {{unit}} cancelled",
       "uploadFailed": "The invoice could not be uploaded"
+    }
+  },
+  "reports": {
+    "activityReport": {
+      "title": "Activity Report",
+      "tabs": {
+        "drivers": "Drivers",
+        "units": "Units"
+      },
+      "filters": {
+        "dateRange": "Date range",
+        "unit": "Unit",
+        "unitPlaceholder": "All units",
+        "driver": "Driver",
+        "driverPlaceholder": "All drivers"
+      },
+      "columns": {
+        "index": "#",
+        "driverName": "Driver Name",
+        "unitNumber": "Unit #",
+        "startOdometer": "Start Odometer",
+        "endOdometer": "End Odometer",
+        "odometerChange": "Odometer Change",
+        "drivingTime": "Driving Time"
+      },
+      "drivingTimeUnavailable": "Driving time is not available from the current telemetry aggregation yet",
+      "actions": {
+        "export": "Download CSV",
+        "print": "Print"
+      },
+      "empty": {
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "exportModal": {
+        "title": "Export Activity Report"
+      },
+      "detail": {
+        "columns": {
+          "index": "#",
+          "date": "Date",
+          "start": "Start",
+          "duration": "Duration",
+          "location": "Location",
+          "odometer": "Odometer",
+          "engineHours": "Eng. Hrs",
+          "document": "Document",
+          "notes": "Notes"
+        },
+        "unavailableTitle": "Detail not available",
+        "unavailableDescription": "Daily activity detail is not available from the backend yet. Use the Activity Report export in the meantime.",
+        "backLink": "Back to Activity Report"
+      }
+    },
+    "distanceByRegion": {
+      "screenName": {
+        "us_fmcsa": "IFTA Report",
+        "generic": "Distance by Region"
+      },
+      "tabs": {
+        "units": "Units",
+        "regions": "Regions"
+      },
+      "kpi": {
+        "inRegion": "In-region",
+        "outOfRegion": "Out-of-region",
+        "total": "Total"
+      },
+      "filters": {
+        "year": "Year",
+        "quarter": "Quarter",
+        "region": "Region",
+        "regionPlaceholder": "All regions",
+        "unit": "Unit",
+        "unitPlaceholder": "All units"
+      },
+      "columns": {
+        "unitNumber": "Unit #",
+        "vin": "VIN",
+        "region": "Region",
+        "distance": "Distance",
+        "totalDistance": "Total distance"
+      },
+      "actions": {
+        "generate": "Generate"
+      },
+      "empty": {
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "generateModal": {
+        "title": "Generate Distance by Region Report",
+        "getBy": "GET BY",
+        "modeOptions": {
+          "regions_and_units": "Regions and units",
+          "regions_only": "Regions only"
+        },
+        "units": "Units",
+        "unitsPlaceholder": "Select units",
+        "unitsRequired": "Select at least one unit",
+        "quarter": "Quarter",
+        "year": "Year",
+        "regionsNote": "This export includes every region for the selected quarter — per-region filtering for exports is not available yet."
+      }
+    },
+    "exportJobModal": {
+      "formatLabel": "Generate as",
+      "formats": {
+        "csv": "CSV",
+        "xlsx": "XLSX",
+        "pdf": "PDF",
+        "zip": "ZIP"
+      },
+      "actions": {
+        "generate": "Generate",
+        "download": "Download"
+      },
+      "status": {
+        "preparing": "Preparing your file…"
+      },
+      "errors": {
+        "featureDisabled": "This export is not available yet.",
+        "timedOut": "Still preparing — check Reports › Export Jobs later.",
+        "expired": "Link expired — re-run export."
+      },
+      "downloadReady": "Your file is ready."
+    },
+    "exportJobs": {
+      "title": "Export Jobs",
+      "filters": {
+        "status": "Status",
+        "statusPlaceholder": "All statuses",
+        "type": "Type",
+        "typePlaceholder": "All types",
+        "showAll": "Show all"
+      },
+      "columns": {
+        "index": "#",
+        "type": "Type",
+        "format": "Format",
+        "params": "Params",
+        "requestedBy": "Requested by",
+        "created": "Created",
+        "started": "Started",
+        "finished": "Finished",
+        "size": "Size",
+        "status": "Status",
+        "download": "Download"
+      },
+      "types": {
+        "distance_by_region": {
+          "us_fmcsa": "IFTA Report",
+          "generic": "Distance by Region"
+        },
+        "regulator": {
+          "us_fmcsa": "FMCSA Report",
+          "generic": "Regulator Export"
+        },
+        "activity": "Activity Report",
+        "hos": "HOS Summary",
+        "dvir": "DVIR Report"
+      },
+      "params": {
+        "driverCount_one": "{{count}} driver",
+        "driverCount_other": "{{count}} drivers",
+        "unitCount_one": "{{count}} unit",
+        "unitCount_other": "{{count}} units"
+      },
+      "empty": {
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      }
+    },
+    "regulator": {
+      "screenName": {
+        "us_fmcsa": "FMCSA Report",
+        "generic": "Regulator Export"
+      },
+      "actions": {
+        "generate": "Generate"
+      },
+      "columns": {
+        "index": "#",
+        "driverName": "Driver Name",
+        "comment": "Comment",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "status": "Status",
+        "processedTime": "Processed Time",
+        "jobId": "Job ID",
+        "action": "Action"
+      },
+      "empty": {
+        "description": "There is no data to show you right now"
+      },
+      "generateModal": {
+        "title": "Generate Regulator Export",
+        "sectionTitle": "Report details",
+        "type": "Type",
+        "typeOptions": {
+          "roadside": "Roadside inspection report (8 days)",
+          "custom": "Custom Range"
+        },
+        "driver": "Driver",
+        "driverPlaceholder": "Select driver",
+        "from": "From",
+        "to": "To",
+        "comment": "Comment",
+        "commentPlaceholder": "Add a note for the regulator export",
+        "requiredFieldsReason": "Fill in the driver, date range and comment first"
+      }
+    },
+    "dvirReport": {
+      "title": "DVIR Report",
+      "filters": {
+        "driver": "Driver",
+        "driverPlaceholder": "All drivers",
+        "unit": "Unit",
+        "unitPlaceholder": "All units",
+        "dateRange": "Date range",
+        "type": "Type",
+        "typePlaceholder": "All types",
+        "status": "Status",
+        "statusPlaceholder": "All statuses"
+      },
+      "columns": {
+        "index": "#",
+        "driver": "Driver",
+        "unit": "Unit",
+        "type": "Type",
+        "status": "Status",
+        "performedAt": "Performed at",
+        "location": "Location"
+      },
+      "actions": {
+        "export": "Export"
+      },
+      "empty": {
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      },
+      "exportModal": {
+        "title": "Export DVIR Report"
+      }
+    },
+    "uncertifiedLogs": {
+      "title": "Uncertified Logs",
+      "filters": {
+        "driver": "Driver",
+        "driverPlaceholder": "All drivers",
+        "branch": "Branch",
+        "branchPlaceholder": "All branches"
+      },
+      "columns": {
+        "index": "#",
+        "driver": "Driver",
+        "logDate": "Log date",
+        "daysUncertified": "Days uncertified",
+        "unit": "Unit",
+        "totals": "Totals",
+        "action": "Action"
+      },
+      "unitUnavailable": "Not available from the current backend response",
+      "totalsUnavailable": "Not available from the current backend response",
+      "actions": {
+        "sendReminder": "Send reminder",
+        "sendReminderUnavailable": "Reminders are not available yet",
+        "openLog": "Open log"
+      },
+      "empty": {
+        "description": "There is no data to show you right now",
+        "filteredDescription": "No records match your filters"
+      }
     }
   }
 }

@@ -24,6 +24,7 @@ import { PermissionGate } from '@/components/ui/PermissionGate';
 import { Select } from '@/components/ui/Select';
 import { useToast } from '@/components/feedback/toast-context';
 import { PERM } from '@/lib/permissions';
+import { formatPersonName } from '@/lib/format';
 
 export interface CoDriversPanelProps {
   driverId: string;
@@ -46,7 +47,7 @@ export function CoDriversPanel({ driverId }: CoDriversPanelProps) {
       .filter((d) => d.id && d.id !== driverId && !existingIds.has(d.id))
       .map((d) => ({
         value: d.id ?? '',
-        label: `${d.first_name ?? ''} ${d.last_name ?? ''}`.trim(),
+        label: formatPersonName(d, ''),
       }));
   }, [candidatesQuery.data, coDriversQuery.data, driverId]);
 
@@ -117,7 +118,7 @@ export function CoDriversPanel({ driverId }: CoDriversPanelProps) {
               className="flex items-center justify-between rounded-md border border-stroke px-3 py-2"
             >
               <span className="flex items-center gap-2 text-body text-neutral-800">
-                {coDriver.first_name} {coDriver.last_name}
+                {formatPersonName(coDriver, '')}
                 <Badge tone={coDriver.status === 'active' ? 'success' : 'neutral'}>
                   {coDriver.status}
                 </Badge>

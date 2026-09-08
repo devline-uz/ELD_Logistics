@@ -376,3 +376,116 @@ Ya'ni admin `Record repair` amalini **imzosiz bajara olmaydi**.
 
 **Backend CR nomzodi:** `mechanic_signature_key` ni ixtiyoriy qilish yoki
 admin uchun alohida «office repair record» oqimi (imzosiz) qo'shish.
+
+
+### D31 — Activity Report va Distance by Region: swagger'da yo'q maydonlar/endpointlar (Bosqich 6.2/6.3)
+
+`docs/tz/07-8-reports.md` §7.8.1/§7.8.2 va §16.2 N15 spetsifikatsiyasi bilan swagger javoblari
+solishtirilganda bir nechta bo'shliq topildi (barchasi
+`github_com_devline_onebook-eld_internal_domain_reports_dto.*` ta'riflaridan tasdiqlangan):
+
+1. **`ActivityRow`da `Driving Time (HH:MM:SS)` maydoni yo'q.** Maydonlar faqat
+   `subject_id/subject_type/name/start_odometer_m/end_odometer_m/odometer_change_m/has_data`.
+   **MVP yechimi:** `ActivityReportPage`da ustun saqlanadi (spetsifikatsiya tartibini buzmaslik
+   uchun), qiymat sifatida doim `common.na` ko'rsatiladi + ustun sarlavhasida `title` orqali
+   «Not available from current telemetry aggregation» izohi. **Backend CR nomzodi:**
+   `driving_time_s` maydonini `ActivityRow`ga qo'shish (log/telemetriyadan hisoblab).
+2. **`RegionDistanceRow`da `VIN` va `Month` yo'q** (faqat `region_code/region_name/country/
+   distance_m/unit_id/unit_number`). `Units` tabida `VIN` — front tomonida `GET /units`
+   ro'yxatidan `unit_id` bo'yicha bog'lanadi (join, backend o'zgarmaydi). `Month` ustuni esa
+   backendda umuman yo'q (agregat faqat chorak bo'yicha, oylik breakdown mavjud emas) —
+   **olib tashlandi**, spetsifikatsiyadagi «Month» ustuni ko'rsatilmaydi. **Backend CR
+   nomzodi:** `unit_region_distance_daily` agregatidan oylik breakdown qo'shish.
+3. **F124 noto'g'ri talqin qilingan:** `company.settings.distance_regions` degan maydon
+   mavjud emas — haqiqiy maydon `company.settings.distance_regions_set`
+   (`us_states|pk_provinces|uz_regions|none`), ya'ni **katalog tanlovchi enum**, aniq region
+   nomlari ro'yxati emas. Region kataloglarini qaytaradigan alohida endpoint ham yo'q.
+   **MVP yechimi:** `Region` filtri va Generate modalidagi region tanlovi
+   `GET /reports/distance-by-region?mode=regions_only&quarter&year` javobidan (joriy davr
+   uchun haqiqatda mavjud regionlar) dinamik quriladi — hardcode qilinmagan, lekin
+   kompaniyaning butun katalogi emas, faqat tanlangan davrda ma'lumot bo'lgan regionlar
+   ko'rinadi. **Backend CR nomzodi:** `GET /regions?set=us_states` kabi katalog endpointi.
+4. **`ExportJobCreate.params` (`ExportParams`) da `distance_by_region` uchun region filtri
+   yo'q** — faqat `mode/quarter/year/unit_ids/branch_id`. Spetsifikatsiyadagi Generate
+   modalining **`Regions *`** majburiy ko'p-tanlov maydoni backendga yubora olmaydi.
+   **MVP yechimi:** modalda `Regions *` maydoni **olib tashlandi** (backend qo'llab-
+   quvvatlamaydi); eksport butun davr uchun ishlaydi, `GET BY`/`Units *` (`unit_ids`)
+   ishlaydi. **Backend CR nomzodi:** `ExportParams.region_codes []string` qo'shish.
+5. **`/reports/activity/{subjectId}` (kunlik detal: `# · Date · Start · Duration · Location ·
+   Odometer · Eng. Hrs · Document · Notes`) uchun swagger'da hech qanday endpoint yo'q** —
+   na `reports` tegida, na `drivers/{id}/activities` (bu — audit/login tarixi, boshqa
+   ma'lumot). **MVP yechimi:** `ActivityReportDetailPage` marshruti va breadcrumb ishlaydi,
+   lekin jadval o'rnida doimiy `ErrorState`-uslubidagi banner: «Daily activity detail is not
+   available from the backend yet» (i18n:
+   `reports.activityReport.detail.unavailable`). **Backend CR nomzodi:**
+   `GET /reports/activity/{subject_type}/{subject_id}/days?from&to` — kunlik
+   Date/Start/Duration/Location/Odometer/Eng.Hrs/Document/Notes qatorlari.
+6. **`In-region`/`Out-of-region` KPI ta'rifi backendda yo'q** — `RegionDistanceRow`da
+   "bu masofa uy-yurisdiksiyadami" degan bayroq mavjud emas, faqat `country` (ISO
+   alpha-2). **MVP yechimi:** `company.region` (`PK|UZ|US|other`) bilan qator
+   `country`sini solishtirib, mos kelsa **In-region**, aks holda **Out-of-region**
+   hisoblanadi (`company.region = "other"` bo'lsa — barchasi Out-of-region). Bu
+   frontend taxmini, IFTA'ning rasmiy "base jurisdiction" tushunchasi bilan bir xil
+   emas. **Backend CR nomzodi:** `RegionDistanceRow.is_home_region` yoki
+   `DistanceByRegionMeta.home_country` maydoni.
+
+### D32 — Regulator Export / Export Jobs: nav/breadcrumb profil nomi va "Requested by" join (Bosqich 6.4/6.7)
+
+`docs/tz/07-8-reports.md` §7.8.3/§7.8.7 va §6.8 (`regulation_profile` nom almashinuvi) bo'yicha
+ikkita qoldiq topildi:
+
+1. **✅ Yopildi (Bosqich 6.9).** Nav flyout va breadcrumb endi `regulation_profile`ga
+   qarab almashadi — sahifa `h1` bilan bir xil mexanizm. Yechim:
+   - `useProfileLabel`/`resolveProfileLabelBucket` implementatsiyasi umumiy qatlamga
+     ko'chirildi: `src/lib/profileLabel.ts` (yangi `useProfileLabelBucket()` hook bilan);
+     `src/features/reports/lib/profileLabel.ts` endi shu faylni qayta eksport qiladi
+     (import yo'li o'zgarmagan, reports ekranlariga tegilmadi).
+   - `src/app/nav-config.ts`: `NavLeaf.profileLabelKey?: string` maydoni + yangi
+     `resolveNavLabelKey(entry, bucket)` funksiyasi qo'shildi — mavjud bo'lsa
+     `${profileLabelKey}.${bucket}` (masalan `reports.distanceByRegion.screenName.us_fmcsa`),
+     aks holda statik `labelKey`. `report-distance-by-region`/`report-regulator` leaflari
+     shu maydon bilan sahifa `h1`idagi bir xil i18n kalitga bog'landi (yangi kalit
+     qo'shilmadi). `routeTitleKey(pathname, bucket)` endi ixtiyoriy `bucket` parametri
+     qabul qiladi.
+   - `MainNav.tsx`/`Breadcrumbs.tsx` — `useProfileLabelBucket()` bilan joriy bucketni
+     o'qib, `resolveNavLabelKey` orqali ko'rsatiladigan matnni hal qiladi.
+   - Test: `src/app/nav-config.test.ts`, `src/components/layout/MainNav.test.tsx`,
+     `src/components/layout/Breadcrumbs.test.tsx` — ikkala profil (`us_fmcsa`, `generic`)
+     uchun nav elementi va breadcrumb matni tekshirilgan.
+2. **`export_job.requested_by` faqat UUID, `Profile`/`User` bilan backend join bermaydi**
+   (swagger: `ExportJob.requested_by` — oddiy `string`, misol UUID). `ExportJobsPage`
+   (7.8.7) joriy foydalanuvchining o'z joblarini sessiya profilidan (`GET /me`) ism bilan
+   ko'rsatadi; "Show all" yoqilganda boshqa foydalanuvchilar `GET /users` ro'yxatidan (agar
+   birinchi 50 tadan ichida bo'lsa va chaqiruvchida `users.read` bo'lsa) bog'lanadi, aks
+   holda qisqartirilgan ID (`a1b2c3d4…`) ko'rsatiladi. **Backend CR nomzodi:**
+   `ExportJob.requested_by_name` (yoki `requested_by` ni `{id, name}` obyektiga
+   kengaytirish) — D31 uslubidagi boshqa "ID-only" maydonlar bilan bir xil naqsh.
+
+### D33 — Uncertified Logs: `Unit`/`Totals` ustunlari uchun maydon yo'q (Bosqich 6.6)
+
+`docs/tz/07-8-reports.md` §7.8.5 (F128) Uncertified Logs ustunlarini
+`Driver · Log date · Days uncertified · Unit · Totals · Action` deb belgilaydi.
+Swagger'dagi haqiqiy javob (`github_com_devline_onebook-eld_internal_domain_
+logs_dto.UncertifiedLog`) faqat quyidagi maydonlarni beradi: `daily_log_id`,
+`driver_id`, `driver_name`, `log_date`, `certification_status`, `days_overdue`.
+**`Unit` (qaysi unit'da haydalgan) va `Totals` (kunlik HOS yig'indisi) uchun
+hech qanday maydon yo'q** — na to'g'ridan-to'g'ri, na boshqa resursga
+bog'lovchi ID orqali (masalan `unit_id` yoki `daily_log_id` bilan alohida
+so'rov qilib olsa bo'ladigan bog'lanish ham yo'q, chunki `GET /daily-logs/{id}`
+faqat sertifikatlangan/mavjud logni emas, umuman shu `daily_log_id` bilan
+mos keladigan yozuvni ID orqali olishni talab qiladi va bu N+1 so'rov
+muammosini keltirib chiqaradi — ro'yxat sahifasida amalga oshirilmadi).
+
+**MVP yechimi (Bosqich 6.6, `UncertifiedLogsTable`):** ikkala ustun
+spetsifikatsiya tartibini saqlash uchun ko'rsatiladi, lekin qiymat doim
+`N/A` + sarlavhada tushuntiruvchi `title` («Not available from the current
+backend response»).
+
+**Backend CR nomzodi:** `UncertifiedLog`ga `unit_id`/`unit_number` (haydovchining
+shu kundagi asosiy unit'i) va `totals` (`drive_s`/`on_duty_s`/`off_duty_s`/
+`sleeper_s`, `DayTotals` bilan bir xil shakl) maydonlarini qo'shish.
+
+**D29 eslatmasi:** shu bosqichda `Send reminder` amali D29'da prescription
+qilingan tarzda amalga oshirildi — tugma doim `disabled`, tooltipda
+«Reminders are not available yet» (`reports.uncertifiedLogs.actions.
+sendReminderUnavailable`). Yangi mutatsiya yozilmadi (endpoint hamon yo'q).

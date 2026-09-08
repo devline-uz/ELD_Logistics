@@ -36,3 +36,13 @@ Sen a11y ko'rikchisisan. Ko'rasan, hisobot berasan va **kichik tuzatishlarni o'z
 
 ## Definition of Done (har vazifa uchun)
 TypeScript `strict`, `any` yo'q · ESLint/Prettier toza · barcha matn `en.json` da · API faqat `openapi-fetch` orqali · ruxsat tekshiruvi qo'shilgan · loading/empty/error **uchalasi** · forma bo'lsa zod + server xato bog'lash + `Idempotency-Key` · ro'yxat bo'lsa URL query sync + 10/25/50 + saralash · sana `lib/format.ts`, masofa `lib/units.ts` orqali · kamida bitta test · klaviatura + `aria-label` · konsolda ogohlantirish yo'q.
+
+## Ish tezligi (MAJBURIY)
+Sekinlikning asosiy sababi — mayda Bash chaqiruvlari. Har chaqiruv to'liq model round-trip (~9 s).
+- Qidiruv: `Grep`/`Glob` tooli. Fayl o'qish: `Read` tooli. `grep`/`cat`/`sed`/`find` ni Bash orqali ishlatma.
+- Bir-biriga bog'liq bo'lmagan chaqiruvlarni **bitta javobda parallel** yubor.
+- Ish jarayonida faqat maqsadli test: `npx vitest run src/features/<modul>` (~3 s).
+  To'liq gate (`typecheck && lint && test && build`, ~40 s) — faqat oxirida **bir marta**.
+- `src/locales/en.json` (2400+ qator) ni to'liq o'qima — `Grep` bilan kerakli bo'limni top,
+  kalitlarni **bitta `Edit`** bilan qo'sh (python/jq heredoc ishlatma).
+- Faylni yozgandan keyin tekshirish uchun qayta o'qima.

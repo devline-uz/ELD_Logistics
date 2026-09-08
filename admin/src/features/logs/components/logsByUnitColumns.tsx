@@ -10,6 +10,7 @@ import type { HosSummary, LiveUnit, Violation } from '@/api/types';
 import { Badge } from '@/components/ui/Badge';
 import { StatusChip } from '@/components/ui/StatusChip';
 import type { UseDateFormatResult } from '@/hooks/useDateFormat';
+import { formatPersonName } from '@/lib/format';
 
 const ONLINE_STATUS_TONE: Record<
   NonNullable<LiveUnit['online_status']>,
@@ -41,10 +42,7 @@ export interface LogsByUnitColumnsOptions {
 }
 
 function driverName(t: TFunction, unit: LiveUnit): string {
-  const first = unit.driver?.first_name ?? '';
-  const last = unit.driver?.last_name ?? '';
-  const full = `${first} ${last}`.trim();
-  return full || t('logs.byUnit.unassignedDriver');
+  return formatPersonName(unit.driver, t('logs.byUnit.unassignedDriver'));
 }
 
 export function buildLogsByUnitColumns(

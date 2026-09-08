@@ -37,6 +37,7 @@ import { PERM } from '@/lib/permissions';
 
 import { RowActionsMenu, type RowActionItem } from '@/components/data/RowActionsMenu';
 import { UserFormModal } from '../components/UserFormModal';
+import { formatPersonName } from '@/lib/format';
 
 const DATA_TABLE_TO_API_SORT: Record<string, UsersListParams['sort']> = {
   first_name: 'first_name',
@@ -174,7 +175,7 @@ export function UserListPage() {
   const total = usersQuery.data?.meta?.total ?? 0;
 
   const buildRowActions = (user: User): RowActionItem[] => {
-    const name = `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim();
+    const name = formatPersonName(user, '');
     const actions: RowActionItem[] = [];
 
     if (canWrite(PERM.usersUpdate)) {
@@ -316,7 +317,7 @@ export function UserListPage() {
               <RowActionsMenu
                 items={buildRowActions(user)}
                 ariaLabel={t('fleetUsers.actions.rowMenuLabel', {
-                  name: `${user.first_name ?? ''} ${user.last_name ?? ''}`.trim(),
+                  name: formatPersonName(user, ''),
                 })}
               />
             )}
@@ -374,7 +375,7 @@ export function UserListPage() {
         }}
         title={t('ui.overlay.confirmDialog.title')}
         description={t('fleetUsers.confirm.deactivate', {
-          name: `${deactivateTarget?.first_name ?? ''} ${deactivateTarget?.last_name ?? ''}`.trim(),
+          name: formatPersonName(deactivateTarget, ''),
         })}
       />
 
@@ -402,7 +403,7 @@ export function UserListPage() {
         }}
         title={t('ui.overlay.confirmDialog.title')}
         description={t('fleetUsers.confirm.delete', {
-          name: `${deleteTarget?.first_name ?? ''} ${deleteTarget?.last_name ?? ''}`.trim(),
+          name: formatPersonName(deleteTarget, ''),
         })}
       />
 
@@ -425,7 +426,7 @@ export function UserListPage() {
         }}
         title={t('fleetUsers.confirm.resetPasswordTitle')}
         description={t('fleetUsers.confirm.resetPassword', {
-          name: `${resetPasswordTarget?.first_name ?? ''} ${resetPasswordTarget?.last_name ?? ''}`.trim(),
+          name: formatPersonName(resetPasswordTarget, ''),
         })}
       />
     </>

@@ -32,7 +32,18 @@ export type RegulationProfile =
 /** Formatlash uchun qisqartirilgan profil — faqat shu ikkisi naqshni farqlaydi. */
 export type DateFormatProfile = 'generic' | 'us_fmcsa';
 
-/** Sana/vaqt yo'q yoki yaroqsiz bo'lganda ko'rsatiladigan qiymat (§16). */
+/**
+ * Bo'sh/yaroqsiz qiymat o'rniga ko'rsatiladigan matn (§16: `N/A`, `na` emas).
+ *
+ * **Loyiha bo'yicha yagona idioma (TD9):**
+ * - React komponent yoki hook ichida — `t('common.na')` (i18n orqali);
+ * - `t()` ga kirish imkoni yo'q sof funksiyalarda (`lib/*`, jadval ustunlari
+ *   uchun formatlagichlar, modul tashqarisidagi helper'lar) — shu `NA`
+ *   konstantasi.
+ *
+ * Kodda `'N/A'` literalini yozish taqiqlanadi — yuqoridagi ikki variantdan
+ * biri ishlatiladi.
+ */
 export const NA = 'N/A';
 
 /** `formatDate`/`formatTime`/... uchun umumiy ixtiyoriy sozlamalar. */

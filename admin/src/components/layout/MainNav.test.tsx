@@ -1,12 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import '@/app/i18n';
 import { PermissionsProvider } from '@/app/providers/PermissionsProvider';
 import { MainNav } from '@/components/layout/MainNav';
 import { PERM } from '@/lib/permissions';
+import { useCompanyStore } from '@/store/company-store';
 
 function renderNav(permissions: string[]) {
   return render(
@@ -37,5 +38,36 @@ describe('MainNav', () => {
     expect(screen.getByRole('link', { name: /Unit Management/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Driver Management/ })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /Roles & Permissions/ })).not.toBeInTheDocument();
+  });
+
+  describe("D32 — regulation_profile bo'yicha Reports flyout nomi", () => {
+    afterEach(() => {
+      act(() => {
+        useCompanyStore.getState().resetCompany();
+      });
+    });
+
+    it("generic profilda statik nom ko'rsatiladi", async () => {
+      useCompanyStore.getState().setCompany({ regulationProfile: 'generic' });
+      const user = userEvent.setup();
+      renderNav([PERM.reportsRead]);
+
+      await user.click(screen.getByRole('button', { name: /Reports/ }));
+
+      expect(screen.getByRole('link', { name: /Distance by Region/ })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Regulator Export/ })).toBeInTheDocument();
+    });
+
+    it("us_fmcsa profilda IFTA Report / FMCSA Report ko'rsatiladi", async () => {
+      useCompanyStore.getState().setCompany({ regulationProfile: 'us_fmcsa' });
+      const user = userEvent.setup();
+      renderNav([PERM.reportsRead]);
+
+      await user.click(screen.getByRole('button', { name: /Reports/ }));
+
+      expect(screen.getByRole('link', { name: /IFTA Report/ })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /FMCSA Report/ })).toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: /Distance by Region/ })).not.toBeInTheDocument();
+    });
   });
 });

@@ -9,6 +9,7 @@ import type {
   ActivityRow,
   DistanceByRegionMeta,
   ExportJob,
+  ExportJobCreate,
   ListResponse,
   RegionDistanceRow,
   UncertifiedLog,
@@ -178,6 +179,30 @@ export const exportJobCreateErrorHandler = http.post(url('/reports/export-jobs')
 export const exportJobCreateFeatureDisabledHandler = http.post(url('/reports/export-jobs'), () =>
   jsonError('FEATURE_DISABLED', 'FMCSA export is not available yet', 501),
 );
+
+/**
+ * `POST /reports/export-jobs` — jo'natilgan `body`ni ushlab qoladi (Bosqich 6.10:
+ * format/turlar bo'yicha `payload` shakli testlari). Callback har chaqiruvda ishga tushadi —
+ * bir nechta `Generate` bosilsa hammasi ketma-ket qayd etiladi.
+ */
+export function createExportJobCreateCaptureHandler(onCreate: (body: ExportJobCreate) => void) {
+  return http.post(url('/reports/export-jobs'), async ({ request }) => {
+    const body = (await request.json()) as ExportJobCreate;
+    onCreate(body);
+    return HttpResponse.json(
+      {
+        data: exportJobFixture({
+          id: 'job-captured',
+          status: 'queued',
+          type: body.type,
+          format: body.format,
+          params: body.params,
+        }),
+      },
+      { status: 202 },
+    );
+  });
+}
 
 /** `GET /reports/export-jobs/{id}` — bitta so'rovda `done` (statik holat). */
 export const exportJobDoneHandler = http.get(url('/reports/export-jobs/:id'), ({ params }) =>

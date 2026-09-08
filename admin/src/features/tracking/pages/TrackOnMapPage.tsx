@@ -38,7 +38,12 @@ import { MapDataTable } from '@/components/map/MapDataTable';
 import type { UseLiveUnitsLayerOptions } from '@/components/map/useLiveUnitsLayer';
 import type { TripStopMarker } from '@/components/map/useTripPolylineLayer';
 import { decodePolyline } from '@/components/map/polyline';
-import { formatCoordinatePair, toDateParam } from '@/lib/format';
+import {
+  formatCoordinate,
+  formatCoordinatePair,
+  formatPersonName,
+  toDateParam,
+} from '@/lib/format';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 import {
@@ -187,12 +192,12 @@ export function TrackOnMapPage() {
 
   const liveOptions: UseLiveUnitsLayerOptions = {
     buildPopupProps: (u) => ({
-      driverName: `${u.driver?.first_name ?? ''} ${u.driver?.last_name ?? ''}`.trim() || 'N/A',
+      driverName: formatPersonName(u.driver, t('common.na')),
       dutyStatus: u.duty_status ?? 'OFF',
       dutyStatusTone: DUTY_STATUS_TONE[u.duty_status ?? 'OFF'] ?? 'neutral',
-      unitNumber: u.unit_number ?? 'N/A',
+      unitNumber: u.unit_number ?? t('common.na'),
       odometer: formatDistance(u.odometer_m),
-      location: `${u.lat?.toFixed(7) ?? 'N/A'}, ${u.lng?.toFixed(7) ?? 'N/A'}`,
+      location: `${formatCoordinate(u.lat)}, ${formatCoordinate(u.lng)}`,
       hasCoordinates: typeof u.lat === 'number' && typeof u.lng === 'number',
       relativeTime: formatRelative(u.last_seen_at),
       onlineTone: ONLINE_STATUS_TONE[u.online_status ?? 'offline'] ?? 'neutral',
@@ -201,7 +206,7 @@ export function TrackOnMapPage() {
       }),
       onViewTracking: () => undefined,
     }),
-    formatListEntry: (u) => u.unit_number ?? 'N/A',
+    formatListEntry: (u) => u.unit_number ?? t('common.na'),
     listPopupTitle: t('map.clusterPopup.title'),
   };
 

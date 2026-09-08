@@ -34,6 +34,7 @@ import { LicenseReveal } from '../components/LicenseReveal';
 import { useDriverDailyLogs } from '../hooks/useDriverDailyLogs';
 import { useToast } from '@/components/feedback/toast-context';
 import type { DriverUpdate } from '@/api/types';
+import { formatPersonName } from '@/lib/format';
 
 export type DriverDetailTab = 'information' | 'activities' | 'dailyLogs';
 
@@ -160,7 +161,7 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
     );
   }
 
-  const fullName = `${driver.first_name ?? ''} ${driver.last_name ?? ''}`.trim();
+  const fullName = formatPersonName(driver, '');
 
   return (
     <div className="flex flex-col gap-4">

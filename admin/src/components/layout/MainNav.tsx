@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import { NAV_ENTRIES, filterNav, type VisibleNavEntry } from '@/app/nav-config';
+import { NAV_ENTRIES, filterNav, resolveNavLabelKey, type VisibleNavEntry } from '@/app/nav-config';
 import { usePermission } from '@/lib/permissions';
+import { useProfileLabelBucket } from '@/lib/profileLabel';
 
 const LINK_BASE =
   'relative inline-flex h-11 items-center px-3 text-sm text-neutral-700 hover:text-[var(--color-primary)]';
@@ -23,6 +24,7 @@ function isGroupActive(entry: Extract<VisibleNavEntry, { kind: 'group' }>, pathn
 export function MainNav() {
   const { t } = useTranslation();
   const can = usePermission();
+  const bucket = useProfileLabelBucket();
   const { pathname } = useLocation();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -71,7 +73,7 @@ export function MainNav() {
                   end={entry.path === '/'}
                   className={({ isActive }) => `${LINK_BASE} ${isActive ? LINK_ACTIVE : ''}`}
                 >
-                  {t(entry.labelKey)}
+                  {t(resolveNavLabelKey(entry, bucket))}
                 </NavLink>
               </li>
             );
@@ -91,7 +93,7 @@ export function MainNav() {
                   setOpenGroup(open ? null : entry.id);
                 }}
               >
-                {t(entry.labelKey)}
+                {t(resolveNavLabelKey(entry, bucket))}
                 <svg
                   aria-hidden="true"
                   className="ms-1 h-3 w-3"
@@ -113,7 +115,7 @@ export function MainNav() {
                         className="block px-3 py-2 hover:bg-[var(--color-surface-muted)]"
                       >
                         <span className="block text-sm font-medium text-neutral-800">
-                          {t(leaf.labelKey)}
+                          {t(resolveNavLabelKey(leaf, bucket))}
                         </span>
                         {leaf.descriptionKey ? (
                           <span className="block text-xs text-neutral-500">
