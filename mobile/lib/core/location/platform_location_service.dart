@@ -88,6 +88,10 @@ final class PlatformLocationService extends BaseLocationService {
         level: 900,
       );
       return false;
+    } on Object catch (_) {
+      // Kanal umuman mavjud bo'lmagan muhit (binding yo'q, desktop) —
+      // chiqish/kirish oqimi GPS sababli hech qachon yiqilmasligi kerak.
+      return false;
     }
   }
 

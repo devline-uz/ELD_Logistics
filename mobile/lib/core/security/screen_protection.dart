@@ -32,10 +32,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 abstract final class ScreenSecurityChannels {
   const ScreenSecurityChannels._();
 
-  static const String method = 'uz.stackyard.eld_mobile/screen_security';
+  static const String method = 'com.devline.eld_logistics/screen_security';
 
   /// Faqat iOS'da mavjud; Android'da bu kanal umuman ro'yxatdan o'tmagan.
-  static const String events = 'uz.stackyard.eld_mobile/screen_security_events';
+  static const String events = 'com.devline.eld_logistics/screen_security_events';
 
   static const String setSecure = 'setSecure';
   static const String isSecure = 'isSecure';

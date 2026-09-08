@@ -12,7 +12,7 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
-    // S-H5: ekran himoyasi kanali (uz.stackyard.eld_mobile/screen_security).
+    // S-H5: ekran himoyasi kanali (com.devline.eld_logistics/screen_security).
     ScreenSecurityPlugin.shared.register(with: engineBridge.applicationRegistrar.messenger())
   }
 
