@@ -1,0 +1,68 @@
+name: onebook-eld-prod
+
+services:
+  postgres:
+    image: timescale/timescaledb-ha:pg16
+    container_name: eld-prod-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: eld
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env.db}
+      POSTGRES_DB: onebook_eld
+      TZ: UTC
+    command: ["postgres","-c","shared_preload_libraries=timescaledb","-c","timezone=UTC","-c","max_connections=200"]
+    volumes:
+      - pgdata:/home/postgres/pgdata/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U eld -d onebook_eld"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:7-alpine
+    container_name: eld-prod-redis
+    restart: unless-stopped
+    command: ["redis-server","--appendonly","yes","--maxmemory-policy","noeviction"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD","redis-cli","ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    build: { context: .., dockerfile: deploy/Dockerfile, target: migrate }
+    container_name: eld-prod-migrate
+    env_file: [../.env]
+    command: ["up"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: "no"
+
+  api:
+    build: { context: .., dockerfile: deploy/Dockerfile, target: api, args: { VERSION: "v1.0" } }
+    container_name: eld-prod-api
+    restart: unless-stopped
+    env_file: [../.env]
+    ports:
+      - "127.0.0.1:8090:8080"
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+
+  worker:
+    build: { context: .., dockerfile: deploy/Dockerfile, target: worker, args: { VERSION: "v1.0" } }
+    container_name: eld-prod-worker
+    restart: unless-stopped
+    env_file: [../.env]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+
+volumes:
+  pgdata:
+  redisdata:
