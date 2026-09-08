@@ -1,17 +1,20 @@
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { ProfileMenu } from '@/components/layout/ProfileMenu';
-import { PermissionGate } from '@/components/ui/PermissionGate';
-import { NotificationsDropdown } from '@/features/notifications/components/NotificationsDropdown';
-import { PERM } from '@/lib/permissions';
 
 export interface BrandBarProps {
   onSignOut?: () => void;
+  /**
+   * Bildirishnoma widget'i uchun slot. `components/` qatlami `features/` ga
+   * bog'lanmasligi uchun kompozitsiya `app/layouts/AppLayout` da bajariladi.
+   */
+  notificationsSlot?: ReactNode;
 }
 
 /** QATLAM 1 — brend panel (`--color-primary`): logotip · global qidiruv · qo'ng'iroq · profil. */
-export function BrandBar({ onSignOut }: BrandBarProps) {
+export function BrandBar({ onSignOut, notificationsSlot }: BrandBarProps) {
   const { t } = useTranslation();
 
   return (
@@ -34,9 +37,7 @@ export function BrandBar({ onSignOut }: BrandBarProps) {
         />
       </search>
 
-      <PermissionGate permission={PERM.notificationsRead}>
-        <NotificationsDropdown />
-      </PermissionGate>
+      {notificationsSlot}
 
       <ProfileMenu onSignOut={onSignOut} />
     </div>

@@ -9,6 +9,9 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { IdleTimeoutDialog } from '@/components/layout/IdleTimeoutDialog';
 import { MainNav } from '@/components/layout/MainNav';
 import { SubscriptionBanner } from '@/components/layout/SubscriptionBanner';
+import { PermissionGate } from '@/components/ui/PermissionGate';
+import { NotificationsDropdown } from '@/features/notifications/components/NotificationsDropdown';
+import { PERM } from '@/lib/permissions';
 
 /**
  * Uch qatlamli sarlavha (fe-permissions §6):
@@ -42,6 +45,11 @@ export function AppLayout() {
           onSignOut={() => {
             signOut('user');
           }}
+          notificationsSlot={
+            <PermissionGate permission={PERM.notificationsRead}>
+              <NotificationsDropdown />
+            </PermissionGate>
+          }
         />
         <MainNav />
         <SubscriptionBanner />

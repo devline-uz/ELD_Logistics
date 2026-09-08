@@ -276,8 +276,16 @@ export type ViolationDetails = Dto<'logs', 'ViolationDetails'>;
 
 export type InspectionSession = Dto<'logs', 'InspectionSession'>;
 export type InspectionReport = Dto<'logs', 'InspectionReport'>;
+export type InspectionReportEnvelope = Dto<'logs', 'InspectionReportEnvelope'>;
 export type InspectionTransfer = Dto<'logs', 'InspectionTransfer'>;
+export type InspectionTransferResult = Dto<'logs', 'InspectionTransferResult'>;
 export type InspectionEmail = Dto<'logs', 'InspectionEmail'>;
+export type MessageEnvelope = Dto<'logs', 'MessageEnvelope'>;
+
+/** `GET /inspection/logs` query — `driver_id` + `date` (window anchor), pagination yo'q (8.11). */
+export type InspectionLogsParams = NonNullable<
+  paths['/inspection/logs']['get']['parameters']['query']
+>;
 
 /* ------------------------------------------------------------------ *
  * HOS (duty)
@@ -551,3 +559,28 @@ export type ChatThreadsListParams = NonNullable<
 export type ChatMessagesParams = NonNullable<
   paths['/chat/threads/{driver_id}/messages']['get']['parameters']['query']
 >;
+
+/**
+ * `GET /company/history` — Company history journali filtri (7.13.5: `table/action/
+ * record_id/user/from/to` + sahifalash). HOS Policy versiyalar tarixi ham shu
+ * endpointdan `action=hos_policy_change` bilan olinadi (`api/queries/hosPolicy.ts`).
+ */
+export type CompanyHistoryParams = NonNullable<
+  paths['/company/history']['get']['parameters']['query']
+>;
+
+/** `GET /support-tickets` — Support & History navbati filtri (Q77). */
+export type SupportTicketsListParams = NonNullable<
+  paths['/support-tickets']['get']['parameters']['query']
+>;
+
+/** `GET /support-tickets/{id}/messages` — ticket thread sahifalash. */
+export type SupportTicketMessagesParams = NonNullable<
+  paths['/support-tickets/{id}/messages']['get']['parameters']['query']
+>;
+
+/** `GET /feedback` — ilova reytingi oqimi filtri (Q80). */
+export type FeedbackListParams = NonNullable<paths['/feedback']['get']['parameters']['query']>;
+
+/** `GET /audit-log` — yagona audit trail filtri (TZ A§17). */
+export type AuditLogListParams = NonNullable<paths['/audit-log']['get']['parameters']['query']>;

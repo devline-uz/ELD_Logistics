@@ -575,3 +575,190 @@ faqat `tasks.md`dagi talab noto'g'ri yozilgan.
    foydalanuvchida — faqat kalit segmenti ko'rinadi. **Backend CR
    nomzodi:** `Message.file_name` maydonini `MessageCreate`/`Message`
    DTO'siga qo'shish.
+
+### D37 — HOS Policy: "versiyalar tarixi" uchun alohida ro'yxat endpointi yo'q (Bosqich 8.1, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.3 (F147) HOS Policy ekranida
+"Versiyalar tarixi: `effective_from`, `created_by`, farqlar (diff)
+ko'rinishi" ni talab qiladi. Swagger'da `GET /company/hos-policy` faqat
+**joriy amaldagi** versiyani qaytaradi ("the hos_policy_versions row whose
+effective_from is the latest one not in the future") — barcha versiyalarni
+sanaydigan `GET /company/hos-policy/versions` (yoki shunga o'xshash)
+endpoint **yo'q**.
+
+**MVP yechimi (`api/queries/hosPolicy.ts`, `useHosPolicyVersions`):**
+mavjud `GET /company/history?action=hos_policy_change` qayta ishlatiladi
+(`auditlog_dto`/`company_dto` `action` enumida `hos_policy_change` bor).
+Bu yondashuv `effective_from`/`created_by`ni **to'liq versiya hujjati**
+sifatida emas, balki audit yozuvi (`field`/`old_value`/`new_value` —
+har o'zgargan parametr uchun alohida qator) sifatida beradi. Ekran diff
+ko'rinishini shu yozuvlardan yig'ishi kerak (bitta `POST` chaqiruvi bir
+nechta audit qatorini hosil qilishi mumkin — `ts` + `edited_by` bo'yicha
+guruhlash tavsiya etiladi).
+
+**Backend CR nomzodi:** `GET /company/hos-policy/versions` (sahifalangan,
+har elementda to'liq `HosPolicy` hujjati — `id`, `effective_from`,
+`created_by`, `policy{}`) — diff'ni frontend ikkita to'liq versiyani
+solishtirib hisoblasa, audit yozuvlarini qo'lda guruhlashdan ko'ra
+ishonchliroq bo'ladi.
+
+### D38 — Notification settings: kanal to'plami TZ'dan farq qiladi (Bosqich 8.1, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.4 matritsa ustunlarini
+`push · email · sms · in_app` deb yozgan. Swagger
+(`company_dto.NotificationSetting.channels` /
+`NotificationSettingUpdate.channels`) enumi — **`push · email · sms ·
+telegram`** (`in_app` yo'q, `telegram` bor).
+
+**Qaror:** backend haqiqat manbai (fe-api §1) — ✅ ekran 4 kanalni
+`push · email · sms · telegram` deb ko'rsatadi, `in_app` yozilmaydi.
+`api/queries/notificationSettings.ts` shu 4 qiymatni backend javobidan
+oladi (o'zi hardcode qilmaydi). Screen-implementer i18n kalitlarida
+`telegram` uchun yorliq qo'shishi kerak (`in_app` emas).
+
+### D39 — Support/Feedback/Inspection: 3 ta bosqich 8.8/8.9/8.11 bo'shlig'i (Bosqich 8.8–8.11, swagger'dan)
+
+`docs/tz/07-9-chat-support-audit.md` §7.10 bilan `admin/openapi/swagger.json`
+solishtirilganda uch joyda bo'shliq topildi:
+
+1. **Ticket detail — "Contact On" / "Email or Phone" ikki maydon deb
+   yozilgan** (§7.10.1 `TICKET DETAILS`), lekin `support_dto.Ticket`da
+   faqat `contact_on` (kanal enum'i: `email|phone|sms|in_app`) bor —
+   haqiqiy email/telefon qiymati DTO'da yo'q. **MVP yechimi:** faqat
+   `Contact On` ko'rsatiladi (`SupportDetailPage.tsx`), alohida
+   email/telefon maydoni chizilmaydi. **Backend CR nomzodi:**
+   `Ticket.contact_value` (tanlangan kanal bo'yicha haydovchi email yoki
+   telefon raqami, snapshot sifatida).
+2. **Feedback — "App version" ustuni** (§7.10.2 ustunlar ro'yxati) —
+   `support_dto.Feedback`da `id/driver_id/driver_name/app_rating/text/
+   submitted_at` bor, `app_version` **yo'q** (garchi `drivers_dto.Driver`
+   da `app_version` mavjud bo'lsa ham — feedback yozuvi bilan
+   bog'lanmagan). **MVP yechimi:** ustun spetsifikatsiya bilan mos
+   qolish uchun saqlanadi, lekin har doim `N/A` (`FeedbackListPage.tsx`).
+   **Backend CR nomzodi:** `Feedback.app_version` (yozuv paytidagi
+   haydovchi ilova versiyasi snapshot sifatida).
+3. **Inspection logs (8.11, `docs/tz/07-9-chat-support-audit.md` §7.12,
+   `[MAY]`)** — `GET /inspection/logs` endpointi swaggerda **mavjud**
+   (`inspection.view`), lekin `api/queries/inspection.ts` hali yozilmagan
+   — bu bosqichning Support/Audit agentiga `src/api/**` fayllari
+   taqiqlangan (boshqa agentga tegishli qatlam), shuning uchun yangi query
+   hook qo'sha olmaydi. **Qaror:** 8.11 `[ ]` qoldirildi (bajarilmadi);
+   keyingi bosqichda `api/queries` egasi `useInspectionLogsList` (va
+   kerak bo'lsa `useInspectionEmail`/`useInspectionTransfer`) hookini
+   qo'shgach, screen-implementer ekranni yozadi.
+
+### D40 — Profile: profilni yangilaydigan endpoint yo'q, `Phone` maydoni DTO'da yo'q (Bosqich 8.6, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.6 Profile ekranida `First Name *
+· Last Name * · Email * · Phone` maydonlarini tahrirlash mumkin bo'lishini
+nazarda tutadi. Swagger'da `/me` yo'lida **faqat `get`** bor — `put`,
+`post`, `patch` barchasi `never` (profilni yangilaydigan endpoint umuman
+yo'q). `/users/{id}` yo'lida ham faqat `delete` bor, `patch`/`put` yo'q —
+hattoki admin o'z profilini shu orqali ham yangilay olmaydi. Bundan
+tashqari `auth_dto.Profile` sxemasida **`phone` maydoni umuman yo'q**
+(`branch_id, company_id, email, first_name, id, is_super_admin,
+last_login_at, last_name, permissions, pin_set, role_id, role_name,
+scope, status, totp_enabled, username`).
+
+**MVP yechimi (`ProfileSettingsPage.tsx`):** ekran faqat o'qiladi — `First
+Name`/`Last Name`/`Email`/`Username`/`Role`/`Status`/`Two-factor` maydonlari
+`GET /me` dan ko'rsatiladi, tahrirlash formasi chizilmaydi. `Phone` maydoni
+umuman ko'rsatilmaydi (backendda yo'q). Sahifa pastida izoh: «Editing your
+name, email and phone isn't available yet. Contact your administrator if
+these details need to change.»
+
+**Backend CR nomzodi:** `PATCH /me` (`first_name`, `last_name`, `phone`) —
+o'z profilini yangilash uchun `authenticated` darajasidagi endpoint;
+`auth_dto.Profile`ga `phone` maydoni qo'shilishi.
+
+### D41 — Security › Change password: joriy parol bilan bevosita almashtirish endpointi yo'q (Bosqich 8.6, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.7 (F151, D20) «`Current password *`
+· `New password *` · `Confirm *`» formasini talab qiladi — sessiya
+o'g'irlangan holatda parolni almashtirishning oldini olish uchun joriy
+parol tasdiqlanishi kerak. Swagger'da bunday endpoint (`POST
+/auth/password/change` yoki shunga o'xshash) **yo'q** — faqat email-token
+asosidagi juftlik bor: `POST /auth/password/forgot` (`login` → har doim
+neytral `202`, Q16) va `POST /auth/password/reset` (`token` + `password`,
+emaildagi havoladan).
+
+**MVP yechimi (`PasswordChangeCard.tsx`):** F151 talab qilgan uchta
+maydon (joriy/yangi/tasdiq parol) to'liq zod validatsiyasi bilan
+ko'rsatiladi — `currentPassword` foydalanuvchi hozirgi parolini bilishini
+mijoz tomonida tasdiqlaydi, lekin hech qayerga yuborilmaydi (yubora
+oladigan endpoint yo'q). Submit — mavjud `POST /auth/password/forgot`
+orqali `profile.username` bilan reset-havolasi emailga yuboriladi; forma
+tepasida doimiy izoh: «Password changes are confirmed by email — your
+current password is never sent or stored by this form.»
+
+**Backend CR nomzodi:** `POST /auth/password/change`
+(`current_password`, `new_password`) — `authenticated`, sessiyada
+turgan holatda to'g'ridan-to'g'ri almashtirish (email oqimisiz).
+
+### D42 — Security › 2FA: o'chirish endpointi yo'q (Bosqich 8.6, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.7 «Two-factor authentication:
+yoqish/qayta o'rnatish» deb yozadi, topshiriq esa (Bosqich 8.6) parol
+bilan tasdiqlanadigan o'chirish oqimini ham kutadi. Swagger'da faqat
+`POST /auth/2fa/setup` (QR/secret) va `POST /auth/2fa/verify` (kod
+tasdiqlash, yoqish) bor — 2FA'ni **o'chiradigan** endpoint yo'q.
+
+**MVP yechimi (`TwoFactorCard.tsx`):** 2FA yoqilgan holatda o'chirish
+tugmasi ko'rsatilmaydi — o'rniga izoh: «Disabling two-factor
+authentication isn't available yet. Contact support for help.»
+
+**Backend CR nomzodi:** `POST /auth/2fa/disable` (`password` majburiy) —
+`authenticated`, joriy parol bilan tasdiqlangan holda 2FA'ni o'chirish.
+
+### D43 — Settings › Branches: `Users`/`Units` ustunlari uchun maydon yo'q (Bosqich 8.3, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.2 ustun ro'yxatini «`Name ·
+Address · Timezone · Users · Units · Action`» deb beradi. Swagger'dagi
+`company_dto.Branch` (`GET /company/branches` javobi) faqat `id`, `name`,
+`address`, `timezone`, `created_at`, `updated_at` maydonlarini qaytaradi —
+filialga tayinlangan foydalanuvchi yoki unit sonini beruvchi maydon
+(yoki alohida agregatsiya endpointi) **yo'q**.
+
+**MVP yechimi (`branchColumns.tsx`):** `Users`/`Units` ustunlari
+ko'rsatilmaydi — jadval `Name · Address · Timezone · Action` bilan
+cheklanadi (backend hisoblab bermagan sonni frontend uydirmaydi).
+
+**Backend CR nomzodi:** `GET /company/branches` javobiga
+`users_count`/`units_count` maydonlari (yoki alohida `GET
+/company/branches/{id}/stats`) qo'shilishi — shunda ustunlar TZ bo'yicha
+to'liq tiklanadi.
+
+### D44 — Company history: `table`/`user` filtri uchun katalog endpointi yo'q (Bosqich 8.7, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.5 `table` va `user` filtrlarini
+talab qiladi (F149). `GET /company/history` bu ikkalasini erkin matn
+query-parametri sifatida qabul qiladi, lekin qiymatlar katalogini
+beruvchi endpoint yo'q: umumiy audit modulida jadval nomlari uchun `GET
+/audit-log/tables` bor, `/company/history` uchun ekvivalenti yo'q; muharrir
+(`user`) uchun ham nomi bo'yicha qidiruvchi alohida endpoint yo'q (faqat
+`GET /users` — boshqa modul, ruxsat va sahifalash bilan cheklangan).
+
+**MVP yechimi (`CompanyHistoryPage.tsx`, `DebouncedTextFilter.tsx`):**
+ikkala filtr ham 400ms debounce'langan erkin matn maydoni sifatida
+beriladi (`table` — jadval nomi, `user` — muharrir ID'si) — select/combobox
+emas, chunki tanlov ro'yxati yo'q.
+
+**Backend CR nomzodi:** `GET /company/history/tables` (audit-log
+modulidagi ekvivalenti kabi) + `user` filtrini ID o'rniga qisman ism
+qidiruviga aylantirish (yoki `GET /company/history` javobiga
+`edited_by_name` allaqachon bor — filtr tomonida ham shu nomlarni
+qaytaruvchi `GET /company/history/editors` yordamchi endpointi).
+
+### D45 — HOS Policy: backendda TZ ro'yxatida yo'q `sleeper_berth_available` maydoni (Bosqich 8.4, swagger'dan)
+
+`docs/tz/07-13-settings-admin.md` §7.13.3 (F147) HOS Policy uchun 15 MUST +
+2 [MAY] parametr sanaydi. Swagger `company_dto.HosPolicy` /
+`HosPolicyUpdate` da bundan tashqari **`sleeper_berth_available`** (bool)
+maydoni bor — TZ ro'yxatida umuman uchramaydi.
+
+**Qaror:** backend haqiqat manbai (fe-api §1) — ✅ maydon formada
+ko'rsatiladi (`HosPolicyForm.tsx`), chunki `POST /company/hos-policy` uni
+qabul qiladi va yashirilsa saqlashda joriy qiymat yo'qolishi mumkin.
+
+**Backend CR nomzodi:** talab qilinmaydi; TZ §7.13.3 ro'yxatiga maydonni
+qo'shish (hujjat tomonidagi tuzatish).

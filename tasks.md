@@ -217,19 +217,19 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** HOS policy versiyalash oqimi to'g'ri, `unit_system`/`regulation_profile` o'zgarishi butun UI ni qayta formatlaydi, audit 4 ko'rinishi bitta manbadan.
 
 ```markdown
-- [ ] 8.1 `api/queries/company.ts`, `branches.ts`, `hosPolicy.ts`, `notificationSettings.ts`, `support.ts`, `feedback.ts`, `audit.ts`
-- [ ] 8.2 Settings › Company — barcha maydonlar, logo yuklash, profil o'zgarishida tasdiq + qayta formatlash
-- [ ] 8.3 Settings › Branches CRUD 🎨
-- [ ] 8.4 Settings › HOS Policy — 15 parametr, soat:daqiqa kiritish, presetlar, **yangi versiya** semantikasi + tarix/diff 🎨
-- [ ] 8.5 Settings › Notifications — 16 × 4 matritsa, `hos_*`/`eld_*` push majburiy 🎨
-- [ ] 8.6 Settings › Profile (`Last Name`, to'g'ri placeholder'lar) va Security (joriy parol, 2FA, sessiyalar)
-- [ ] 8.7 Settings › Company history (filtrlar `user`/`table`)
-- [ ] 8.8 Contact Support — ro'yxat, detal + **thread**, status modali 🎨
-- [ ] 8.9 Feedback — ro'yxat + to'liq matn modali 🎨
-- [ ] 8.10 Audit (`Histories`) — `audit-log` + `audit-log/tables`, `Add User` tugmasi yo'q, `N/A`, 3 harfli hafta kuni
-- [ ] 8.11 Inspection logs ekrani **[MAY]** 🎨
-- [ ] 8.12 Testlar: HOS policy publish tasdig'i, profil o'zgarishida format almashinuvi
-- [ ] 8.13 `frontend-security-reviewer` + `frontend-code-reviewer`
+- [x] 8.1 `api/queries/company.ts`, `branches.ts`, `hosPolicy.ts`, `notificationSettings.ts`, `support.ts`, `feedback.ts`, `audit.ts`
+- [x] 8.2 Settings › Company — barcha maydonlar, logo yuklash, profil o'zgarishida tasdiq + qayta formatlash
+- [x] 8.3 Settings › Branches CRUD 🎨
+- [x] 8.4 Settings › HOS Policy — 15 parametr, soat:daqiqa kiritish, presetlar, **yangi versiya** semantikasi + tarix/diff 🎨
+- [x] 8.5 Settings › Notifications — 16 × 4 matritsa, `hos_*`/`eld_*` push majburiy 🎨
+- [x] 8.6 Settings › Profile (`Last Name`, to'g'ri placeholder'lar) va Security (joriy parol, 2FA, sessiyalar)
+- [x] 8.7 Settings › Company history (filtrlar `user`/`table`)
+- [x] 8.8 Contact Support — ro'yxat, detal + **thread**, status modali 🎨
+- [x] 8.9 Feedback — ro'yxat + to'liq matn modali 🎨
+- [x] 8.10 Audit (`Histories`) — `audit-log` + `audit-log/tables`, `Add User` tugmasi yo'q, `N/A`, 3 harfli hafta kuni
+- [x] 8.11 Inspection logs ekrani **[MAY]** 🎨 — `/inspection` (`inspection.view`), `api/queries/inspection.ts` + MSW handlerlari, "Select a driver" bo'sh holati, `Email report` (`inspection.email`); `POST /inspection/transfer` hooki yozilgan, lekin ekranga ulanmagan (yuklab olish oqimi speclanmagan, D39)
+- [x] 8.12 Testlar: HOS policy publish tasdig'i, profil o'zgarishida format almashinuvi
+- [x] 8.13 `frontend-security-reviewer` (kritik 2 -> 0: audit/history da maxfiy maydonlar maskalandi, marshrut in'ektsiyasi) + `frontend-code-reviewer` (dublikat 0: lib/auditChange.ts, 5 joyda UTC sana siljishi tuzatildi)
 ```
 
 ### Bosqich 9 — Sayqal, testlar, ishga tushirish
@@ -291,7 +291,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 | 8 | Settings, Support, Audit | ⬜ | `feat/stage-8-settings` |
 | 9 | Sayqal va deploy | ⬜ | `feat/stage-9-polish` |
 
-
+/
 ---
 
 ## Texnik qarz (bosqich oxirida hal qilinadi)
@@ -330,7 +330,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 - [ ] TD13 `VITE_FILES_UPLOAD_HOST` / `VITE_FILES_BASE_URL` prod muhitda to'ldirilishi shart — aks holda yuklash host oq ro'yxati o'chiq qoladi.
 
-- [ ] TD14 `components/layout/BrandBar.tsx` -> `features/notifications` importi (qatlam yo'nalishi teskari).
+- [x] TD14 `components/layout/BrandBar.tsx` -> `features/notifications` importi (qatlam yo'nalishi teskari).
       To'g'ri yechim: widget'ni `app/layouts` da kompozitsiya qilish. Bosqich 8 da.
 
 - [ ] TD15 `features/chat/lib/dateGroups.ts` va `features/notifications/lib/groupByDay.ts` —

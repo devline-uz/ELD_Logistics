@@ -1,0 +1,127 @@
+{
+  "audit": {
+    "list": {
+      "title": "Histories",
+      "filters": {
+        "table": "Table",
+        "user": "User",
+        "dateRange": "Date range"
+      },
+      "columns": {
+        "date": "Date",
+        "user": "User (Edited By)",
+        "action": "Action",
+        "table": "Table",
+        "record": "Record",
+        "changes": "Changes"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredTitle": "No results",
+        "filteredDescription": "No records match your filters"
+      },
+      "changeDeleted": "Deleted {{field}}",
+      "changeUpdated": "{{field}} changed from {{oldValue}} to {{newValue}}",
+      "changeField": "Changed {{field}}"
+    }
+  },
+  "inspection": {
+    "list": {
+      "title": "Inspection Logs",
+      "actions": {
+        "emailReport": "Email report"
+      },
+      "filters": {
+        "driver": "Driver",
+        "driverPlaceholder": "Select a driver",
+        "date": "Date"
+      },
+      "columns": {
+        "date": "Date",
+        "driver": "Driver",
+        "coDriver": "Co-driver",
+        "unitNumber": "Unit #",
+        "distance": "Distance",
+        "certification": "Certification",
+        "ready": "Ready",
+        "violations": "Violations"
+      },
+      "certificationStatus": {
+        "uncertified": "Uncertified",
+        "certified": "Certified",
+        "needs_recertify": "Needs recertify"
+      },
+      "ready": {
+        "ready": "Ready",
+        "notReady": "Not ready"
+      },
+      "violationType": {
+        "form_manner_trailer": "Form & manner: trailer",
+        "form_manner_doc": "Form & manner: document",
+        "drive_limit": "Drive limit",
+        "shift_limit": "Shift limit",
+        "break_required": "Break required",
+        "cycle_limit": "Cycle limit",
+        "uncertified_log": "Uncertified log",
+        "unidentified_driving": "Unidentified driving",
+        "eld_malfunction": "ELD malfunction",
+        "missing_dvir": "Missing DVIR"
+      },
+      "empty": {
+        "selectDriverTitle": "Select a driver",
+        "selectDriverDescription": "Select driver first, to display the data in the table.",
+        "title": "No Data Found",
+        "description": "There is no data to show you right now"
+      }
+    },
+    "emailModal": {
+      "title": "Email inspection report",
+      "description": "Send the roadside inspection window for {{driverName}} as a PDF to the address below.",
+      "fields": {
+        "email": "Email",
+        "emailPlaceholder": "inspector@dot.gov",
+        "comment": "Comment"
+      },
+      "actions": {
+        "send": "Send"
+      },
+      "toast": {
+        "sent": "Report sent to {{email}} for {{driverName}}"
+      },
+      "errors": {
+        "generic": "Could not send the report. Please try again."
+      },
+      "validation": {
+        "emailRequired": "Email is required",
+        "emailMax": "Email must be 255 characters or fewer",
+        "emailInvalid": "Enter a valid email address",
+        "commentMax": "Comment must be 500 characters or fewer"
+      }
+    }
+  },
+  "enums": {
+    "audit_action": {
+      "insert": "Insert",
+      "create": "Create",
+      "update": "Update",
+      "soft_delete": "Deleted",
+      "delete": "Deleted permanently",
+      "restore": "Restored",
+      "login": "Signed in",
+      "logout": "Signed out",
+      "failed_login": "Failed sign-in",
+      "export": "Exported",
+      "permission_change": "Permission change",
+      "log_edit_request": "Log edit request",
+      "hos_policy_change": "HOS policy change",
+      "token_reuse": "Token reuse detected",
+      "cross_tenant_attempt": "Cross-tenant attempt",
+      "certify": "Certified",
+      "assign": "Assigned",
+      "approve": "Approved",
+      "reject": "Rejected",
+      "license_reveal": "License revealed"
+    }
+  }
+}

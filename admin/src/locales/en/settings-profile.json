@@ -1,0 +1,89 @@
+{
+  "settings": {
+    "profile": {
+      "title": "My profile",
+      "subtitle": "Your personal account details.",
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "username": "Username",
+        "role": "Role",
+        "status": "Status",
+        "twoFactor": "Two-factor authentication"
+      },
+      "status": {
+        "invited": "Invited",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "twoFactorEnabled": "Enabled",
+      "twoFactorDisabled": "Disabled",
+      "readOnlyNotice": "Editing your name, email and phone isn't available yet. Contact your administrator if these details need to change.",
+      "loadError": "We couldn't load your profile.",
+      "empty": "There is no profile data to show."
+    },
+    "security": {
+      "title": "Security",
+      "subtitle": "Manage your password, two-factor authentication and active sessions.",
+      "password": {
+        "title": "Change password",
+        "notice": "Password changes are confirmed by email — your current password is never sent or stored by this form.",
+        "currentLabel": "Current password",
+        "newLabel": "New password",
+        "confirmLabel": "Confirm new password",
+        "submit": "Send password reset email",
+        "success": "Password reset link sent — check your inbox to finish changing your password.",
+        "error": "We couldn't send the password reset email. Try again."
+      },
+      "twoFactor": {
+        "title": "Two-factor authentication",
+        "enabledDescription": "Two-factor authentication is protecting your account.",
+        "disabledDescription": "Add an extra layer of security to your account with an authenticator app.",
+        "enableButton": "Enable two-factor authentication",
+        "cancelButton": "Cancel",
+        "disableUnavailable": "Disabling two-factor authentication isn't available yet. Contact support for help.",
+        "qrAlt": "QR code for the authenticator app",
+        "manualEntry": "Or enter this code manually:",
+        "codeLabel": "6-digit code",
+        "verifyButton": "Verify and enable",
+        "loadError": "We couldn't start two-factor setup. Try again.",
+        "invalidCode": "That code isn't valid. Try again.",
+        "successToast": "Two-factor authentication is enabled."
+      },
+      "sessions": {
+        "title": "Active sessions",
+        "deviceType": "Device type",
+        "deviceTypeLabels": {
+          "web": "Web",
+          "phone": "Phone",
+          "tablet": "Tablet"
+        },
+        "device": "Device",
+        "ip": "IP address",
+        "lastSeen": "Last seen",
+        "current": "Current session",
+        "revoke": "Revoke",
+        "revokeAllOthers": "Sign out of all other sessions",
+        "confirmRevokeTitle": "Are you absolutely sure?",
+        "confirmRevoke": "Are you sure you want to revoke this session?",
+        "confirmRevokeCurrent": "This is your current session. Revoking it will sign you out.",
+        "confirmRevokeOthers": "Are you sure you want to sign out of all other sessions?",
+        "revoked": "Session revoked",
+        "revokedAllOthers": "Signed out of all other sessions",
+        "loadError": "We couldn't load your active sessions.",
+        "empty": "No active sessions found."
+      },
+      "validation": {
+        "currentRequired": "Enter your current password.",
+        "confirmRequired": "Confirm your new password.",
+        "passwordMin": "Must be at least 10 characters.",
+        "passwordLetter": "Must include at least one letter.",
+        "passwordDigit": "Must include at least one number.",
+        "mismatch": "Passwords do not match.",
+        "sameAsCurrent": "New password must be different from the current password.",
+        "totpCode": "Enter the 6-digit code from your authenticator app."
+      }
+    }
+  }
+}

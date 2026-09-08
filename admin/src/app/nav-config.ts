@@ -284,7 +284,10 @@ export const EXTRA_ROUTE_TITLES: Readonly<Record<string, string>> = Object.freez
   '/routes': 'pages.routes.title',
   '/settings/profile': 'pages.settingsProfile.title',
   '/settings/company': 'pages.settingsCompany.title',
+  '/settings/branches': 'pages.settingsBranches.title',
+  '/settings/history': 'pages.settingsHistory.title',
   '/settings/hos': 'pages.settingsHos.title',
+  '/settings/notifications': 'pages.settingsNotifications.title',
   '/settings/security': 'pages.settingsSecurity.title',
   // Nav tashqarisidagi ekran — faqat qo'ng'iroq dropdown'idan ochiladi (7.8).
   '/notifications': 'notifications.page.title',
