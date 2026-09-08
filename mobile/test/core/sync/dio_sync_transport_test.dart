@@ -289,6 +289,42 @@ void main() {
       expect(response.truncated, isTrue);
     });
 
+    test('#B-BUG2: `/violations` ruxsat etilgan `per_page` va RFC3339 `from` bilan', () async {
+      final List<RequestOptions> seen = <RequestOptions>[];
+      await pullWith(
+        <String, Object?>{
+          'server_time': '2026-09-07T12:00:05Z',
+          'next_since': '2026-09-07T11:59:00Z',
+        },
+        since: '2026-09-07T11:00:00Z',
+        seen: seen,
+      );
+
+      final RequestOptions violations = seen.firstWhere(
+        (RequestOptions o) => o.path == '/violations',
+      );
+      // `httpx.AllowedPerPage` = 10/25/50 — 200 `422 VALIDATION_ERROR` berardi.
+      expect(violations.queryParameters['per_page'], anyOf(10, 25, 50));
+      expect(
+        DateTime.tryParse(violations.queryParameters['from']! as String),
+        DateTime.utc(2026, 9, 7, 11),
+      );
+    });
+
+    test('#B-BUG2: RFC3339 bo\'lmagan kursor `from` sifatida yuborilmaydi', () async {
+      final List<RequestOptions> seen = <RequestOptions>[];
+      await pullWith(
+        <String, Object?>{'server_time': '2026-09-07T12:00:05Z', 'next_since': 'opaque-cursor'},
+        since: 'opaque-cursor',
+        seen: seen,
+      );
+
+      final RequestOptions violations = seen.firstWhere(
+        (RequestOptions o) => o.path == '/violations',
+      );
+      expect(violations.queryParameters.containsKey('from'), isFalse);
+    });
+
     test('quick_notes satrlar massivi map ga o\'giriladi', () async {
       final PullResponse response = await pullWith(<String, Object?>{
         'server_time': '2026-09-07T12:00:05Z',

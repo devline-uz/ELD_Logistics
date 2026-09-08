@@ -48,12 +48,39 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AppConfig? _config;
   DriverProfile? _profile;
+  DriverRecord? _driverRecord;
 
   @override
   AppConfig? get cachedConfig => _config;
 
   @override
   DriverProfile? get cachedProfile => _profile;
+
+  @override
+  DriverRecord? get cachedDriverRecord => _driverRecord;
+
+  /// `#B-BUG1` — `drivers.id` va tayinlangan unit login javobida yo'q, shuning
+  /// uchun ular alohida o'qiladi. Xato yutiladi: bu ikkilamchi ma'lumot.
+  @override
+  Future<DriverRecord?> loadDriverRecord() async {
+    final DriverProfile? profile = _profile;
+    if (profile == null) {
+      return null;
+    }
+    try {
+      final DriverRecord? record = await _api.driverRecord(
+        userId: profile.id,
+        username: profile.username,
+        slot: _slot,
+      );
+      if (record != null) {
+        _driverRecord = record;
+      }
+      return _driverRecord;
+    } on ApiError catch (_) {
+      return _driverRecord;
+    }
+  }
 
   // --- Bootstrap (§4.2) ------------------------------------------------------
 
@@ -132,6 +159,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       await _persist(tokens);
       _profile = await _api.me(slot: _slot);
+      await loadDriverRecord();
       return BootstrapResult(destination: BootstrapDestination.home, config: config);
     } on ApiError catch (error) {
       if (error.isOffline) {
@@ -169,6 +197,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     await _persist(outcome.tokens);
     _profile = outcome.profile;
+    await loadDriverRecord();
     await _writeSlotStatus(
       SessionStatus.active,
       driverId: outcome.profile?.id,
@@ -203,6 +232,7 @@ class AuthRepositoryImpl implements AuthRepository {
       }
     } else {
       _profile = null;
+      _driverRecord = null;
       // Outbox tegilmaydi (M17) — faqat sessiya tozalanadi.
       await _vault.clearSession(_slot);
       final DualSessionState remaining = await _writeSlotStatus(SessionStatus.empty);
@@ -355,6 +385,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<DriverProfile> me() async {
     final DriverProfile profile = await _api.me(slot: _slot);
     _profile = profile;
+    await loadDriverRecord();
     return profile;
   }
 
