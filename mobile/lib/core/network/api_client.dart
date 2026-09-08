@@ -28,15 +28,7 @@ class ApiClient {
 
   final Dio dio;
 
-  static ApiClient create({
-    required SecureVault vault,
-    required RefreshCoordinator refreshCoordinator,
-    required String appVersion,
-    required Logger logger,
-    ActiveSlotHolder? activeSlot,
-    String? baseUrl,
-    HttpClientAdapter? adapter,
-  }) {
+  static Dio _baseDio({String? baseUrl, HttpClientAdapter? adapter}) {
     final Dio dio = Dio(
       BaseOptions(
         baseUrl: baseUrl ?? Env.apiBaseUrl,
@@ -60,6 +52,42 @@ class ApiClient {
       // Bayroq yoqilgan-u pin ro'yxati bo'sh bo'lsa — StateError (fail-closed).
       CertificatePinning.install(dio);
     }
+    return dio;
+  }
+
+  /// `POST /auth/refresh` uchun **alohida**, `AuthInterceptor` siz transport.
+  ///
+  /// Refresh klienti asosiy `Dio` dan foydalansa, DI grafida
+  /// `Dio → RefreshCoordinator → TokenRefreshClient → Dio` sikli paydo bo'ladi
+  /// (Riverpod `CircularDependencyError`) va ish vaqtida refresh o'zini o'zi
+  /// chaqirishi mumkin. Shu sababli refresh oqimi hech qachon auth/retry
+  /// zanjiriga tegmaydigan sof transportda ketadi. Mutex — `RefreshCoordinator`
+  /// da, ya'ni bu yerda takrorlanmaydi.
+  static Dio createRefreshTransport({
+    required SecureVault vault,
+    required String appVersion,
+    required Logger logger,
+    String? baseUrl,
+    HttpClientAdapter? adapter,
+  }) {
+    final Dio dio = _baseDio(baseUrl: baseUrl, adapter: adapter);
+    dio.interceptors.addAll(<Interceptor>[
+      IdempotencyInterceptor(appVersion: appVersion, deviceId: vault.deviceId),
+      LoggingInterceptor(logger: logger, enabled: Env.current != AppFlavor.prod),
+    ]);
+    return dio;
+  }
+
+  static ApiClient create({
+    required SecureVault vault,
+    required RefreshCoordinator refreshCoordinator,
+    required String appVersion,
+    required Logger logger,
+    ActiveSlotHolder? activeSlot,
+    String? baseUrl,
+    HttpClientAdapter? adapter,
+  }) {
+    final Dio dio = _baseDio(baseUrl: baseUrl, adapter: adapter);
 
     dio.interceptors.addAll(<Interceptor>[
       SlotInterceptor(activeSlot ?? ActiveSlotHolder()),

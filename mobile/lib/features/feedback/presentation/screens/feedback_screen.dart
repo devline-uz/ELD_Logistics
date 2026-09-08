@@ -135,7 +135,7 @@ class FeedbackBody extends ConsumerWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: Spacing.cardGap),
+              const SizedBox(height: Spacing.s25),
               SettingsCard(
                 children: <Widget>[
                   _Question(

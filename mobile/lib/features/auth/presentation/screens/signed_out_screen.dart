@@ -18,6 +18,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/router/routes.dart';
 import '../../../../core/security/secure_vault.dart';
+import '../../../../core/session/session_terminator.dart';
 import '../../../../core/ui/ui.dart';
 import '../../data/session_manager.dart';
 import '../../domain/driver_session.dart';
@@ -62,6 +63,9 @@ class SignedOutScreen extends ConsumerWidget {
           onPressed: () async {
             // Slot bo'shatiladi (outbox tegilmaydi — M17), keyin `M-02`.
             await ref.read(sessionManagerProvider.notifier).signOut(DriverSlot.primary);
+            // #B-3: sabab tozalanadi — aks holda keyingi qo'riqchi tekshiruvi
+            // haydovchini yana `M-56` ga qaytarardi.
+            ref.read(sessionEndReasonProvider.notifier).set(SessionEndReason.none);
             if (context.mounted) {
               context.go(AppRoute.login);
             }

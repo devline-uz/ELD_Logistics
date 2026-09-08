@@ -50,6 +50,7 @@ class HomeTabletActions {
 
 class HomeTabletView extends StatelessWidget {
   const HomeTabletView({
+    required this.banners,
     required this.state,
     required this.controller,
     required this.now,
@@ -58,6 +59,9 @@ class HomeTabletView extends StatelessWidget {
     required this.onEditDocuments,
     super.key,
   });
+
+  /// Ekran tepasidagi bannerlar (ELD, oflayn) — screen padding ichida.
+  final List<Widget> banners;
 
   final HomeState state;
   final HomeController controller;
@@ -89,6 +93,10 @@ class HomeTabletView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        for (final Widget banner in banners) ...<Widget>[
+          banner,
+          const SizedBox(height: Spacing.s10),
+        ],
         Expanded(
           flex: _topFlex,
           child: Row(
@@ -122,6 +130,18 @@ class HomeTabletView extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Cheklangan balandlikda karta tarkibi kesilmasligi uchun ichki scroll
+/// (M120: **ekran** scroll qilinmaydi, karta ichidagisi ruxsat).
+class _NoOverflow extends StatelessWidget {
+  const _NoOverflow({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) =>
+      SingleChildScrollView(physics: const ClampingScrollPhysics(), child: child);
 }
 
 /// Chap ustun — `HOURS OF SERVICE`, 4 ta `HosRingIndicator`.
@@ -181,17 +201,21 @@ class _DutyColumn extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: <Widget>[
       Flexible(
-        child: HomeStatusCard(
-          status: state.duty.current,
-          special: state.duty.special,
-          elapsed: state.duty.since == null ? Duration.zero : now.difference(state.duty.since!),
-          sleeperAvailable: state.duty.sleeperAvailable,
-          onSelected: onChangeStatus,
+        child: _NoOverflow(
+          child: HomeStatusCard(
+            status: state.duty.current,
+            special: state.duty.special,
+            elapsed: state.duty.since == null ? Duration.zero : now.difference(state.duty.since!),
+            sleeperAvailable: state.duty.sleeperAvailable,
+            onSelected: onChangeStatus,
+          ),
         ),
       ),
       const SizedBox(height: Spacing.s15),
       Flexible(
-        child: HomeTripCard(trip: state.trip, onEdit: onEditDocuments),
+        child: _NoOverflow(
+          child: HomeTripCard(trip: state.trip, onEdit: onEditDocuments),
+        ),
       ),
     ],
   );
@@ -225,7 +249,9 @@ class _ActionsColumn extends StatelessWidget {
         ),
         const SizedBox(height: Spacing.s15),
         Flexible(
-          child: HomeCertifyCard(days: state.certifyDays, onTap: actions.onCertify),
+          child: _NoOverflow(
+            child: HomeCertifyCard(days: state.certifyDays, onTap: actions.onCertify),
+          ),
         ),
       ],
     );

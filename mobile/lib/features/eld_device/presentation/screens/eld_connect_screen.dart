@@ -31,7 +31,12 @@ class EldConnectScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
     // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
     maxContentWidth: ContentWidth.single,
-    appBar: AppBarPrimary(title: context.l10n.eldConnectTitle, leading: const AppBackButton()),
+    // §21.6 (Figma yo'q): sub-ekran naqshi — faqat orqaga tugmasi + sarlavha.
+    appBar: AppBarPrimary(
+      title: context.l10n.eldConnectTitle,
+      leading: const AppBackButton(),
+      showDefaultActions: false,
+    ),
     backgroundColor: context.colors.bg,
     banners: const <Widget>[EldStatusBanner()],
     phone: (BuildContext context) => const EldConnectBody(),

@@ -1,5 +1,5 @@
 /// **M-50 Contact Support (tiketlar ro'yxati)** (`/support`) —
-/// Figma `1179:6892` (light) / `2665:28123` (dark).
+/// Figma `1179:7142` (light) / `2665:36915` (dark), MAP.md §1.
 ///
 /// Bo'sh holatda `EmptyState` + `Add Ticket` (`M-49`). Ro'yxat **faqat
 /// onlayn** — tiketlar lokal keshda saqlanmaydi (M115 doirasidan tashqari).
@@ -24,7 +24,12 @@ class SupportListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
     // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
     maxContentWidth: ContentWidth.wide,
-    appBar: AppBarPrimary(title: context.l10n.supportTitle, leading: const AppBackButton()),
+    // Figma `1179:7142` app bar: faqat orqaga tugmasi + sarlavha.
+    appBar: AppBarPrimary(
+      title: context.l10n.supportTitle,
+      leading: const AppBackButton(),
+      showDefaultActions: false,
+    ),
     backgroundColor: context.colors.bg,
     phone: (BuildContext context) => const SupportListBody(),
     tablet: (BuildContext context) => const SupportListBody(asTable: true),

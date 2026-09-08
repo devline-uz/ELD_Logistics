@@ -15,6 +15,7 @@ import '../../../../core/eld/eld_connection_manager.dart';
 import '../../../../core/eld/eld_providers.dart';
 import '../../../../core/error/api_error.dart';
 import '../../../../core/security/secure_vault.dart';
+import '../../../../core/session/session_terminator.dart';
 import '../../../duty_status/data/duty_status_providers.dart';
 import '../../../duty_status/domain/duty_status_models.dart';
 import '../../data/auth_providers.dart';
@@ -118,18 +119,14 @@ class LeaveTruckController extends Notifier<LeaveTruckState> {
   /// To'liq chiqish (drawer'dagi qizil `Logout`, `pause=false`).
   ///
   /// Outbox **o'chirilmaydi** (M17) — yozuvlar keyingi login'da yuboriladi.
+  /// #B-1: server chaqiruvi **best-effort** — `401 TOKEN_REVOKED` yoki tarmoq
+  /// yo'qligi chiqishni to'xtatmaydi, lokal holat baribir tozalanadi.
   Future<void> logout() async {
     state = const LeaveTruckState(busy: true);
     final DriverSlot slot = _session.activeSlot;
-    try {
-      await _auth.logout(pause: false);
-    } on ApiError catch (error) {
-      if (!error.isOffline) {
-        state = LeaveTruckState(error: error);
-        return;
-      }
-    }
-    await _sessions.signOut(slot);
+    await ref
+        .read(sessionTerminatorProvider)
+        .signOut(slot: slot, serverLogout: () => _auth.logout(pause: false));
     state = const LeaveTruckState();
   }
 

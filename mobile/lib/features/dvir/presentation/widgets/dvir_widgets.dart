@@ -85,7 +85,7 @@ class DvirValueBox extends StatelessWidget {
       constraints: BoxConstraints(minHeight: touchTarget(context)),
       padding: const EdgeInsets.symmetric(horizontal: Spacing.s15, vertical: Spacing.s10),
       decoration: BoxDecoration(
-        color: c.surface,
+        color: c.bg,
         borderRadius: Radii.inputRadius,
         border: Border.all(color: c.stroke, width: Strokes.thin),
       ),

@@ -24,17 +24,18 @@ abstract final class Spacing {
   /// Ruxsat etilgan shkala (lint/test uchun).
   static const List<double> scale = <double>[s5, s10, s15, s20, s25, s30, s40];
 
-  /// Ekranning gorizontal padding'i — Figma da o'lchangan 16 dp.
-  static const double screenPaddingPhone = 16;
+  /// Ekranning gorizontal padding'i — Figma: 24 dp (karta eni 393 − 2×24 = 345).
+  /// PARITY #B-07.
+  static const double screenPaddingPhone = 24;
 
   /// Planshetda kengroq maydon (tz-mobile §3).
   static const double screenPaddingTablet = 24;
 
-  /// Kartalar orasidagi vertikal oraliq.
-  static const double cardGap = s10;
+  /// Kartalar orasidagi vertikal oraliq — Figma 15 (#B-11).
+  static const double cardGap = s15;
 
-  /// Karta ichidagi padding.
-  static const double cardPadding = s15;
+  /// Karta ichidagi padding — Figma 20 (#B-10).
+  static const double cardPadding = s20;
 }
 
 /// Chegara qalinligi (`tokens.json` → `stroke`).

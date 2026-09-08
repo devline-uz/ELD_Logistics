@@ -23,6 +23,26 @@
   "logsColumnNotes": "Notes",
   "logsColumnAction": "Action",
   "@logsColumnAction": { "description": "M99: kanonik ustun nomi (planshetdagi 'Edit' rad etildi)" },
+  "logsTotalOff": "OFF {value}",
+  "@logsTotalOff": {
+    "description": "M-23 jamilar satri — OFF ustuni (M98)",
+    "placeholders": { "value": { "type": "String" } }
+  },
+  "logsTotalSb": "SB {value}",
+  "@logsTotalSb": {
+    "description": "M-23 jamilar satri — SB ustuni (M98)",
+    "placeholders": { "value": { "type": "String" } }
+  },
+  "logsTotalDr": "DR {value}",
+  "@logsTotalDr": {
+    "description": "M-23 jamilar satri — DR ustuni (M98)",
+    "placeholders": { "value": { "type": "String" } }
+  },
+  "logsTotalOn": "ON {value}",
+  "@logsTotalOn": {
+    "description": "M-23 jamilar satri — ON ustuni (M98)",
+    "placeholders": { "value": { "type": "String" } }
+  },
   "logsTotals": "OFF {off} · SB {sb} · DR {dr} · ON {on}",
   "@logsTotals": {
     "description": "M98: qisqartma + HH:mm",
@@ -70,6 +90,10 @@
 
   "certifyTitle": "Certify (Last 8 days)",
   "@certifyTitle": { "description": "M124: oyna doim 8 kun" },
+  "certifyTitleShort": "Certify",
+  "@certifyTitleShort": { "description": "M-29 app bar sarlavhasining qalin qismi" },
+  "certifyTitleSuffix": "(Last 8 days)",
+  "@certifyTitleSuffix": { "description": "M-29 app bar sarlavhasining yengil suffiksi" },
   "certifyToday": "Certify Today",
   "certifyAll": "Certify All",
   "certifySelected": "Certify Selected ({count})",

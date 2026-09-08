@@ -60,8 +60,13 @@ class NotificationsScreen extends ConsumerWidget {
     );
 
     return AdaptiveScaffold(
+      // Figma `1156:7135` app bar: orqaga tugmasi + sarlavha, standart amal
+      // guruhi (bell/mail/refresh) yo'q — o'rniga `Mark all read` (dizaynda
+      // yo'q, TZ §15 talab qiladi).
       appBar: AppBarPrimary(
         title: l10n.notifTitle,
+        leading: const AppBackButton(),
+        showDefaultActions: false,
         actions: <Widget>[
           if (list.any((AppNotification n) => !n.read))
             AppButton.text(

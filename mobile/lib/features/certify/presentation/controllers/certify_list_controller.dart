@@ -56,6 +56,18 @@ class CertifyListController extends Notifier<CertifyListState> {
 
   bool isSelected(CertifyDay day) => state.selected.contains(day.date);
 
+  /// Ro'yxat ustidagi `Certify Today` qatori uchun bugungi kun (agar u
+  /// sertifikatlanadigan bo'lsa). Aks holda qator ko'rsatilmaydi.
+  CertifyDay? todayIn(List<CertifyDay> days) {
+    final DateTime t = today;
+    for (final CertifyDay day in days) {
+      if (day.date == t && day.selectable) {
+        return day;
+      }
+    }
+    return null;
+  }
+
   /// Tugma rejimi (§12.2).
   CertifyAction actionFor(List<CertifyDay> days) {
     if (state.selected.isEmpty) {

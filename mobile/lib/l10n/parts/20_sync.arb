@@ -75,9 +75,17 @@
   "@syncRetryNow": {
     "description": "M-54: manual sync button"
   },
+  "syncConflictsEmptyTitle": "All caught up",
+  "@syncConflictsEmptyTitle": {
+    "description": "M-55: empty state title"
+  },
   "syncConflictsEmpty": "No conflicts. Everything you recorded was accepted.",
   "@syncConflictsEmpty": {
     "description": "M-55: empty state"
+  },
+  "syncErrorLoading": "Could not load sync data.",
+  "@syncErrorLoading": {
+    "description": "M-54/M-55: generic load failure message"
   },
   "syncConflictsCount": "{count, plural, =1{1 item} other{{count} items}}",
   "@syncConflictsCount": {

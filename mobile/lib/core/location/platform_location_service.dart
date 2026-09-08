@@ -7,6 +7,7 @@
 library;
 
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:flutter/services.dart';
 
@@ -26,6 +27,14 @@ final class PlatformLocationService extends BaseLocationService {
 
   StreamSubscription<Object?>? _sub;
 
+  /// Platforma kanali ro'yxatdan o'tmaganmi (#B-2).
+  ///
+  /// iOS/Android build'ida `eld/location` implementatsiyasi bo'lmasa yoki test
+  /// muhitida ishlansa `MissingPluginException` keladi. Bunda xizmat **jimgina
+  /// degrade** bo'ladi: GPS yo'q, lekin logout/login oqimi yiqilmaydi.
+  bool get unsupported => _unsupported;
+  bool _unsupported = false;
+
   @override
   Future<void> start(LocationProfile profile) async {
     rememberProfile(profile);
@@ -33,13 +42,16 @@ final class PlatformLocationService extends BaseLocationService {
       await stop();
       return;
     }
-    await _channel.invokeMethod<void>('start', <String, Object?>{
+    final bool ok = await _invoke('start', <String, Object?>{
       'interval_ms': profile.interval.inMilliseconds,
       'distance_filter_m': profile.distanceFilterM,
       // M73: haydash rejimida fon yangilanishi hech qachon to'xtatilmaydi.
       'background': true,
     });
-    _sub ??= _stream.receiveBroadcastStream().listen(_onEvent);
+    if (!ok) {
+      return;
+    }
+    _sub ??= _stream.receiveBroadcastStream().listen(_onEvent, onError: _onStreamError);
   }
 
   @override
@@ -47,7 +59,43 @@ final class PlatformLocationService extends BaseLocationService {
     await _sub?.cancel();
     _sub = null;
     rememberProfile(LocationProfile.off);
-    await _channel.invokeMethod<void>('stop');
+    await _invoke('stop');
+  }
+
+  /// Kanal chaqiruvi — hech qachon istisno tashlamaydi.
+  ///
+  /// `true` — platforma bajardi; `false` — kanal yo'q yoki platforma xato
+  /// qaytardi (log'ga PII yozilmaydi, faqat metod nomi).
+  Future<bool> _invoke(String method, [Object? arguments]) async {
+    if (_unsupported) {
+      return false;
+    }
+    try {
+      await _channel.invokeMethod<void>(method, arguments);
+      return true;
+    } on MissingPluginException catch (_) {
+      _unsupported = true;
+      developer.log(
+        'location channel unavailable, degrading: $method',
+        name: 'eld.location',
+        level: 900,
+      );
+      return false;
+    } on PlatformException catch (error) {
+      developer.log(
+        'location channel error on $method: ${error.code}',
+        name: 'eld.location',
+        level: 900,
+      );
+      return false;
+    }
+  }
+
+  void _onStreamError(Object error) {
+    if (error is MissingPluginException) {
+      _unsupported = true;
+    }
+    developer.log('location stream error', name: 'eld.location', level: 900);
   }
 
   void _onEvent(Object? event) {

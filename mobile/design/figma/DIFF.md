@@ -287,3 +287,9 @@ Planshet freymlari **chizilgan** (148 light + 149 dark, hammasi 1366×1024) — 
 To'liq T-ID xaritasi: `MAP.md` §7. **58 planshet etalon rasmi** `png_ref/` ga eksport qilindi.
 Qolgan bo'shliqlar (T-05, T-06, T-13, T-16, T-17, T-30 chizilmagan; T-25/T-26 faqat dark;
 T-08 faqat light) — `MAP.md` §7.4 da dizaynerga savol sifatida.
+
+### CR B-28 — shrift oilasi: yagona `Plus Jakarta Sans`
+
+Figma ning o'zi nomuvofiq: app bar `Plus Jakarta Sans`, BNB/sana `Satoshi Variable`,
+segment `Product Sans`/`DM Sans` — bitta ekranda 3 ta oila. **Qaror:** kod yagona
+`Plus Jakarta Sans` da qoladi (soddaroq, litsenziya toza); dizayn tomonida birlashtirish so'raladi.

@@ -1,6 +1,8 @@
 /// `BannerStrip` — app bar ostidagi bir qatorli banner (tz-mobile §11.0.4/§11.0.5).
 ///
-/// Balandligi 32 dp. Turlari: `offline` (kulrang `surfaceAlt`), `warning`
+/// Figma parite (#B-24, #B-25): **to'ldirilgan quti** — `r8`, padding 12,
+/// minimal balandlik 40. `eld` turi: `r12`, fon `#D70004`, oq matn.
+/// Turlari: `offline` (kulrang `surfaceAlt`), `warning`
 /// (sertifikatlanmagan kunlar), `violation` (`error`), `eld` (ELD uzilgan),
 /// `info`. Matn **parametr** — masalan `Offline — 3 records queued`
 /// (`app_en.arb` da plural bilan).
@@ -8,12 +10,13 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../radius.dart';
 import '../spacing.dart';
 import '../theme.dart';
 import '../tokens.dart';
 
-/// Banner balandligi (tz-mobile §11.0.4).
-const double kBannerHeight = 32;
+/// Banner minimal balandligi — Figma 40 (#B-25).
+const double kBannerHeight = 40;
 
 enum BannerTone {
   /// Tarmoq yo'q — neytral kulrang.
@@ -61,19 +64,23 @@ class BannerStrip extends StatelessWidget {
     final AppColors c = context.colors;
     final (Color bg, Color fg, IconData icon) = switch (tone) {
       BannerTone.offline => (c.surfaceAlt, c.textSecondary, Icons.cloud_off_outlined),
-      BannerTone.warning => (c.warningBg, c.warningDark, Icons.warning_amber_outlined),
-      BannerTone.violation => (c.errorBg, c.errorDark, Icons.gpp_maybe_outlined),
-      BannerTone.eld => (c.errorBg, c.errorDark, Icons.bluetooth_disabled_outlined),
+      BannerTone.warning => (c.warning, c.onPrimary, Icons.warning_amber_outlined),
+      BannerTone.violation => (c.error, c.onPrimary, Icons.gpp_maybe_outlined),
+      BannerTone.eld => (c.alert, c.onPrimary, Icons.bluetooth_disabled_outlined),
       BannerTone.info => (c.primaryLight, c.primary, Icons.info_outline),
     };
+    final BorderRadius radius = tone == BannerTone.eld ? Radii.cardRadius : Radii.buttonRadius;
 
     return Semantics(
       liveRegion: true,
       label: message,
       child: Container(
-        height: kBannerHeight,
-        color: bg,
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.screenPaddingPhone),
+        constraints: const BoxConstraints(minHeight: kBannerHeight),
+        decoration: BoxDecoration(color: bg, borderRadius: radius),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Spacing.s10 + Spacing.base / 2.5,
+          vertical: Spacing.s10,
+        ),
         child: Row(
           children: <Widget>[
             Icon(icon, size: Spacing.s15, color: fg),
@@ -83,7 +90,7 @@ class BannerStrip extends StatelessWidget {
                 message,
                 style: context.text.body16.copyWith(color: fg),
                 overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+                maxLines: 2,
               ),
             ),
             if (actionLabel != null && onAction != null)

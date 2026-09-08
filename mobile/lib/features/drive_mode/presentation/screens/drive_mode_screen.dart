@@ -42,7 +42,10 @@ class DriveModeScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: context.colors.bg,
-      appBar: AppBarPrimary(title: l10n.driveTitle),
+      // Figma `1170:2684`: app bar faqat sarlavha, harakat guruhi yo'q.
+      // M58: haydash rejimida chat/bildirishnoma kirishi bloklanadi — standart
+      // amallar (bell/mail/refresh) shu sabab o'chirilgan.
+      appBar: AppBarPrimary(title: l10n.driveTitle, showDefaultActions: false),
       body: SafeArea(
         child: Stack(
           children: <Widget>[

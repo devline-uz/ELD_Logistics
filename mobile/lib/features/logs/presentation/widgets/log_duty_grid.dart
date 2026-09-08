@@ -37,6 +37,9 @@ class LogGridMarker {
   };
 }
 
+/// Soat ustunining minimal kengligi — bundan tor bo'lsa grid scroll qilinadi.
+const double _kMinHourWidth = 9;
+
 class LogDutyGrid extends StatelessWidget {
   const LogDutyGrid({
     required this.spans,
@@ -65,32 +68,47 @@ class LogDutyGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: _GridWithMarkers(
-            spans: spans,
-            markers: markers,
-            specialSpans: specialSpans,
-            hourWidth: hourWidth,
+        // Figma: grid + jamilar bitta `r12` kartada (#B-08).
+        AppCard(
+          padding: const EdgeInsets.all(Spacing.s10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              // Figma: 24 soat karta kengligiga **sig'adi** (gorizontal
+              // overflow yo'q); joy yetmasa scroll qoladi.
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final double available =
+                      constraints.maxWidth - Spacing.s5 * 2 - DutyGridMetrics.labelWidth;
+                  final double fitted = available / 24;
+                  final bool fits = fitted >= _kMinHourWidth;
+                  final Widget grid = _GridWithMarkers(
+                    spans: spans,
+                    markers: markers,
+                    specialSpans: specialSpans,
+                    hourWidth: fits ? fitted : hourWidth,
+                  );
+                  return fits
+                      ? grid
+                      : SingleChildScrollView(scrollDirection: Axis.horizontal, child: grid);
+                },
+              ),
+              const SizedBox(height: Spacing.s10),
+              _TotalsRow(totals: totals),
+            ],
           ),
         ),
-        const SizedBox(height: Spacing.s10),
-        _TotalsRow(totals: totals),
-        if (alerts.isNotEmpty) const SizedBox(height: Spacing.s10),
-        for (final LogAlert alert in alerts)
-          Padding(
-            padding: const EdgeInsets.only(bottom: Spacing.s5),
-            child: Text(
-              alert.level == LogAlertLevel.violation
-                  ? l10n.logsViolationPrefix(violationTypeLabel(l10n, alert.type))
-                  : l10n.logsWarningPrefix(violationTypeLabel(l10n, alert.type)),
-              style: context.text.body16.copyWith(
-                color: alert.level == LogAlertLevel.violation
-                    ? context.colors.error
-                    : context.colors.warningDark,
-              ),
-            ),
+        for (final LogAlert alert in alerts) ...<Widget>[
+          const SizedBox(height: Spacing.s15),
+          BannerStrip(
+            message: alert.level == LogAlertLevel.violation
+                ? l10n.logsViolationPrefix(violationTypeLabel(l10n, alert.type))
+                : l10n.logsWarningPrefix(violationTypeLabel(l10n, alert.type)),
+            tone: alert.level == LogAlertLevel.violation
+                ? BannerTone.violation
+                : BannerTone.warning,
           ),
+        ],
       ],
     );
   }
@@ -192,6 +210,9 @@ class _SpecialTag extends StatelessWidget {
   }
 }
 
+/// Jamilar satri — Figma: to'rt ustun teng taqsimlangan, har biri **o'z
+/// rangida** (`AppColors.dutyColor`, #B-17: OFF kulrang · SB amber ·
+/// DR yashil · ON cyan), M98.
 class _TotalsRow extends StatelessWidget {
   const _TotalsRow({required this.totals});
 
@@ -199,17 +220,31 @@ class _TotalsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations l10n = context.l10n;
     final AppColors c = context.colors;
     String hm(DutyStatus code) => AppFormats.durationHm(totals[code] ?? Duration.zero);
 
-    return Text(
-      context.l10n.logsTotals(
-        hm(DutyStatus.off),
-        hm(DutyStatus.sb),
-        hm(DutyStatus.dr),
-        hm(DutyStatus.on),
-      ),
-      style: context.text.body16.copyWith(color: c.textSecondary),
+    final Map<DutyStatus, String> labels = <DutyStatus, String>{
+      DutyStatus.off: l10n.logsTotalOff(hm(DutyStatus.off)),
+      DutyStatus.sb: l10n.logsTotalSb(hm(DutyStatus.sb)),
+      DutyStatus.dr: l10n.logsTotalDr(hm(DutyStatus.dr)),
+      DutyStatus.on: l10n.logsTotalOn(hm(DutyStatus.on)),
+    };
+
+    return Row(
+      children: <Widget>[
+        for (final MapEntry<DutyStatus, String> entry in labels.entries)
+          Expanded(
+            child: Text(
+              entry.value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.text.body17
+                  .withWeight(FontWeight.w500)
+                  .copyWith(color: c.dutyColor(dutySlotOf(entry.key))),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -1,6 +1,9 @@
 /// `M-42` xabar pufakchasi (Figma `1118-114`, dark `2665-34989`).
 ///
-/// O'lchamlar Figma'dan: maks. kenglik 264 dp, matn 14/20, ichki padding 16×10,
+/// O'lchamlar Figma'dan (#B-26): maks. kenglik ro'yxat enining **75 %** i
+/// (393 dp ekranda ≈ 264 dp), matn 14/20, ichki padding gorizontal 15 /
+/// vertikal 10 (Figma 16/6 — `Spacing` shkalasidagi eng yaqin qadam),
+/// burchak radiusi `r16`, «dum» tomonidagi pastki burchak `r4`;
 /// vaqt va holat belgisi pufakcha ostida (12/20, `textSecondary`).
 library;
 
@@ -11,8 +14,18 @@ import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/ui/ui.dart';
 import '../../domain/chat_message.dart';
 
-/// Figma: pufakcha kengligi 264 dp (393 dp ekranda).
-const double kChatBubbleMaxWidth = 264;
+/// #B-26: pufakcha eng ko'pi bilan ro'yxat enining 75 % ini egallaydi.
+const double kChatBubbleMaxWidthFactor = 0.75;
+
+/// #B-26: `r16`, «dum» burchagi (o'z xabarida pastki o'ng, boshqasida pastki
+/// chap) `r4`. `StadiumBorder` **ishlatilmaydi** — ko'p qatorli xabarda shakl
+/// buziladi.
+BorderRadius chatBubbleRadius({required bool mine}) => BorderRadius.only(
+  topLeft: const Radius.circular(Radii.group),
+  topRight: const Radius.circular(Radii.group),
+  bottomLeft: Radius.circular(mine ? Radii.group : Radii.sm),
+  bottomRight: Radius.circular(mine ? Radii.sm : Radii.group),
+);
 
 /// TODO(CORE): `AppFormats` da kunlik vaqt (`hh:mm a`) yordamchisi yo'q —
 /// §11.0.7 jadvalidagi format shu yerda takrorlanadi (M92: `intl` + `en_US`).
@@ -47,17 +60,24 @@ class ChatBubble extends StatelessWidget {
       child: Column(
         crossAxisAlignment: mine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: kChatBubbleMaxWidth),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                // M141: bloklangan pufakcha kulrang bo'ladi.
-                color: mine && !blocked ? c.primary : c.surfaceAlt,
-                borderRadius: BorderRadius.circular(Radii.xl),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) => ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: constraints.maxWidth * kChatBubbleMaxWidthFactor,
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Spacing.s15, vertical: Spacing.s10),
-                child: _Body(message: message, onPrimaryBackground: mine && !blocked),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  // M141: bloklangan pufakcha kulrang bo'ladi.
+                  color: mine && !blocked ? c.primary : c.surfaceAlt,
+                  borderRadius: chatBubbleRadius(mine: mine),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.s15,
+                    vertical: Spacing.s10,
+                  ),
+                  child: _Body(message: message, onPrimaryBackground: mine && !blocked),
+                ),
               ),
             ),
           ),
@@ -201,7 +221,9 @@ class _MetaRow extends StatelessWidget {
   }
 
   (IconData, Color, String) _status(BuildContext context, AppColors c) => switch (message.status) {
-    ChatMessageStatus.queued => (Icons.schedule, c.textSecondary, context.l10n.chatStatusQueued),
+    // #B-26: Figma da faqat ✓ / ✓✓ bor — navbatdagi xabar ham bitta ✓ bilan,
+    // ammo o'chirilgan rangda ko'rsatiladi (soat ikonkasi yo'q).
+    ChatMessageStatus.queued => (Icons.check, c.textDisabled, context.l10n.chatStatusQueued),
     ChatMessageStatus.blocked => (Icons.block, c.error, context.l10n.chatStatusBlocked),
     ChatMessageStatus.failed => (Icons.error_outline, c.error, context.l10n.chatStatusFailed),
     ChatMessageStatus.sent => (Icons.check, c.textSecondary, context.l10n.chatStatusSent),
@@ -224,7 +246,12 @@ class _SendWhenStopped extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
-      Switch.adaptive(value: value, onChanged: onChanged),
+      AppSwitch(
+        value: value,
+        onChanged: onChanged,
+        semanticLabel: context.l10n.chatSendWhenStopped,
+      ),
+      const SizedBox(width: Spacing.s5),
       Flexible(
         child: Text(
           value ? context.l10n.chatSendWhenStoppedOn : context.l10n.chatSendWhenStopped,
@@ -232,5 +259,58 @@ class _SendWhenStopped extends StatelessWidget {
         ),
       ),
     ],
+  );
+}
+
+/// #B-26: «yozmoqda» pufakchasi (`•••`) — Figma `1118-114` dagi oxirgi element.
+///
+/// Shakli oddiy pufakcha bilan bir xil (r16 + «dum» r4), kengligi kontent
+/// bo'yicha; animatsiya golden testda beqaror bo'lgani uchun **statik**.
+class ChatTypingBubble extends StatelessWidget {
+  const ChatTypingBubble({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Spacing.s10),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Semantics(
+          label: context.l10n.chatTyping,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: c.surfaceAlt,
+              borderRadius: chatBubbleRadius(mine: false),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.s15, vertical: Spacing.s10),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  for (int i = 0; i < 3; i++) ...<Widget>[
+                    if (i > 0) const SizedBox(width: Spacing.s5),
+                    _TypingDot(color: c.textPrimary),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TypingDot extends StatelessWidget {
+  const _TypingDot({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: Spacing.s5,
+    height: Spacing.s5,
+    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
   );
 }

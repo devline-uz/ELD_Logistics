@@ -1,5 +1,5 @@
 /// **M-49 Add Ticket** (`/support/new`) — Figma `1179:7028` (light) /
-/// `2665:28217` (dark).
+/// `2700:38501` (dark), MAP.md §1.
 ///
 /// TZ §11.8: `Contact On` (email/telefon), `Subject` (majburiy),
 /// `Description`, `Confirm`. Validatsiya domenda (`TicketDraft.validate`).
@@ -25,7 +25,12 @@ class SupportFormScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
     // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
     maxContentWidth: ContentWidth.single,
-    appBar: AppBarPrimary(title: context.l10n.supportTitle, leading: const AppBackButton()),
+    // Figma `1179:7028` app bar: faqat orqaga tugmasi + sarlavha.
+    appBar: AppBarPrimary(
+      title: context.l10n.supportTitle,
+      leading: const AppBackButton(),
+      showDefaultActions: false,
+    ),
     backgroundColor: context.colors.bg,
     phone: (BuildContext c) => SupportFormPane(onDone: () => _cancel(c)),
     tablet: (BuildContext c) => SupportFormPane(onDone: () => _cancel(c)),

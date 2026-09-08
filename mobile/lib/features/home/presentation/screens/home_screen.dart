@@ -31,16 +31,24 @@ import '../../home_routes.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/active_driver_banner.dart';
 import '../widgets/edit_documents_sheet.dart';
+import '../widgets/home_brand_lockup.dart';
 import '../widgets/home_cards.dart';
 import '../widgets/home_drawer.dart';
 import '../widgets/home_log_cards.dart';
 import 'tablet/home_tablet_view.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
     final HomeState state = ref.watch(homeControllerProvider);
     final HomeController controller = ref.read(homeControllerProvider.notifier);
@@ -61,39 +69,35 @@ class HomeScreen extends ConsumerWidget {
     });
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: context.colors.bg,
       drawer: HomeDrawer(
         driver: state.driver,
         onAction: (HomeDrawerAction action) => _onDrawerAction(context, ref, action),
       ),
+      // Figma `2177:12192`: chapda hamburger + logotip lockup, balandlik 54,
+      // o'ngda standart `bell · mail · refresh` guruhi (#B-01…#B-04).
       appBar: AppBarPrimary(
         title: l10n.appTitle,
+        titleWidget: const HomeBrandLockup(),
+        height: kAppBarHeightHome,
         leadingLabel: l10n.homeMenu,
+        onLeadingPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        onNotifications: () => context.push(HomeLinks.notifications),
+        onMessages: () => context.go(AppRoute.chat),
+        onRefresh: controller.refresh,
         actions: <Widget>[
-          IconButton(
-            tooltip: l10n.homeNotifications,
-            onPressed: () => context.push(HomeLinks.notifications),
-            icon: const Icon(Icons.notifications_none),
-          ),
-          IconButton(
-            tooltip: l10n.homeMessages,
-            onPressed: () => context.go(AppRoute.chat),
-            icon: const Icon(Icons.mail_outline),
-          ),
-          IconButton(
-            tooltip: l10n.homeSync,
-            onPressed: controller.refresh,
-            icon: const Icon(Icons.refresh),
-          ),
           // §11.0.6: tema almashtirish ikonkasi **faqat planshet** app bar'ida
           // (telefonda `Profile › Dark mode` toggle'i).
-          if (DeviceProfile.of(context).isTablet)
-            IconButton(
-              tooltip: l10n.homeThemeToggle,
+          if (DeviceProfile.of(context).isTablet) ...<Widget>[
+            AppBarAction(
+              icon: Icons.brightness_6_outlined,
+              label: l10n.homeThemeToggle,
               onPressed: () =>
                   ref.read(appUiSettingsProvider.notifier).toggleTheme(Theme.brightnessOf(context)),
-              icon: const Icon(Icons.brightness_6_outlined),
             ),
+            const SizedBox(width: Spacing.s15),
+          ],
         ],
       ),
       body: SafeArea(
@@ -106,12 +110,12 @@ class HomeScreen extends ConsumerWidget {
                 session: session,
                 onSwitch: session.hasCoDriver ? () => _openCoDriverSwitch(context, ref) : null,
               ),
-            ..._banners(context, state),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenPaddingH(context)),
                 child: AdaptiveView(
                   phone: (BuildContext c) => _PhoneView(
+                    banners: _banners(context, state),
                     state: state,
                     controller: controller,
                     now: now,
@@ -119,6 +123,7 @@ class HomeScreen extends ConsumerWidget {
                     onLeaveTruck: () => showLeaveTruckDialog(context, ref),
                   ),
                   tablet: (BuildContext c) => HomeTabletView(
+                    banners: _banners(context, state),
                     state: state,
                     controller: controller,
                     now: now,
@@ -211,6 +216,7 @@ class HomeScreen extends ConsumerWidget {
 
 class _PhoneView extends StatelessWidget {
   const _PhoneView({
+    required this.banners,
     required this.state,
     required this.controller,
     required this.now,
@@ -218,6 +224,7 @@ class _PhoneView extends StatelessWidget {
     this.onLeaveTruck,
   });
 
+  final List<Widget> banners;
   final HomeState state;
   final HomeController controller;
   final DateTime now;
@@ -243,14 +250,21 @@ class _PhoneView extends StatelessWidget {
       onRefresh: () async => controller.refresh(),
       child: ListView(
         padding: const EdgeInsets.symmetric(vertical: Spacing.s10),
-        children: homeSections(
-          context,
-          state,
-          controller,
-          now,
-          onCoDriver: onCoDriver,
-          onLeaveTruck: onLeaveTruck,
-        ),
+        children: <Widget>[
+          AppCardColumn(
+            children: <Widget>[
+              ...banners,
+              ...homeSections(
+                context,
+                state,
+                controller,
+                now,
+                onCoDriver: onCoDriver,
+                onLeaveTruck: onLeaveTruck,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -274,6 +288,7 @@ List<Widget> homeSections(
       elapsed: state.duty.since == null ? Duration.zero : now.difference(state.duty.since!),
       sleeperAvailable: state.duty.sleeperAvailable,
       onSelected: (DutyStatusValue value) => context.push(DutyStatusRoute.change),
+      onSwap: onCoDriver,
     ),
     HomeHosCard(state: state),
     HomeQuickActions(

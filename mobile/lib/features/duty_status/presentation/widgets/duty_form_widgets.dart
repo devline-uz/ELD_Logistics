@@ -9,11 +9,15 @@ import '../../domain/duty_status_models.dart';
 
 /// Status tugmalari — **uchta** (M52). `Sleeper Berth` unit'da bo'lmasa
 /// yashirilmaydi, o'chiriladi.
+///
+/// Figma `1083:10550` tartibi: `On Duty · Sleep · Off Duty`; yorliq `Sleep`
+/// (bir qatorga sig'adi), ikonkalar rangli (amber oy, qizil power).
 class DutyStatusSelector extends StatelessWidget {
   const DutyStatusSelector({
     required this.selected,
     required this.onSelected,
     required this.sleeperAvailable,
+    this.order = kDutyStatusFigmaOrder,
     super.key,
   });
 
@@ -21,25 +25,34 @@ class DutyStatusSelector extends StatelessWidget {
   final ValueChanged<DutyStatusValue> onSelected;
   final bool sleeperAvailable;
 
+  /// Ko'rsatish tartibi (dizayn bo'yicha; domen tartibi o'zgarmaydi).
+  final List<DutyStatusValue> order;
+
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
     return Row(
       children: <Widget>[
-        for (final DutyStatusValue value in DutyStatusValue.selectable) ...<Widget>[
+        for (final DutyStatusValue value in order) ...<Widget>[
           Expanded(
             child: _StatusTile(
               label: switch (value) {
                 DutyStatusValue.off => l10n.dutyStatusOffDuty,
-                DutyStatusValue.sleeper => l10n.dutyStatusSleeper,
+                DutyStatusValue.sleeper => l10n.dutyStatusSleep,
                 DutyStatusValue.on => l10n.dutyStatusOnDuty,
                 DutyStatusValue.driving => l10n.dutyStatusDriving,
               },
               icon: switch (value) {
                 DutyStatusValue.off => Icons.power_settings_new,
                 DutyStatusValue.sleeper => Icons.nightlight_round,
-                DutyStatusValue.on => Icons.local_shipping_outlined,
-                DutyStatusValue.driving => Icons.drive_eta_outlined,
+                DutyStatusValue.on => Icons.local_shipping,
+                DutyStatusValue.driving => Icons.drive_eta,
+              },
+              accent: switch (value) {
+                DutyStatusValue.off => context.colors.primary,
+                DutyStatusValue.sleeper => context.colors.warning,
+                DutyStatusValue.on => context.colors.decoTeal,
+                DutyStatusValue.driving => context.colors.success,
               },
               selected: value == selected,
               enabled: value != DutyStatusValue.sleeper || sleeperAvailable,
@@ -47,17 +60,25 @@ class DutyStatusSelector extends StatelessWidget {
               onTap: () => onSelected(value),
             ),
           ),
-          if (value != DutyStatusValue.selectable.last) const SizedBox(width: Spacing.s10),
+          if (value != order.last) const SizedBox(width: Spacing.s10),
         ],
       ],
     );
   }
 }
 
+/// Figma dagi ko'rsatish tartibi (`On Duty · Sleep · Off Duty`).
+const List<DutyStatusValue> kDutyStatusFigmaOrder = <DutyStatusValue>[
+  DutyStatusValue.on,
+  DutyStatusValue.sleeper,
+  DutyStatusValue.off,
+];
+
 class _StatusTile extends StatelessWidget {
   const _StatusTile({
     required this.label,
     required this.icon,
+    required this.accent,
     required this.selected,
     required this.enabled,
     required this.disabledTooltip,
@@ -66,6 +87,10 @@ class _StatusTile extends StatelessWidget {
 
   final String label;
   final IconData icon;
+
+  /// Tanlanmagan holatdagi ikonka rangi (Figma: rangli ikonkalar).
+  final Color accent;
+
   final bool selected;
   final bool enabled;
   final String disabledTooltip;
@@ -78,7 +103,12 @@ class _StatusTile extends StatelessWidget {
         ? c.textDisabled
         : selected
         ? c.onPrimary
-        : c.textPrimary;
+        : c.textSecondary;
+    final Color iconColor = !enabled
+        ? c.textDisabled
+        : selected
+        ? c.onPrimary
+        : accent;
 
     final Widget tile = Semantics(
       button: true,
@@ -100,7 +130,7 @@ class _StatusTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(icon, color: fg, size: Spacing.s25),
+              Icon(icon, color: iconColor, size: Spacing.s25),
               const SizedBox(height: Spacing.s5),
               Text(
                 label,
@@ -145,7 +175,8 @@ class DutyChipField extends StatelessWidget {
         const SizedBox(height: Spacing.s5),
         Container(
           width: double.infinity,
-          constraints: const BoxConstraints(minHeight: 48),
+          // Figma: konteyner balandligi ~52 (chip 32 + padding 10).
+          constraints: const BoxConstraints(minHeight: 52),
           padding: const EdgeInsets.all(Spacing.s10),
           decoration: BoxDecoration(
             color: c.surfaceMuted,
@@ -157,10 +188,9 @@ class DutyChipField extends StatelessWidget {
             runSpacing: Spacing.s5,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
-              if (values.isEmpty)
-                Text(kEmptyValue, style: context.text.body14.copyWith(color: c.textSecondary)),
+              if (values.isEmpty) const AppChip.removable(label: kEmptyValue, onRemove: null),
               for (final String value in values)
-                AppChip(label: value, icon: Icons.close, onTap: () => onRemove(value)),
+                AppChip.removable(label: value, onRemove: () => onRemove(value)),
               if (onAdd != null && addLabel != null)
                 AppChip(label: addLabel!, icon: Icons.add, onTap: onAdd),
             ],

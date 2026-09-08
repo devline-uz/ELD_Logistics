@@ -30,11 +30,8 @@ class DvirAddScreen extends ConsumerWidget {
       backgroundColor: context.colors.bg,
       appBar: AppBarPrimary(
         title: l10n.dvirAddTitle,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).maybePop(),
-          tooltip: l10n.dvirBack,
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
+        showDefaultActions: false,
+        leading: const AppBackButton(),
       ),
       banners: <Widget>[
         if (!state.loading && state.loadError == null && state.draft.unitId.isEmpty)
@@ -88,7 +85,7 @@ class _Body extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
+            padding: const EdgeInsets.only(top: Spacing.s20, bottom: Spacing.s25),
             children: twoColumn
                 ? <Widget>[
                     Row(
@@ -163,7 +160,6 @@ class _FormCard extends StatelessWidget {
                   ? l10n.dvirTrailersHint
                   : state.trailerLabels.join(', '),
               placeholder: draft.trailerIds.isEmpty,
-              trailing: const Icon(Icons.add, size: 20),
               onTap: () => showTrailerPicker(context: context, controller: controller),
             ),
           ),

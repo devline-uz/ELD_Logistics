@@ -579,5 +579,55 @@
   "homeFmcsaInspection": "FMCSA / Inspection Report",
   "@homeFmcsaInspection": {
     "description": "T-01 Actions panel primary button"
+  },
+  "homeBrandOne": "One",
+  "@homeBrandOne": {
+    "description": "M-09 app bar logo lockup: first word, rendered in the primary colour (Figma 2177:12192)"
+  },
+  "homeBrandRest": "Book ELD",
+  "@homeBrandRest": {
+    "description": "M-09 app bar logo lockup: remainder of the brand name 'OneBook ELD' (M90)"
+  },
+  "homeElapsedHms": "{h}h {m}m {s}s",
+  "@homeElapsedHms": {
+    "description": "M-09 duty status elapsed timer (Figma '10h 45m 32s')",
+    "placeholders": {
+      "h": {
+        "type": "String",
+        "example": "10"
+      },
+      "m": {
+        "type": "String",
+        "example": "45"
+      },
+      "s": {
+        "type": "String",
+        "example": "32"
+      }
+    }
+  },
+  "homeStatusPillOff": "OFF",
+  "@homeStatusPillOff": {
+    "description": "M-09 short duty status pill: Off Duty"
+  },
+  "homeStatusPillSb": "SB",
+  "@homeStatusPillSb": {
+    "description": "M-09 short duty status pill: Sleeper Berth"
+  },
+  "homeStatusPillOn": "ON",
+  "@homeStatusPillOn": {
+    "description": "M-09 short duty status pill: On Duty"
+  },
+  "homeStatusPillDr": "DR",
+  "@homeStatusPillDr": {
+    "description": "M-09 short duty status pill: Driving (auto-set, not selectable)"
+  },
+  "homeHosToggleView": "Switch Hours of Service view",
+  "@homeHosToggleView": {
+    "description": "M-09 Hours of Service header action: toggle between card grid and rings"
+  },
+  "dutyStatusSleep": "Sleep",
+  "@dutyStatusSleep": {
+    "description": "M-12 short label for the Sleeper Berth tile (Figma 1083:10550)"
   }
 }

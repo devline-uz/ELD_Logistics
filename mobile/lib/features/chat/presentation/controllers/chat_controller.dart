@@ -24,6 +24,7 @@ class ChatUiState {
     this.loadError,
     this.rejection,
     this.sendWhenStopped = true,
+    this.peerTyping = false,
   });
 
   /// Birinchi sahifa yuklanmoqda (skeleton).
@@ -44,6 +45,9 @@ class ChatUiState {
   /// M141 2-band: `Send when stopped` — default yoqilgan.
   final bool sendWhenStopped;
 
+  /// #B-26: suhbatdosh yozmoqda — ro'yxat oxirida `•••` pufakchasi.
+  final bool peerTyping;
+
   ChatUiState copyWith({
     bool? initialLoading,
     bool? loadingOlder,
@@ -51,6 +55,7 @@ class ChatUiState {
     ApiError? loadError,
     ChatSendRejection? rejection,
     bool? sendWhenStopped,
+    bool? peerTyping,
     bool clearError = false,
     bool clearRejection = false,
   }) => ChatUiState(
@@ -60,6 +65,7 @@ class ChatUiState {
     loadError: clearError ? null : (loadError ?? this.loadError),
     rejection: clearRejection ? null : (rejection ?? this.rejection),
     sendWhenStopped: sendWhenStopped ?? this.sendWhenStopped,
+    peerTyping: peerTyping ?? this.peerTyping,
   );
 }
 
@@ -144,6 +150,9 @@ class ChatController extends Notifier<ChatUiState> {
       }
     }
   }
+
+  /// #B-26: WS `chat.typing` hodisasi (M11-x) — hozircha faqat UI holati.
+  void setPeerTyping({required bool value}) => state = state.copyWith(peerTyping: value);
 
   void clearRejection() => state = state.copyWith(clearRejection: true);
 }

@@ -7,6 +7,7 @@ library;
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/network/api_client.dart';
 import '../domain/app_config_info.dart';
 import '../domain/driver_profile.dart';
 import '../domain/profile_repository.dart';
@@ -18,7 +19,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final Dio _dio;
 
   @override
-  Future<DriverProfile> load() async {
+  Future<DriverProfile> load() => guardApiCall<DriverProfile>(() async {
     final Response<Map<String, Object?>> res = await _dio.get<Map<String, Object?>>('/me');
     final Map<String, Object?> data = _data(res.data);
     return DriverProfile(
@@ -34,12 +35,25 @@ class ProfileRepositoryImpl implements ProfileRepository {
       // `unit_number`, `phone`, `license_no`, `license_region` — `/me` da yo'q.
       // TODO(M-44): kontraktga qo'shilgach shu yerda to'ldiriladi.
     );
-  }
+  });
 
+  /// `POST /auth/logout {pause:false}` — **idempotent**.
+  ///
+  /// #B-1: server sessiyani allaqachon yopgan bo'lsa `401 TOKEN_REVOKED`
+  /// qaytaradi; bu chiqish nuqtai nazaridan **muvaffaqiyat**, shuning uchun
+  /// bu yerda yutiladi. Boshqa xatolar `ApiError` bo'lib chiqadi (hech qachon
+  /// xom `DioException` emas) va chaqiruvchi ularni ham best-effort ko'radi.
   @override
-  Future<void> logout() =>
-      // `pause: false` — to'liq chiqish (Leave Truck emas, §4).
-      _dio.post<void>('/auth/logout', data: const <String, Object?>{'pause': false});
+  Future<void> logout() => guardApiCall<void>(() async {
+    try {
+      await _dio.post<void>('/auth/logout', data: const <String, Object?>{'pause': false});
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        return;
+      }
+      rethrow;
+    }
+  });
 }
 
 class AppConfigRepositoryImpl implements AppConfigRepository {
@@ -48,7 +62,7 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
   final Dio _dio;
 
   @override
-  Future<AppConfigInfo> load() async {
+  Future<AppConfigInfo> load() => guardApiCall<AppConfigInfo>(() async {
     final Response<Map<String, Object?>> res = await _dio.get<Map<String, Object?>>('/app/config');
     final Map<String, Object?> data = _data(res.data);
     final Map<String, Object?> flags =
@@ -60,7 +74,7 @@ class AppConfigRepositoryImpl implements AppConfigRepository {
       supportEmail: _str(data['support_email']),
       userManualUrl: _str(flags['user_manual_url']),
     );
-  }
+  });
 }
 
 Map<String, Object?> _data(Map<String, Object?>? body) =>

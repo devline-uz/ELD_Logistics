@@ -95,7 +95,6 @@ class HomeCertifyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
     final AppColors c = context.colors;
-    final bool uncertified = days.any((CertifyDay day) => !day.certified);
 
     return HomeCard(
       title: l10n.homeSignature,
@@ -116,11 +115,6 @@ class HomeCertifyCard extends StatelessWidget {
                   l10n.homeCertifyLast8Days,
                   style: context.text.body14.copyWith(color: c.textSecondary),
                 ),
-              ),
-              StatusBadge(
-                label: uncertified ? l10n.homeNotSigned : l10n.homeSigned,
-                tone: uncertified ? StatusTone.error : StatusTone.success,
-                dense: true,
               ),
             ],
           ),
@@ -157,31 +151,28 @@ class HomeAlertCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Spacing.cardGap),
-      child: Semantics(
-        button: true,
-        label: label,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: Radii.cardRadius,
-          child: Container(
-            padding: const EdgeInsets.all(Spacing.cardPadding),
-            decoration: BoxDecoration(
-              color: c.warningBg,
-              borderRadius: Radii.cardRadius,
-              border: Border.all(color: c.warning, width: Strokes.thin),
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.warning_amber_outlined, color: c.warningDark),
-                const SizedBox(width: Spacing.s10),
-                Expanded(
-                  child: Text(label, style: context.text.body13.copyWith(color: c.warningDark)),
-                ),
-                Icon(Icons.chevron_right, color: c.warningDark),
-              ],
-            ),
+    return Semantics(
+      button: true,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: Radii.cardRadius,
+        child: Container(
+          padding: const EdgeInsets.all(Spacing.cardPadding),
+          decoration: BoxDecoration(
+            color: c.warningBg,
+            borderRadius: Radii.cardRadius,
+            border: Border.all(color: c.warning, width: Strokes.thin),
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.warning_amber_outlined, color: c.warningDark),
+              const SizedBox(width: Spacing.s10),
+              Expanded(
+                child: Text(label, style: context.text.body13.copyWith(color: c.warningDark)),
+              ),
+              Icon(Icons.chevron_right, color: c.warningDark),
+            ],
           ),
         ),
       ),

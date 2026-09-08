@@ -4,6 +4,7 @@
 /// Har ekran uchun 4 holat: yuklanish · bo'sh · xato · to'la.
 library;
 
+import 'package:eld_mobile/core/ui/ui.dart';
 import 'package:eld_mobile/features/logs/domain/log_models.dart';
 import 'package:eld_mobile/features/logs/presentation/screens/log_report_screen.dart';
 import 'package:eld_mobile/features/logs/presentation/widgets/log_event_detail_sheet.dart';
@@ -33,7 +34,7 @@ void main() {
 
     testWidgets('yuklanish holati: skelet', (WidgetTester tester) async {
       await pumpM7(tester, const LogReportScreen(), logs: FakeLogsRepository(loading: true));
-      expect(find.byType(LogCard), findsNothing);
+      expect(find.byType(AppCard), findsNothing);
     });
 
     testWidgets('xato holati: Retry tugmasi', (WidgetTester tester) async {
@@ -72,8 +73,9 @@ void main() {
       // `message` yubormaydi), shuning uchun `app_en.arb` dagi satrlar.
       expect(find.text('Warning: Missing trailer number'), findsOneWidget);
       expect(find.text('Violation: Driving limit exceeded'), findsOneWidget);
-      // M99: oxirgi ustun nomi `Action`.
-      expect(find.text('Action'), findsOneWidget);
+      // Figma jadvalida `Action` ustuni yo'q (M-23) — qulf/tahrirlash
+      // belgisi M-25 kengaytirilgan ko'rinishida (M99).
+      expect(find.text('Action'), findsNothing);
     });
 
     testWidgets('bo\'sh holat: eventlar yo\'q', (WidgetTester tester) async {
@@ -93,6 +95,10 @@ void main() {
         const LogReportScreen(initialTab: 'logs'),
         logs: FakeLogsRepository(day: sampleDay(events: <LogEventView>[sampleEvent(locked: true)])),
       );
+
+      await tester.tap(find.byType(LogTableRow).first);
+      await tester.pump(const Duration(milliseconds: 400));
+
       expect(find.byIcon(Icons.lock_outline), findsOneWidget);
     });
 

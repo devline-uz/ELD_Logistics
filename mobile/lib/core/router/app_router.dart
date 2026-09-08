@@ -34,6 +34,8 @@ import '../../features/sync/presentation/sync_routes.dart';
 import '../../features/unidentified/unidentified_routes.dart';
 import '../config/env.dart';
 import '../i18n/l10n_extension.dart';
+import '../session/session_terminator.dart';
+import '../ui/components/app_nav_bar.dart';
 import 'auth_state.dart';
 import 'routes.dart';
 
@@ -65,7 +67,14 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
 
       return switch (status) {
         AuthStatus.unknown => location == AppRoute.splash ? null : AppRoute.splash,
-        AuthStatus.unauthenticated => _publicPaths.contains(location) ? null : AppRoute.login,
+        // #B-3: refresh `TOKEN_REVOKED` bergan bo'lsa `M-56` ga, aks holda
+        // oddiy `/login` ga.
+        AuthStatus.unauthenticated =>
+          _publicPaths.contains(location)
+              ? null
+              : (ref.read(sessionEndReasonProvider) == SessionEndReason.revoked
+                    ? AuthRoute.signedOut
+                    : AppRoute.login),
         // `locked` sessiyada faqat PIN ekrani va `Leave truck` ochiq (§4.8).
         AuthStatus.locked =>
           location == AppRoute.pin || location == AuthRoute.paused ? null : AppRoute.pin,
@@ -114,29 +123,31 @@ class _MainShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: shell,
-    bottomNavigationBar: NavigationBar(
-      selectedIndex: shell.currentIndex,
-      onDestinationSelected: (int index) =>
+    // #B-06: Figma `BNB-19` — h 94, faol element `primary` r10 chip,
+    // yorliq faqat faol elementda.
+    bottomNavigationBar: AppNavBar(
+      currentIndex: shell.currentIndex,
+      onSelected: (int index) =>
           shell.goBranch(index, initialLocation: index == shell.currentIndex),
-      destinations: <NavigationDestination>[
-        NavigationDestination(
-          icon: const Icon(Icons.home_outlined),
-          selectedIcon: const Icon(Icons.home),
+      items: <AppNavItem>[
+        AppNavItem(
+          icon: Icons.home_outlined,
+          selectedIcon: Icons.home,
           label: context.l10n.navHome,
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.article_outlined),
-          selectedIcon: const Icon(Icons.article),
+        AppNavItem(
+          icon: Icons.article_outlined,
+          selectedIcon: Icons.article,
           label: context.l10n.navLogs,
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.chat_bubble_outline),
-          selectedIcon: const Icon(Icons.chat_bubble),
+        AppNavItem(
+          icon: Icons.chat_bubble_outline,
+          selectedIcon: Icons.chat_bubble,
           label: context.l10n.navChat,
         ),
-        NavigationDestination(
-          icon: const Icon(Icons.person_outline),
-          selectedIcon: const Icon(Icons.person),
+        AppNavItem(
+          icon: Icons.person_outline,
+          selectedIcon: Icons.person,
           label: context.l10n.navProfile,
         ),
       ],

@@ -47,11 +47,13 @@ void main() {
         overrides: m4Overrides(duty: duty),
       );
       expect(find.text('Off Duty'), findsOneWidget);
-      expect(find.text('Sleeper Berth'), findsOneWidget);
+      // Figma `1083:10550`: yorliq `Sleep` (bir qatorga sig'adi).
+      expect(find.text('Sleep'), findsOneWidget);
       expect(find.text('On Duty'), findsOneWidget);
       // M51: `Driving` tugmasi umuman yo'q.
       expect(find.text('Driving'), findsNothing);
-      expect(find.byType(HosLinearIndicator), findsNWidgets(4));
+      // #B-22: M-12 da halqa gauge'lar.
+      expect(find.byType(HosRingIndicator), findsNWidgets(4));
     });
 
     testWidgets('bo\'sh: status o\'zgarmasa Save o\'chirilgan', (WidgetTester tester) async {

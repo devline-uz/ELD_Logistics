@@ -19,6 +19,7 @@ import '../../../../core/error/api_error_messages.dart';
 import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/router/auth_state.dart';
 import '../../../../core/router/routes.dart';
+import '../../../../core/session/session_terminator.dart';
 import '../../../../core/ui/ui.dart';
 import '../../auth_routes.dart';
 import '../../domain/auth_repository.dart';
@@ -65,7 +66,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         context.go(AuthRoute.paused);
       case BootstrapDestination.login:
         auth.set(AuthStatus.unauthenticated);
-        context.go(AppRoute.login);
+        // #B-3: bootstrap paytidagi refresh `TOKEN_REVOKED` bergan bo'lsa
+        // haydovchi `M-56` ni ko'radi, oddiy `/login` ni emas.
+        context.go(
+          ref.read(sessionEndReasonProvider) == SessionEndReason.revoked
+              ? AuthRoute.signedOut
+              : AppRoute.login,
+        );
     }
   }
 

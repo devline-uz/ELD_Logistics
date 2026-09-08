@@ -44,7 +44,7 @@ void main() {
     expect(find.byType(HomeTabletView), findsOneWidget);
     // Planshetda 4 ta halqa (M87), chiziqli indikator yo'q.
     expect(find.byType(HosRingIndicator), findsNWidgets(4));
-    expect(find.byType(HosLinearIndicator), findsNothing);
+    expect(find.byType(HosCardIndicator), findsNothing);
 
     // Uch ustun sarlavhalari.
     expect(find.text('Hours of Service'), findsOneWidget);
@@ -180,7 +180,7 @@ void main() {
     );
 
     expect(find.byType(HomeTabletView), findsNothing);
-    expect(find.byType(HosLinearIndicator), findsNWidgets(4));
+    expect(find.byType(HosCardIndicator), findsNWidgets(4));
   });
 
   testWidgets('bo\'sh holat: unit biriktirilmagan', (WidgetTester tester) async {

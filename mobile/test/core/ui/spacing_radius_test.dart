@@ -18,8 +18,9 @@ void main() {
       }
     });
 
-    test('ekran padding: telefon 16, planshet 24', () {
-      expect(Spacing.screenPaddingPhone, 16);
+    // PARITY #B-07: Figma da telefon padding'i ham 24 (karta eni 345).
+    test('ekran padding: telefon 24, planshet 24', () {
+      expect(Spacing.screenPaddingPhone, 24);
       expect(Spacing.screenPaddingTablet, 24);
     });
 
@@ -56,16 +57,17 @@ void main() {
       expect(all, isNot(contains(27.25)));
     });
 
+    // PARITY #B-09/#B-13: karta 12, CTA/input 8.
     test('semantik aliaslar dominant qiymatlarga bog\'langan', () {
-      expect(Radii.card, Radii.md);
-      expect(Radii.button, Radii.lg);
-      expect(Radii.input, Radii.lg);
+      expect(Radii.card, Radii.lg);
+      expect(Radii.button, Radii.md);
+      expect(Radii.input, Radii.md);
       expect(Radii.chip, Radii.pill);
       expect(Radii.sheet, Radii.xl);
     });
 
     test('BorderRadius konstantalari mos', () {
-      expect(Radii.cardRadius, const BorderRadius.all(Radius.circular(8)));
+      expect(Radii.cardRadius, const BorderRadius.all(Radius.circular(12)));
       expect(Radii.sheetRadius, const BorderRadius.vertical(top: Radius.circular(24)));
     });
   });

@@ -82,8 +82,10 @@ class _TicketThreadScreenState extends ConsumerState<TicketThreadScreen> {
       maxContentWidth: ContentWidth.single,
       appBar: AppBarPrimary(
         // Figma `1158:462`: sarlavha — tiket raqami; yuklanmagunicha umumiy nom.
+        // App bar faqat orqaga tugmasi + sarlavha — standart amal guruhi yo'q.
         title: ticket == null ? l10n.supportTitle : l10n.supportTicketHeading(ticket.displayNumber),
         leading: const AppBackButton(),
+        showDefaultActions: false,
       ),
       backgroundColor: context.colors.bg,
       phone: (BuildContext context) => _body(thread),

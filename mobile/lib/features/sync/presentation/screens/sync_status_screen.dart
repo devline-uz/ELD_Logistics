@@ -1,8 +1,9 @@
-/// `M-54 Sync status` — oxirgi push/pull, navbat, xato, kursor, `Retry now` (M28).
+/// `M-54 Sync status` (🎨 dizaynda yo'q, §21.6) — oxirgi push/pull, navbat,
+/// xato, kursor, `Retry now` (M28).
 ///
-/// TODO(M1): `core/ui` dizayn tizimi tayyor bo'lgach `AppScaffold`, `AppCard`,
-/// `AppListTile` va tokenlarga ko'chiriladi. Hozircha Material primitivlari va
-/// `Theme.of(context)` ranglari ishlatiladi (hard-coded rang taqiq).
+/// Figma yo'q, lekin `core/ui` dizayn tizimi majburiy: `AdaptiveScaffold` +
+/// `AppBarPrimary` + `SettingsCard`/`SettingsRow` — boshqa 🎨 ekranlar bilan
+/// bir xil naqsh (masalan `M-46 Diagnosis of device`).
 library;
 
 import 'package:flutter/material.dart';
@@ -16,146 +17,171 @@ import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/sync/conflict_messages.dart';
 import '../../../../core/sync/sync_providers.dart';
 import '../../../../core/sync/sync_scheduler.dart';
+import '../../../../core/ui/ui.dart';
 
 class SyncStatusScreen extends ConsumerWidget {
   const SyncStatusScreen({super.key});
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
+    // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
+    maxContentWidth: ContentWidth.single,
+    appBar: AppBarPrimary(title: context.l10n.syncStatusTitle, leading: const AppBackButton()),
+    backgroundColor: context.colors.bg,
+    phone: (BuildContext context) => const SyncStatusBody(),
+    tablet: (BuildContext context) => const SyncStatusBody(),
+  );
+}
+
+/// `T-35` planshet modali ham shu tanani ishlatadi (M7).
+class SyncStatusBody extends ConsumerWidget {
+  const SyncStatusBody({super.key});
+
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations l10n = context.l10n;
-    final AsyncValue<OutboxQueueStats> stats = ref.watch(outboxStatsProvider);
     final AsyncValue<SyncCursorRow?> cursor = ref.watch(syncCursorProvider);
+    final AsyncValue<OutboxQueueStats> stats = ref.watch(outboxStatsProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.syncStatusTitle)),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        children: <Widget>[
-          _CursorSection(cursor: cursor),
-          const Divider(height: 1),
-          _QueueSection(stats: stats),
-          const Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: FilledButton.icon(
-              onPressed: () => ref.read(syncSchedulerProvider).request(SyncTrigger.manual),
-              icon: const Icon(Icons.sync),
-              label: Text(l10n.syncRetryNow),
-            ),
-          ),
-        ],
-      ),
+    if (cursor.isLoading || stats.isLoading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: Spacing.s20),
+        child: SkeletonBox(width: double.infinity, height: 320),
+      );
+    }
+    if (cursor.hasError || stats.hasError) {
+      return ErrorState(
+        message: l10n.syncErrorLoading,
+        retryLabel: l10n.commonRetry,
+        onRetry: () {
+          ref.invalidate(syncCursorProvider);
+          ref.invalidate(outboxStatsProvider);
+        },
+      );
+    }
+
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
+      children: <Widget>[
+        _CursorCard(row: cursor.value),
+        const SizedBox(height: Spacing.cardGap),
+        _QueueCard(stats: stats.value!),
+        const SizedBox(height: Spacing.cardGap),
+        AppButton.primary(
+          label: l10n.syncRetryNow,
+          icon: Icons.sync,
+          onPressed: () => ref.read(syncSchedulerProvider).request(SyncTrigger.manual),
+        ),
+      ],
     );
   }
 }
 
-class _CursorSection extends StatelessWidget {
-  const _CursorSection({required this.cursor});
+class _CursorCard extends StatelessWidget {
+  const _CursorCard({required this.row});
 
-  final AsyncValue<SyncCursorRow?> cursor;
+  final SyncCursorRow? row;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
-    return cursor.when(
-      loading: () => const _LoadingTile(),
-      error: (Object error, StackTrace _) => _ErrorTile(error: error),
-      data: (SyncCursorRow? row) => Column(
-        children: <Widget>[
-          _ValueTile(label: l10n.syncLastPush, value: _fmt(context, row?.lastPushAt)),
-          _ValueTile(label: l10n.syncLastPull, value: _fmt(context, row?.lastPullAt)),
-          if (row?.lastError != null)
-            _ValueTile(label: l10n.syncLastError, value: row!.lastError!, emphasise: true),
-          _ValueTile(label: l10n.syncCursor, value: row?.nextSince ?? l10n.syncNever),
-        ],
-      ),
+    return SettingsCard(
+      children: <Widget>[
+        SettingsRow(
+          label: l10n.syncLastPush,
+          showChevron: false,
+          trailing: _ValueText(_fmt(context, row?.lastPushAt)),
+        ),
+        SettingsRow(
+          label: l10n.syncLastPull,
+          showChevron: false,
+          trailing: _ValueText(_fmt(context, row?.lastPullAt)),
+        ),
+        if (row?.lastError != null)
+          SettingsRow(
+            label: l10n.syncLastError,
+            showChevron: false,
+            // Label ("Last error") Expanded ichida qisqa — `SettingsRow`
+            // avtomatik joy beradi, badge qo'shimcha cheklovsiz sig'adi.
+            trailing: StatusBadge(label: row!.lastError!, tone: StatusTone.error, dense: true),
+          ),
+        SettingsRow(
+          label: l10n.syncCursor,
+          showChevron: false,
+          trailing: _ValueText(row?.nextSince ?? l10n.syncNever),
+        ),
+      ],
     );
   }
 
   String _fmt(BuildContext context, DateTime? value) =>
-      value == null ? context.l10n.syncNever : value.toIso8601String();
+      value == null ? context.l10n.syncNever : AppFormats.fullDateTime(value);
 }
 
-class _QueueSection extends StatelessWidget {
-  const _QueueSection({required this.stats});
+class _QueueCard extends StatelessWidget {
+  const _QueueCard({required this.stats});
 
-  final AsyncValue<OutboxQueueStats> stats;
+  final OutboxQueueStats stats;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
-    return stats.when(
-      loading: () => const _LoadingTile(),
-      error: (Object error, StackTrace _) => _ErrorTile(error: error),
-      data: (OutboxQueueStats data) {
-        final List<MapEntry<OutboxKind, int>> entries = data.pendingByKind.entries.toList()
-          ..sort(
-            (MapEntry<OutboxKind, int> a, MapEntry<OutboxKind, int> b) =>
-                a.key.index.compareTo(b.key.index),
-          );
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-              child: Text(l10n.syncQueue, style: Theme.of(context).textTheme.titleSmall),
+    final List<MapEntry<OutboxKind, int>> entries = stats.pendingByKind.entries.toList()
+      ..sort(
+        (MapEntry<OutboxKind, int> a, MapEntry<OutboxKind, int> b) =>
+            a.key.index.compareTo(b.key.index),
+      );
+
+    return SettingsCard(
+      children: <Widget>[
+        Text(
+          l10n.syncQueue,
+          style: context.text.body11.copyWith(color: context.colors.textPrimary),
+        ),
+        if (entries.isEmpty)
+          Text(
+            l10n.syncQueueEmpty,
+            style: context.text.body15.copyWith(color: context.colors.textSecondary),
+          )
+        else
+          for (final MapEntry<OutboxKind, int> e in entries)
+            SettingsRow(
+              label: outboxKindLabel(l10n, e.key),
+              showChevron: false,
+              trailing: _ValueText('${e.value}'),
             ),
-            if (entries.isEmpty)
-              _ValueTile(label: l10n.syncQueueEmpty, value: '')
-            else
-              ...entries.map(
-                (MapEntry<OutboxKind, int> e) =>
-                    _ValueTile(label: outboxKindLabel(l10n, e.key), value: '${e.value}'),
-              ),
-            if (data.rejected > 0)
-              _ValueTile(
-                label: l10n.syncStateConflict(data.rejected),
-                value: l10n.syncConflictsCount(data.rejected),
-                emphasise: true,
-              ),
-          ],
-        );
-      },
+        if (stats.rejected > 0)
+          SettingsRow(
+            label: l10n.syncStateConflict(stats.rejected),
+            showChevron: false,
+            trailing: StatusBadge(
+              label: l10n.syncConflictsCount(stats.rejected),
+              tone: StatusTone.error,
+              dense: true,
+            ),
+          ),
+      ],
     );
   }
 }
 
-class _ValueTile extends StatelessWidget {
-  const _ValueTile({required this.label, required this.value, this.emphasise = false});
+/// Qiymat uzun bo'lishi mumkin (kursor tokeni, sana) — kengligi cheklanadi,
+/// aks holda `SettingsRow` ning `Row` i chetdan chiqib ketadi (eld_connect
+/// `_Field` bilan bir xil naqsh).
+class _ValueText extends StatelessWidget {
+  const _ValueText(this.value);
 
-  final String label;
   final String value;
-  final bool emphasise;
 
   @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return ListTile(
-      dense: true,
-      title: Text(label, style: emphasise ? TextStyle(color: theme.colorScheme.error) : null),
-      trailing: value.isEmpty ? null : Text(value, style: theme.textTheme.bodySmall),
-    );
-  }
-}
-
-class _LoadingTile extends StatelessWidget {
-  const _LoadingTile();
-
-  @override
-  Widget build(BuildContext context) => const Padding(
-    padding: EdgeInsets.all(24),
-    child: Center(child: CircularProgressIndicator()),
-  );
-}
-
-class _ErrorTile extends StatelessWidget {
-  const _ErrorTile({required this.error});
-
-  final Object error;
-
-  @override
-  Widget build(BuildContext context) => ListTile(
-    leading: Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error),
-    title: Text(context.l10n.errUnknown),
+  Widget build(BuildContext context) => ConstrainedBox(
+    constraints: const BoxConstraints(maxWidth: 160),
+    child: Text(
+      value,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.end,
+      style: context.text.body15.copyWith(color: context.colors.textSecondary),
+    ),
   );
 }

@@ -1,7 +1,8 @@
 /// `StatusBadge` — holat yorlig'i (tz-mobile §11.0.4).
 ///
-/// Radius `pill`, fon `*Bg`, matn `*Dark`, `body16` Medium.
-/// **M81:** ranglar ikkala temada bir xil.
+/// Figma parite (#B-17): **to'ldirilgan to'rtburchak** `r4`, **oq matn**
+/// (Uncertified = qizil fill, Certified = yashil fill, ON = ko'k, DR = yashil,
+/// SB = amber). `body16` Medium. **M81:** ranglar ikkala temada bir xil.
 library;
 
 import 'package:flutter/material.dart';
@@ -45,15 +46,15 @@ class StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
     final (Color bg, Color fg) = switch (tone) {
-      StatusTone.success => (c.successBg, c.successDark),
-      StatusTone.warning => (c.warningBg, c.warningDark),
-      StatusTone.error => (c.errorBg, c.errorDark),
+      StatusTone.success => (c.success, c.onPrimary),
+      StatusTone.warning => (c.warning, c.onPrimary),
+      StatusTone.error => (c.error, c.onPrimary),
       StatusTone.neutral => (c.surfaceAlt, c.textSecondary),
-      StatusTone.accent => (c.primaryLight, c.primary),
+      StatusTone.accent => (c.primary, c.onPrimary),
     };
 
     return Container(
-      decoration: BoxDecoration(color: bg, borderRadius: Radii.pillRadius),
+      decoration: BoxDecoration(color: bg, borderRadius: Radii.badgeRadius),
       padding: EdgeInsets.symmetric(
         horizontal: dense ? Spacing.s10 : Spacing.s15,
         vertical: dense ? Spacing.s5 / 2 : Spacing.s5,

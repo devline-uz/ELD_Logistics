@@ -1,4 +1,8 @@
 /// `Log Report` ning umumiy widgetlari (M-22 · M-23 · M-24 · M-25).
+///
+/// Figma parite: M-22 `1085:14341`, M-23 `1085:13169`.
+/// Barcha konteynerlar `core/ui` komponentlaridan (`AppCard`, `KeyValueRow`,
+/// `StatusBadge`) quriladi — bu yerda takroriy karta/qator yozilmaydi.
 library;
 
 import 'package:flutter/material.dart';
@@ -9,64 +13,45 @@ import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/ui/ui.dart';
 import '../../domain/log_models.dart';
 
-/// `Label — value` juftligi (Figma `Categories` bloki).
+/// `Label — value` juftligi — Figma **ikki ustun** (#B-20).
 class LogInfoRow extends StatelessWidget {
   const LogInfoRow({required this.label, required this.value, this.valueColor, super.key});
 
   final String label;
   final String value;
+
+  /// `null` bo'lmasa — qiymat shu rangda (`Not Signed` → `error`).
   final Color? valueColor;
 
   @override
-  Widget build(BuildContext context) {
-    final AppColors c = context.colors;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Spacing.s5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(label, style: context.text.body14.copyWith(color: c.textSecondary)),
-          const SizedBox(height: Spacing.s5),
-          Text(value, style: context.text.body12.copyWith(color: valueColor ?? c.textPrimary)),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => KeyValueRow(
+    label: label,
+    value: value,
+    valueWidget: valueColor == null
+        ? null
+        : Text(
+            value,
+            style: context.text.body13.copyWith(color: valueColor),
+            textAlign: TextAlign.end,
+          ),
+  );
 }
 
-/// Sarlavhali karta (`Driver Information`, kun ma'lumoti).
-class LogCard extends StatelessWidget {
-  const LogCard({required this.children, this.title, super.key});
+/// Bo'lim sarlavhasi — karta **tashqarisida**, ustida (#B-21).
+class LogSectionTitle extends StatelessWidget {
+  const LogSectionTitle({required this.title, super.key});
 
-  final String? title;
-  final List<Widget> children;
+  final String title;
 
   @override
-  Widget build(BuildContext context) {
-    final AppColors c = context.colors;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(Spacing.cardPadding),
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: Radii.cardRadius,
-        border: Border.all(color: c.stroke, width: Strokes.thin),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (title != null) ...<Widget>[
-            Text(title!, style: context.text.body8.copyWith(color: c.textPrimary)),
-            const SizedBox(height: Spacing.s10),
-          ],
-          ...children,
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: Spacing.s10),
+    child: Text(title, style: context.text.body8.copyWith(color: context.colors.textPrimary)),
+  );
 }
 
-/// Status qisqartmasi (`ON`, `DR`, …) — rangli pill.
+/// Status qisqartmasi (`ON`, `DR`, …) — to'ldirilgan to'rtburchak `r4`,
+/// oq matn (#B-17).
 class DutyStatusChip extends StatelessWidget {
   const DutyStatusChip({required this.status, super.key});
 
@@ -76,12 +61,16 @@ class DutyStatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.s5, vertical: 2),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.s10, vertical: Spacing.base / 2),
       decoration: BoxDecoration(
         color: c.dutyColor(dutySlotOf(status)),
-        borderRadius: Radii.pillRadius,
+        borderRadius: Radii.badgeRadius,
       ),
-      child: Text(status.wire, style: context.text.body16.copyWith(color: c.onPrimary)),
+      child: Text(
+        status.wire,
+        style: context.text.body16.withWeight(FontWeight.w500).copyWith(color: c.onPrimary),
+      ),
     );
   }
 }
@@ -95,7 +84,85 @@ String originLabel(AppLocalizations l10n, LogEventOrigin origin) => switch (orig
   LogEventOrigin.manualNoEld => l10n.logsOriginManualNoEld,
 };
 
-/// M-23 jadval sarlavhasi.
+/// M-23 jadval ustun kengliklari (Figma: `Status` · `Start Time` ·
+/// `Location` · `Document`; **`Action` ustuni yo'q** — u faqat kengaytirilgan
+/// ko'rinishda, M-25 sheet ichida).
+abstract final class LogTableMetrics {
+  const LogTableMetrics._();
+
+  static const double status = 60;
+  static const double startTime = 100;
+  static const double location = 130;
+  static const double document = 120;
+  static const double gap = Spacing.s10;
+  static const double rowPadding = Spacing.s10;
+
+  static const double totalWidth =
+      status + startTime + location + document + gap * 3 + rowPadding * 2;
+}
+
+/// M-23 jadvali: karta ichida, gorizontal scroll + ko'rinadigan indikator.
+class LogTable extends StatefulWidget {
+  const LogTable({required this.events, required this.onSelected, super.key});
+
+  final List<LogEventView> events;
+  final ValueChanged<LogEventView> onSelected;
+
+  @override
+  State<LogTable> createState() => _LogTableState();
+}
+
+class _LogTableState extends State<LogTable> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+
+    return AppCard(
+      padding: const EdgeInsets.symmetric(vertical: Spacing.s10),
+      child: RawScrollbar(
+        controller: _controller,
+        thumbVisibility: true,
+        thickness: Spacing.base,
+        radius: const Radius.circular(Radii.sm),
+        // Figma: amber thumb, jadval ostida.
+        thumbColor: c.warning,
+        trackColor: c.stroke,
+        trackVisibility: true,
+        child: ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+          child: SingleChildScrollView(
+            controller: _controller,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(bottom: Spacing.s10),
+            child: SizedBox(
+              width: LogTableMetrics.totalWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const LogTableHeader(),
+                  for (final LogEventView event in widget.events) ...<Widget>[
+                    Divider(height: Strokes.thin, thickness: Strokes.thin, color: c.stroke),
+                    LogTableRow(event: event, onTap: () => widget.onSelected(event)),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// M-23 jadval sarlavhasi (`Action` ustunisiz).
 class LogTableHeader extends StatelessWidget {
   const LogTableHeader({super.key});
 
@@ -103,20 +170,37 @@ class LogTableHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
     final AppColors c = context.colors;
-    final TextStyle style = context.text.body17.copyWith(color: c.textSecondary);
+    final TextStyle style = context.text.body17
+        .withWeight(FontWeight.w500)
+        .copyWith(color: c.textSecondary);
 
-    return Container(
-      color: c.surfaceAlt,
-      padding: const EdgeInsets.symmetric(horizontal: Spacing.s10, vertical: Spacing.s5),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        LogTableMetrics.rowPadding,
+        0,
+        LogTableMetrics.rowPadding,
+        Spacing.s10,
+      ),
       child: Row(
         children: <Widget>[
-          Expanded(flex: 3, child: Text(l10n.logsColumnStatus, style: style)),
-          Expanded(flex: 4, child: Text(l10n.logsColumnStartTime, style: style)),
-          Expanded(flex: 5, child: Text(l10n.logsColumnLocation, style: style)),
-          Expanded(flex: 4, child: Text(l10n.logsColumnDocument, style: style)),
           SizedBox(
-            width: Spacing.s30,
-            child: Text(l10n.logsColumnAction, style: style),
+            width: LogTableMetrics.status,
+            child: Text(l10n.logsColumnStatus, style: style),
+          ),
+          const SizedBox(width: LogTableMetrics.gap),
+          SizedBox(
+            width: LogTableMetrics.startTime,
+            child: Text(l10n.logsColumnStartTime, style: style),
+          ),
+          const SizedBox(width: LogTableMetrics.gap),
+          SizedBox(
+            width: LogTableMetrics.location,
+            child: Text(l10n.logsColumnLocation, style: style),
+          ),
+          const SizedBox(width: LogTableMetrics.gap),
+          SizedBox(
+            width: LogTableMetrics.document,
+            child: Text(l10n.logsColumnDocument, style: style),
           ),
         ],
       ),
@@ -126,33 +210,35 @@ class LogTableHeader extends StatelessWidget {
 
 /// M-23 jadval satri. Bosilganda `M-25` bottom-sheet ochiladi.
 class LogTableRow extends StatelessWidget {
-  const LogTableRow({required this.event, required this.onTap, this.onEdit, super.key});
+  const LogTableRow({required this.event, required this.onTap, super.key});
 
   final LogEventView event;
   final VoidCallback onTap;
 
-  /// `null` — tahrirlash mumkin emas (`🔒`).
-  final VoidCallback? onEdit;
-
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations l10n = context.l10n;
     final AppColors c = context.colors;
-    final TextStyle style = context.text.body16.copyWith(color: c.textPrimary);
-    final bool editable = event.isEditable && onEdit != null;
+    final TextStyle style = context.text.body16
+        .withWeight(FontWeight.w500)
+        .copyWith(color: c.textPrimary);
 
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Spacing.s10, vertical: Spacing.s10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: LogTableMetrics.rowPadding,
+          vertical: LogTableMetrics.rowPadding,
+        ),
         child: Row(
           children: <Widget>[
-            Expanded(
-              flex: 3,
+            SizedBox(
+              width: LogTableMetrics.status,
               child: Row(
                 children: <Widget>[
-                  if (event.status != null) DutyStatusChip(status: event.status!),
-                  if (event.status == null) Text(kEmptyValue, style: style),
+                  if (event.status != null)
+                    DutyStatusChip(status: event.status!)
+                  else
+                    Text(kEmptyValue, style: style),
                   // M137: tahrirlangan event `✎` bilan belgilanadi.
                   if (event.edited)
                     Flexible(
@@ -161,38 +247,29 @@ class LogTableRow extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(flex: 4, child: Text(AppFormats.eventTimeOf(event.start), style: style)),
-            Expanded(
-              flex: 5,
+            const SizedBox(width: LogTableMetrics.gap),
+            SizedBox(
+              width: LogTableMetrics.startTime,
+              child: Text(AppFormats.eventTimeOf(event.start), style: style, maxLines: 1),
+            ),
+            const SizedBox(width: LogTableMetrics.gap),
+            SizedBox(
+              width: LogTableMetrics.location,
               child: Text(
                 AppFormats.orNa(event.location),
-                style: style,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Text(
-                AppFormats.orNa(event.document),
                 style: style,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            const SizedBox(width: LogTableMetrics.gap),
             SizedBox(
-              width: Spacing.s30,
-              child: Semantics(
-                button: editable,
-                label: editable ? l10n.logsEditRow : l10n.logsLockedRow,
-                child: InkWell(
-                  onTap: editable ? onEdit : null,
-                  child: Icon(
-                    editable ? Icons.edit_outlined : Icons.lock_outline,
-                    size: Spacing.s20,
-                    color: editable ? c.primary : c.textDisabled,
-                  ),
-                ),
+              width: LogTableMetrics.document,
+              child: Text(
+                AppFormats.orNa(event.document),
+                style: style,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

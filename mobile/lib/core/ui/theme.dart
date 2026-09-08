@@ -6,6 +6,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'components/app_bar_primary.dart';
+import 'components/app_nav_bar.dart';
 import 'radius.dart';
 import 'shadows.dart';
 import 'spacing.dart';
@@ -74,17 +76,20 @@ abstract final class AppTheme {
       textTheme: textTheme,
       splashFactory: InkSparkle.splashFactory,
       dividerTheme: DividerThemeData(color: c.stroke, thickness: Strokes.thin, space: Strokes.thin),
+      // #B-01…#B-03: chapga tekislangan sarlavha, 48 dp, `#C2C1CD`@20 % fon.
       appBarTheme: AppBarTheme(
-        backgroundColor: c.surface,
+        backgroundColor: c.appBarSurface,
         foregroundColor: c.textPrimary,
         surfaceTintColor: c.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
-        centerTitle: true,
+        centerTitle: false,
+        toolbarHeight: kAppBarHeight,
+        titleSpacing: Spacing.s20 + Strokes.thin,
         titleTextStyle: AppTypography.body8Style.copyWith(color: c.textPrimary),
       ),
       cardTheme: CardThemeData(
-        color: c.surface,
+        color: c.cardSurface,
         surfaceTintColor: c.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
@@ -102,23 +107,61 @@ abstract final class AppTheme {
         barrierColor: c.scrim,
         shape: const RoundedRectangleBorder(borderRadius: Radii.modalRadius),
       ),
+      // #B-06: BNB-19 — h 94, faol element `primary` r10 chip, yorliq faqat
+      // faol elementda.
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: c.surface,
         surfaceTintColor: c.transparent,
-        indicatorColor: c.primaryLight,
+        indicatorColor: c.primary,
+        indicatorShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Radii.navChip)),
+        ),
+        height: kNavigationBarHeight,
         elevation: 0,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         labelTextStyle: WidgetStateProperty.resolveWith(
-          (Set<WidgetState> states) => AppTypography.body16Style.copyWith(
-            color: states.contains(WidgetState.selected) ? c.primary : c.textSecondary,
-          ),
+          (Set<WidgetState> states) => AppTypography.body14Style
+              .withWeight(FontWeight.w700)
+              .copyWith(
+                color: states.contains(WidgetState.selected) ? c.textPrimary : c.textSecondary,
+              ),
         ),
         iconTheme: WidgetStateProperty.resolveWith(
           (Set<WidgetState> states) => IconThemeData(
-            color: states.contains(WidgetState.selected) ? c.primary : c.textSecondary,
+            size: Spacing.s20 + Spacing.s5 / 2,
+            color: states.contains(WidgetState.selected) ? c.onPrimary : c.textSecondary,
           ),
         ),
       ),
       iconTheme: IconThemeData(color: c.icon),
+      // #B-18: iOS uslubidagi switch — yashil trek + to'liq oq thumb.
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (Set<WidgetState> states) =>
+              states.contains(WidgetState.disabled) && !states.contains(WidgetState.selected)
+              ? c.surface
+              : AppPalette.white,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (Set<WidgetState> states) =>
+              states.contains(WidgetState.selected) ? c.switchTrackOn : c.strokeStrong,
+        ),
+        trackOutlineColor: WidgetStatePropertyAll<Color>(c.transparent),
+        trackOutlineWidth: const WidgetStatePropertyAll<double>(0),
+        thumbIcon: const WidgetStatePropertyAll<Icon?>(null),
+      ),
+      // #B-19: tanlanmagan checkbox — qora 1.5 px kontur, r2.
+      checkboxTheme: CheckboxThemeData(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Spacing.s5 / 2.5)),
+        ),
+        side: BorderSide(color: c.textPrimary, width: Strokes.emphasis - 0.5),
+        fillColor: WidgetStateProperty.resolveWith(
+          (Set<WidgetState> states) =>
+              states.contains(WidgetState.selected) ? c.neutralStrong : c.transparent,
+        ),
+        checkColor: WidgetStatePropertyAll<Color>(c.onNeutralStrong),
+      ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: c.primary,
         linearTrackColor: c.surfaceAlt,

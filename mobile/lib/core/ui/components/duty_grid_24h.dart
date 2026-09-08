@@ -1,8 +1,11 @@
 /// `DutyGrid24h` — 24 soatlik duty grid (tz-mobile §11.0.4).
 ///
 /// To'rt qator (`OFF` · `SB` · `D` · `ON`), 24 ustun, har ustunda 15 daqiqalik
-/// to'rt belgi. Chiziq rangi `gridLine` (`#466FF7`). Gorizontal scroll ichida
-/// ishlatiladi — widget o'zi scroll qilmaydi, `minWidth` beradi.
+/// to'rt belgi. Figma parite (#B-23): soat yorliqlari **yuqorida**
+/// `M · 1…12 · 1…11 · M`, grid chiziqlari **neytral** (`stroke`), duty chizig'i
+/// **status rangida** (`AppColors.dutyColor`), status almashuvida **hodisa
+/// nuqtasi**. Gorizontal scroll ichida ishlatiladi — widget o'zi scroll
+/// qilmaydi, `minWidth` beradi.
 ///
 /// **Matn parametr:** qator nomlari ([rowLabels]) chaqiruvchidan keladi.
 library;
@@ -50,6 +53,9 @@ abstract final class DutyGridMetrics {
   /// Tepadagi soat raqamlari zonasi.
   static const double headerHeight = 16;
 
+  /// Hodisa nuqtasining radiusi (#B-23).
+  static const double eventDotRadius = 2.5;
+
   static const double gridWidth = hourWidth * 24;
   static const double gridHeight = rowHeight * 4;
   static const double totalWidth = labelWidth + gridWidth;
@@ -62,6 +68,7 @@ class DutyGrid24h extends StatelessWidget {
     required this.rowLabels,
     this.hourWidth = DutyGridMetrics.hourWidth,
     this.showHourAxis = true,
+    this.midnightLabel = 'M',
     super.key,
   });
 
@@ -74,8 +81,12 @@ class DutyGrid24h extends StatelessWidget {
   /// Bir soatning kengligi — planshetda kattaroq beriladi.
   final double hourWidth;
 
-  /// Tepadagi `0…24` shkalasi.
+  /// Tepadagi `M · 1…12 · 1…11 · M` shkalasi.
   final bool showHourAxis;
+
+  /// Yarim tun yorlig'i — Figma da `M` (#B-23). Lokalizatsiya qilingan
+  /// qisqartma chaqiruvchidan kelishi mumkin.
+  final String midnightLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +98,7 @@ class DutyGrid24h extends StatelessWidget {
     return Semantics(
       label: rowLabels.values.join(' '),
       child: Container(
-        decoration: BoxDecoration(
-          color: c.surface,
-          borderRadius: Radii.cardRadius,
-          border: Border.all(color: c.stroke, width: Strokes.thin),
-        ),
+        decoration: BoxDecoration(color: c.cardSurface, borderRadius: Radii.cardRadius),
         padding: const EdgeInsets.all(Spacing.s5),
         child: SizedBox(
           width: width,
@@ -104,8 +111,12 @@ class DutyGrid24h extends StatelessWidget {
               },
               hourWidth: hourWidth,
               showHourAxis: showHourAxis,
-              gridColor: c.gridLine,
-              lineColor: c.textPrimary,
+              gridColor: c.stroke,
+              gridStrongColor: c.strokeStrong,
+              slotColors: <DutySlot, Color>{
+                for (final DutySlot slot in DutySlot.values) slot: c.dutyColor(slot),
+              },
+              midnightLabel: midnightLabel,
               labelColor: c.textSecondary,
               textDirection: Directionality.of(context),
               labelStyle: context.text.body17.copyWith(color: c.textSecondary),
@@ -124,7 +135,9 @@ class _DutyGridPainter extends CustomPainter {
     required this.hourWidth,
     required this.showHourAxis,
     required this.gridColor,
-    required this.lineColor,
+    required this.gridStrongColor,
+    required this.slotColors,
+    required this.midnightLabel,
     required this.labelColor,
     required this.labelStyle,
     required this.textDirection,
@@ -135,7 +148,9 @@ class _DutyGridPainter extends CustomPainter {
   final double hourWidth;
   final bool showHourAxis;
   final Color gridColor;
-  final Color lineColor;
+  final Color gridStrongColor;
+  final Map<DutySlot, Color> slotColors;
+  final String midnightLabel;
   final Color labelColor;
   final TextStyle labelStyle;
   final TextDirection textDirection;
@@ -152,11 +167,11 @@ class _DutyGridPainter extends CustomPainter {
     const double rowH = DutyGridMetrics.rowHeight;
 
     final Paint grid = Paint()
-      ..color = gridColor.withValues(alpha: 0.45)
+      ..color = gridColor
       ..strokeWidth = Strokes.thin
       ..style = PaintingStyle.stroke;
     final Paint gridStrong = Paint()
-      ..color = gridColor
+      ..color = gridStrongColor
       ..strokeWidth = Strokes.thin
       ..style = PaintingStyle.stroke;
 
@@ -171,7 +186,13 @@ class _DutyGridPainter extends CustomPainter {
       final double x = left + h * hourWidth;
       canvas.drawLine(Offset(x, top), Offset(x, top + rowH * 4), gridStrong);
       if (showHourAxis) {
-        _paintText(canvas, '${h % 24}', Offset(x, 0), align: _TextAlignX.center);
+        _paintText(
+          canvas,
+          _hourLabel(h),
+          Offset(x, 0),
+          align: _TextAlignX.center,
+          style: labelStyle.copyWith(fontSize: 8, height: 1, color: labelColor),
+        );
       }
       if (h == 24) {
         continue;
@@ -206,6 +227,14 @@ class _DutyGridPainter extends CustomPainter {
     _paintSegments(canvas, left: left, top: top, rowH: rowH);
   }
 
+  /// `M · 1…12 · 1…11 · M` (#B-23).
+  String _hourLabel(int h) {
+    if (h == 0 || h == 24) {
+      return midnightLabel;
+    }
+    return '${h <= 12 ? h : h - 12}';
+  }
+
   void _paintSegments(
     Canvas canvas, {
     required double left,
@@ -215,29 +244,28 @@ class _DutyGridPainter extends CustomPainter {
     if (segments.isEmpty) {
       return;
     }
-    final Paint line = Paint()
-      ..color = lineColor
-      ..strokeWidth = Strokes.emphasis
-      ..strokeCap = StrokeCap.square
-      ..style = PaintingStyle.stroke;
-
     const double dayS = 24 * 3600;
     double xOf(Duration d) => left + (d.inSeconds.clamp(0, dayS.toInt()) / dayS) * hourWidth * 24;
     double yOf(DutySlot s) => top + DutySlot.values.indexOf(s) * rowH + rowH / 2;
 
-    double? prevX;
     double? prevY;
     for (final DutySegment seg in segments) {
+      final Color color = slotColors[seg.slot] ?? gridStrongColor;
+      final Paint line = Paint()
+        ..color = color
+        ..strokeWidth = Strokes.emphasis
+        ..strokeCap = StrokeCap.square
+        ..style = PaintingStyle.stroke;
       final double x1 = xOf(seg.start);
       final double x2 = xOf(seg.end);
       final double y = yOf(seg.slot);
-      if (prevX != null && prevY != null && prevY != y) {
-        // Status almashuvi — vertikal ko'tarilish.
+      if (prevY != null && prevY != y) {
+        // Status almashuvi — vertikal ko'tarilish + hodisa nuqtasi (#B-23).
         canvas.drawLine(Offset(x1, prevY), Offset(x1, y), line);
+        canvas.drawCircle(Offset(x1, y), DutyGridMetrics.eventDotRadius, Paint()..color = color);
       }
       canvas.drawLine(Offset(x1, y), Offset(x2, y), line);
-      _paintSegmentLabel(canvas, seg, x1: x1, x2: x2, y: y, rowH: rowH);
-      prevX = x2;
+      _paintSegmentLabel(canvas, seg, x1: x1, x2: x2, y: y, rowH: rowH, color: color);
       prevY = y;
     }
   }
@@ -253,6 +281,7 @@ class _DutyGridPainter extends CustomPainter {
     required double x2,
     required double y,
     required double rowH,
+    required Color color,
   }) {
     final String? text = seg.label;
     if (text == null || text.isEmpty || x2 - x1 < _minLabelWidth) {
@@ -263,7 +292,7 @@ class _DutyGridPainter extends CustomPainter {
       text,
       Offset((x1 + x2) / 2, y - rowH / 2 + Strokes.emphasis),
       align: _TextAlignX.center,
-      style: labelStyle.copyWith(fontSize: 9, height: 1, color: lineColor),
+      style: labelStyle.copyWith(fontSize: 9, height: 1, color: color),
     );
   }
 
@@ -300,7 +329,8 @@ class _DutyGridPainter extends CustomPainter {
       old.hourWidth != hourWidth ||
       old.showHourAxis != showHourAxis ||
       old.gridColor != gridColor ||
-      old.lineColor != lineColor;
+      old.gridStrongColor != gridStrongColor ||
+      old.midnightLabel != midnightLabel;
 }
 
 enum _TextAlignX { left, center, right }

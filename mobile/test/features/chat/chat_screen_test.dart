@@ -6,7 +6,9 @@ library;
 import 'package:eld_mobile/core/ui/ui.dart';
 import 'package:eld_mobile/features/chat/domain/chat_message.dart';
 import 'package:eld_mobile/features/chat/presentation/chat_providers.dart';
+import 'package:eld_mobile/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:eld_mobile/features/chat/presentation/screens/chat_screen.dart';
+import 'package:eld_mobile/features/chat/presentation/widgets/chat_bubble.dart';
 import 'package:eld_mobile/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -111,6 +113,59 @@ void main() {
 
     final TextField field = tester.widget<TextField>(find.byType(TextField));
     expect(field.enabled, isTrue);
+    await unmount(tester);
+  });
+
+  testWidgets('#B-26: pufakcha r16 + «dum» r4, maks eni 75 %', (WidgetTester tester) async {
+    repository.emit(<ChatMessage>[_m('mine', t0), _m('theirs', t0, side: ChatSenderSide.office)]);
+    await pump(tester);
+
+    final Finder bubbles = find.descendant(
+      of: find.byType(ChatBubble),
+      matching: find.byType(DecoratedBox),
+    );
+    final BoxDecoration mine =
+        tester.widget<DecoratedBox>(bubbles.first).decoration as BoxDecoration;
+    expect(mine.borderRadius, chatBubbleRadius(mine: true));
+    expect(mine.borderRadius, isNot(isA<StadiumBorder>()));
+
+    // Maks eni: ro'yxat kengligining 75 % idan oshmaydi.
+    final double listWidth = tester.getSize(find.byType(ChatBubble).first).width;
+    for (final Element element in find.byType(ChatBubble).evaluate()) {
+      expect(tester.getSize(find.byWidget(element.widget)).width, lessThanOrEqualTo(listWidth));
+    }
+    await unmount(tester);
+  });
+
+  testWidgets('#B-26: navbatdagi xabarda soat emas, ✓ ko\'rsatiladi', (WidgetTester tester) async {
+    repository.emit(<ChatMessage>[_m('q', t0, status: ChatMessageStatus.queued)]);
+    await pump(tester);
+
+    expect(find.byIcon(Icons.schedule), findsNothing);
+    expect(find.byIcon(Icons.check), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('#B-26: app bar da `<` bor, amal guruhi yo\'q', (WidgetTester tester) async {
+    await pump(tester);
+
+    expect(find.byType(AppBackButton), findsOneWidget);
+    expect(find.byType(AppBarAction), findsNothing);
+    await unmount(tester);
+  });
+
+  testWidgets('#B-26: typing indikator pufakchasi', (WidgetTester tester) async {
+    repository.emit(<ChatMessage>[_m('m1', t0)]);
+    await pump(tester);
+    expect(find.byType(ChatTypingBubble), findsNothing);
+
+    final BuildContext context = tester.element(find.byType(ChatScreen));
+    ProviderScope.containerOf(
+      context,
+      listen: false,
+    ).read(chatControllerProvider.notifier).setPeerTyping(value: true);
+    await tester.pump();
+    expect(find.byType(ChatTypingBubble), findsOneWidget);
     await unmount(tester);
   });
 

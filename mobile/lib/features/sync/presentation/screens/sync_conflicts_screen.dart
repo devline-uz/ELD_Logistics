@@ -1,7 +1,9 @@
-/// `M-55 Sync conflicts` — rad etilgan/almashtirilgan elementlar (M30, §5.6).
+/// `M-55 Sync conflicts` (🎨 dizaynda yo'q, §21.6) — rad etilgan/almashtirilgan
+/// elementlar (M30, §5.6).
 ///
-/// TODO(M1): `core/ui` tayyor bo'lgach `AppScaffold` / `AppEmptyState` /
-/// `AppListTile` va dizayn tokenlariga ko'chiriladi.
+/// Figma yo'q, lekin `core/ui` dizayn tizimi majburiy: `AdaptiveScaffold` +
+/// `AppBarPrimary` + `SettingsCard`/`SettingsRow` — `M-54 Sync status` bilan
+/// bir xil naqsh.
 library;
 
 import 'dart:async';
@@ -16,7 +18,7 @@ import '../../../../core/db/db_providers.dart';
 import '../../../../core/i18n/l10n_extension.dart';
 import '../../../../core/sync/conflict_messages.dart';
 import '../../../../core/time/time_providers.dart';
-import '../../../../core/ui/formats.dart';
+import '../../../../core/ui/ui.dart';
 
 class SyncConflictsScreen extends ConsumerStatefulWidget {
   const SyncConflictsScreen({super.key});
@@ -37,28 +39,49 @@ class _SyncConflictsScreenState extends ConsumerState<SyncConflictsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => AdaptiveScaffold(
+    // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
+    maxContentWidth: ContentWidth.single,
+    appBar: AppBarPrimary(title: context.l10n.syncConflictsTitle, leading: const AppBackButton()),
+    backgroundColor: context.colors.bg,
+    phone: (BuildContext context) => const _ConflictsBody(),
+    tablet: (BuildContext context) => const _ConflictsBody(),
+  );
+}
+
+/// `T-35` planshet modali ham shu tanani ishlatadi (M7).
+class _ConflictsBody extends ConsumerWidget {
+  const _ConflictsBody();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations l10n = context.l10n;
     final AsyncValue<List<OutboxItemRow>> conflicts = ref.watch(syncConflictsProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.syncConflictsTitle)),
-      body: conflicts.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (Object error, StackTrace _) => Center(child: Text(l10n.errUnknown)),
-        data: (List<OutboxItemRow> rows) => rows.isEmpty
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(32),
-                  child: Text(l10n.syncConflictsEmpty, textAlign: TextAlign.center),
-                ),
-              )
-            : ListView.separated(
-                itemCount: rows.length,
-                separatorBuilder: (BuildContext context, int index) => const Divider(height: 1),
-                itemBuilder: (BuildContext context, int index) => _ConflictTile(row: rows[index]),
-              ),
+    return asyncView<List<OutboxItemRow>>(
+      conflicts,
+      loading: const Padding(
+        padding: EdgeInsets.symmetric(vertical: Spacing.s20),
+        child: LoadingSkeleton(),
       ),
+      error: (Object error) => ErrorState(
+        message: l10n.syncErrorLoading,
+        retryLabel: l10n.commonRetry,
+        onRetry: () => ref.invalidate(syncConflictsProvider),
+      ),
+      data: (List<OutboxItemRow> rows) => rows.isEmpty
+          ? EmptyState(
+              title: l10n.syncConflictsEmptyTitle,
+              message: l10n.syncConflictsEmpty,
+              icon: Icons.task_alt,
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
+              itemCount: rows.length,
+              separatorBuilder: (BuildContext context, int _) =>
+                  Divider(height: Strokes.thin, color: context.colors.stroke),
+              itemBuilder: (BuildContext context, int index) => _ConflictTile(row: rows[index]),
+            ),
     );
   }
 }
@@ -71,31 +94,50 @@ class _ConflictTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations l10n = context.l10n;
-    final ThemeData theme = Theme.of(context);
+    final AppColors c = context.colors;
     final RejectReason reason = RejectReason.fromWire(row.rejectReason);
     final OutboxKind kind = OutboxKind.fromWire(row.kind);
     final String? action = conflictActionLabel(l10n, reason);
     final bool informational = reason == RejectReason.superseded;
 
-    return ListTile(
-      isThreeLine: true,
-      leading: Icon(
-        informational ? Icons.info_outline : Icons.error_outline,
-        color: informational ? theme.colorScheme.primary : theme.colorScheme.error,
-      ),
-      title: Text(
-        l10n.syncConflictItemTitle(
-          outboxKindLabel(l10n, kind),
-          AppFormats.listHeaderOf(row.createdAt),
-        ),
-      ),
-      subtitle: Text(conflictMessage(l10n, reason)),
-      trailing: action == null
-          ? null
-          : TextButton(
-              onPressed: reason == RejectReason.timeInFuture ? () => _resend(ref) : null,
-              child: Text(action),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: Spacing.s10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Icon(
+            informational ? Icons.info_outline : Icons.error_outline,
+            color: informational ? c.textSecondary : c.error,
+          ),
+          const SizedBox(width: Spacing.s10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  l10n.syncConflictItemTitle(
+                    outboxKindLabel(l10n, kind),
+                    AppFormats.listHeaderOf(row.createdAt),
+                  ),
+                  style: context.text.body11.copyWith(color: c.textPrimary),
+                ),
+                const SizedBox(height: Spacing.s5),
+                Text(
+                  conflictMessage(l10n, reason),
+                  style: context.text.body15.copyWith(color: c.textSecondary),
+                ),
+                if (action != null) ...<Widget>[
+                  const SizedBox(height: Spacing.s10),
+                  AppButton.text(
+                    label: action,
+                    onPressed: reason == RejectReason.timeInFuture ? () => _resend(ref) : null,
+                  ),
+                ],
+              ],
             ),
+          ),
+        ],
+      ),
     );
   }
 

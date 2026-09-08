@@ -8,10 +8,15 @@ import 'package:eld_mobile/core/db/app_database.dart';
 import 'package:eld_mobile/core/db/db_providers.dart';
 import 'package:eld_mobile/core/eld/eld_providers.dart';
 import 'package:eld_mobile/core/eld/motion_detector.dart';
+import 'package:eld_mobile/core/router/app_router.dart';
 import 'package:eld_mobile/core/router/auth_state.dart';
+import 'package:eld_mobile/core/router/routes.dart';
 import 'package:eld_mobile/core/session/session_context.dart';
+import 'package:eld_mobile/core/session/session_terminator.dart';
+import 'package:eld_mobile/core/ui/components/app_nav_bar.dart';
 import 'package:eld_mobile/features/auth/data/auth_providers.dart';
 import 'package:eld_mobile/features/auth/presentation/controllers/splash_controller.dart';
+import 'package:eld_mobile/features/auth/presentation/screens/signed_out_screen.dart';
 import 'package:eld_mobile/features/auth/presentation/screens/splash_screen.dart';
 import 'package:eld_mobile/features/auth/presentation/widgets/auth_shell.dart';
 import 'package:eld_mobile/features/duty_status/data/duty_status_providers.dart';
@@ -29,6 +34,7 @@ Future<ProviderContainer> _pump(
   AuthStatus status, {
   bool settle = true,
   FakeAuthRepository? repository,
+  SessionEndReason endReason = SessionEndReason.none,
 }) async {
   // Haqiqiy `AuthRepository` tarmoq/Keychain ga chiqadi — testda soxtasi.
   // Shell shoxlarida endi haqiqiy ekranlar turadi (Home, Logs, Chat, Profile),
@@ -47,6 +53,7 @@ Future<ProviderContainer> _pump(
     ],
   );
   addTearDown(container.dispose);
+  container.read(sessionEndReasonProvider.notifier).set(endReason);
   container.read(authStatusProvider.notifier).set(status);
 
   await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const EldApp()));
@@ -86,7 +93,24 @@ void main() {
   ) async {
     await _pump(tester, AuthStatus.unauthenticated);
 
-    expect(find.byType(NavigationBar), findsNothing);
+    expect(find.byType(AppNavBar), findsNothing);
+  });
+
+  testWidgets('#B-3: refresh bekor qilingan sessiya `M-56` ekraniga tushadi', (
+    WidgetTester tester,
+  ) async {
+    final ProviderContainer container = await _pump(
+      tester,
+      AuthStatus.unauthenticated,
+      endReason: SessionEndReason.revoked,
+    );
+    // Splash `publicPaths` da — qo'riqchi haydovchi ekranga o'tishga
+    // urinmaguncha aralashmaydi (haqiqiy oqimda u `/home` da turadi).
+    container.read(routerProvider).go(AppRoute.home);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(SignedOutScreen), findsOneWidget);
+    expect(find.byType(AppNavBar), findsNothing);
   });
 
   testWidgets('autentifikatsiyalangan holatda 4 tab li shell ochiladi', (
@@ -94,19 +118,22 @@ void main() {
   ) async {
     await _pump(tester, AuthStatus.authenticated);
 
-    expect(find.byType(NavigationBar), findsOneWidget);
-    final NavigationBar bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-    expect(bar.destinations.length, 4);
+    expect(find.byType(AppNavBar), findsOneWidget);
+    final AppNavBar bar = tester.widget<AppNavBar>(find.byType(AppNavBar));
+    expect(bar.items.length, 4);
   });
 
   testWidgets('tab almashtirish indexedStack ni yangilaydi', (WidgetTester tester) async {
     await _pump(tester, AuthStatus.authenticated);
 
-    final AppLocalizations l10n = AppLocalizations.of(tester.element(find.byType(NavigationBar)));
-    await tester.tap(find.text(l10n.navLogs));
+    // #B-06: yorliq faqat faol elementda ko'rinadi — nofaol tab ikonka
+    // bo'yicha bosiladi.
+    await tester.tap(find.byIcon(Icons.article_outlined));
     await tester.pumpAndSettle();
 
-    final NavigationBar bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-    expect(bar.selectedIndex, 1);
+    final AppNavBar bar = tester.widget<AppNavBar>(find.byType(AppNavBar));
+    expect(bar.currentIndex, 1);
+    final AppLocalizations l10n = AppLocalizations.of(tester.element(find.byType(AppNavBar)));
+    expect(find.text(l10n.navLogs), findsWidgets);
   });
 }

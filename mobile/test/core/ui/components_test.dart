@@ -147,11 +147,12 @@ void main() {
   group('StatusBadge', () {
     testWidgets('tone bo\'yicha matn rangi', (WidgetTester tester) async {
       for (final (StatusTone tone, Color expected) in <(StatusTone, Color)>[
-        (StatusTone.success, AppColors.light.successDark),
-        (StatusTone.warning, AppColors.light.warningDark),
-        (StatusTone.error, AppColors.light.errorDark),
+        // PARITY #B-17: to'ldirilgan badge — matn oq.
+        (StatusTone.success, AppColors.light.onPrimary),
+        (StatusTone.warning, AppColors.light.onPrimary),
+        (StatusTone.error, AppColors.light.onPrimary),
         (StatusTone.neutral, AppColors.light.textSecondary),
-        (StatusTone.accent, AppColors.light.primary),
+        (StatusTone.accent, AppColors.light.onPrimary),
       ]) {
         await pumpUi(tester, StatusBadge(label: 'S', tone: tone));
         final Text t = tester.widget(find.text('S'));
@@ -166,7 +167,7 @@ void main() {
         brightness: Brightness.dark,
       );
       final Text t = tester.widget(find.text('S'));
-      expect(t.style!.color, AppColors.light.successDark);
+      expect(t.style!.color, AppColors.light.onPrimary);
     });
   });
 
@@ -322,8 +323,10 @@ void main() {
           ),
         ),
       );
-      expect(find.text('Wed 14'), findsOneWidget);
-      await tester.tap(find.text('Wed 14'));
+      // PARITY #B-16: ikki qator — `Wed` va `14`.
+      expect(find.text('Wed'), findsOneWidget);
+      expect(find.text('14'), findsOneWidget);
+      await tester.tap(find.text('14'));
       expect(picked, DateTime.utc(2025, 5, 14));
     });
   });
@@ -488,7 +491,7 @@ void main() {
       await tester.drag(find.byType(GestureDetector).first, const Offset(40, 20));
       await tester.pump();
       save = tester.widget(find.text('Save'));
-      expect(save.style!.color, AppColors.light.onPrimary);
+      expect(save.style!.color, AppColors.light.onNeutralStrong);
       expect(find.text('Sign here'), findsNothing);
     });
   });
@@ -507,9 +510,9 @@ void main() {
       expect(find.text('tablet'), findsOneWidget);
     });
 
-    testWidgets('screenPaddingH: telefon 16, planshet 24', (WidgetTester tester) async {
+    testWidgets('screenPaddingH: telefon 24, planshet 24', (WidgetTester tester) async {
       await pumpUi(tester, const SizedBox.shrink());
-      expect(screenPaddingH(contextOf(tester)), 16);
+      expect(screenPaddingH(contextOf(tester)), 24);
 
       await pumpUi(tester, const SizedBox.shrink(), size: kTabletSize);
       expect(screenPaddingH(contextOf(tester)), 24);
