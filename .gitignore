@@ -52,3 +52,14 @@ mobile/ios/fastlane/report.xml
 mobile/*.iml
 mobile/*.ipr
 mobile/*.iws
+
+# --- admin (Vite/React) ---
+admin/node_modules/
+admin/dist/
+admin/coverage/
+admin/playwright-report/
+admin/test-results/
+admin/.env
+admin/.env.local
+admin/*.tsbuildinfo
+admin/*.log

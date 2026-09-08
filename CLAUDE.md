@@ -7,6 +7,7 @@ Kod TZ dan chetlashsa — avval TZ o'zgartiriladi (CR), keyin kod.
 ## Papkalar
 - `backend/` — butun backend kodi (boshqa joyga backend kodi yozilmaydi) · reja: `tasks.md`
 - `mobile/` — butun Flutter kodi · reja: `mobile/tasks.md` · dizayn manbai: `mobile/design/figma/`
+- `admin/` — butun web admin panel kodi (Vite + React) · reja: `admin/tasks.md` · TZ: `docs/tz-admin-frontend.md` · ekran spetsifikatsiyalari: `docs/tz/07-*.md`
 - `contracts/` — muzlatilgan backend kontrakti (`swagger.json`, `permissions.md`, `websocket.md`) — klientlar uchun yagona haqiqat manbai
 - `.claude/agents/` — loyiha subagentlari
 - `.claude/skills/` — siqilgan TZ bilimi (butun tz.md ni qayta o'qimaslik uchun)
@@ -33,6 +34,10 @@ Kod TZ dan chetlashsa — avval TZ o'zgartiriladi (CR), keyin kod.
 `offline-sync-engineer` · `ble-integration` · `flutter-test-engineer` ·
 `mobile-security-auditor` · `flutter-code-reviewer` · `release-engineer`
 
+**Admin (React):** `fe-architect` · `admin-screen-implementer` · `ui-component-builder` · `api-integration` ·
+`realtime-engineer` · `map-engineer` · `i18n-keeper` · `frontend-test-engineer` ·
+`a11y-reviewer` · `frontend-security-reviewer` · `frontend-code-reviewer`
+
 Ish **subagentlar orqali** bajariladi. Har agent o'z skillarini o'qib boshlaydi.
 Parallel agentlar faqat kesishmaydigan papkalarda ishlaydi.
 
@@ -41,6 +46,8 @@ Parallel agentlar faqat kesishmaydigan papkalarda ishlaydi.
 `eld-api-contract` · `eld-security`
 **Mobil:** `flutter-conventions` · `eld-design-system` · `eld-screens` · `flutter-drift` ·
 `flutter-ble` · `hos-parity` · `mobile-security` · `flutter-testing`
+**Admin:** `fe-conventions` · `fe-design-system` · `fe-screens` · `fe-api` · `fe-permissions` ·
+`fe-realtime` · `fe-map` · `fe-a11y` · `fe-security` · `fe-testing`
 
 ## Qat'iy qoidalar
 - `internal/hos` va `internal/sync` — faqat stdlib (Dart porti bilan bir xil test-vektorlar).
@@ -72,3 +79,22 @@ Parallel agentlar faqat kesishmaydigan papkalarda ishlaydi.
 | 1868–2026 | Xavfsizlik, platforma cheklovlari, NFR |
 | 2026–2241 | Test, nomuvofiqliklar reestri |
 | 2241–2658 | Ish tartibi, bosqichlar, DoD |
+
+## Admin panel qat'iy qoidalar (`admin/`)
+- **Backend haqiqat manbai.** Dizayn bilan to'qnashsa — backend ustun; farq TZ §16 reestriga yoziladi.
+- `admin/src/api/schema.d.ts` — generatsiya (`npm run api`), qo'lda tegilmaydi.
+- Hardcode string yo'q — barcha matn `en.json` da (`i18n-keeper`).
+- Admin panel **hech qachon** haydovchi nomidan log yozmaydi va imzo qo'ymaydi:
+  log tahrirlash faqat **taklif → haydovchi tasdig'i** modeli orqali.
+- Access token faqat xotirada; refresh token `sessionStorage` da. `localStorage` da token YO'Q.
+- Parallel agentlar `router.tsx`, `en.json`, `tailwind.config.ts`, `api/queries/index.ts` ga yozmaydi.
+- Har bosqich oxirida: `cd admin && npm run typecheck && npm run lint && npm run test && npm run build` —
+  to'rttasi yashil bo'lmasa bosqich tugallanmagan. Keyin `frontend-security-reviewer` + `frontend-code-reviewer`.
+
+## Muhim manzillar
+| Nima | Qiymat |
+|---|---|
+| API (prod) | `https://eldapi.stackyard.uz/api/v1` |
+| WebSocket | `wss://eldapi.stackyard.uz/api/v1/ws` |
+| Admin domeni | `https://eldadmin.stackyard.uz` |
+| API versiyasi | `v1` — **muzlatilgan** |
