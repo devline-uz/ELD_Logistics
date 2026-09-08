@@ -6,6 +6,9 @@
 
 # --- backend (Go) ---
 backend/bin/
+backend/api
+backend/worker
+backend/migrate
 backend/*.exe
 backend/*.test
 backend/*.out
