@@ -1,0 +1,649 @@
+{
+  "@@locale": "en",
+  "authBrandName": "OneBook ELD",
+  "@authBrandName": {
+    "description": "M90: canonical brand wordmark, used on splash and login"
+  },
+  "authCopyright": "Copyright © {year} OneBook ELD",
+  "@authCopyright": {
+    "description": "M-02 login footer; the year is taken from TimeSource",
+    "placeholders": {
+      "year": {
+        "type": "String",
+        "example": "2025"
+      }
+    }
+  },
+  "authNoRegistrationNotice": "This app does not support account registration. Please reach out to your fleet manager for assistance.",
+  "@authNoRegistrationNotice": {
+    "description": "M12: literal design copy, must not be reworded"
+  },
+  "authSplashLoading": "Starting OneBook ELD",
+  "@authSplashLoading": {
+    "description": "M-01 splash semantics / progress label"
+  },
+  "authSplashError": "OneBook ELD could not start. Check your connection and try again.",
+  "@authSplashError": {
+    "description": "M-01 bootstrap failure that is not offline (offline boots normally, M13)"
+  },
+  "authLoginTitle": "Login",
+  "@authLoginTitle": {
+    "description": "M-02 screen title (screen reader only, the design has no app bar)"
+  },
+  "authUsernameLabel": "Username or Email address",
+  "@authUsernameLabel": {
+    "description": "M-02 username field label"
+  },
+  "authUsernameHint": "Enter email address",
+  "@authUsernameHint": {
+    "description": "M-02 username field placeholder"
+  },
+  "authPasswordLabel": "Password",
+  "@authPasswordLabel": {
+    "description": "M-02 password field label"
+  },
+  "authPasswordHint": "Enter password",
+  "@authPasswordHint": {
+    "description": "M-02 password field placeholder"
+  },
+  "authShowPassword": "Show password",
+  "@authShowPassword": {
+    "description": "Eye icon tooltip when the password is hidden"
+  },
+  "authHidePassword": "Hide password",
+  "@authHidePassword": {
+    "description": "Eye icon tooltip when the password is visible"
+  },
+  "authLoginButton": "Login",
+  "@authLoginButton": {
+    "description": "M-02 primary action"
+  },
+  "authForgotPassword": "Forgot password?",
+  "@authForgotPassword": {
+    "description": "M-02 link to M-06"
+  },
+  "authOfflineBanner": "Login requires an internet connection",
+  "@authOfflineBanner": {
+    "description": "M14: first login cannot work offline"
+  },
+  "authErrorUsernameRequired": "Enter your username or email address",
+  "@authErrorUsernameRequired": {
+    "description": "M-02 inline validation"
+  },
+  "authErrorPasswordTooShort": "Password must be at least 8 characters",
+  "@authErrorPasswordTooShort": {
+    "description": "M-02 inline validation (§4.3)"
+  },
+  "authErrorInvalidCredentials": "Incorrect username or password",
+  "@authErrorInvalidCredentials": {
+    "description": "§4.3: never say which one is wrong"
+  },
+  "authRateLimited": "Too many attempts. Try again in {seconds}s",
+  "@authRateLimited": {
+    "description": "RATE_LIMITED countdown on login and PIN",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "authReplacedSessionPhone": "You were signed in on this device. Your other phone was signed out.",
+  "@authReplacedSessionPhone": {
+    "description": "§4.6 replaced_session banner"
+  },
+  "authReplacedSessionTablet": "You were signed in on this device. Your other tablet was signed out.",
+  "@authReplacedSessionTablet": {
+    "description": "§4.6 replaced_session banner"
+  },
+  "authPausedBanner": "Session paused for {name}",
+  "@authPausedBanner": {
+    "description": "M-03 header showing the paused driver",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John Miller"
+      }
+    }
+  },
+  "authReturnToTruck": "Return to truck",
+  "@authReturnToTruck": {
+    "description": "M-03 secondary action leading to M-04"
+  },
+  "authPinTitle": "Enter PIN",
+  "@authPinTitle": {
+    "description": "M-04 title"
+  },
+  "authPinSubtitle": "Enter your 6-digit PIN to return to the truck",
+  "@authPinSubtitle": {
+    "description": "M-04 subtitle for the return_to_truck action"
+  },
+  "authPinSubtitleSwitchDriver": "Enter the 6-digit PIN of the driver taking over",
+  "@authPinSubtitleSwitchDriver": {
+    "description": "M-04 subtitle for the switch_driver action"
+  },
+  "authPinForgot": "Forgot PIN?",
+  "@authPinForgot": {
+    "description": "M-04 fallback to password sign-in (M-02)"
+  },
+  "authPinErrorLength": "PIN must be exactly 6 digits",
+  "@authPinErrorLength": {
+    "description": "§4.5 local PIN format rule"
+  },
+  "authPinErrorRepeated": "PIN cannot be 6 identical digits",
+  "@authPinErrorRepeated": {
+    "description": "§4.5 local PIN format rule"
+  },
+  "authPinErrorSequence": "PIN cannot be a run of consecutive digits",
+  "@authPinErrorSequence": {
+    "description": "§4.5 local PIN format rule"
+  },
+  "authPinErrorIncorrect": "Incorrect PIN",
+  "@authPinErrorIncorrect": {
+    "description": "M-04 wrong PIN"
+  },
+  "authPinAttemptsLeft": "{count, plural, one{1 attempt left} other{{count} attempts left}}",
+  "@authPinAttemptsLeft": {
+    "description": "M-04 remaining attempts before the lockout",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "authPinLocked": "Too many attempts. Try again in {seconds}s",
+  "@authPinLocked": {
+    "description": "M-04 lockout timer (60s, then exponential)",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "authPinBackspace": "Delete last digit",
+  "@authPinBackspace": {
+    "description": "M-04 keypad backspace semantics label"
+  },
+  "authPinNotSet": "No PIN is set for this account. Sign in with your password to set one.",
+  "@authPinNotSet": {
+    "description": "M156: PIN_NOT_SET forces the password flow"
+  },
+  "authPinOfflineNotice": "Checked offline. It will be confirmed as soon as you are back online.",
+  "@authPinOfflineNotice": {
+    "description": "M16 offline PIN verification"
+  },
+  "authInviteTitle": "Accept invitation",
+  "@authInviteTitle": {
+    "description": "M-05 title"
+  },
+  "authInviteDescription": "Set a password and a 6-digit PIN to finish setting up your account.",
+  "@authInviteDescription": {
+    "description": "M-05 description"
+  },
+  "authInvitePasswordLabel": "New password",
+  "@authInvitePasswordLabel": {
+    "description": "M-05 / M-07 password field"
+  },
+  "authInvitePasswordConfirmLabel": "Confirm password",
+  "@authInvitePasswordConfirmLabel": {
+    "description": "M-05 / M-07 confirmation field"
+  },
+  "authInvitePinLabel": "6-digit PIN",
+  "@authInvitePinLabel": {
+    "description": "M-05 PIN field"
+  },
+  "authInvitePinConfirmLabel": "Confirm PIN",
+  "@authInvitePinConfirmLabel": {
+    "description": "M-05 PIN confirmation field"
+  },
+  "authInviteConsent": "I agree to the Privacy Policy and the Terms of Use",
+  "@authInviteConsent": {
+    "description": "M-05 legal consent checkbox"
+  },
+  "authInviteSubmit": "Finish setup",
+  "@authInviteSubmit": {
+    "description": "M-05 primary action"
+  },
+  "authInviteMissingToken": "This invitation link is invalid or incomplete.",
+  "@authInviteMissingToken": {
+    "description": "M-05 empty state when the deep link carries no token"
+  },
+  "authInviteSuccess": "Your account is ready. Please sign in.",
+  "@authInviteSuccess": {
+    "description": "M-05 success message"
+  },
+  "authPasswordMismatch": "Passwords do not match",
+  "@authPasswordMismatch": {
+    "description": "M-05 / M-07 validation"
+  },
+  "authPinMismatch": "PINs do not match",
+  "@authPinMismatch": {
+    "description": "M-05 validation"
+  },
+  "authPasswordStrength": "Password strength: {level}",
+  "@authPasswordStrength": {
+    "description": "M-05 / M-07 strength meter caption",
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Strong"
+      }
+    }
+  },
+  "authPasswordStrengthWeak": "Weak",
+  "@authPasswordStrengthWeak": {
+    "description": "Password strength level"
+  },
+  "authPasswordStrengthFair": "Fair",
+  "@authPasswordStrengthFair": {
+    "description": "Password strength level"
+  },
+  "authPasswordStrengthStrong": "Strong",
+  "@authPasswordStrengthStrong": {
+    "description": "Password strength level"
+  },
+  "authForgotTitle": "Forgot password",
+  "@authForgotTitle": {
+    "description": "M-06 title"
+  },
+  "authForgotDescription": "Enter your username or email address and we will send you a link to reset your password.",
+  "@authForgotDescription": {
+    "description": "M-06 description"
+  },
+  "authForgotSubmit": "Send reset link",
+  "@authForgotSubmit": {
+    "description": "M-06 primary action"
+  },
+  "authForgotSent": "If that account exists, a reset link is on its way.",
+  "@authForgotSent": {
+    "description": "M-06 success message; deliberately does not confirm the account"
+  },
+  "authBackToLogin": "Back to login",
+  "@authBackToLogin": {
+    "description": "M-06 / M-07 return action"
+  },
+  "authResetTitle": "Reset password",
+  "@authResetTitle": {
+    "description": "M-07 title"
+  },
+  "authResetDescription": "Choose a new password for your account.",
+  "@authResetDescription": {
+    "description": "M-07 description"
+  },
+  "authResetSubmit": "Save new password",
+  "@authResetSubmit": {
+    "description": "M-07 primary action"
+  },
+  "authResetSuccess": "Password updated. Please sign in.",
+  "@authResetSuccess": {
+    "description": "M-07 success message"
+  },
+  "authResetMissingToken": "This reset link is invalid or has expired.",
+  "@authResetMissingToken": {
+    "description": "M-07 empty state when the deep link carries no token"
+  },
+  "authTotpTitle": "Two-factor authentication",
+  "@authTotpTitle": {
+    "description": "M-08 title"
+  },
+  "authTotpSetupDescription": "Scan this key in your authenticator app, or type it in manually.",
+  "@authTotpSetupDescription": {
+    "description": "M-08 setup step"
+  },
+  "authTotpSecretLabel": "Setup key",
+  "@authTotpSecretLabel": {
+    "description": "M-08 TOTP secret label"
+  },
+  "authTotpCopySecret": "Copy setup key",
+  "@authTotpCopySecret": {
+    "description": "M-08 copy action"
+  },
+  "authTotpSecretCopied": "Setup key copied",
+  "@authTotpSecretCopied": {
+    "description": "M-08 copy confirmation"
+  },
+  "authTotpVerifyDescription": "Enter the 6-digit code from your authenticator app.",
+  "@authTotpVerifyDescription": {
+    "description": "M-08 verify step"
+  },
+  "authTotpCodeLabel": "6-digit code",
+  "@authTotpCodeLabel": {
+    "description": "M-08 code field"
+  },
+  "authTotpSubmit": "Verify",
+  "@authTotpSubmit": {
+    "description": "M-08 primary action"
+  },
+  "authTotpRecoveryCodesTitle": "Recovery codes",
+  "@authTotpRecoveryCodesTitle": {
+    "description": "M-08 recovery codes section"
+  },
+  "authTotpRecoveryCodesHint": "Save these codes somewhere safe. Each one works only once.",
+  "@authTotpRecoveryCodesHint": {
+    "description": "M-08 recovery codes hint"
+  },
+  "authTotpEmpty": "Two-factor authentication is not required for your account.",
+  "@authTotpEmpty": {
+    "description": "M-08 empty state"
+  },
+  "authUpdateTitle": "Update required",
+  "@authUpdateTitle": {
+    "description": "M-57 blocking screen title"
+  },
+  "authUpdateMessage": "A newer version of OneBook ELD is required to keep your logs compliant.",
+  "@authUpdateMessage": {
+    "description": "M-57 blocking screen body"
+  },
+  "authUpdateVersions": "Installed {current} · Required {required}",
+  "@authUpdateVersions": {
+    "description": "M-57 version comparison line",
+    "placeholders": {
+      "current": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "required": {
+        "type": "String",
+        "example": "1.4.0"
+      }
+    }
+  },
+  "authUpdateAction": "Open the store",
+  "@authUpdateAction": {
+    "description": "M-57 the only action; there is no Back"
+  },
+  "authContinue": "Continue",
+  "@authContinue": {
+    "description": "Generic forward action in the auth flows"
+  },
+  "authWordmarkAccent": "One",
+  "@authWordmarkAccent": {
+    "description": "First half of the OneBook ELD wordmark, drawn in the brand colour (Figma 958:22 / 958:44 logo)"
+  },
+  "authWordmarkRest": "BOOK ELD",
+  "@authWordmarkRest": {
+    "description": "Second half of the OneBook ELD wordmark, drawn in textPrimary"
+  },
+  "authPinEntryProgress": "{entered} of {total} digits entered",
+  "@authPinEntryProgress": {
+    "description": "M-04 screen-reader progress for the PIN dots",
+    "placeholders": {
+      "entered": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "authPinClear": "Clear the PIN",
+  "@authPinClear": {
+    "description": "M-04 keypad long-press / clear action semantics"
+  },
+  "authUpdateStoreUnavailable": "The store could not be opened on this device.",
+  "@authUpdateStoreUnavailable": {
+    "description": "M-57 failure when no store app is available"
+  },
+  "authLoadingSemantics": "Loading",
+  "@authLoadingSemantics": {
+    "description": "Screen-reader label for the inline auth spinners"
+  },
+  "authCoDriverTitle": "Co-driver",
+  "@authCoDriverTitle": {
+    "description": "M-20/T-07 modal title"
+  },
+  "authCoDriverActiveLabel": "Active driver",
+  "@authCoDriverActiveLabel": {
+    "description": "M-20 label above the driver who owns DR events"
+  },
+  "authCoDriverSecondLabel": "Co-driver",
+  "@authCoDriverSecondLabel": {
+    "description": "M-20 label above the second slot"
+  },
+  "authCoDriverNoneTitle": "No co-driver signed in",
+  "@authCoDriverNoneTitle": {
+    "description": "M-20 empty state title"
+  },
+  "authCoDriverNoneMessage": "The second driver must sign in with their own password on this device.",
+  "@authCoDriverNoneMessage": {
+    "description": "M-20 empty state message (M9: two independent sessions)"
+  },
+  "authCoDriverSignIn": "Sign in co-driver",
+  "@authCoDriverSignIn": {
+    "description": "M-20 action that opens the login form for the second slot"
+  },
+  "authCoDriverPausedMessage": "The co-driver left the truck. They must return to truck before switching.",
+  "@authCoDriverPausedMessage": {
+    "description": "M-20 blocked state: second slot is paused"
+  },
+  "authCoDriverSwitchAction": "Switch",
+  "@authCoDriverSwitchAction": {
+    "description": "M-20 primary action"
+  },
+  "authCoDriverSwitchQuestion": "Are you absolutely sure?",
+  "@authCoDriverSwitchQuestion": {
+    "description": "M-20 confirmation title"
+  },
+  "authCoDriverSwitchBody": "{name} will become the active driver. Driving time will be recorded to their log.",
+  "@authCoDriverSwitchBody": {
+    "description": "M-20 confirmation body",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Maria Lopez"
+      }
+    }
+  },
+  "authCoDriverSwitched": "{name} is now the active driver.",
+  "@authCoDriverSwitched": {
+    "description": "M-20 success snackbar",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Maria Lopez"
+      }
+    }
+  },
+  "authCoDriverPinRequired": "Enter the PIN to switch drivers.",
+  "@authCoDriverPinRequired": {
+    "description": "M-20 → M-04 hint (action=switch_driver)"
+  },
+  "authShippingDocTitle": "Select Shipping Document",
+  "@authShippingDocTitle": {
+    "description": "M-21/T-08 modal title"
+  },
+  "authShippingDocSubtitle": "Choose whose trip these documents belong to.",
+  "@authShippingDocSubtitle": {
+    "description": "M-21 subtitle"
+  },
+  "authShippingDocOwnerMyself": "Myself",
+  "@authShippingDocOwnerMyself": {
+    "description": "M-21 owner choice for the active driver"
+  },
+  "authShippingDocOwnerCoDriver": "Co-driver",
+  "@authShippingDocOwnerCoDriver": {
+    "description": "M-21 owner choice for the second driver"
+  },
+  "authShippingDocEmptyTitle": "No shipping documents yet",
+  "@authShippingDocEmptyTitle": {
+    "description": "M-21 empty state title"
+  },
+  "authShippingDocEmptyMessage": "Add a shipping document in Trip Details.",
+  "@authShippingDocEmptyMessage": {
+    "description": "M-21 empty state message"
+  },
+  "authShippingDocConfirm": "Confirm",
+  "@authShippingDocConfirm": {
+    "description": "M-21 primary action"
+  },
+  "authShippingDocSaved": "Shipping documents updated.",
+  "@authShippingDocSaved": {
+    "description": "M-21 success snackbar"
+  },
+  "authSignedOutTitle": "Signed out",
+  "@authSignedOutTitle": {
+    "description": "M-56 screen title"
+  },
+  "authSignedOutMessagePhone": "Your account was used to sign in on another phone.",
+  "@authSignedOutMessagePhone": {
+    "description": "M-56 body when the replaced session was a phone"
+  },
+  "authSignedOutMessageTablet": "Your account was used to sign in on another tablet.",
+  "@authSignedOutMessageTablet": {
+    "description": "M-56 body when the replaced session was a tablet"
+  },
+  "authSignedOutMessageWeb": "Your account was used to sign in on the web.",
+  "@authSignedOutMessageWeb": {
+    "description": "M-56 body when the replaced session was web"
+  },
+  "authSignedOutQueueNotice": "Your unsynced records are kept and will be sent after you sign in again.",
+  "@authSignedOutQueueNotice": {
+    "description": "M-56 note that the outbox survives (M17)"
+  },
+  "authSignedOutAction": "Sign in again",
+  "@authSignedOutAction": {
+    "description": "M-56 primary action"
+  },
+  "authSessionsTitle": "Sessions",
+  "@authSessionsTitle": {
+    "description": "M-58 screen title"
+  },
+  "authSessionsSubtitle": "One web, one phone and one tablet can be signed in at a time.",
+  "@authSessionsSubtitle": {
+    "description": "M-58 subtitle (session policy 4.6)"
+  },
+  "authSessionsCurrent": "Current",
+  "@authSessionsCurrent": {
+    "description": "M-58 badge on this device"
+  },
+  "authSessionsEmptyTitle": "No active sessions",
+  "@authSessionsEmptyTitle": {
+    "description": "M-58 empty state title"
+  },
+  "authSessionsEmptyMessage": "Sessions from your other devices will appear here.",
+  "@authSessionsEmptyMessage": {
+    "description": "M-58 empty state message"
+  },
+  "authSessionsRevoke": "Sign out",
+  "@authSessionsRevoke": {
+    "description": "M-58 per-row action"
+  },
+  "authSessionsRevokeTitle": "Sign this device out?",
+  "@authSessionsRevokeTitle": {
+    "description": "M-58 confirmation title"
+  },
+  "authSessionsRevokeBody": "The device will need the password to sign in again.",
+  "@authSessionsRevokeBody": {
+    "description": "M-58 confirmation body"
+  },
+  "authSessionsRevoked": "Device signed out.",
+  "@authSessionsRevoked": {
+    "description": "M-58 success snackbar"
+  },
+  "authSessionsDeviceWeb": "Web",
+  "@authSessionsDeviceWeb": {
+    "description": "M-58 device_type=web"
+  },
+  "authSessionsDevicePhone": "Phone",
+  "@authSessionsDevicePhone": {
+    "description": "M-58 device_type=phone"
+  },
+  "authSessionsDeviceTablet": "Tablet",
+  "@authSessionsDeviceTablet": {
+    "description": "M-58 device_type=tablet"
+  },
+  "authSessionsStatusActive": "Active",
+  "@authSessionsStatusActive": {
+    "description": "M-58 session status"
+  },
+  "authSessionsStatusPaused": "Paused",
+  "@authSessionsStatusPaused": {
+    "description": "M-58 session status (Leave Truck)"
+  },
+  "authSessionsStatusRevoked": "Revoked",
+  "@authSessionsStatusRevoked": {
+    "description": "M-58 session status"
+  },
+  "authSessionsLastSeen": "Last seen {time}",
+  "@authSessionsLastSeen": {
+    "description": "M-58 row subtitle",
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "MMM d, hh:mm a",
+        "isCustomDateFormat": "true"
+      }
+    }
+  },
+  "authSessionsIpLabel": "IP {ip}",
+  "@authSessionsIpLabel": {
+    "description": "M-58 truncated IP from the server",
+    "placeholders": {
+      "ip": {
+        "type": "String",
+        "example": "203.0.113.0"
+      }
+    }
+  },
+  "authLeaveTruckTitle": "Leave Truck",
+  "@authLeaveTruckTitle": {
+    "description": "M-03 / quick action title (M93 canonical wording)"
+  },
+  "authLeaveTruckConfirmTitle": "Leave the truck?",
+  "@authLeaveTruckConfirmTitle": {
+    "description": "§4.8 confirmation title"
+  },
+  "authLeaveTruckConfirmBody": "Your status will be set to Off-duty.",
+  "@authLeaveTruckConfirmBody": {
+    "description": "§4.8 confirmation body"
+  },
+  "authLeaveTruckCoDriverBody": "Your status will be set to Off-duty and {name} becomes the active driver.",
+  "@authLeaveTruckCoDriverBody": {
+    "description": "§4.8 confirmation body when a co-driver takes over",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Maria Lopez"
+      }
+    }
+  },
+  "authLeaveTruckAction": "Leave Truck",
+  "@authLeaveTruckAction": {
+    "description": "§4.8 destructive confirm action"
+  },
+  "authLeaveTruckDone": "You left the truck.",
+  "@authLeaveTruckDone": {
+    "description": "§4.8 success snackbar"
+  },
+  "authLogoutTitle": "Log out",
+  "@authLogoutTitle": {
+    "description": "M18 full logout title"
+  },
+  "authLogoutBody": "You will need your password to sign in again.",
+  "@authLogoutBody": {
+    "description": "M18 full logout body"
+  },
+  "authLogoutUnsynced": "You have {count} unsynced records. Log out anyway?",
+  "@authLogoutUnsynced": {
+    "description": "M18 warning when the outbox is not empty",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact",
+        "example": "3"
+      }
+    }
+  },
+  "authLogoutAction": "Log out",
+  "@authLogoutAction": {
+    "description": "M18 destructive confirm action"
+  },
+  "authReturnToTruckDone": "Welcome back.",
+  "@authReturnToTruckDone": {
+    "description": "§4.8 snackbar after a successful PIN"
+  }
+}

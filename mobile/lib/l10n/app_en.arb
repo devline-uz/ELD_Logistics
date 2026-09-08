@@ -1,0 +1,3874 @@
+{
+  "@@locale": "en",
+  "appTitle": "ONEBOOK ELD",
+  "@appTitle": {
+    "description": "Application name shown in the task switcher"
+  },
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Bottom navigation tab: driver home / duty status"
+  },
+  "navLogs": "Logs",
+  "@navLogs": {
+    "description": "Bottom navigation tab: daily logs"
+  },
+  "navChat": "Chat",
+  "@navChat": {
+    "description": "Bottom navigation tab: dispatcher chat"
+  },
+  "navProfile": "Profile",
+  "@navProfile": {
+    "description": "Bottom navigation tab: driver profile"
+  },
+  "commonRetry": "Retry",
+  "@commonRetry": {
+    "description": "Generic retry button"
+  },
+  "commonCancel": "Cancel",
+  "@commonCancel": {
+    "description": "Generic cancel button"
+  },
+  "commonOk": "OK",
+  "@commonOk": {
+    "description": "Generic confirmation button"
+  },
+  "commonLoading": "Loading…",
+  "@commonLoading": {
+    "description": "Generic loading indicator label"
+  },
+  "commonComingSoon": "Coming soon",
+  "@commonComingSoon": {
+    "description": "Placeholder label for a screen that is not implemented yet"
+  },
+  "errUnknown": "Something went wrong. Please try again.",
+  "@errUnknown": {
+    "description": "Fallback message for an unmapped error code"
+  },
+  "errNetwork": "No internet connection. Your work is saved and will sync later.",
+  "@errNetwork": {
+    "description": "CLIENT_NETWORK"
+  },
+  "errTimeout": "The server took too long to respond. Please try again.",
+  "@errTimeout": {
+    "description": "CLIENT_TIMEOUT"
+  },
+  "errTlsPinning": "Secure connection could not be verified.",
+  "@errTlsPinning": {
+    "description": "CLIENT_TLS_PINNING, screen M-55"
+  },
+  "errValidation": "Please check the highlighted fields.",
+  "@errValidation": {
+    "description": "VALIDATION_ERROR"
+  },
+  "errBadRequest": "The request could not be processed.",
+  "@errBadRequest": {
+    "description": "BAD_REQUEST"
+  },
+  "errUnauthorized": "Your session has expired. Please sign in again.",
+  "@errUnauthorized": {
+    "description": "UNAUTHORIZED"
+  },
+  "errForbidden": "You do not have permission to do this.",
+  "@errForbidden": {
+    "description": "FORBIDDEN"
+  },
+  "errNotFound": "This item is no longer available.",
+  "@errNotFound": {
+    "description": "NOT_FOUND"
+  },
+  "errConflict": "This item was changed elsewhere. Refresh and try again.",
+  "@errConflict": {
+    "description": "CONFLICT / UNIQUE_VIOLATION / STALE_VERSION"
+  },
+  "errRateLimited": "Too many attempts. Please wait a moment and try again.",
+  "@errRateLimited": {
+    "description": "RATE_LIMITED"
+  },
+  "errServer": "The server is having trouble. Please try again shortly.",
+  "@errServer": {
+    "description": "INTERNAL_ERROR / UPSTREAM_ERROR / STORAGE_ERROR"
+  },
+  "errUnavailable": "The service is temporarily unavailable.",
+  "@errUnavailable": {
+    "description": "SERVICE_UNAVAILABLE / UPSTREAM_TIMEOUT"
+  },
+  "errPayloadTooLarge": "That is too large to send.",
+  "@errPayloadTooLarge": {
+    "description": "PAYLOAD_TOO_LARGE"
+  },
+  "errInvalidCredentials": "Incorrect email or password.",
+  "@errInvalidCredentials": {
+    "description": "INVALID_CREDENTIALS"
+  },
+  "errAccountInactive": "Your account is not active. Contact your fleet manager.",
+  "@errAccountInactive": {
+    "description": "ACCOUNT_INACTIVE"
+  },
+  "errAccountSuspended": "Your account is suspended. Contact your fleet manager.",
+  "@errAccountSuspended": {
+    "description": "ACCOUNT_SUSPENDED"
+  },
+  "errLockedOut": "Too many failed attempts. Try again later.",
+  "@errLockedOut": {
+    "description": "LOCKED_OUT"
+  },
+  "errTotpRequired": "Enter the code from your authenticator app.",
+  "@errTotpRequired": {
+    "description": "TOTP_REQUIRED"
+  },
+  "errTotpInvalid": "That code is not valid.",
+  "@errTotpInvalid": {
+    "description": "TOTP_INVALID"
+  },
+  "errTotpSetupRequired": "Two-factor authentication must be set up first.",
+  "@errTotpSetupRequired": {
+    "description": "TOTP_SETUP_REQUIRED"
+  },
+  "errPinRequired": "Enter your PIN to continue.",
+  "@errPinRequired": {
+    "description": "PIN_REQUIRED"
+  },
+  "errPinInvalid": "Incorrect PIN.",
+  "@errPinInvalid": {
+    "description": "PIN_INVALID"
+  },
+  "errPinNotSet": "Set up a PIN to continue.",
+  "@errPinNotSet": {
+    "description": "PIN_NOT_SET"
+  },
+  "errPinLocked": "PIN entry is locked. Sign in with your password.",
+  "@errPinLocked": {
+    "description": "PIN_LOCKED"
+  },
+  "errSessionReplaced": "You were signed out because this account signed in on another device.",
+  "@errSessionReplaced": {
+    "description": "SESSION_REPLACED, screen M-44"
+  },
+  "errSessionExpired": "Your session has expired. Please sign in again.",
+  "@errSessionExpired": {
+    "description": "SESSION_EXPIRED / TOKEN_EXPIRED"
+  },
+  "errTokenRevoked": "You were signed out. Please sign in again.",
+  "@errTokenRevoked": {
+    "description": "TOKEN_REVOKED / TOKEN_REUSED / TOKEN_INVALID, screen M-44"
+  },
+  "errInvitationInvalid": "This invitation link is not valid.",
+  "@errInvitationInvalid": {
+    "description": "INVITATION_INVALID"
+  },
+  "errInvitationExpired": "This invitation has expired. Ask for a new one.",
+  "@errInvitationExpired": {
+    "description": "INVITATION_EXPIRED"
+  },
+  "errInvitationUsed": "This invitation has already been used.",
+  "@errInvitationUsed": {
+    "description": "INVITATION_USED"
+  },
+  "errDeviceNotAllowed": "This device is not allowed to sign in.",
+  "@errDeviceNotAllowed": {
+    "description": "DEVICE_NOT_ALLOWED"
+  },
+  "errPasswordWeak": "Choose a stronger password.",
+  "@errPasswordWeak": {
+    "description": "PASSWORD_WEAK"
+  },
+  "errPasswordReused": "Choose a password you have not used before.",
+  "@errPasswordReused": {
+    "description": "PASSWORD_REUSED"
+  },
+  "errSubscriptionReadonly": "Your company account is read-only. Contact your fleet manager.",
+  "@errSubscriptionReadonly": {
+    "description": "SUBSCRIPTION_READONLY"
+  },
+  "errSubscriptionExpired": "Your company subscription has expired.",
+  "@errSubscriptionExpired": {
+    "description": "SUBSCRIPTION_EXPIRED"
+  },
+  "errFeatureDisabled": "This feature is not enabled for your company.",
+  "@errFeatureDisabled": {
+    "description": "FEATURE_DISABLED / QUOTA_EXCEEDED"
+  },
+  "errDrImmutable": "Driving time cannot be edited.",
+  "@errDrImmutable": {
+    "description": "DR_IMMUTABLE"
+  },
+  "errLogNotReady": "This log is not ready yet.",
+  "@errLogNotReady": {
+    "description": "LOG_NOT_READY"
+  },
+  "errLogCertified": "This log is already certified.",
+  "@errLogCertified": {
+    "description": "LOG_CERTIFIED"
+  },
+  "errTimeInFuture": "The time cannot be in the future.",
+  "@errTimeInFuture": {
+    "description": "TIME_IN_FUTURE"
+  },
+  "errTimeOutOfRange": "The time is outside the allowed range.",
+  "@errTimeOutOfRange": {
+    "description": "TIME_OUT_OF_RANGE"
+  },
+  "errDuplicateEvent": "This event was already recorded.",
+  "@errDuplicateEvent": {
+    "description": "DUPLICATE_EVENT"
+  },
+  "errEventOutOfOrder": "Events must be in chronological order.",
+  "@errEventOutOfOrder": {
+    "description": "EVENT_OUT_OF_ORDER"
+  },
+  "errStatusNotAllowed": "That duty status is not allowed right now.",
+  "@errStatusNotAllowed": {
+    "description": "STATUS_NOT_ALLOWED"
+  },
+  "errEventImmutable": "This event cannot be changed.",
+  "@errEventImmutable": {
+    "description": "EVENT_IMMUTABLE / IMMUTABLE"
+  },
+  "errEditNotAllowed": "This log cannot be edited.",
+  "@errEditNotAllowed": {
+    "description": "EDIT_NOT_ALLOWED"
+  },
+  "errEditRejected": "This edit request was rejected.",
+  "@errEditRejected": {
+    "description": "EDIT_REJECTED"
+  },
+  "errMalfunctionActive": "An ELD malfunction is active. Keep paper logs.",
+  "@errMalfunctionActive": {
+    "description": "MALFUNCTION_ACTIVE"
+  },
+  "errSyncConflict": "Some records could not be synced. Review them in Logs.",
+  "@errSyncConflict": {
+    "description": "SYNC_CONFLICT"
+  },
+  "errBatchTooLarge": "Too much data to send at once. It will be split and retried.",
+  "@errBatchTooLarge": {
+    "description": "BATCH_TOO_LARGE"
+  },
+  "errDrivingModeBlocked": "Chat is unavailable while driving.",
+  "@errDrivingModeBlocked": {
+    "description": "DRIVING_MODE_BLOCKED"
+  },
+  "errMessageTooLong": "This message is too long.",
+  "@errMessageTooLong": {
+    "description": "MESSAGE_TOO_LONG"
+  },
+  "errAlreadyAssigned": "This item is already assigned.",
+  "@errAlreadyAssigned": {
+    "description": "ALREADY_ASSIGNED"
+  },
+  "errNotAssigned": "This item is not assigned to you.",
+  "@errNotAssigned": {
+    "description": "NOT_ASSIGNED"
+  },
+  "errInvalidState": "This action is not available right now.",
+  "@errInvalidState": {
+    "description": "INVALID_STATE / RESOURCE_IN_USE"
+  },
+  "errDvirInvalidTransition": "This inspection report cannot change to that state.",
+  "@errDvirInvalidTransition": {
+    "description": "DVIR_INVALID_TRANSITION"
+  },
+  "errDvirNoDefects": "Add at least one defect first.",
+  "@errDvirNoDefects": {
+    "description": "DVIR_NO_DEFECTS"
+  },
+  "errDefectTypeUnknown": "That defect type is not recognized.",
+  "@errDefectTypeUnknown": {
+    "description": "DEFECT_TYPE_UNKNOWN"
+  },
+  "errFileTooLarge": "That file is too large.",
+  "@errFileTooLarge": {
+    "description": "FILE_TOO_LARGE"
+  },
+  "errFileTypeInvalid": "That file type is not supported.",
+  "@errFileTypeInvalid": {
+    "description": "FILE_TYPE_INVALID / UNSUPPORTED_MEDIA_TYPE"
+  },
+  "errDeviceUnknown": "This ELD device is not registered.",
+  "@errDeviceUnknown": {
+    "description": "DEVICE_UNKNOWN"
+  },
+  "errDeviceProtocol": "The ELD device sent unexpected data.",
+  "@errDeviceProtocol": {
+    "description": "DEVICE_PROTOCOL_ERROR"
+  },
+  "authBrandName": "OneBook ELD",
+  "@authBrandName": {
+    "description": "M90: canonical brand wordmark, used on splash and login"
+  },
+  "authCopyright": "Copyright © {year} OneBook ELD",
+  "@authCopyright": {
+    "description": "M-02 login footer; the year is taken from TimeSource",
+    "placeholders": {
+      "year": {
+        "type": "String",
+        "example": "2025"
+      }
+    }
+  },
+  "authNoRegistrationNotice": "This app does not support account registration. Please reach out to your fleet manager for assistance.",
+  "@authNoRegistrationNotice": {
+    "description": "M12: literal design copy, must not be reworded"
+  },
+  "authSplashLoading": "Starting OneBook ELD",
+  "@authSplashLoading": {
+    "description": "M-01 splash semantics / progress label"
+  },
+  "authSplashError": "OneBook ELD could not start. Check your connection and try again.",
+  "@authSplashError": {
+    "description": "M-01 bootstrap failure that is not offline (offline boots normally, M13)"
+  },
+  "authLoginTitle": "Login",
+  "@authLoginTitle": {
+    "description": "M-02 screen title (screen reader only, the design has no app bar)"
+  },
+  "authUsernameLabel": "Username or Email address",
+  "@authUsernameLabel": {
+    "description": "M-02 username field label"
+  },
+  "authUsernameHint": "Enter email address",
+  "@authUsernameHint": {
+    "description": "M-02 username field placeholder"
+  },
+  "authPasswordLabel": "Password",
+  "@authPasswordLabel": {
+    "description": "M-02 password field label"
+  },
+  "authPasswordHint": "Enter password",
+  "@authPasswordHint": {
+    "description": "M-02 password field placeholder"
+  },
+  "authShowPassword": "Show password",
+  "@authShowPassword": {
+    "description": "Eye icon tooltip when the password is hidden"
+  },
+  "authHidePassword": "Hide password",
+  "@authHidePassword": {
+    "description": "Eye icon tooltip when the password is visible"
+  },
+  "authLoginButton": "Login",
+  "@authLoginButton": {
+    "description": "M-02 primary action"
+  },
+  "authForgotPassword": "Forgot password?",
+  "@authForgotPassword": {
+    "description": "M-02 link to M-06"
+  },
+  "authOfflineBanner": "Login requires an internet connection",
+  "@authOfflineBanner": {
+    "description": "M14: first login cannot work offline"
+  },
+  "authErrorUsernameRequired": "Enter your username or email address",
+  "@authErrorUsernameRequired": {
+    "description": "M-02 inline validation"
+  },
+  "authErrorPasswordTooShort": "Password must be at least 8 characters",
+  "@authErrorPasswordTooShort": {
+    "description": "M-02 inline validation (§4.3)"
+  },
+  "authErrorInvalidCredentials": "Incorrect username or password",
+  "@authErrorInvalidCredentials": {
+    "description": "§4.3: never say which one is wrong"
+  },
+  "authRateLimited": "Too many attempts. Try again in {seconds}s",
+  "@authRateLimited": {
+    "description": "RATE_LIMITED countdown on login and PIN",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "authReplacedSessionPhone": "You were signed in on this device. Your other phone was signed out.",
+  "@authReplacedSessionPhone": {
+    "description": "§4.6 replaced_session banner"
+  },
+  "authReplacedSessionTablet": "You were signed in on this device. Your other tablet was signed out.",
+  "@authReplacedSessionTablet": {
+    "description": "§4.6 replaced_session banner"
+  },
+  "authPausedBanner": "Session paused for {name}",
+  "@authPausedBanner": {
+    "description": "M-03 header showing the paused driver",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John Miller"
+      }
+    }
+  },
+  "authReturnToTruck": "Return to truck",
+  "@authReturnToTruck": {
+    "description": "M-03 secondary action leading to M-04"
+  },
+  "authPinTitle": "Enter PIN",
+  "@authPinTitle": {
+    "description": "M-04 title"
+  },
+  "authPinSubtitle": "Enter your 6-digit PIN to return to the truck",
+  "@authPinSubtitle": {
+    "description": "M-04 subtitle for the return_to_truck action"
+  },
+  "authPinSubtitleSwitchDriver": "Enter the 6-digit PIN of the driver taking over",
+  "@authPinSubtitleSwitchDriver": {
+    "description": "M-04 subtitle for the switch_driver action"
+  },
+  "authPinForgot": "Forgot PIN?",
+  "@authPinForgot": {
+    "description": "M-04 fallback to password sign-in (M-02)"
+  },
+  "authPinErrorLength": "PIN must be exactly 6 digits",
+  "@authPinErrorLength": {
+    "description": "§4.5 local PIN format rule"
+  },
+  "authPinErrorRepeated": "PIN cannot be 6 identical digits",
+  "@authPinErrorRepeated": {
+    "description": "§4.5 local PIN format rule"
+  },
+  "authPinErrorSequence": "PIN cannot be a run of consecutive digits",
+  "@authPinErrorSequence": {
+    "description": "§4.5 local PIN format rule"
+  },
+  "authPinErrorIncorrect": "Incorrect PIN",
+  "@authPinErrorIncorrect": {
+    "description": "M-04 wrong PIN"
+  },
+  "authPinAttemptsLeft": "{count, plural, one{1 attempt left} other{{count} attempts left}}",
+  "@authPinAttemptsLeft": {
+    "description": "M-04 remaining attempts before the lockout",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "authPinLocked": "Too many attempts. Try again in {seconds}s",
+  "@authPinLocked": {
+    "description": "M-04 lockout timer (60s, then exponential)",
+    "placeholders": {
+      "seconds": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "authPinBackspace": "Delete last digit",
+  "@authPinBackspace": {
+    "description": "M-04 keypad backspace semantics label"
+  },
+  "authPinNotSet": "No PIN is set for this account. Sign in with your password to set one.",
+  "@authPinNotSet": {
+    "description": "M156: PIN_NOT_SET forces the password flow"
+  },
+  "authPinOfflineNotice": "Checked offline. It will be confirmed as soon as you are back online.",
+  "@authPinOfflineNotice": {
+    "description": "M16 offline PIN verification"
+  },
+  "authInviteTitle": "Accept invitation",
+  "@authInviteTitle": {
+    "description": "M-05 title"
+  },
+  "authInviteDescription": "Set a password and a 6-digit PIN to finish setting up your account.",
+  "@authInviteDescription": {
+    "description": "M-05 description"
+  },
+  "authInvitePasswordLabel": "New password",
+  "@authInvitePasswordLabel": {
+    "description": "M-05 / M-07 password field"
+  },
+  "authInvitePasswordConfirmLabel": "Confirm password",
+  "@authInvitePasswordConfirmLabel": {
+    "description": "M-05 / M-07 confirmation field"
+  },
+  "authInvitePinLabel": "6-digit PIN",
+  "@authInvitePinLabel": {
+    "description": "M-05 PIN field"
+  },
+  "authInvitePinConfirmLabel": "Confirm PIN",
+  "@authInvitePinConfirmLabel": {
+    "description": "M-05 PIN confirmation field"
+  },
+  "authInviteConsent": "I agree to the Privacy Policy and the Terms of Use",
+  "@authInviteConsent": {
+    "description": "M-05 legal consent checkbox"
+  },
+  "authInviteSubmit": "Finish setup",
+  "@authInviteSubmit": {
+    "description": "M-05 primary action"
+  },
+  "authInviteMissingToken": "This invitation link is invalid or incomplete.",
+  "@authInviteMissingToken": {
+    "description": "M-05 empty state when the deep link carries no token"
+  },
+  "authInviteSuccess": "Your account is ready. Please sign in.",
+  "@authInviteSuccess": {
+    "description": "M-05 success message"
+  },
+  "authPasswordMismatch": "Passwords do not match",
+  "@authPasswordMismatch": {
+    "description": "M-05 / M-07 validation"
+  },
+  "authPinMismatch": "PINs do not match",
+  "@authPinMismatch": {
+    "description": "M-05 validation"
+  },
+  "authPasswordStrength": "Password strength: {level}",
+  "@authPasswordStrength": {
+    "description": "M-05 / M-07 strength meter caption",
+    "placeholders": {
+      "level": {
+        "type": "String",
+        "example": "Strong"
+      }
+    }
+  },
+  "authPasswordStrengthWeak": "Weak",
+  "@authPasswordStrengthWeak": {
+    "description": "Password strength level"
+  },
+  "authPasswordStrengthFair": "Fair",
+  "@authPasswordStrengthFair": {
+    "description": "Password strength level"
+  },
+  "authPasswordStrengthStrong": "Strong",
+  "@authPasswordStrengthStrong": {
+    "description": "Password strength level"
+  },
+  "authForgotTitle": "Forgot password",
+  "@authForgotTitle": {
+    "description": "M-06 title"
+  },
+  "authForgotDescription": "Enter your username or email address and we will send you a link to reset your password.",
+  "@authForgotDescription": {
+    "description": "M-06 description"
+  },
+  "authForgotSubmit": "Send reset link",
+  "@authForgotSubmit": {
+    "description": "M-06 primary action"
+  },
+  "authForgotSent": "If that account exists, a reset link is on its way.",
+  "@authForgotSent": {
+    "description": "M-06 success message; deliberately does not confirm the account"
+  },
+  "authBackToLogin": "Back to login",
+  "@authBackToLogin": {
+    "description": "M-06 / M-07 return action"
+  },
+  "authResetTitle": "Reset password",
+  "@authResetTitle": {
+    "description": "M-07 title"
+  },
+  "authResetDescription": "Choose a new password for your account.",
+  "@authResetDescription": {
+    "description": "M-07 description"
+  },
+  "authResetSubmit": "Save new password",
+  "@authResetSubmit": {
+    "description": "M-07 primary action"
+  },
+  "authResetSuccess": "Password updated. Please sign in.",
+  "@authResetSuccess": {
+    "description": "M-07 success message"
+  },
+  "authResetMissingToken": "This reset link is invalid or has expired.",
+  "@authResetMissingToken": {
+    "description": "M-07 empty state when the deep link carries no token"
+  },
+  "authTotpTitle": "Two-factor authentication",
+  "@authTotpTitle": {
+    "description": "M-08 title"
+  },
+  "authTotpSetupDescription": "Scan this key in your authenticator app, or type it in manually.",
+  "@authTotpSetupDescription": {
+    "description": "M-08 setup step"
+  },
+  "authTotpSecretLabel": "Setup key",
+  "@authTotpSecretLabel": {
+    "description": "M-08 TOTP secret label"
+  },
+  "authTotpCopySecret": "Copy setup key",
+  "@authTotpCopySecret": {
+    "description": "M-08 copy action"
+  },
+  "authTotpSecretCopied": "Setup key copied",
+  "@authTotpSecretCopied": {
+    "description": "M-08 copy confirmation"
+  },
+  "authTotpVerifyDescription": "Enter the 6-digit code from your authenticator app.",
+  "@authTotpVerifyDescription": {
+    "description": "M-08 verify step"
+  },
+  "authTotpCodeLabel": "6-digit code",
+  "@authTotpCodeLabel": {
+    "description": "M-08 code field"
+  },
+  "authTotpSubmit": "Verify",
+  "@authTotpSubmit": {
+    "description": "M-08 primary action"
+  },
+  "authTotpRecoveryCodesTitle": "Recovery codes",
+  "@authTotpRecoveryCodesTitle": {
+    "description": "M-08 recovery codes section"
+  },
+  "authTotpRecoveryCodesHint": "Save these codes somewhere safe. Each one works only once.",
+  "@authTotpRecoveryCodesHint": {
+    "description": "M-08 recovery codes hint"
+  },
+  "authTotpEmpty": "Two-factor authentication is not required for your account.",
+  "@authTotpEmpty": {
+    "description": "M-08 empty state"
+  },
+  "authUpdateTitle": "Update required",
+  "@authUpdateTitle": {
+    "description": "M-57 blocking screen title"
+  },
+  "authUpdateMessage": "A newer version of OneBook ELD is required to keep your logs compliant.",
+  "@authUpdateMessage": {
+    "description": "M-57 blocking screen body"
+  },
+  "authUpdateVersions": "Installed {current} · Required {required}",
+  "@authUpdateVersions": {
+    "description": "M-57 version comparison line",
+    "placeholders": {
+      "current": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "required": {
+        "type": "String",
+        "example": "1.4.0"
+      }
+    }
+  },
+  "authUpdateAction": "Open the store",
+  "@authUpdateAction": {
+    "description": "M-57 the only action; there is no Back"
+  },
+  "authContinue": "Continue",
+  "@authContinue": {
+    "description": "Generic forward action in the auth flows"
+  },
+  "authWordmarkAccent": "One",
+  "@authWordmarkAccent": {
+    "description": "First half of the OneBook ELD wordmark, drawn in the brand colour (Figma 958:22 / 958:44 logo)"
+  },
+  "authWordmarkRest": "BOOK ELD",
+  "@authWordmarkRest": {
+    "description": "Second half of the OneBook ELD wordmark, drawn in textPrimary"
+  },
+  "authPinEntryProgress": "{entered} of {total} digits entered",
+  "@authPinEntryProgress": {
+    "description": "M-04 screen-reader progress for the PIN dots",
+    "placeholders": {
+      "entered": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "authPinClear": "Clear the PIN",
+  "@authPinClear": {
+    "description": "M-04 keypad long-press / clear action semantics"
+  },
+  "authUpdateStoreUnavailable": "The store could not be opened on this device.",
+  "@authUpdateStoreUnavailable": {
+    "description": "M-57 failure when no store app is available"
+  },
+  "authLoadingSemantics": "Loading",
+  "@authLoadingSemantics": {
+    "description": "Screen-reader label for the inline auth spinners"
+  },
+  "authCoDriverTitle": "Co-driver",
+  "@authCoDriverTitle": {
+    "description": "M-20/T-07 modal title"
+  },
+  "authCoDriverActiveLabel": "Active driver",
+  "@authCoDriverActiveLabel": {
+    "description": "M-20 label above the driver who owns DR events"
+  },
+  "authCoDriverSecondLabel": "Co-driver",
+  "@authCoDriverSecondLabel": {
+    "description": "M-20 label above the second slot"
+  },
+  "authCoDriverNoneTitle": "No co-driver signed in",
+  "@authCoDriverNoneTitle": {
+    "description": "M-20 empty state title"
+  },
+  "authCoDriverNoneMessage": "The second driver must sign in with their own password on this device.",
+  "@authCoDriverNoneMessage": {
+    "description": "M-20 empty state message (M9: two independent sessions)"
+  },
+  "authCoDriverSignIn": "Sign in co-driver",
+  "@authCoDriverSignIn": {
+    "description": "M-20 action that opens the login form for the second slot"
+  },
+  "authCoDriverPausedMessage": "The co-driver left the truck. They must return to truck before switching.",
+  "@authCoDriverPausedMessage": {
+    "description": "M-20 blocked state: second slot is paused"
+  },
+  "authCoDriverSwitchAction": "Switch",
+  "@authCoDriverSwitchAction": {
+    "description": "M-20 primary action"
+  },
+  "authCoDriverSwitchQuestion": "Are you absolutely sure?",
+  "@authCoDriverSwitchQuestion": {
+    "description": "M-20 confirmation title"
+  },
+  "authCoDriverSwitchBody": "{name} will become the active driver. Driving time will be recorded to their log.",
+  "@authCoDriverSwitchBody": {
+    "description": "M-20 confirmation body",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Maria Lopez"
+      }
+    }
+  },
+  "authCoDriverSwitched": "{name} is now the active driver.",
+  "@authCoDriverSwitched": {
+    "description": "M-20 success snackbar",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Maria Lopez"
+      }
+    }
+  },
+  "authCoDriverPinRequired": "Enter the PIN to switch drivers.",
+  "@authCoDriverPinRequired": {
+    "description": "M-20 → M-04 hint (action=switch_driver)"
+  },
+  "authShippingDocTitle": "Select Shipping Document",
+  "@authShippingDocTitle": {
+    "description": "M-21/T-08 modal title"
+  },
+  "authShippingDocSubtitle": "Choose whose trip these documents belong to.",
+  "@authShippingDocSubtitle": {
+    "description": "M-21 subtitle"
+  },
+  "authShippingDocOwnerMyself": "Myself",
+  "@authShippingDocOwnerMyself": {
+    "description": "M-21 owner choice for the active driver"
+  },
+  "authShippingDocOwnerCoDriver": "Co-driver",
+  "@authShippingDocOwnerCoDriver": {
+    "description": "M-21 owner choice for the second driver"
+  },
+  "authShippingDocEmptyTitle": "No shipping documents yet",
+  "@authShippingDocEmptyTitle": {
+    "description": "M-21 empty state title"
+  },
+  "authShippingDocEmptyMessage": "Add a shipping document in Trip Details.",
+  "@authShippingDocEmptyMessage": {
+    "description": "M-21 empty state message"
+  },
+  "authShippingDocConfirm": "Confirm",
+  "@authShippingDocConfirm": {
+    "description": "M-21 primary action"
+  },
+  "authShippingDocSaved": "Shipping documents updated.",
+  "@authShippingDocSaved": {
+    "description": "M-21 success snackbar"
+  },
+  "authSignedOutTitle": "Signed out",
+  "@authSignedOutTitle": {
+    "description": "M-56 screen title"
+  },
+  "authSignedOutMessagePhone": "Your account was used to sign in on another phone.",
+  "@authSignedOutMessagePhone": {
+    "description": "M-56 body when the replaced session was a phone"
+  },
+  "authSignedOutMessageTablet": "Your account was used to sign in on another tablet.",
+  "@authSignedOutMessageTablet": {
+    "description": "M-56 body when the replaced session was a tablet"
+  },
+  "authSignedOutMessageWeb": "Your account was used to sign in on the web.",
+  "@authSignedOutMessageWeb": {
+    "description": "M-56 body when the replaced session was web"
+  },
+  "authSignedOutQueueNotice": "Your unsynced records are kept and will be sent after you sign in again.",
+  "@authSignedOutQueueNotice": {
+    "description": "M-56 note that the outbox survives (M17)"
+  },
+  "authSignedOutAction": "Sign in again",
+  "@authSignedOutAction": {
+    "description": "M-56 primary action"
+  },
+  "authSessionsTitle": "Sessions",
+  "@authSessionsTitle": {
+    "description": "M-58 screen title"
+  },
+  "authSessionsSubtitle": "One web, one phone and one tablet can be signed in at a time.",
+  "@authSessionsSubtitle": {
+    "description": "M-58 subtitle (session policy 4.6)"
+  },
+  "authSessionsCurrent": "Current",
+  "@authSessionsCurrent": {
+    "description": "M-58 badge on this device"
+  },
+  "authSessionsEmptyTitle": "No active sessions",
+  "@authSessionsEmptyTitle": {
+    "description": "M-58 empty state title"
+  },
+  "authSessionsEmptyMessage": "Sessions from your other devices will appear here.",
+  "@authSessionsEmptyMessage": {
+    "description": "M-58 empty state message"
+  },
+  "authSessionsRevoke": "Sign out",
+  "@authSessionsRevoke": {
+    "description": "M-58 per-row action"
+  },
+  "authSessionsRevokeTitle": "Sign this device out?",
+  "@authSessionsRevokeTitle": {
+    "description": "M-58 confirmation title"
+  },
+  "authSessionsRevokeBody": "The device will need the password to sign in again.",
+  "@authSessionsRevokeBody": {
+    "description": "M-58 confirmation body"
+  },
+  "authSessionsRevoked": "Device signed out.",
+  "@authSessionsRevoked": {
+    "description": "M-58 success snackbar"
+  },
+  "authSessionsDeviceWeb": "Web",
+  "@authSessionsDeviceWeb": {
+    "description": "M-58 device_type=web"
+  },
+  "authSessionsDevicePhone": "Phone",
+  "@authSessionsDevicePhone": {
+    "description": "M-58 device_type=phone"
+  },
+  "authSessionsDeviceTablet": "Tablet",
+  "@authSessionsDeviceTablet": {
+    "description": "M-58 device_type=tablet"
+  },
+  "authSessionsStatusActive": "Active",
+  "@authSessionsStatusActive": {
+    "description": "M-58 session status"
+  },
+  "authSessionsStatusPaused": "Paused",
+  "@authSessionsStatusPaused": {
+    "description": "M-58 session status (Leave Truck)"
+  },
+  "authSessionsStatusRevoked": "Revoked",
+  "@authSessionsStatusRevoked": {
+    "description": "M-58 session status"
+  },
+  "authSessionsLastSeen": "Last seen {time}",
+  "@authSessionsLastSeen": {
+    "description": "M-58 row subtitle",
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "MMM d, hh:mm a",
+        "isCustomDateFormat": "true"
+      }
+    }
+  },
+  "authSessionsIpLabel": "IP {ip}",
+  "@authSessionsIpLabel": {
+    "description": "M-58 truncated IP from the server",
+    "placeholders": {
+      "ip": {
+        "type": "String",
+        "example": "203.0.113.0"
+      }
+    }
+  },
+  "authLeaveTruckTitle": "Leave Truck",
+  "@authLeaveTruckTitle": {
+    "description": "M-03 / quick action title (M93 canonical wording)"
+  },
+  "authLeaveTruckConfirmTitle": "Leave the truck?",
+  "@authLeaveTruckConfirmTitle": {
+    "description": "§4.8 confirmation title"
+  },
+  "authLeaveTruckConfirmBody": "Your status will be set to Off-duty.",
+  "@authLeaveTruckConfirmBody": {
+    "description": "§4.8 confirmation body"
+  },
+  "authLeaveTruckCoDriverBody": "Your status will be set to Off-duty and {name} becomes the active driver.",
+  "@authLeaveTruckCoDriverBody": {
+    "description": "§4.8 confirmation body when a co-driver takes over",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Maria Lopez"
+      }
+    }
+  },
+  "authLeaveTruckAction": "Leave Truck",
+  "@authLeaveTruckAction": {
+    "description": "§4.8 destructive confirm action"
+  },
+  "authLeaveTruckDone": "You left the truck.",
+  "@authLeaveTruckDone": {
+    "description": "§4.8 success snackbar"
+  },
+  "authLogoutTitle": "Log out",
+  "@authLogoutTitle": {
+    "description": "M18 full logout title"
+  },
+  "authLogoutBody": "You will need your password to sign in again.",
+  "@authLogoutBody": {
+    "description": "M18 full logout body"
+  },
+  "authLogoutUnsynced": "You have {count} unsynced records. Log out anyway?",
+  "@authLogoutUnsynced": {
+    "description": "M18 warning when the outbox is not empty",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact",
+        "example": "3"
+      }
+    }
+  },
+  "authLogoutAction": "Log out",
+  "@authLogoutAction": {
+    "description": "M18 destructive confirm action"
+  },
+  "authReturnToTruckDone": "Welcome back.",
+  "@authReturnToTruckDone": {
+    "description": "§4.8 snackbar after a successful PIN"
+  },
+  "syncStatusTitle": "Sync status",
+  "@syncStatusTitle": {
+    "description": "M-54 screen title"
+  },
+  "syncConflictsTitle": "Sync conflicts",
+  "@syncConflictsTitle": {
+    "description": "M-55 screen title"
+  },
+  "syncStateSynced": "Synced",
+  "@syncStateSynced": {
+    "description": "Sync indicator: everything is up to date"
+  },
+  "syncStateSyncing": "Syncing…",
+  "@syncStateSyncing": {
+    "description": "Sync indicator: a cycle is running"
+  },
+  "syncStatePending": "{count, plural, =1{1 pending} other{{count} pending}}",
+  "@syncStatePending": {
+    "description": "Sync indicator: queued items waiting to be sent",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncStateOffline": "{count, plural, =0{Offline} =1{Offline — 1 queued} other{Offline — {count} queued}}",
+  "@syncStateOffline": {
+    "description": "Sync indicator: no connection",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncStateConflict": "{count, plural, =1{1 needs attention} other{{count} need attention}}",
+  "@syncStateConflict": {
+    "description": "Sync indicator: rejected items waiting for the driver",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncLastPush": "Last upload",
+  "@syncLastPush": {
+    "description": "M-54: time of the last successful push"
+  },
+  "syncLastPull": "Last download",
+  "@syncLastPull": {
+    "description": "M-54: time of the last successful pull"
+  },
+  "syncLastError": "Last error",
+  "@syncLastError": {
+    "description": "M-54: last transport error code"
+  },
+  "syncCursor": "Cursor",
+  "@syncCursor": {
+    "description": "M-54: next_since diagnostic value"
+  },
+  "syncQueue": "Queue",
+  "@syncQueue": {
+    "description": "M-54: section header for queued items by kind"
+  },
+  "syncQueueEmpty": "Nothing waiting to sync.",
+  "@syncQueueEmpty": {
+    "description": "M-54: empty queue state"
+  },
+  "syncNever": "Never",
+  "@syncNever": {
+    "description": "M-54: placeholder when a timestamp is absent"
+  },
+  "syncRetryNow": "Retry now",
+  "@syncRetryNow": {
+    "description": "M-54: manual sync button"
+  },
+  "syncConflictsEmpty": "No conflicts. Everything you recorded was accepted.",
+  "@syncConflictsEmpty": {
+    "description": "M-55: empty state"
+  },
+  "syncConflictsCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@syncConflictsCount": {
+    "description": "M-55: number of rejected or superseded items",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncKindEvent": "Duty events",
+  "@syncKindEvent": {
+    "description": "Outbox kind label: duty status events"
+  },
+  "syncKindTelemetry": "Telemetry",
+  "@syncKindTelemetry": {
+    "description": "Outbox kind label: GPS/ECM points"
+  },
+  "syncKindDvir": "Inspections",
+  "@syncKindDvir": {
+    "description": "Outbox kind label: DVIR reports"
+  },
+  "syncKindChat": "Messages",
+  "@syncKindChat": {
+    "description": "Outbox kind label: chat messages"
+  },
+  "syncKindCertify": "Certifications",
+  "@syncKindCertify": {
+    "description": "Outbox kind label: daily log certifications"
+  },
+  "syncKindClaim": "Claims",
+  "@syncKindClaim": {
+    "description": "Outbox kind label: unidentified driving claims"
+  },
+  "syncKindLogEdit": "Log edits",
+  "@syncKindLogEdit": {
+    "description": "Outbox kind label: log edit decisions"
+  },
+  "syncKindPushToken": "Push token",
+  "@syncKindPushToken": {
+    "description": "Outbox kind label: FCM token registration"
+  },
+  "syncKindFeedback": "Feedback",
+  "@syncKindFeedback": {
+    "description": "Outbox kind label: feedback"
+  },
+  "syncKindSupport": "Support",
+  "@syncKindSupport": {
+    "description": "Outbox kind label: support requests"
+  },
+  "conflictTimeInFuture": "This entry was recorded ahead of server time and was not accepted. Check your device clock.",
+  "@conflictTimeInFuture": {
+    "description": "Conflict reason time_in_future (tz-mobile §5.6)"
+  },
+  "conflictTimeOutOfRange": "This entry is outside the accepted time range.",
+  "@conflictTimeOutOfRange": {
+    "description": "Conflict reason time_out_of_range"
+  },
+  "conflictLogLocked": "That day is already certified. Ask your fleet manager for a log edit.",
+  "@conflictLogLocked": {
+    "description": "Conflict reason log_locked"
+  },
+  "conflictSuperseded": "Another device recorded a status at the same time. The other entry was kept.",
+  "@conflictSuperseded": {
+    "description": "Conflict reason superseded (informational, M29)"
+  },
+  "conflictInvalidPayload": "This entry could not be saved (invalid data).",
+  "@conflictInvalidPayload": {
+    "description": "Conflict reason invalid_payload"
+  },
+  "conflictSpecialNotAllowed": "Personal Conveyance / Yard Move is disabled for your company.",
+  "@conflictSpecialNotAllowed": {
+    "description": "Conflict reasons pc_not_allowed / ym_not_allowed"
+  },
+  "conflictSleeperBerthUnavailable": "Sleeper Berth is not available on this unit.",
+  "@conflictSleeperBerthUnavailable": {
+    "description": "Conflict reason sleeper_berth_unavailable"
+  },
+  "conflictDriveNotManual": "Driving status is set automatically and cannot be changed by hand.",
+  "@conflictDriveNotManual": {
+    "description": "Conflict reasons drive_not_manual / auto_drive"
+  },
+  "conflictYardMoveEnded": "Yard Move ended automatically — the vehicle exceeded the speed limit.",
+  "@conflictYardMoveEnded": {
+    "description": "Conflict reason yard_move_ended"
+  },
+  "conflictUnknown": "This entry was not accepted by the server.",
+  "@conflictUnknown": {
+    "description": "Fallback for an unmapped conflict reason"
+  },
+  "conflictActionResend": "Send again",
+  "@conflictActionResend": {
+    "description": "M-55 action for time_in_future"
+  },
+  "conflictActionContactSupport": "Contact support",
+  "@conflictActionContactSupport": {
+    "description": "M-55 action for log_locked"
+  },
+  "conflictActionSendDiagnostics": "Send to diagnostics",
+  "@conflictActionSendDiagnostics": {
+    "description": "M-55 action for invalid_payload"
+  },
+  "syncConflictItemTitle": "{kind} · {date}",
+  "@syncConflictItemTitle": {
+    "description": "M-55: list tile title — outbox kind label and the day the item was queued",
+    "placeholders": {
+      "kind": {
+        "type": "String",
+        "example": "Duty events"
+      },
+      "date": {
+        "type": "String",
+        "example": "May 28, 2025"
+      }
+    }
+  },
+  "homeEldNotConnected": "ELD not connected",
+  "@homeEldNotConnected": {
+    "description": "M-09 banner: ELD device is not connected (Figma 2177:12192)"
+  },
+  "homeEldConnected": "ELD · Connected",
+  "@homeEldConnected": {
+    "description": "M-09 banner: ELD device connected"
+  },
+  "homeOfflineQueued": "Offline — {count} records queued",
+  "@homeOfflineQueued": {
+    "description": "M-09 offline banner with outbox queue size",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "homeEldMalfunction": "ELD malfunction ({code}) — keep paper logs",
+  "@homeEldMalfunction": {
+    "description": "M-09 non-dismissible malfunction banner",
+    "placeholders": {
+      "code": {
+        "type": "String",
+        "example": "T"
+      }
+    }
+  },
+  "homeNoUnitTitle": "No unit assigned",
+  "@homeNoUnitTitle": {
+    "description": "M-09 empty state title"
+  },
+  "homeNoUnitMessage": "No unit assigned. Contact your fleet manager.",
+  "@homeNoUnitMessage": {
+    "description": "M-09 empty state message (tz-mobile 1240)"
+  },
+  "homeHoursOfService": "Hours of Service",
+  "@homeHoursOfService": {
+    "description": "M-09 HOS card title"
+  },
+  "homeTripDetails": "Trip Details",
+  "@homeTripDetails": {
+    "description": "M-09 trip details card title"
+  },
+  "homeSignature": "Signature",
+  "@homeSignature": {
+    "description": "M-09 signature card title"
+  },
+  "homeCertifyLast8Days": "Certify (Last 8 days)",
+  "@homeCertifyLast8Days": {
+    "description": "M-09 certify row label"
+  },
+  "homeNotSigned": "Not Signed",
+  "@homeNotSigned": {
+    "description": "M-09 certify badge when the day is not certified"
+  },
+  "homeSigned": "Signed",
+  "@homeSigned": {
+    "description": "M-09 certify badge when the day is certified"
+  },
+  "homePendingEdits": "Pending edits ({count})",
+  "@homePendingEdits": {
+    "description": "M-09 conditional card: carrier edit proposals awaiting the driver",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "homeUnidentifiedDriving": "Unidentified driving ({count})",
+  "@homeUnidentifiedDriving": {
+    "description": "M-09 conditional card: unidentified driving segments to claim",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "homeLogsTitle": "Logs",
+  "@homeLogsTitle": {
+    "description": "M-09 log block title (24h grid)"
+  },
+  "homeQuickInspection": "Inspection Report",
+  "@homeQuickInspection": {
+    "description": "M-09 quick action: DOT inspection report"
+  },
+  "homeQuickLogReport": "Log Report",
+  "@homeQuickLogReport": {
+    "description": "M-09 quick action: log report"
+  },
+  "homeQuickCoDriver": "Co-driver",
+  "@homeQuickCoDriver": {
+    "description": "M-09 quick action: switch co-driver"
+  },
+  "homeQuickLeaveTruck": "Leave Truck",
+  "@homeQuickLeaveTruck": {
+    "description": "M-09 quick action: leave the truck"
+  },
+  "homeUnitNumber": "Unit Number",
+  "@homeUnitNumber": {
+    "description": "M-09 unit number label"
+  },
+  "homeMenu": "Menu",
+  "@homeMenu": {
+    "description": "M-09 app bar hamburger tooltip"
+  },
+  "homeNotifications": "Notifications",
+  "@homeNotifications": {
+    "description": "M-09 app bar bell tooltip"
+  },
+  "homeMessages": "Messages",
+  "@homeMessages": {
+    "description": "M-09 app bar mail tooltip"
+  },
+  "homeSync": "Sync now",
+  "@homeSync": {
+    "description": "M-09 app bar sync tooltip"
+  },
+  "homeEditDocuments": "Edit documents",
+  "@homeEditDocuments": {
+    "description": "M-09 trip details pencil tooltip (opens M-11)"
+  },
+  "homeTotalOff": "OFF",
+  "@homeTotalOff": {
+    "description": "M-09 log totals: off duty line"
+  },
+  "homeTotalSb": "SB",
+  "@homeTotalSb": {
+    "description": "M-09 log totals: sleeper berth line"
+  },
+  "homeTotalDrive": "DR",
+  "@homeTotalDrive": {
+    "description": "M-09 log totals: driving line"
+  },
+  "homeTotalOn": "ON",
+  "@homeTotalOn": {
+    "description": "M-09 log totals: on duty line"
+  },
+  "homeViolationLabel": "Violation:",
+  "@homeViolationLabel": {
+    "description": "M-09 log block violation row prefix"
+  },
+  "homeWarningLabel": "Warning:",
+  "@homeWarningLabel": {
+    "description": "M-09 log block warning row prefix"
+  },
+  "homeNoViolations": "No violations today",
+  "@homeNoViolations": {
+    "description": "M-09 log block when the day is clean"
+  },
+  "hosBucketBreak": "BREAK",
+  "@hosBucketBreak": {
+    "description": "HOS indicator: time until the 30-minute break"
+  },
+  "hosBucketDrive": "DRIVE",
+  "@hosBucketDrive": {
+    "description": "HOS indicator: 11-hour driving limit"
+  },
+  "hosBucketShift": "SHIFT",
+  "@hosBucketShift": {
+    "description": "HOS indicator: 14-hour shift window"
+  },
+  "hosBucketCycle": "CYCLE",
+  "@hosBucketCycle": {
+    "description": "HOS indicator: 60/70-hour cycle"
+  },
+  "hosViolationDriveLimit": "Driving limit exceeded",
+  "@hosViolationDriveLimit": {
+    "description": "HOS violation drive_limit"
+  },
+  "hosViolationShiftLimit": "Shift window exceeded",
+  "@hosViolationShiftLimit": {
+    "description": "HOS violation shift_limit"
+  },
+  "hosViolationBreakRequired": "30-minute break required",
+  "@hosViolationBreakRequired": {
+    "description": "HOS violation break_required"
+  },
+  "hosViolationCycleLimit": "Cycle limit exceeded",
+  "@hosViolationCycleLimit": {
+    "description": "HOS violation cycle_limit"
+  },
+  "hosViolationUncertifiedLog": "Uncertified log",
+  "@hosViolationUncertifiedLog": {
+    "description": "HOS violation uncertified_log"
+  },
+  "hosViolationFormMannerTrailer": "Missing trailer number",
+  "@hosViolationFormMannerTrailer": {
+    "description": "HOS violation form_manner_trailer"
+  },
+  "hosViolationFormMannerDoc": "Missing shipping document",
+  "@hosViolationFormMannerDoc": {
+    "description": "HOS violation form_manner_doc"
+  },
+  "hosViolationUnidentifiedDriving": "Unidentified driving",
+  "@hosViolationUnidentifiedDriving": {
+    "description": "HOS violation unidentified_driving"
+  },
+  "hosViolationEldMalfunction": "ELD malfunction",
+  "@hosViolationEldMalfunction": {
+    "description": "HOS violation eld_malfunction"
+  },
+  "hosViolationMissingDvir": "Missing DVIR",
+  "@hosViolationMissingDvir": {
+    "description": "HOS violation missing_dvir"
+  },
+  "drawerInspectionReport": "Inspection Report",
+  "@drawerInspectionReport": {
+    "description": "M-10 drawer item (Figma 2697:33817)"
+  },
+  "drawerSwitchCoDriver": "Switch to Co-driver",
+  "@drawerSwitchCoDriver": {
+    "description": "M-10 drawer item"
+  },
+  "drawerPermissions": "Permissions",
+  "@drawerPermissions": {
+    "description": "M-10 drawer item with warning dot"
+  },
+  "drawerCheckNetwork": "Check Network",
+  "@drawerCheckNetwork": {
+    "description": "M-10 drawer item"
+  },
+  "drawerDiagnosis": "Diagnosis of Device",
+  "@drawerDiagnosis": {
+    "description": "M-10 drawer item"
+  },
+  "drawerAppUpdates": "App Updates",
+  "@drawerAppUpdates": {
+    "description": "M-10 drawer item"
+  },
+  "drawerZoom": "Zoom",
+  "@drawerZoom": {
+    "description": "M-10 drawer toggle: in-app text scale (M94)"
+  },
+  "drawerDarkMode": "Dark mode",
+  "@drawerDarkMode": {
+    "description": "M-10 drawer toggle: dark theme"
+  },
+  "drawerFeedback": "Feedback",
+  "@drawerFeedback": {
+    "description": "M-10 drawer item"
+  },
+  "drawerCustomerSupport": "Customer Support",
+  "@drawerCustomerSupport": {
+    "description": "M-10 drawer item"
+  },
+  "drawerUserManual": "User Manual",
+  "@drawerUserManual": {
+    "description": "M-10 drawer item"
+  },
+  "drawerLeaveTruck": "Leave the Truck",
+  "@drawerLeaveTruck": {
+    "description": "M-10 drawer item"
+  },
+  "drawerLogout": "Logout",
+  "@drawerLogout": {
+    "description": "M-10 drawer item, destructive"
+  },
+  "drawerTermsOfUse": "Terms of Use",
+  "@drawerTermsOfUse": {
+    "description": "M-10 drawer footer link"
+  },
+  "drawerPrivacyPolicy": "Privacy Policy",
+  "@drawerPrivacyPolicy": {
+    "description": "M-10 drawer footer link"
+  },
+  "documentsTitle": "Documents",
+  "@documentsTitle": {
+    "description": "M-11 edit documents modal title (Figma 2230:20627)"
+  },
+  "documentsTrailerNumber": "Trailer Number",
+  "@documentsTrailerNumber": {
+    "description": "M-11 trailer chips label"
+  },
+  "documentsShippingDocument": "Shipping Document",
+  "@documentsShippingDocument": {
+    "description": "M-11 shipping document chips label"
+  },
+  "documentsNote": "Note",
+  "@documentsNote": {
+    "description": "M-11 note field label"
+  },
+  "documentsNoteHint": "Add Note",
+  "@documentsNoteHint": {
+    "description": "M-11 note field placeholder"
+  },
+  "documentsAddTrailer": "Add trailer",
+  "@documentsAddTrailer": {
+    "description": "M-11 add trailer chip action"
+  },
+  "documentsAddDocument": "Add document",
+  "@documentsAddDocument": {
+    "description": "M-11 add shipping document chip action"
+  },
+  "documentsSaved": "Documents updated",
+  "@documentsSaved": {
+    "description": "M-11 success snackbar (status unchanged, M53)"
+  },
+  "dutyChangeTitle": "Change Duty Status",
+  "@dutyChangeTitle": {
+    "description": "M-12 screen title (Figma 1083:10550)"
+  },
+  "dutyStatusOffDuty": "Off Duty",
+  "@dutyStatusOffDuty": {
+    "description": "Duty status OFF (tz-mobile 9.1)"
+  },
+  "dutyStatusSleeper": "Sleeper Berth",
+  "@dutyStatusSleeper": {
+    "description": "Duty status SB"
+  },
+  "dutyStatusOnDuty": "On Duty",
+  "@dutyStatusOnDuty": {
+    "description": "Duty status ON"
+  },
+  "dutyStatusDriving": "Driving",
+  "@dutyStatusDriving": {
+    "description": "Duty status DR — automatic, never selectable (M51)"
+  },
+  "dutySleeperUnavailable": "Sleeper berth is not available on this unit",
+  "@dutySleeperUnavailable": {
+    "description": "M-12 tooltip when the unit has no sleeper berth (M52)"
+  },
+  "dutyLocationLabel": "Location",
+  "@dutyLocationLabel": {
+    "description": "M-12 location field label"
+  },
+  "dutyLocationHint": "Enter Location",
+  "@dutyLocationHint": {
+    "description": "M-12 location field placeholder"
+  },
+  "dutyLocationInaccurate": "Location may be inaccurate",
+  "@dutyLocationInaccurate": {
+    "description": "M-12 warning icon tooltip (accuracy > 150 m)"
+  },
+  "dutyNotesLabel": "Notes",
+  "@dutyNotesLabel": {
+    "description": "M-12 notes field label"
+  },
+  "dutyNotesHint": "Enter Notes",
+  "@dutyNotesHint": {
+    "description": "M-12 notes field placeholder"
+  },
+  "dutyNotesCounter": "{used}/{max}",
+  "@dutyNotesCounter": {
+    "description": "M-12 notes character counter",
+    "placeholders": {
+      "used": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "dutyNotesTooLong": "Notes must be 60 characters or fewer",
+  "@dutyNotesTooLong": {
+    "description": "M-12 notes validation error"
+  },
+  "dutyTrailerLabel": "Trailer Number",
+  "@dutyTrailerLabel": {
+    "description": "M-12 trailer chips label"
+  },
+  "dutyDocumentLabel": "Shipping Document",
+  "@dutyDocumentLabel": {
+    "description": "M-12 shipping document chips label"
+  },
+  "dutyPersonalConveyance": "Personal conveyance",
+  "@dutyPersonalConveyance": {
+    "description": "M-12 toggle under Off Duty (allow_pc)"
+  },
+  "dutyYardMove": "Yard move",
+  "@dutyYardMove": {
+    "description": "M-12 toggle under On Duty (allow_ym)"
+  },
+  "dutyReasonLabel": "Reason",
+  "@dutyReasonLabel": {
+    "description": "M-12 PC/YM reason field label"
+  },
+  "dutyReasonHint": "Enter reason",
+  "@dutyReasonHint": {
+    "description": "M-12 PC/YM reason field placeholder"
+  },
+  "dutyReasonRequired": "A reason is required for personal conveyance",
+  "@dutyReasonRequired": {
+    "description": "M-12 validation error (tz-mobile 9.8)"
+  },
+  "dutyManualNoEld": "ELD not connected — this entry will be marked as manual.",
+  "@dutyManualNoEld": {
+    "description": "M-12 yellow banner when no ELD is connected (M66)"
+  },
+  "dutySave": "Save",
+  "@dutySave": {
+    "description": "M-12 / M-11 primary action"
+  },
+  "dutySaved": "Duty status updated",
+  "@dutySaved": {
+    "description": "M-12 success snackbar"
+  },
+  "dutyQueuedOffline": "Saved offline — it will sync automatically",
+  "@dutyQueuedOffline": {
+    "description": "M-12 offline confirmation"
+  },
+  "dutyAddQuickNote": "Add quick note",
+  "@dutyAddQuickNote": {
+    "description": "M-12 plus button tooltip (opens M-13)"
+  },
+  "dutyStatusUnchanged": "Select a different status to save",
+  "@dutyStatusUnchanged": {
+    "description": "M-12 validation: nothing changed"
+  },
+  "dutyDrivingNotManual": "Driving status is recorded automatically",
+  "@dutyDrivingNotManual": {
+    "description": "M-12 / M-15 guard for DR (M51, M56)"
+  },
+  "quickNotesTitle": "Quick notes",
+  "@quickNotesTitle": {
+    "description": "M-13 modal title (Figma 1170:2313)"
+  },
+  "quickNotesLimitHint": "Notes field has max 60 character limit",
+  "@quickNotesLimitHint": {
+    "description": "M-13 info row"
+  },
+  "quickNotesAdd": "Add Notes",
+  "@quickNotesAdd": {
+    "description": "M-13 primary action"
+  },
+  "quickNotesTruncated": "Notes were truncated to 60 characters",
+  "@quickNotesTruncated": {
+    "description": "M-13 warning after truncation (M55)"
+  },
+  "quickNotePti": "PTI",
+  "@quickNotePti": {
+    "description": "M-13 fallback quick note (M54)"
+  },
+  "quickNoteHook": "Hook",
+  "@quickNoteHook": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNotePickup": "Pickup",
+  "@quickNotePickup": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteDropOff": "Drop off",
+  "@quickNoteDropOff": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteDelivery": "Delivery",
+  "@quickNoteDelivery": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteInspection": "Inspection",
+  "@quickNoteInspection": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteCheckIn": "Check in",
+  "@quickNoteCheckIn": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteFueling": "Fueling",
+  "@quickNoteFueling": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteCheckOut": "Check out",
+  "@quickNoteCheckOut": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteOther": "Other",
+  "@quickNoteOther": {
+    "description": "M-13 fallback quick note"
+  },
+  "locationInaccurateMessage": "It looks like your location might be inaccurate. Want to update it?",
+  "@locationInaccurateMessage": {
+    "description": "M-14 dialog message (Figma 1102:2021)"
+  },
+  "locationInaccurateHint": "It might take a few moments to proceed!",
+  "@locationInaccurateHint": {
+    "description": "M-14 info row"
+  },
+  "locationUpdateNow": "Update Now",
+  "@locationUpdateNow": {
+    "description": "M-14 primary action"
+  },
+  "locationUpdateFailed": "Could not refresh your location",
+  "@locationUpdateFailed": {
+    "description": "M-14 error when the GPS fix times out"
+  },
+  "driveTitle": "Duty Hours",
+  "@driveTitle": {
+    "description": "M-15 drive mode title (Figma 1170:2684)"
+  },
+  "driveInMotion": "In-motion",
+  "@driveInMotion": {
+    "description": "M-15 motion indicator while driving"
+  },
+  "driveStopped": "You have stopped",
+  "@driveStopped": {
+    "description": "M-15 state after a confirmed stop (M59)"
+  },
+  "driveDrivingTimeLeft": "Driving Time Left",
+  "@driveDrivingTimeLeft": {
+    "description": "M-15 min(DRIVE, SHIFT, CYCLE, BREAK)"
+  },
+  "driveCurrentLocation": "Current Location",
+  "@driveCurrentLocation": {
+    "description": "M-15 last GPS fix, reverse geocoded"
+  },
+  "driveBlockedWhileDriving": "Not available while driving",
+  "@driveBlockedWhileDriving": {
+    "description": "M-15 guard message (M58)"
+  },
+  "driveExit": "Exit drive mode",
+  "@driveExit": {
+    "description": "M-15 accessibility label for leaving the focused screen"
+  },
+  "idlePromptMessage": "You''ve been idle for 5 minutes. Are you still driving?",
+  "@idlePromptMessage": {
+    "description": "M-16 idle dialog (Figma 2181:17282)"
+  },
+  "idlePromptYes": "Yes, driving",
+  "@idlePromptYes": {
+    "description": "M-16 confirm — canonical spelling (M61)"
+  },
+  "idlePromptNo": "No",
+  "@idlePromptNo": {
+    "description": "M-16 decline: switches to On Duty at prompt time (M60)"
+  },
+  "idleAlertTitle": "Are you still driving?",
+  "@idleAlertTitle": {
+    "description": "M-16 local notification title (M62)"
+  },
+  "idleAlertBody": "Answer within 1 minute or your status changes to On Duty.",
+  "@idleAlertBody": {
+    "description": "M-16 local notification body (M62)"
+  },
+  "homeDutyStatusTitle": "Duty Status",
+  "@homeDutyStatusTitle": {
+    "description": "T-01 middle column heading"
+  },
+  "homeActionsTitle": "Actions",
+  "@homeActionsTitle": {
+    "description": "T-01 right column heading"
+  },
+  "homeActiveDriverLabel": "Active driver",
+  "@homeActiveDriverLabel": {
+    "description": "M10 ActiveDriverBanner label on the primary slot"
+  },
+  "homeCoDriverLabel": "Co-driver",
+  "@homeCoDriverLabel": {
+    "description": "M10 ActiveDriverBanner label on the second slot"
+  },
+  "homeActiveDriverBanner": "{name} is driving",
+  "@homeActiveDriverBanner": {
+    "description": "M10 banner text — the active driver is always visible",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John Smith"
+      }
+    }
+  },
+  "homeSwitchDriver": "Switch",
+  "@homeSwitchDriver": {
+    "description": "M10 banner action that opens M-20"
+  },
+  "homeThemeToggle": "Switch theme",
+  "@homeThemeToggle": {
+    "description": "T-01 app bar theme icon tooltip (tablet only)"
+  },
+  "homeEldStatusTitle": "ELD",
+  "@homeEldStatusTitle": {
+    "description": "T-01 app bar left cluster label"
+  },
+  "homeFmcsaInspection": "FMCSA / Inspection Report",
+  "@homeFmcsaInspection": {
+    "description": "T-01 Actions panel primary button"
+  },
+  "eldBannerConnected": "ELD · Connected",
+  "@eldBannerConnected": {
+    "description": "M68 canonical ELD banner text, connected state"
+  },
+  "eldBannerConnecting": "ELD · Connecting…",
+  "@eldBannerConnecting": {
+    "description": "M68 canonical ELD banner text, connecting state"
+  },
+  "eldBannerNotConnected": "ELD · Not connected",
+  "@eldBannerNotConnected": {
+    "description": "M68 canonical ELD banner text, disconnected state"
+  },
+  "eldBannerDiagnostic": "ELD diagnostic event",
+  "@eldBannerDiagnostic": {
+    "description": "tz-mobile 10.1 warning banner for diagnostic codes"
+  },
+  "eldBannerMalfunction": "ELD malfunction ({code}) — keep paper logs",
+  "@eldBannerMalfunction": {
+    "description": "M77 mandatory malfunction banner. No dismiss button; clears only when the fault clears",
+    "placeholders": {
+      "code": {
+        "type": "String",
+        "example": "P"
+      }
+    }
+  },
+  "eldBannerReconnect": "Reconnect",
+  "@eldBannerReconnect": {
+    "description": "ELD banner trailing action, opens M-19"
+  },
+  "eldFaultPower": "Power compliance",
+  "@eldFaultPower": {
+    "description": "FMCSA code P"
+  },
+  "eldFaultEngineSync": "Engine synchronization",
+  "@eldFaultEngineSync": {
+    "description": "FMCSA code E"
+  },
+  "eldFaultTiming": "Timing",
+  "@eldFaultTiming": {
+    "description": "FMCSA code T, clock skew above 10 minutes"
+  },
+  "eldFaultPositioning": "Positioning",
+  "@eldFaultPositioning": {
+    "description": "FMCSA code L"
+  },
+  "eldFaultDataRecording": "Data recording",
+  "@eldFaultDataRecording": {
+    "description": "FMCSA code R"
+  },
+  "eldFaultDataTransfer": "Data transfer",
+  "@eldFaultDataTransfer": {
+    "description": "FMCSA code S"
+  },
+  "eldFaultOther": "Other",
+  "@eldFaultOther": {
+    "description": "FMCSA code O"
+  },
+  "eldFaultHintDataRecording": "Free up device storage",
+  "@eldFaultHintDataRecording": {
+    "description": "tz-mobile 10.6, advice shown with code R"
+  },
+  "eldFaultHintDataTransfer": "Logs have not been transferred for {days} days",
+  "@eldFaultHintDataTransfer": {
+    "description": "tz-mobile 10.6 / M78, advice shown with code S",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "eldFaultHintTiming": "Clock differs from the trusted source by more than 10 minutes",
+  "@eldFaultHintTiming": {
+    "description": "Advice shown with code T"
+  },
+  "eldFaultHintPositioning": "Location must be entered manually",
+  "@eldFaultHintPositioning": {
+    "description": "Advice shown with code L"
+  },
+  "eldNotConnectedDialogMessage": "In order to connect to the ELD, you must allow all the permissions.",
+  "@eldNotConnectedDialogMessage": {
+    "description": "M-17 / M70 dialog body, canonical wording"
+  },
+  "eldNotConnectedDialogAllow": "Allow Permissions",
+  "@eldNotConnectedDialogAllow": {
+    "description": "M-17 / M70 primary action"
+  },
+  "eldNotConnectedDialogTitle": "ELD not connected",
+  "@eldNotConnectedDialogTitle": {
+    "description": "M-17 dialog semantic title"
+  },
+  "eldNotConnectedDialogClose": "Close",
+  "@eldNotConnectedDialogClose": {
+    "description": "M-17 dialog close icon tooltip"
+  },
+  "permissionsTitle": "Permissions",
+  "@permissionsTitle": {
+    "description": "M-18 app bar title"
+  },
+  "permissionLocation": "Location",
+  "@permissionLocation": {
+    "description": "M-18 row, ACCESS_FINE_LOCATION / when in use"
+  },
+  "permissionLocationAlways": "Location always",
+  "@permissionLocationAlways": {
+    "description": "M-18 row, ACCESS_BACKGROUND_LOCATION"
+  },
+  "permissionBluetooth": "Bluetooth",
+  "@permissionBluetooth": {
+    "description": "M-18 row, BLUETOOTH_SCAN + BLUETOOTH_CONNECT"
+  },
+  "permissionNotifications": "Notifications",
+  "@permissionNotifications": {
+    "description": "M-18 row, POST_NOTIFICATIONS"
+  },
+  "permissionBatteryOptimization": "Battery optimization",
+  "@permissionBatteryOptimization": {
+    "description": "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Android only"
+  },
+  "permissionAllowed": "Allowed",
+  "@permissionAllowed": {
+    "description": "M-18 green badge"
+  },
+  "permissionNotAllowed": "Not allowed",
+  "@permissionNotAllowed": {
+    "description": "M-18 red badge"
+  },
+  "permissionTurnOnGps": "Turn on GPS",
+  "@permissionTurnOnGps": {
+    "description": "M-18 second card, opens system location settings"
+  },
+  "permissionTurnOnBluetooth": "Turn on bluetooth",
+  "@permissionTurnOnBluetooth": {
+    "description": "M-18 second card, opens system bluetooth settings"
+  },
+  "permissionOn": "On",
+  "@permissionOn": {
+    "description": "M-18 toggle badge, service enabled"
+  },
+  "permissionOff": "Off",
+  "@permissionOff": {
+    "description": "M-18 toggle badge, service disabled"
+  },
+  "permissionOpenSettings": "Open settings",
+  "@permissionOpenSettings": {
+    "description": "M69 action when a permission is permanently denied"
+  },
+  "permissionAllowAll": "Allow all permissions",
+  "@permissionAllowAll": {
+    "description": "M-18 primary action running the 10.2 onboarding sequence"
+  },
+  "permissionDeniedHint": "Denied permissions do not block the app, but the ELD cannot connect and background tracking stops.",
+  "@permissionDeniedHint": {
+    "description": "M69 explanation shown when something is missing"
+  },
+  "permissionAlwaysHint": "Required so duty status keeps recording while the app is in the background.",
+  "@permissionAlwaysHint": {
+    "description": "M-18 rationale for the background location row (risk R1)"
+  },
+  "permissionBannerMissing": "{count, plural, =1{1 permission is missing} other{{count} permissions are missing}}",
+  "@permissionBannerMissing": {
+    "description": "M69 home banner and drawer badge text",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "eldConnectTitle": "ELD device",
+  "@eldConnectTitle": {
+    "description": "M-19 app bar title"
+  },
+  "eldScanAction": "Scan",
+  "@eldScanAction": {
+    "description": "M-19 start scan button"
+  },
+  "eldScanAgainAction": "Scan again",
+  "@eldScanAgainAction": {
+    "description": "M-19 restart scan button"
+  },
+  "eldScanning": "Scanning…",
+  "@eldScanning": {
+    "description": "M-19 scan in progress, 20 s timeout"
+  },
+  "eldScanEmptyTitle": "No ELD devices found",
+  "@eldScanEmptyTitle": {
+    "description": "M-19 empty state title"
+  },
+  "eldScanEmptyMessage": "Make sure the ELD is powered and within range, then scan again.",
+  "@eldScanEmptyMessage": {
+    "description": "M-19 empty state body"
+  },
+  "eldConnectAction": "Connect",
+  "@eldConnectAction": {
+    "description": "M-19 connect to the selected device"
+  },
+  "eldDisconnectAction": "Disconnect",
+  "@eldDisconnectAction": {
+    "description": "M-19 manual disconnect, stops auto reconnect"
+  },
+  "eldForgetAction": "Forget device",
+  "@eldForgetAction": {
+    "description": "M-19 clears the saved MAC/ID from kv_settings"
+  },
+  "eldWeakSignal": "Weak signal",
+  "@eldWeakSignal": {
+    "description": "M-19 badge shown below -90 dBm"
+  },
+  "eldSignalDbm": "{rssi} dBm",
+  "@eldSignalDbm": {
+    "description": "M-19 RSSI value on the device row",
+    "placeholders": {
+      "rssi": {
+        "type": "int",
+        "example": "-55"
+      }
+    }
+  },
+  "eldReconnectingIn": "Reconnecting… attempt {attempt}",
+  "@eldReconnectingIn": {
+    "description": "M-19 status line during backoff 2 s to 60 s",
+    "placeholders": {
+      "attempt": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "eldSectionDevice": "Connected device",
+  "@eldSectionDevice": {
+    "description": "M-19 handshake card title"
+  },
+  "eldSectionAvailable": "Available devices",
+  "@eldSectionAvailable": {
+    "description": "M-19 scan result list title"
+  },
+  "eldFieldFirmware": "Firmware",
+  "@eldFieldFirmware": {
+    "description": "M-19 handshake field"
+  },
+  "eldFieldSerial": "Serial",
+  "@eldFieldSerial": {
+    "description": "M-19 handshake field"
+  },
+  "eldFieldVin": "VIN",
+  "@eldFieldVin": {
+    "description": "M-19 handshake field, compared with the unit VIN"
+  },
+  "eldFieldRtc": "Device clock",
+  "@eldFieldRtc": {
+    "description": "M-19 handshake field, M71 feeds TimeSource"
+  },
+  "eldFieldOdometer": "Odometer",
+  "@eldFieldOdometer": {
+    "description": "M-19 handshake field"
+  },
+  "eldFieldEngineHours": "Engine hours",
+  "@eldFieldEngineHours": {
+    "description": "M-19 handshake field"
+  },
+  "eldVinMismatch": "The ELD reports a different VIN than the assigned unit.",
+  "@eldVinMismatch": {
+    "description": "tz-mobile 10.3 warning; connection is not blocked"
+  },
+  "eldVinUnknown": "VIN could not be verified.",
+  "@eldVinUnknown": {
+    "description": "M-19 shown when either VIN is missing"
+  },
+  "eldBufferImported": "{imported} events imported, {skipped} duplicates skipped",
+  "@eldBufferImported": {
+    "description": "M72 buffer import result on M-19",
+    "placeholders": {
+      "imported": {
+        "type": "int",
+        "example": "12"
+      },
+      "skipped": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "eldOdometerKm": "{km} km",
+  "@eldOdometerKm": {
+    "description": "M-19 odometer value formatted in kilometres",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "812,450"
+      }
+    }
+  },
+  "eldEngineHoursValue": "{hours} h",
+  "@eldEngineHoursValue": {
+    "description": "M-19 engine hours value",
+    "placeholders": {
+      "hours": {
+        "type": "String",
+        "example": "4821.5"
+      }
+    }
+  },
+  "eldErrBluetoothOff": "Bluetooth is turned off.",
+  "@eldErrBluetoothOff": {
+    "description": "EldTransportFailure.bluetoothOff"
+  },
+  "eldErrPermissionDenied": "Bluetooth or location permission is missing.",
+  "@eldErrPermissionDenied": {
+    "description": "EldTransportFailure.permissionDenied"
+  },
+  "eldErrNotFound": "The ELD device was not found.",
+  "@eldErrNotFound": {
+    "description": "EldTransportFailure.notFound"
+  },
+  "eldErrConnectTimeout": "The ELD did not respond within 20 seconds.",
+  "@eldErrConnectTimeout": {
+    "description": "EldTransportFailure.connectTimeout"
+  },
+  "eldErrHandshakeFailed": "The ELD handshake failed.",
+  "@eldErrHandshakeFailed": {
+    "description": "EldTransportFailure.handshakeFailed"
+  },
+  "eldErrDisconnected": "The ELD connection was lost.",
+  "@eldErrDisconnected": {
+    "description": "EldTransportFailure.disconnected"
+  },
+  "eldErrUnsupported": "This device is not supported.",
+  "@eldErrUnsupported": {
+    "description": "EldTransportFailure.unsupported"
+  },
+  "eldServiceChannelName": "ELD tracking",
+  "@eldServiceChannelName": {
+    "description": "Android foreground service notification channel name"
+  },
+  "eldServiceChannelDescription": "Keeps the duty status and the ELD connection active while driving.",
+  "@eldServiceChannelDescription": {
+    "description": "Android foreground service notification channel description"
+  },
+  "eldServiceDrivingTimeLeft": "Driving Time Left — {time}",
+  "@eldServiceDrivingTimeLeft": {
+    "description": "tz-mobile 10.4 ongoing notification body",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "08:00"
+      }
+    }
+  },
+  "diagnosisTitle": "Diagnosis of Device",
+  "@diagnosisTitle": {
+    "description": "M-46 modal title"
+  },
+  "diagnosisEldCoordinates": "ELD coordinates",
+  "@diagnosisEldCoordinates": {
+    "description": "M-46 row, ELD lat/lng within the last 60 s"
+  },
+  "diagnosisGpsCoordinates": "GPS coordinates",
+  "@diagnosisGpsCoordinates": {
+    "description": "M-46 row, phone GPS fix"
+  },
+  "diagnosisNetworkQuality": "Network quality",
+  "@diagnosisNetworkQuality": {
+    "description": "M-46 row, last sync latency"
+  },
+  "diagnosisWorking": "Working",
+  "@diagnosisWorking": {
+    "description": "M-46 green badge"
+  },
+  "diagnosisNotWorking": "Not working",
+  "@diagnosisNotWorking": {
+    "description": "M-46 red badge"
+  },
+  "diagnosisNetworkGood": "Good",
+  "@diagnosisNetworkGood": {
+    "description": "M-46 network quality value"
+  },
+  "diagnosisNetworkFair": "Fair",
+  "@diagnosisNetworkFair": {
+    "description": "M-46 network quality value"
+  },
+  "diagnosisNetworkPoor": "Poor",
+  "@diagnosisNetworkPoor": {
+    "description": "M-46 network quality value"
+  },
+  "diagnosisNetworkOffline": "Offline",
+  "@diagnosisNetworkOffline": {
+    "description": "M-46 network quality value"
+  },
+  "diagnosisClose": "Close",
+  "@diagnosisClose": {
+    "description": "M-46 close icon tooltip"
+  },
+  "diagnosisActiveFaults": "Active ELD codes",
+  "@diagnosisActiveFaults": {
+    "description": "M-46 section listing P/E/T/L/R/S/O codes"
+  },
+  "diagnosisNoFaults": "No active malfunctions or diagnostic events.",
+  "@diagnosisNoFaults": {
+    "description": "M-46 empty state for the fault section"
+  },
+  "checkNetworkTitle": "Check Network",
+  "@checkNetworkTitle": {
+    "description": "M-47 app bar title and action button"
+  },
+  "checkNetworkUnit": "mbps",
+  "@checkNetworkUnit": {
+    "description": "M-47 gauge unit"
+  },
+  "checkNetworkApprox": "approx.",
+  "@checkNetworkApprox": {
+    "description": "M76 label, the measurement is estimated from an API round trip"
+  },
+  "checkNetworkRunning": "Measuring…",
+  "@checkNetworkRunning": {
+    "description": "M-47 in-progress state"
+  },
+  "checkNetworkIdle": "Tap Check Network to measure the connection.",
+  "@checkNetworkIdle": {
+    "description": "M-47 initial state"
+  },
+  "checkNetworkFailed": "The measurement failed. Check your connection and try again.",
+  "@checkNetworkFailed": {
+    "description": "M-47 error state"
+  },
+  "checkNetworkLatency": "Round trip {ms} ms",
+  "@checkNetworkLatency": {
+    "description": "M-47 latency line under the gauge",
+    "placeholders": {
+      "ms": {
+        "type": "int",
+        "example": "180"
+      }
+    }
+  },
+  "checkNetworkNote": "Measured against the OneBook API — external speed test services are not used.",
+  "@checkNetworkNote": {
+    "description": "M75, explains why the value is approximate"
+  },
+  "checkNetworkGaugeSemantics": "{value} megabits per second",
+  "@checkNetworkGaugeSemantics": {
+    "description": "M-47 gauge accessibility label",
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "14.00"
+      }
+    }
+  },
+  "dvirAddTitle": "Add DVIR",
+  "@dvirAddTitle": {
+    "description": "M-32 Add DVIR screen title (Figma 1089:4441)"
+  },
+  "dvirTypeLabel": "Type",
+  "@dvirTypeLabel": {
+    "description": "M-32 pre-trip / post-trip selector label"
+  },
+  "dvirTypePreTrip": "Pre-trip",
+  "@dvirTypePreTrip": {
+    "description": "DVIR inspection type: before the trip"
+  },
+  "dvirTypePostTrip": "Post-trip",
+  "@dvirTypePostTrip": {
+    "description": "DVIR inspection type: after the trip"
+  },
+  "dvirUnitNumberLabel": "Unit Number",
+  "@dvirUnitNumberLabel": {
+    "description": "M-32 tractor unit number (read-only, from /me)"
+  },
+  "dvirTrailersLabel": "Trailers",
+  "@dvirTrailersLabel": {
+    "description": "M-32 trailers multi-select label"
+  },
+  "dvirTrailersHint": "Enter Trailer Number",
+  "@dvirTrailersHint": {
+    "description": "M-32 trailers field placeholder"
+  },
+  "dvirTruckDefectsLabel": "Truck Defects",
+  "@dvirTruckDefectsLabel": {
+    "description": "M-32 truck defects row label"
+  },
+  "dvirTrailerDefectsLabel": "Trailer Defects",
+  "@dvirTrailerDefectsLabel": {
+    "description": "M-32 trailer defects row label"
+  },
+  "dvirAddDefectsHint": "Add Defects",
+  "@dvirAddDefectsHint": {
+    "description": "M-32 placeholder inside the defects picker row"
+  },
+  "dvirDefectsSelected": "{count, plural, =0{No defects} =1{1 defect} other{{count} defects}}",
+  "@dvirDefectsSelected": {
+    "description": "M-32 summary of the selected defects",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirNotesLabel": "Notes",
+  "@dvirNotesLabel": {
+    "description": "M-32 optional free-text notes"
+  },
+  "dvirNotesHint": "Add a note (optional)",
+  "@dvirNotesHint": {
+    "description": "M-32 notes placeholder"
+  },
+  "dvirDriverInfoTime": "Time",
+  "@dvirDriverInfoTime": {
+    "description": "M-32 driver information: current time"
+  },
+  "dvirDriverInfoLocation": "Location",
+  "@dvirDriverInfoLocation": {
+    "description": "M-32 driver information: current location"
+  },
+  "dvirDriverInfoOdometer": "Odometer",
+  "@dvirDriverInfoOdometer": {
+    "description": "M-32 driver information: odometer reading"
+  },
+  "dvirNext": "Next",
+  "@dvirNext": {
+    "description": "M-32 primary button, goes to the review step"
+  },
+  "dvirConfirm": "Confirm",
+  "@dvirConfirm": {
+    "description": "M-34 primary button, submits the report"
+  },
+  "dvirSave": "Save",
+  "@dvirSave": {
+    "description": "M-33 defect picker primary button"
+  },
+  "dvirTruckDefectsTitle": "Truck defects",
+  "@dvirTruckDefectsTitle": {
+    "description": "M-33 defect picker title, truck category"
+  },
+  "dvirTrailerDefectsTitle": "Trailer defects",
+  "@dvirTrailerDefectsTitle": {
+    "description": "M-33 defect picker title, trailer category"
+  },
+  "dvirDefectSearchHint": "Search defects",
+  "@dvirDefectSearchHint": {
+    "description": "M-33 search field placeholder"
+  },
+  "dvirDefectNoteHint": "Describe the defect (optional)",
+  "@dvirDefectNoteHint": {
+    "description": "M-33 per-defect comment placeholder"
+  },
+  "dvirDefectAddPhoto": "Add photo",
+  "@dvirDefectAddPhoto": {
+    "description": "M-33 per-defect photo button (max 5)"
+  },
+  "dvirDefectPhotoCount": "{count} of {max} photos",
+  "@dvirDefectPhotoCount": {
+    "description": "M-33 photo counter",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirDefectPhotoLimit": "You can attach up to {max} photos per defect.",
+  "@dvirDefectPhotoLimit": {
+    "description": "M-33 photo limit warning",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirCriticalWarning": "This is a critical defect. The unit may be placed out of service.",
+  "@dvirCriticalWarning": {
+    "description": "M106 critical defect warning"
+  },
+  "dvirCriticalBadge": "Critical",
+  "@dvirCriticalBadge": {
+    "description": "Badge next to a critical defect type"
+  },
+  "dvirDefectsEmpty": "No defects match your search",
+  "@dvirDefectsEmpty": {
+    "description": "M-33 empty search result"
+  },
+  "dvirCatalogEmpty": "Defect catalog is empty",
+  "@dvirCatalogEmpty": {
+    "description": "M-33 empty state when the server catalog is empty"
+  },
+  "dvirCatalogEmptyHint": "Connect to the internet to download the defect list.",
+  "@dvirCatalogEmptyHint": {
+    "description": "M-33 empty state hint"
+  },
+  "dvirAccidentPhotoTitle": "Accident photo",
+  "@dvirAccidentPhotoTitle": {
+    "description": "M105 separate accident photo upload, not a defect"
+  },
+  "dvirAccidentPhotoHint": "Attach a photo of the accident (not a defect).",
+  "@dvirAccidentPhotoHint": {
+    "description": "M105 accident photo helper text"
+  },
+  "dvirReviewTitle": "Review",
+  "@dvirReviewTitle": {
+    "description": "M-34 review step title"
+  },
+  "dvirNoDefects": "No Defects",
+  "@dvirNoDefects": {
+    "description": "M-34 checkbox shown when nothing was selected"
+  },
+  "dvirDriverSignature": "Driver Signature",
+  "@dvirDriverSignature": {
+    "description": "M-34 signature section title"
+  },
+  "dvirSignatureHint": "Sign here",
+  "@dvirSignatureHint": {
+    "description": "Signature pad hint"
+  },
+  "dvirSignatureClear": "Clear",
+  "@dvirSignatureClear": {
+    "description": "Signature pad clear button"
+  },
+  "dvirSignatureSave": "Save signature",
+  "@dvirSignatureSave": {
+    "description": "Signature pad save button"
+  },
+  "dvirSignatureRequired": "A driver signature is required.",
+  "@dvirSignatureRequired": {
+    "description": "M-34 validation message"
+  },
+  "dvirSignatureSaved": "Signature captured",
+  "@dvirSignatureSaved": {
+    "description": "M-34 confirmation after signing"
+  },
+  "dvirSubmitting": "Submitting…",
+  "@dvirSubmitting": {
+    "description": "M-34 submit progress"
+  },
+  "dvirSubmittedOnline": "DVIR submitted",
+  "@dvirSubmittedOnline": {
+    "description": "M-34 success message (online)"
+  },
+  "dvirSubmittedQueued": "DVIR saved and queued — it will be sent when you are back online.",
+  "@dvirSubmittedQueued": {
+    "description": "M-34 success message (offline, outbox)"
+  },
+  "dvirDetailsTitle": "DVIR details",
+  "@dvirDetailsTitle": {
+    "description": "M-35 details screen title (Figma 1166:869)"
+  },
+  "dvirDetailsStatus": "Status",
+  "@dvirDetailsStatus": {
+    "description": "M-35 backend status row (M103)"
+  },
+  "dvirDetailsMechanicNote": "Mechanic note",
+  "@dvirDetailsMechanicNote": {
+    "description": "M-35 mechanic comment (read-only)"
+  },
+  "dvirDetailsMechanicSignature": "Mechanic Signature",
+  "@dvirDetailsMechanicSignature": {
+    "description": "M-35 mechanic signature (read-only)"
+  },
+  "dvirDetailsInvoice": "Invoice",
+  "@dvirDetailsInvoice": {
+    "description": "M-35 invoice link"
+  },
+  "dvirDetailsDownloadPdf": "Download PDF",
+  "@dvirDetailsDownloadPdf": {
+    "description": "M-35 PDF download (online only)"
+  },
+  "dvirDetailsPdfOffline": "Connect to the internet to download the PDF.",
+  "@dvirDetailsPdfOffline": {
+    "description": "M-35 PDF offline hint"
+  },
+  "dvirDetailsImmutable": "Submitted DVIRs cannot be edited or deleted (M107).",
+  "@dvirDetailsImmutable": {
+    "description": "M107 immutability note"
+  },
+  "dvirDetailsNoDefects": "No defects were reported.",
+  "@dvirDetailsNoDefects": {
+    "description": "M-35 empty defect list"
+  },
+  "dvirDetailsNotFound": "This DVIR is not available.",
+  "@dvirDetailsNotFound": {
+    "description": "M-35 error/empty state"
+  },
+  "dvirKindNoDefects": "No defects",
+  "@dvirKindNoDefects": {
+    "description": "M102 badge for kind=no_defects"
+  },
+  "dvirKindDefectsNotFixed": "Defects – not fixed",
+  "@dvirKindDefectsNotFixed": {
+    "description": "M102 badge for kind=defects_not_fixed"
+  },
+  "dvirKindDefectsFixed": "Defects – fixed",
+  "@dvirKindDefectsFixed": {
+    "description": "M102 badge for kind=defects_fixed"
+  },
+  "dvirKindDraft": "Draft",
+  "@dvirKindDraft": {
+    "description": "M102 badge for a local draft"
+  },
+  "dvirKindAwaitingCertification": "Awaiting certification",
+  "@dvirKindAwaitingCertification": {
+    "description": "M102 sub-badge for status=repaired"
+  },
+  "dvirKindClosed": "Closed",
+  "@dvirKindClosed": {
+    "description": "M102 sub-badge for status=closed_no_certification"
+  },
+  "dvirCertifyTitle": "Previous defects",
+  "@dvirCertifyTitle": {
+    "description": "M-36 previous defects certification modal title"
+  },
+  "dvirCertifyMessage": "Defects were repaired on unit {unit} on {date}. Confirm the repairs are satisfactory.",
+  "@dvirCertifyMessage": {
+    "description": "M-36 modal body",
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dvirCertifyConfirm": "Confirm repairs",
+  "@dvirCertifyConfirm": {
+    "description": "M-36 primary action"
+  },
+  "dvirCertifyLater": "Later",
+  "@dvirCertifyLater": {
+    "description": "M-36 dismiss action, does not block the new DVIR"
+  },
+  "dvirCertifyQueued": "Certification queued — it will be sent when you are back online.",
+  "@dvirCertifyQueued": {
+    "description": "M-36 offline confirmation"
+  },
+  "dvirCertifyDone": "Repairs certified",
+  "@dvirCertifyDone": {
+    "description": "M-36 success message"
+  },
+  "dvirCertifyAlready": "This report was already certified.",
+  "@dvirCertifyAlready": {
+    "description": "M-36 DVIR_INVALID_TRANSITION message"
+  },
+  "dvirPhotoUnavailable": "Photo capture is not available on this device.",
+  "@dvirPhotoUnavailable": {
+    "description": "Shown when no camera/photo plugin is wired"
+  },
+  "dvirPhotoQueued": "Photo queued for upload",
+  "@dvirPhotoQueued": {
+    "description": "Photo written to files_queue (M149)"
+  },
+  "dvirBack": "Back",
+  "@dvirBack": {
+    "description": "Orqaga qaytish tugmasi (app bar) — M-32…M-35, M-37, M-38."
+  },
+  "dvirClose": "Close",
+  "@dvirClose": {
+    "description": "Modalni yopish (X) tugmasi."
+  },
+  "dvirNoUnit": "No unit detected. Connect the ELD device or change duty status to set the unit.",
+  "@dvirNoUnit": {
+    "description": "M-32: unit aniqlanmagan — DVIR yuborib bo'lmaydi."
+  },
+  "dvirPhotoTooLarge": "This photo is too large ({max} MB limit).",
+  "@dvirPhotoTooLarge": {
+    "description": "Foto §16 hajm chegarasidan katta.",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirPhotoRemove": "Remove photo",
+  "@dvirPhotoRemove": {
+    "description": "Biriktirilgan fotoni olib tashlash."
+  },
+  "dvirCriticalDismiss": "Understood",
+  "@dvirCriticalDismiss": {
+    "description": "M106 kritik nuqson ogohlantirishini yopish."
+  },
+  "dvirAccidentPhotoAdd": "Add accident photo",
+  "@dvirAccidentPhotoAdd": {
+    "description": "M105: alohida foto bandi."
+  },
+  "dvirReviewDefectsEmpty": "No defects were selected.",
+  "@dvirReviewDefectsEmpty": {
+    "description": "M-34 xulosasi bo'sh."
+  },
+  "dvirOdometerMiles": "{miles} mi",
+  "@dvirOdometerMiles": {
+    "description": "Odometer qiymati (mil). Manba `odometer_m` (metr).",
+    "placeholders": {
+      "miles": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionTitle": "Inspection Report",
+  "@inspectionTitle": {
+    "description": "M-37 screen title (Figma 1111:7825)"
+  },
+  "inspectionReviewTitle": "Review the logs for the past 7 days + today",
+  "@inspectionReviewTitle": {
+    "description": "M-37 action 1 title"
+  },
+  "inspectionReviewBody": "Click “Begin Inspection” button, and hand your device to the officer.",
+  "@inspectionReviewBody": {
+    "description": "M-37 action 1 body"
+  },
+  "inspectionBeginAction": "Begin Inspection",
+  "@inspectionBeginAction": {
+    "description": "M-37 action 1 button"
+  },
+  "inspectionEmailTitle": "Send the logs for the past 7 days + today via email",
+  "@inspectionEmailTitle": {
+    "description": "M-37 action 2 title"
+  },
+  "inspectionEmailBody": "Email your logs to the officer if they request a paper copy.",
+  "@inspectionEmailBody": {
+    "description": "M-37 action 2 body"
+  },
+  "inspectionEmailAction": "Send via email",
+  "@inspectionEmailAction": {
+    "description": "M-37 action 2 button"
+  },
+  "inspectionFileTitle": "Send the ELD output file to the DOT officer",
+  "@inspectionFileTitle": {
+    "description": "M-37 action 3 title (M108: tablet wording is canonical)"
+  },
+  "inspectionFileBody": "Send your ELD Output file for the inspection if the officer requests.",
+  "@inspectionFileBody": {
+    "description": "M-37 action 3 body"
+  },
+  "inspectionFileAction": "Send the file",
+  "@inspectionFileAction": {
+    "description": "M-37 action 3 button"
+  },
+  "inspectionOnlineRequired": "Requires an internet connection. Use “Begin Inspection” to show logs on screen.",
+  "@inspectionOnlineRequired": {
+    "description": "M111 offline hint for the two sending actions"
+  },
+  "inspectionTransferUnavailable": "The transfer service is unavailable. Show the logs on screen instead.",
+  "@inspectionTransferUnavailable": {
+    "description": "M111 message for HTTP 503"
+  },
+  "inspectionEmailModalTitle": "Send via email",
+  "@inspectionEmailModalTitle": {
+    "description": "M-40 modal title"
+  },
+  "inspectionEmailModalHint": "Email your logs to the officer if they request a paper copy",
+  "@inspectionEmailModalHint": {
+    "description": "M-40 info banner"
+  },
+  "inspectionEmailAddress": "Email Address",
+  "@inspectionEmailAddress": {
+    "description": "M-40 / M-41 email field label"
+  },
+  "inspectionEmailPlaceholder": "Enter email address",
+  "@inspectionEmailPlaceholder": {
+    "description": "M-40 email field placeholder"
+  },
+  "inspectionEmailInvalid": "Enter a valid email address.",
+  "@inspectionEmailInvalid": {
+    "description": "M-40 validation message"
+  },
+  "inspectionEmailSend": "Send Logs",
+  "@inspectionEmailSend": {
+    "description": "M-40 primary button"
+  },
+  "inspectionEmailSent": "Logs sent to {email}",
+  "@inspectionEmailSent": {
+    "description": "M-40 success message",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionCommentLabel": "Comment",
+  "@inspectionCommentLabel": {
+    "description": "M-40 / M-41 optional comment label"
+  },
+  "inspectionCommentHint": "Write output file comment",
+  "@inspectionCommentHint": {
+    "description": "M-41 comment placeholder"
+  },
+  "inspectionFileModalTitle": "Send file for Inspection",
+  "@inspectionFileModalTitle": {
+    "description": "M-41 modal title"
+  },
+  "inspectionFileModalHint": "Send the file to the DOT officer",
+  "@inspectionFileModalHint": {
+    "description": "M-41 info banner (M108)"
+  },
+  "inspectionTransferType": "Type",
+  "@inspectionTransferType": {
+    "description": "M-41 transfer method label"
+  },
+  "inspectionTransferWebService": "Web service",
+  "@inspectionTransferWebService": {
+    "description": "M-41 transfer method: FMCSA web services"
+  },
+  "inspectionTransferEmail": "Email",
+  "@inspectionTransferEmail": {
+    "description": "M-41 transfer method: email"
+  },
+  "inspectionFileSend": "Send",
+  "@inspectionFileSend": {
+    "description": "M-41 primary button"
+  },
+  "inspectionFileSent": "Output file sent ({format}, {size})",
+  "@inspectionFileSent": {
+    "description": "M-41 success message with format and size",
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionFormatFmcsa": "FMCSA ELD output",
+  "@inspectionFormatFmcsa": {
+    "description": "InspectionTransferResult.format=fmcsa_eld_output"
+  },
+  "inspectionFormatCsvPdfZip": "CSV/PDF archive",
+  "@inspectionFormatCsvPdfZip": {
+    "description": "InspectionTransferResult.format=csv_pdf_zip"
+  },
+  "inspectionKioskTitle": "Log Report",
+  "@inspectionKioskTitle": {
+    "description": "M-38 kiosk header (design 1111:8013)"
+  },
+  "inspectionKioskExit": "Exit",
+  "@inspectionKioskExit": {
+    "description": "M-38 exit button, opens the PIN dialog"
+  },
+  "inspectionKioskOffline": "Offline copy — last synced {time}",
+  "@inspectionKioskOffline": {
+    "description": "M-38 offline data source note",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionKioskExpired": "The inspection session has expired.",
+  "@inspectionKioskExpired": {
+    "description": "M-38 session expires_at reached"
+  },
+  "inspectionKioskEmpty": "No logs for this day",
+  "@inspectionKioskEmpty": {
+    "description": "M-38 empty day"
+  },
+  "inspectionExitTitle": "Exit inspection",
+  "@inspectionExitTitle": {
+    "description": "M-39 PIN dialog title"
+  },
+  "inspectionExitMessage": "Enter your PIN to leave inspection mode.",
+  "@inspectionExitMessage": {
+    "description": "M-39 PIN dialog body"
+  },
+  "inspectionExitPinLabel": "PIN",
+  "@inspectionExitPinLabel": {
+    "description": "M-39 PIN field label"
+  },
+  "inspectionExitConfirm": "Exit inspection",
+  "@inspectionExitConfirm": {
+    "description": "M-39 confirm button"
+  },
+  "inspectionExitPinInvalid": "Incorrect PIN.",
+  "@inspectionExitPinInvalid": {
+    "description": "M-39 wrong PIN message"
+  },
+  "inspectionLogDriver": "Driver name",
+  "@inspectionLogDriver": {
+    "description": "M-38 log form: driver"
+  },
+  "inspectionLogCarrier": "Carrier",
+  "@inspectionLogCarrier": {
+    "description": "M-38 log form: carrier"
+  },
+  "inspectionLogHomeTerminal": "Home Terminal",
+  "@inspectionLogHomeTerminal": {
+    "description": "M-38 log form: home terminal address"
+  },
+  "inspectionLogUnit": "Truck tractor ID",
+  "@inspectionLogUnit": {
+    "description": "M-38 log form: unit"
+  },
+  "inspectionLogTrailers": "Trailers",
+  "@inspectionLogTrailers": {
+    "description": "M-38 log form: trailers"
+  },
+  "inspectionLogDocuments": "Shipping ID",
+  "@inspectionLogDocuments": {
+    "description": "M-38 log form: shipping documents"
+  },
+  "inspectionLogDistance": "Distance",
+  "@inspectionLogDistance": {
+    "description": "M-38 log form: distance driven today"
+  },
+  "inspectionLogTimezone": "Time Zone",
+  "@inspectionLogTimezone": {
+    "description": "M-38 log form: home terminal time zone"
+  },
+  "inspectionLogEvents": "Logs",
+  "@inspectionLogEvents": {
+    "description": "M-38 events table title"
+  },
+  "inspectionColStatus": "Status",
+  "@inspectionColStatus": {
+    "description": "M-38 events table column"
+  },
+  "inspectionColTime": "Time",
+  "@inspectionColTime": {
+    "description": "M-38 events table column"
+  },
+  "inspectionColLocation": "Location",
+  "@inspectionColLocation": {
+    "description": "M-38 events table column"
+  },
+  "inspectionColOdometer": "Odometer",
+  "@inspectionColOdometer": {
+    "description": "M-38 events table column"
+  },
+  "inspectionDailyLogTitle": "DRIVER''S DAILY LOG",
+  "@inspectionDailyLogTitle": {
+    "description": "M-38 kiosk log kartasi sarlavhasi."
+  },
+  "inspectionKioskNeverSynced": "never",
+  "@inspectionKioskNeverSynced": {
+    "description": "M-38: lokal nusxa hech qachon sinxronlanmagan."
+  },
+  "inspectionExitPinHint": "6-digit PIN",
+  "@inspectionExitPinHint": {
+    "description": "M-39 PIN maydoni placeholder'i."
+  },
+  "inspectionRetry": "Try again",
+  "@inspectionRetry": {
+    "description": "Inspection amali xatosidan keyin qayta urinish."
+  },
+  "inspectionDistanceMiles": "{miles} mi",
+  "@inspectionDistanceMiles": {
+    "description": "Kunlik masofa (mil) — Log Form `Distance`.",
+    "placeholders": {
+      "miles": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionDutyOff": "OFF",
+  "@inspectionDutyOff": {
+    "description": "Duty grid row label — Off Duty (M-38)."
+  },
+  "inspectionDutySb": "SB",
+  "@inspectionDutySb": {
+    "description": "Duty grid row label — Sleeper Berth (M-38)."
+  },
+  "inspectionDutyDr": "D",
+  "@inspectionDutyDr": {
+    "description": "Duty grid row label — Driving (M-38)."
+  },
+  "inspectionDutyOn": "ON",
+  "@inspectionDutyOn": {
+    "description": "Duty grid row label — On Duty (M-38)."
+  },
+  "inspectionPinLocked": "Too many attempts. Ask the driver to sign in with a password.",
+  "@inspectionPinLocked": {
+    "description": "M-39: 5 ta xato urinishdan keyin."
+  },
+  "inspectionKioskReadOnly": "Read-only inspection view",
+  "@inspectionKioskReadOnly": {
+    "description": "M110: kiosk rejimida hech narsa tahrirlanmaydi."
+  },
+  "inspectionEmpty": "No logs to show",
+  "@inspectionEmpty": {
+    "description": "M-38 bo'sh holat sarlavhasi."
+  },
+  "inspectionEmptyHint": "There is no data to show you right now.",
+  "@inspectionEmptyHint": {
+    "description": "M-38 bo'sh holat izohi."
+  },
+  "chatTitle": "Chat",
+  "@chatTitle": {
+    "description": "M-42 app bar title. Single 1:1 thread with the office (Dispatch)"
+  },
+  "chatThreadName": "Dispatch",
+  "@chatThreadName": {
+    "description": "Name of the only chat counterpart (tz-mobile §14: 1:1 driver <-> office)"
+  },
+  "chatEmptyTitle": "No messages yet",
+  "@chatEmptyTitle": {
+    "description": "M-42 empty state title (M118 — the Figma demo messages are removed)"
+  },
+  "chatEmptyMessage": "Messages from your dispatcher will appear here.",
+  "@chatEmptyMessage": {
+    "description": "M-42 empty state body (M118)"
+  },
+  "chatInputHint": "Type your message...",
+  "@chatInputHint": {
+    "description": "M-42 composer placeholder, verbatim from Figma 1118-114"
+  },
+  "chatSendAction": "Send",
+  "@chatSendAction": {
+    "description": "M-42 send button semantics label"
+  },
+  "chatAttachAction": "Attach",
+  "@chatAttachAction": {
+    "description": "M-42 '+' button that opens the attachment sheet (M139)"
+  },
+  "chatAttachPhoto": "Photo",
+  "@chatAttachPhoto": {
+    "description": "Attachment sheet: image message (kind=image)"
+  },
+  "chatAttachFile": "File",
+  "@chatAttachFile": {
+    "description": "Attachment sheet: file message (kind=file, max 10 MB)"
+  },
+  "chatAttachLocation": "Share location",
+  "@chatAttachLocation": {
+    "description": "Attachment sheet: location message (kind=location, §14.3)"
+  },
+  "chatAttachTitle": "Send attachment",
+  "@chatAttachTitle": {
+    "description": "Attachment sheet title"
+  },
+  "chatStatusQueued": "Queued",
+  "@chatStatusQueued": {
+    "description": "M138 — message written to the outbox, not pushed yet"
+  },
+  "chatStatusSent": "Sent",
+  "@chatStatusSent": {
+    "description": "chat_dto.Message.status = sent"
+  },
+  "chatStatusDelivered": "Delivered",
+  "@chatStatusDelivered": {
+    "description": "chat_dto.Message.status = delivered"
+  },
+  "chatStatusRead": "Read",
+  "@chatStatusRead": {
+    "description": "chat_dto.Message.status = read"
+  },
+  "chatStatusFailed": "Not sent",
+  "@chatStatusFailed": {
+    "description": "Push rejected the message (M138)"
+  },
+  "chatStatusBlocked": "Blocked",
+  "@chatStatusBlocked": {
+    "description": "M141 — server answered 409 DRIVING_MODE_BLOCKED"
+  },
+  "chatDrivingDisabled": "Messaging is disabled while driving.",
+  "@chatDrivingDisabled": {
+    "description": "M140 — composer helper text while duty status is DR"
+  },
+  "chatBlockedNotSent": "Not sent — messaging is blocked while driving",
+  "@chatBlockedNotSent": {
+    "description": "M141 step 2 — red caption under a blocked bubble"
+  },
+  "chatSendWhenStopped": "Send when stopped",
+  "@chatSendWhenStopped": {
+    "description": "M141 step 2 — resend-on-stop toggle, enabled by default"
+  },
+  "chatSendWhenStoppedOn": "Will be sent when you stop driving",
+  "@chatSendWhenStoppedOn": {
+    "description": "M141 step 3 — confirmation that the message is queued for auto-resend"
+  },
+  "chatRetryAction": "Retry",
+  "@chatRetryAction": {
+    "description": "M138 — resend a rejected message"
+  },
+  "chatLoadOlder": "Load earlier messages",
+  "@chatLoadOlder": {
+    "description": "Cursor pagination trigger (GET /chat/threads/{driver_id}/messages?before)"
+  },
+  "chatNoMoreMessages": "Beginning of the conversation",
+  "@chatNoMoreMessages": {
+    "description": "Shown when meta.has_more is false"
+  },
+  "chatQueuedBanner": "{count, plural, =1{Offline — 1 message queued} other{Offline — {count} messages queued}}",
+  "@chatQueuedBanner": {
+    "description": "M-42 offline banner (tz-mobile §11.0.5)",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "chatFileMessage": "File",
+  "@chatFileMessage": {
+    "description": "Bubble label for kind=file when no caption is present"
+  },
+  "chatImageMessage": "Photo",
+  "@chatImageMessage": {
+    "description": "Bubble label for kind=image when no caption is present"
+  },
+  "chatLocationMessage": "Shared location",
+  "@chatLocationMessage": {
+    "description": "Bubble label for kind=location (§14.3)"
+  },
+  "chatOpenInMaps": "Open in maps",
+  "@chatOpenInMaps": {
+    "description": "§14.3 — hands the coordinate to an external maps app"
+  },
+  "chatUploading": "Uploading… {percent}%",
+  "@chatUploading": {
+    "description": "M139 — file upload progress before the message is sent",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "chatMessageTooLong": "Messages are limited to 2000 characters.",
+  "@chatMessageTooLong": {
+    "description": "Client-side guard for chat_dto.MessageCreate.text maxLength"
+  },
+  "chatFileTooLarge": "Files are limited to 10 MB.",
+  "@chatFileTooLarge": {
+    "description": "Client-side guard for the chat presign limit (§16)"
+  },
+  "notifTitle": "Notification",
+  "@notifTitle": {
+    "description": "M-43 app bar title, verbatim from Figma 1156-7135"
+  },
+  "notifEmptyTitle": "No Notifications Yet",
+  "@notifEmptyTitle": {
+    "description": "M-43 empty state title, verbatim from Figma 1156-7244"
+  },
+  "notifEmptyMessage": "Stay tuned! Important updates and alerts will appear here.",
+  "@notifEmptyMessage": {
+    "description": "M-43 empty state body, verbatim from Figma 1156-7244"
+  },
+  "notifMarkAllRead": "Mark all as read",
+  "@notifMarkAllRead": {
+    "description": "M-43 — POST /notifications/read-all"
+  },
+  "notifAllReadDone": "All notifications marked as read.",
+  "@notifAllReadDone": {
+    "description": "Snackbar after a successful read-all"
+  },
+  "notifUnreadBadge": "{count, plural, =0{No unread notifications} =1{1 unread notification} other{{count} unread notifications}}",
+  "@notifUnreadBadge": {
+    "description": "Accessibility label of the unread counter",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "notifRelativeNow": "Just now",
+  "@notifRelativeNow": {
+    "description": "M91 relative timestamp, under a minute"
+  },
+  "notifRelativeMinutes": "{count}m ago",
+  "@notifRelativeMinutes": {
+    "description": "M91 relative timestamp under one hour",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "notifRelativeHours": "{count}h ago",
+  "@notifRelativeHours": {
+    "description": "M91 relative timestamp under 24 hours (design writes '2hrs', M91 unifies it to '2h ago')",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "notifDisabledBanner": "Notifications are disabled. HOS and ELD alerts require notifications.",
+  "@notifDisabledBanner": {
+    "description": "M143 — OS level notification permission is off"
+  },
+  "notifEnableAction": "Enable",
+  "@notifEnableAction": {
+    "description": "M143 — opens the OS notification settings"
+  },
+  "notifRequiredForCompliance": "Required for compliance",
+  "@notifRequiredForCompliance": {
+    "description": "M143 — tooltip on the locked hos_*/eld_* toggles"
+  },
+  "notifTypeHosWarning": "HOS warning",
+  "@notifTypeHosWarning": {
+    "description": "alert_type = hos_warning"
+  },
+  "notifTypeHosViolation": "HOS violation",
+  "@notifTypeHosViolation": {
+    "description": "alert_type = hos_violation"
+  },
+  "notifTypeRouteAssigned": "Route assigned",
+  "@notifTypeRouteAssigned": {
+    "description": "alert_type = route_assigned"
+  },
+  "notifTypeRouteCompleted": "Route completed",
+  "@notifTypeRouteCompleted": {
+    "description": "alert_type = route_completed"
+  },
+  "notifTypeDvirDefects": "DVIR defects",
+  "@notifTypeDvirDefects": {
+    "description": "alert_type = dvir_defects"
+  },
+  "notifTypeDvirCritical": "Critical DVIR defect",
+  "@notifTypeDvirCritical": {
+    "description": "alert_type = dvir_critical"
+  },
+  "notifTypeLogEditRequest": "Log edit request",
+  "@notifTypeLogEditRequest": {
+    "description": "alert_type = log_edit_request"
+  },
+  "notifTypeLogEditResolved": "Log edit resolved",
+  "@notifTypeLogEditResolved": {
+    "description": "alert_type = log_edit_resolved"
+  },
+  "notifTypeUncertifiedLog": "Uncertified log",
+  "@notifTypeUncertifiedLog": {
+    "description": "alert_type = uncertified_log"
+  },
+  "notifTypeUnidentifiedDriving": "Unidentified driving",
+  "@notifTypeUnidentifiedDriving": {
+    "description": "alert_type = unidentified_driving"
+  },
+  "notifTypeEldDisconnected": "ELD disconnected",
+  "@notifTypeEldDisconnected": {
+    "description": "alert_type = eld_disconnected"
+  },
+  "notifTypeEldMalfunction": "ELD malfunction",
+  "@notifTypeEldMalfunction": {
+    "description": "alert_type = eld_malfunction"
+  },
+  "notifTypeMaintenanceUpcoming": "Maintenance upcoming",
+  "@notifTypeMaintenanceUpcoming": {
+    "description": "alert_type = maintenance_upcoming"
+  },
+  "notifTypeMaintenanceOverdue": "Maintenance overdue",
+  "@notifTypeMaintenanceOverdue": {
+    "description": "alert_type = maintenance_overdue"
+  },
+  "notifTypeChatMessage": "New message",
+  "@notifTypeChatMessage": {
+    "description": "alert_type = chat_message"
+  },
+  "notifTypeSubscriptionExpiring": "Subscription expiring",
+  "@notifTypeSubscriptionExpiring": {
+    "description": "alert_type = subscription_expiring"
+  },
+  "notifTypeUnknown": "Notification",
+  "@notifTypeUnknown": {
+    "description": "Fallback label for an alert_type the app does not know yet"
+  },
+  "notifLoadMore": "Load more",
+  "@notifLoadMore": {
+    "description": "M-43 pagination button (GET /notifications?page)"
+  },
+  "notifPermissionTitle": "Turn on notifications",
+  "@notifPermissionTitle": {
+    "description": "Android 13+ POST_NOTIFICATIONS rationale title"
+  },
+  "notifPermissionBody": "OneBook ELD needs notifications to deliver HOS warnings, ELD alerts and dispatcher messages.",
+  "@notifPermissionBody": {
+    "description": "Android 13+ POST_NOTIFICATIONS rationale body"
+  },
+  "notifPermissionAllow": "Allow",
+  "@notifPermissionAllow": {
+    "description": "Confirms the notification permission request"
+  },
+  "notifPermissionNotNow": "Not now",
+  "@notifPermissionNotNow": {
+    "description": "Dismisses the notification permission request"
+  },
+  "notifChannelsTitle": "Notification categories",
+  "@notifChannelsTitle": {
+    "description": "M144 — section header of the channel toggle list"
+  },
+  "notifChannelCompliance": "Compliance alerts",
+  "@notifChannelCompliance": {
+    "description": "M144 channel `compliance` (hos_*, eld_*, idle)"
+  },
+  "notifChannelComplianceBody": "HOS warnings, ELD disconnects and malfunctions.",
+  "@notifChannelComplianceBody": {
+    "description": "M144 channel `compliance` description"
+  },
+  "notifChannelLogs": "Logs",
+  "@notifChannelLogs": {
+    "description": "M144 channel `logs`"
+  },
+  "notifChannelLogsBody": "Log edit requests and uncertified days.",
+  "@notifChannelLogsBody": {
+    "description": "M144 channel `logs` description"
+  },
+  "notifChannelMessages": "Messages",
+  "@notifChannelMessages": {
+    "description": "M144 channel `messages`"
+  },
+  "notifChannelMessagesBody": "Messages from your dispatcher.",
+  "@notifChannelMessagesBody": {
+    "description": "M144 channel `messages` description"
+  },
+  "notifChannelGeneral": "General",
+  "@notifChannelGeneral": {
+    "description": "M144 channel `general`"
+  },
+  "notifChannelGeneralBody": "Routes and maintenance reminders.",
+  "@notifChannelGeneralBody": {
+    "description": "M144 channel `general` description"
+  },
+  "notifChannelForegroundService": "Background service",
+  "@notifChannelForegroundService": {
+    "description": "M144 channel `foreground_service`"
+  },
+  "notifChannelForegroundServiceBody": "The persistent notice shown while tracking runs.",
+  "@notifChannelForegroundServiceBody": {
+    "description": "M144 channel `foreground_service` description"
+  },
+  "notifLocalHosWarningTitle": "HOS limit approaching",
+  "@notifLocalHosWarningTitle": {
+    "description": "M146 local alert — HOS threshold (M50)"
+  },
+  "notifLocalHosWarningBody": "{minutes} minutes left before a violation.",
+  "@notifLocalHosWarningBody": {
+    "description": "M146 local alert body for the HOS threshold",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "30"
+      }
+    }
+  },
+  "notifLocalHosViolationTitle": "HOS violation",
+  "@notifLocalHosViolationTitle": {
+    "description": "M146 local alert — limit exceeded"
+  },
+  "notifLocalHosViolationBody": "A limit has been exceeded. Open your logs.",
+  "@notifLocalHosViolationBody": {
+    "description": "M146 local alert body for a violation"
+  },
+  "notifLocalIdleTitle": "Still driving?",
+  "@notifLocalIdleTitle": {
+    "description": "M62/M146 idle prompt after 5 minutes stopped"
+  },
+  "notifLocalIdleBody": "The vehicle has been stopped for 5 minutes. Change your duty status?",
+  "@notifLocalIdleBody": {
+    "description": "M62/M146 idle prompt body"
+  },
+  "notifLocalEldDisconnectedTitle": "ELD disconnected",
+  "@notifLocalEldDisconnectedTitle": {
+    "description": "M146 local alert after 30 s without the ELD"
+  },
+  "notifLocalEldDisconnectedBody": "Reconnect the device to keep recording driving time.",
+  "@notifLocalEldDisconnectedBody": {
+    "description": "M146 local alert body for an ELD disconnect"
+  },
+  "notifLocalEldMalfunctionTitle": "ELD malfunction",
+  "@notifLocalEldMalfunctionTitle": {
+    "description": "M146 local alert — malfunction code raised"
+  },
+  "notifLocalEldMalfunctionBody": "Code {code}. Keep paper logs until it is cleared.",
+  "@notifLocalEldMalfunctionBody": {
+    "description": "M146 local alert body for a malfunction",
+    "placeholders": {
+      "code": {
+        "type": "String",
+        "example": "P"
+      }
+    }
+  },
+  "notifLocalSyncConflictTitle": "Sync conflict",
+  "@notifLocalSyncConflictTitle": {
+    "description": "M146 local alert — server rejected a queued record"
+  },
+  "notifLocalSyncConflictBody": "Some records need your attention before they can be sent.",
+  "@notifLocalSyncConflictBody": {
+    "description": "M146 local alert body for a sync conflict"
+  },
+  "logsTitle": "Log Report",
+  "@logsTitle": {
+    "description": "M-22/23/24 app bar sarlavhasi"
+  },
+  "logsTabMain": "Main",
+  "logsTabLogs": "Logs",
+  "logsTabDvir": "DVIR",
+  "logsShippingDocuments": "Shipping documents",
+  "logsTrailerNumbers": "Trailer numbers",
+  "logsCertify": "Certify",
+  "logsNotes": "Notes",
+  "logsSigned": "Signed",
+  "logsNotSigned": "Not Signed",
+  "logsDriverInformation": "Driver Information",
+  "logsDriverName": "Driver Name",
+  "logsUnitNumber": "Unit #",
+  "logsHomeTerminal": "Home Terminal",
+  "@logsHomeTerminal": {
+    "description": "M97: dizayndagi 'Main Terminal' kanonik nomga keltirildi"
+  },
+  "logsColumnStatus": "Status",
+  "logsColumnStartTime": "Start Time",
+  "logsColumnLocation": "Location",
+  "logsColumnDocument": "Document",
+  "logsColumnTrailers": "Trailers",
+  "logsColumnNotes": "Notes",
+  "logsColumnAction": "Action",
+  "@logsColumnAction": {
+    "description": "M99: kanonik ustun nomi (planshetdagi 'Edit' rad etildi)"
+  },
+  "logsTotals": "OFF {off} · SB {sb} · DR {dr} · ON {on}",
+  "@logsTotals": {
+    "description": "M98: qisqartma + HH:mm",
+    "placeholders": {
+      "off": {
+        "type": "String"
+      },
+      "sb": {
+        "type": "String"
+      },
+      "dr": {
+        "type": "String"
+      },
+      "on": {
+        "type": "String"
+      }
+    }
+  },
+  "logsWarningPrefix": "Warning: {message}",
+  "@logsWarningPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "logsViolationPrefix": "Violation: {message}",
+  "@logsViolationPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "logsEmptyTitle": "No log records",
+  "logsEmptyMessage": "There is no data to show you right now",
+  "logsOlderUnavailable": "Connect to the internet to load older logs",
+  "logsEditRow": "Edit this record",
+  "logsLockedRow": "This day is locked",
+  "logsDetailTitle": "Log",
+  "logsDetailStart": "Start",
+  "logsDetailDuration": "Duration",
+  "logsDetailOdometer": "Odometer",
+  "logsDetailEngineHours": "Engine hours",
+  "logsDetailOrigin": "Origin",
+  "logsDetailEdited": "Edited",
+  "logsDetailOriginalValue": "Original: {value}",
+  "@logsDetailOriginalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "logsOriginAuto": "Auto",
+  "logsOriginDriver": "Driver",
+  "logsOriginAdminEdit": "Admin edit",
+  "logsOriginAssigned": "Assigned",
+  "logsOriginManualNoEld": "Manual (no ELD)",
+  "logsDvirEmptyTitle": "No DVIR Found",
+  "logsDvirEmptyMessage": "There is no data to show you right now",
+  "logsDvirAdd": "Add DVIR",
+  "logsDvirColumnTrailer": "Trailer Number",
+  "logsDvirColumnType": "Type",
+  "logsDvirColumnCreatedAt": "Created At",
+  "logsGridSemantics": "Duty status grid for {date}",
+  "@logsGridSemantics": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "logsSpecialPc": "PC",
+  "logsSpecialYm": "YM",
+  "logsClose": "Close",
+  "certifyTitle": "Certify (Last 8 days)",
+  "@certifyTitle": {
+    "description": "M124: oyna doim 8 kun"
+  },
+  "certifyToday": "Certify Today",
+  "certifyAll": "Certify All",
+  "certifySelected": "Certify Selected ({count})",
+  "@certifySelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "certifySelectAll": "Select All",
+  "certifyUnselectAll": "Unselect All",
+  "certifyBadgeCertified": "Certified",
+  "certifyBadgeUncertified": "Uncertified",
+  "certifyBadgeNeedsRecertify": "Needs re-certify",
+  "certifyBadgeNotReady": "Not Ready",
+  "certifyBadgePendingSync": "Certified (pending sync)",
+  "certifyEmptyTitle": "Nothing to certify",
+  "certifyEmptyMessage": "All logs in the last 8 days are certified.",
+  "certifyNotReadyHint": "This day is not ready to be signed yet.",
+  "certifySignTitle": "Sign",
+  "certifyDriverSignature": "Driver Signature",
+  "certifyUseMySignature": "Use my signature",
+  "certifySaveMySignature": "Save my signature",
+  "certifyClear": "Clear",
+  "certifySave": "Save",
+  "certifySignHint": "Sign inside the box",
+  "certifyLegalText": "I hereby certify that my data entries and my record of duty status for 24 hour period are true and correct",
+  "certifyConfirm": "Confirm",
+  "certifySignAction": "Sign",
+  "certifyTime": "Time",
+  "certifyLocation": "Location",
+  "certifyOdometer": "Odometer",
+  "certifyDaysSummary": "{count, plural, =1{1 day selected} other{{count} days selected}}",
+  "@certifyDaysSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "certifyQueuedMessage": "Certification queued — it will be sent when you are back online.",
+  "certifyPartialFailure": "{failed} of {total} days could not be certified.",
+  "@certifyPartialFailure": {
+    "placeholders": {
+      "failed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "certifySignatureRequired": "Please sign before confirming.",
+  "editsTitle": "Pending edits",
+  "editsEmptyTitle": "No pending edits",
+  "editsEmptyMessage": "Requested changes to your logs will appear here.",
+  "editsLogDate": "Log date",
+  "editsRequestedBy": "Requested by",
+  "editsCreatedAt": "Created at",
+  "editsChangeCount": "{count, plural, =1{1 change} other{{count} changes}}",
+  "@editsChangeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editsSourceAdmin": "Admin edit",
+  "editsSourceUnidentified": "Unidentified assign",
+  "editsPendingSync": "Pending sync",
+  "editsDetailTitle": "Proposed change to your log for {date}",
+  "@editsDetailTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "editsCurrent": "Current: {value}",
+  "@editsCurrent": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "editsProposed": "Proposed: {value}",
+  "@editsProposed": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "editsNote": "Note",
+  "editsApprove": "Approve",
+  "editsReject": "Reject",
+  "editsApproveConfirmTitle": "Are you absolutely sure?",
+  "editsApproveConfirmMessage": "Approving applies these changes to your log and marks the day for re-certification.",
+  "editsRejectReasonLabel": "Reason",
+  "editsRejectReasonHint": "Why are you rejecting this change?",
+  "editsRejectReasonRequired": "A reason is required.",
+  "editsBlockedDriving": "Automatically recorded driving time cannot be changed. Contact your fleet manager.",
+  "@editsBlockedDriving": {
+    "description": "M133"
+  },
+  "editsBlockedImmutable": "This event type cannot be edited. Contact your fleet manager.",
+  "@editsBlockedImmutable": {
+    "description": "M134"
+  },
+  "editsResolvedElsewhere": "This request was already resolved.",
+  "editsQueued": "Your decision was queued and will be sent when you are back online.",
+  "unidentifiedTitle": "Unidentified driving",
+  "unidentifiedEmptyTitle": "No unidentified driving",
+  "unidentifiedEmptyMessage": "There are no unassigned driving blocks on this vehicle.",
+  "unidentifiedBanner": "There are {count} unidentified driving events on this vehicle.",
+  "@unidentifiedBanner": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unidentifiedReview": "Review",
+  "unidentifiedStart": "Start",
+  "unidentifiedEnd": "End",
+  "unidentifiedDuration": "Duration",
+  "unidentifiedDistance": "Distance",
+  "unidentifiedUnit": "Unit #",
+  "unidentifiedClaim": "This was me",
+  "unidentifiedDismiss": "Not mine",
+  "unidentifiedAlreadyAssigned": "This block was already assigned to another driver.",
+  "unidentifiedPendingSync": "Pending sync",
+  "unidentifiedDistanceMiles": "{miles} mi",
+  "@unidentifiedDistanceMiles": {
+    "placeholders": {
+      "miles": {
+        "type": "String"
+      }
+    }
+  },
+  "profileTitle": "Profile",
+  "@profileTitle": {
+    "description": "M-44 app bar title"
+  },
+  "profileNameLine": "{name} . {unit}",
+  "@profileNameLine": {
+    "description": "M-44 header: driver full name and unit number (Figma: 'Abdullah Khan . 1021')",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "profileContactLine": "{email} . {phone}",
+  "@profileContactLine": {
+    "description": "M-44 header: email and phone",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "profileLicenseLine": "{license} . {state}",
+  "@profileLicenseLine": {
+    "description": "M-44 header: license number and issuing state",
+    "placeholders": {
+      "license": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSettings": "Settings",
+  "@profileSettings": {
+    "description": "M-44 row → M-45"
+  },
+  "profileCheckNetwork": "Check network",
+  "@profileCheckNetwork": {
+    "description": "M-44 row → M-47"
+  },
+  "profileZoom": "Zoom",
+  "@profileZoom": {
+    "description": "M-44 toggle, M94 in-app text zoom"
+  },
+  "profileZoomHelper": "Larger text across the app",
+  "@profileZoomHelper": {
+    "description": "M-44 Zoom row helper line (M94)"
+  },
+  "profileZoomSemantics": "Zoom. Larger text across the app",
+  "@profileZoomSemantics": {
+    "description": "M-44 `Zoom` toggle uchun skrinrider yorlig‘i (TalkBack/VoiceOver)."
+  },
+  "profileBack": "Back",
+  "@profileBack": {
+    "description": "M11 inner screens back button tooltip"
+  },
+  "profileDarkMode": "Dark mode",
+  "@profileDarkMode": {
+    "description": "M-44 toggle, theme mode"
+  },
+  "profileFeedback": "Feedback",
+  "@profileFeedback": {
+    "description": "M-44 row → M-48"
+  },
+  "profileCustomerSupport": "Customer support",
+  "@profileCustomerSupport": {
+    "description": "M-44 row → M-50"
+  },
+  "profileUserManual": "User Manual",
+  "@profileUserManual": {
+    "description": "M-44 row, opens the manual link from /app/config"
+  },
+  "profileMyDevices": "My devices",
+  "@profileMyDevices": {
+    "description": "M-44 row → M-58 sessions"
+  },
+  "profileChangePin": "Change PIN",
+  "@profileChangePin": {
+    "description": "M-44 row → PIN change flow"
+  },
+  "profileLegal": "Terms of Use · Privacy Policy",
+  "@profileLegal": {
+    "description": "M-44 footer link row → M-52 / M-53"
+  },
+  "profileLogout": "Logout",
+  "@profileLogout": {
+    "description": "M-44 destructive row"
+  },
+  "profileLogoutConfirmTitle": "Log out?",
+  "@profileLogoutConfirmTitle": {
+    "description": "Logout confirmation dialog title"
+  },
+  "profileLogoutConfirmMessage": "You will need to sign in again before you can record duty status.",
+  "@profileLogoutConfirmMessage": {
+    "description": "Logout confirmation dialog body"
+  },
+  "profileUnavailableLink": "This link is not available yet.",
+  "@profileUnavailableLink": {
+    "description": "Shown when /app/config has no user manual URL"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "M-45 app bar title"
+  },
+  "settingsDiagnosis": "Diagnosis of device",
+  "@settingsDiagnosis": {
+    "description": "M-45 row → M-46"
+  },
+  "settingsAppUpdates": "App updates",
+  "@settingsAppUpdates": {
+    "description": "M-45 row, app version block"
+  },
+  "settingsCurrentVersion": "Current version {version}",
+  "@settingsCurrentVersion": {
+    "description": "M-45 installed app version",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLatestVersion": "Latest version {version}",
+  "@settingsLatestVersion": {
+    "description": "M-45 latest_version from GET /app/config",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsUpdateAction": "Update",
+  "@settingsUpdateAction": {
+    "description": "M-45 opens the store listing"
+  },
+  "settingsUpToDate": "You have the latest version.",
+  "@settingsUpToDate": {
+    "description": "M-45 no update available"
+  },
+  "settingsNotifications": "Notifications",
+  "@settingsNotifications": {
+    "description": "M-45 notification preferences section"
+  },
+  "settingsNotificationsLocked": "Required for compliance",
+  "@settingsNotificationsLocked": {
+    "description": "M143 tooltip for hos_* / eld_* alerts"
+  },
+  "settingsAlertHosWarning": "HOS warning",
+  "@settingsAlertHosWarning": {
+    "description": "Alert type hos_warning"
+  },
+  "settingsAlertHosViolation": "HOS violation",
+  "@settingsAlertHosViolation": {
+    "description": "Alert type hos_violation"
+  },
+  "settingsAlertEldDisconnected": "ELD disconnected",
+  "@settingsAlertEldDisconnected": {
+    "description": "Alert type eld_disconnected"
+  },
+  "settingsAlertEldMalfunction": "ELD malfunction",
+  "@settingsAlertEldMalfunction": {
+    "description": "Alert type eld_malfunction"
+  },
+  "settingsAlertUncertifiedLog": "Uncertified log",
+  "@settingsAlertUncertifiedLog": {
+    "description": "Alert type uncertified_log"
+  },
+  "settingsAlertLogEditResolved": "Log edit resolved",
+  "@settingsAlertLogEditResolved": {
+    "description": "Alert type log_edit_resolved"
+  },
+  "settingsAlertDvirDefects": "DVIR defects",
+  "@settingsAlertDvirDefects": {
+    "description": "Alert type dvir_defects"
+  },
+  "settingsAlertChatMessage": "Chat message",
+  "@settingsAlertChatMessage": {
+    "description": "Alert type chat_message"
+  },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "M-45 language section"
+  },
+  "settingsLanguageEnglish": "English (US)",
+  "@settingsLanguageEnglish": {
+    "description": "The only shipped locale"
+  },
+  "settingsLanguageOnlyEnglish": "Only English is available in this version.",
+  "@settingsLanguageOnlyEnglish": {
+    "description": "Helper under the language row"
+  },
+  "feedbackTitle": "Feedback",
+  "@feedbackTitle": {
+    "description": "M-48 app bar title"
+  },
+  "feedbackIntro": "Share your experience to help us improve.",
+  "@feedbackIntro": {
+    "description": "M-48 intro line"
+  },
+  "feedbackRatingQuestion": "How would you rate your overall experience with the mobile app?",
+  "@feedbackRatingQuestion": {
+    "description": "M-48 phone wording"
+  },
+  "feedbackRatingQuestionTablet": "How would you rate your overall experience with the app?",
+  "@feedbackRatingQuestionTablet": {
+    "description": "M113 tablet wording"
+  },
+  "feedbackFeatureQuestion": "What new features or improvements would you like to see in the mobile app?",
+  "@feedbackFeatureQuestion": {
+    "description": "M-48 phone wording"
+  },
+  "feedbackFeatureQuestionTablet": "What new features or improvements would you like to see in the app?",
+  "@feedbackFeatureQuestionTablet": {
+    "description": "M113 tablet wording"
+  },
+  "feedbackTextHint": "Write here..",
+  "@feedbackTextHint": {
+    "description": "M-48 free text placeholder (Figma wording kept)"
+  },
+  "feedbackSubmit": "Submit",
+  "@feedbackSubmit": {
+    "description": "M-48 primary action"
+  },
+  "feedbackRatingRequired": "Please select a rating.",
+  "@feedbackRatingRequired": {
+    "description": "M-48 validation"
+  },
+  "feedbackStars": "{count,plural, =1{1 star} other{{count} stars}}",
+  "@feedbackStars": {
+    "description": "Accessibility label for the star rating",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedbackSent": "Thank you! Your feedback has been sent.",
+  "@feedbackSent": {
+    "description": "M-48 success toast"
+  },
+  "feedbackQueued": "Will be sent when you''re back online.",
+  "@feedbackQueued": {
+    "description": "M-48 offline outbox toast"
+  },
+  "supportTitle": "Contact Support",
+  "@supportTitle": {
+    "description": "M-50 app bar title"
+  },
+  "supportEmptyTitle": "No Ticket Added Yet",
+  "@supportEmptyTitle": {
+    "description": "M-50 empty state title (Figma wording kept)"
+  },
+  "supportEmptyMessage": "Start to add your first ticket by clicking button below.",
+  "@supportEmptyMessage": {
+    "description": "M-50 empty state body (Figma wording kept)"
+  },
+  "supportAddTicket": "Add Ticket",
+  "@supportAddTicket": {
+    "description": "M-50 empty state action / FAB label"
+  },
+  "supportContactOn": "Contact On",
+  "@supportContactOn": {
+    "description": "M-49 channel selector label"
+  },
+  "supportContactOnValue": "Contact On: {channel}",
+  "@supportContactOnValue": {
+    "description": "M-50 list row",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "supportChannelEmail": "Email address",
+  "@supportChannelEmail": {
+    "description": "contact_on = email"
+  },
+  "supportChannelPhone": "Phone number",
+  "@supportChannelPhone": {
+    "description": "contact_on = phone"
+  },
+  "supportSubject": "Subject",
+  "@supportSubject": {
+    "description": "M-49 field label"
+  },
+  "supportSubjectHint": "Add ticket subject",
+  "@supportSubjectHint": {
+    "description": "M-49 field placeholder"
+  },
+  "supportSubjectRequired": "Enter a ticket subject.",
+  "@supportSubjectRequired": {
+    "description": "M-49 validation"
+  },
+  "supportDescription": "Ticket description",
+  "@supportDescription": {
+    "description": "M-49 field label"
+  },
+  "supportDescriptionHint": "Description",
+  "@supportDescriptionHint": {
+    "description": "M-49 field placeholder"
+  },
+  "supportConfirm": "Confirm",
+  "@supportConfirm": {
+    "description": "M-49 submit action"
+  },
+  "supportTicketNumber": "#{number}",
+  "@supportTicketNumber": {
+    "description": "M-50 short ticket reference",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "supportTicketHeading": "Ticket #{number}",
+  "@supportTicketHeading": {
+    "description": "M-51 app bar title",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "supportCreatedOn": "Created on {when}",
+  "@supportCreatedOn": {
+    "description": "M-51 creation timestamp (format §11.0.7)",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "supportStatusNew": "New",
+  "@supportStatusNew": {
+    "description": "M115 ticket status"
+  },
+  "supportStatusInProgress": "In Progress",
+  "@supportStatusInProgress": {
+    "description": "M115 ticket status"
+  },
+  "supportStatusResolved": "Resolved",
+  "@supportStatusResolved": {
+    "description": "M115 ticket status"
+  },
+  "supportStatusClosed": "Closed",
+  "@supportStatusClosed": {
+    "description": "Ticket status returned by the API"
+  },
+  "supportMessages": "Messages",
+  "@supportMessages": {
+    "description": "M-51 thread section title"
+  },
+  "supportNoMessagesTitle": "No replies yet",
+  "@supportNoMessagesTitle": {
+    "description": "M-51 empty thread title"
+  },
+  "supportNoMessagesMessage": "Replies from the support team will appear here.",
+  "@supportNoMessagesMessage": {
+    "description": "M-51 empty thread body"
+  },
+  "supportReplyHint": "Write a reply…",
+  "@supportReplyHint": {
+    "description": "M-51 composer placeholder"
+  },
+  "supportSend": "Send",
+  "@supportSend": {
+    "description": "M-51 composer action"
+  },
+  "supportTicketCreated": "Your ticket has been sent.",
+  "@supportTicketCreated": {
+    "description": "M-49 success toast"
+  },
+  "supportQueued": "Will be sent when you''re back online.",
+  "@supportQueued": {
+    "description": "M-49 / M-51 offline outbox toast"
+  },
+  "supportOfflineList": "Tickets are only available online.",
+  "@supportOfflineList": {
+    "description": "M-50 offline state message"
+  },
+  "legalPrivacyTitle": "Privacy Policy",
+  "@legalPrivacyTitle": {
+    "description": "M-52 app bar title"
+  },
+  "legalTermsTitle": "Terms of Use",
+  "@legalTermsTitle": {
+    "description": "M-53 app bar title"
+  },
+  "legalPendingTitle": "Legal text pending",
+  "@legalPendingTitle": {
+    "description": "M117 placeholder title until the customer supplies the text"
+  },
+  "legalPendingMessage": "Legal text pending. Contact {email}.",
+  "@legalPendingMessage": {
+    "description": "M117 placeholder body, support_email from GET /app/config",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "legalContactSupport": "Contact support",
+  "@legalContactSupport": {
+    "description": "M-52 / M-53 placeholder action → M-49"
+  },
+  "supportColStatus": "Status",
+  "@supportColStatus": {
+    "description": "T-27 planshet jadvali: holat ustuni"
+  },
+  "supportColTicket": "Ticket",
+  "@supportColTicket": {
+    "description": "T-27 planshet jadvali: tiket raqami ustuni"
+  },
+  "supportColCreated": "Created",
+  "@supportColCreated": {
+    "description": "T-27 planshet jadvali: yaratilgan sana ustuni"
+  }
+}

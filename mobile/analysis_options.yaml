@@ -1,0 +1,41 @@
+# ONEBOOK ELD mobil — analiz sozlamalari (tz-mobile §2 "Lint va TAQIQLAR").
+# DoD: `flutter analyze` 0 issue (info ham).
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  plugins:
+    - riverpod_lint
+  errors:
+    # --- TAQIQLAR: error darajasi, CI ni yiqitadi ---
+    avoid_print: error
+    always_declare_return_types: error
+    prefer_const_constructors: error
+    unawaited_futures: error
+    avoid_dynamic_calls: error
+    use_build_context_synchronously: error
+    # --- Qatlam va kontrakt gigienasi ---
+    depend_on_referenced_packages: error
+    implementation_imports: error
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "packages/eld_api/**"
+    - "build/**"
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - avoid_print
+    - avoid_slow_async_io
+    - cancel_subscriptions
+    - close_sinks
+    - directives_ordering
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - unawaited_futures
+    - use_build_context_synchronously
+    - use_super_parameters

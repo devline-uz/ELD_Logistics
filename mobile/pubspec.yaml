@@ -1,0 +1,134 @@
+name: eld_mobile
+description: "ONEBOOK ELD driver mobile app"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+# Litsenziya / oxirgi yangilanish (P12) tekshiruvi: tool/check_deps.sh natijasi
+# doc/DEPENDENCIES.md da emas — quyidagi izohlarda saqlanadi (sana = pub.dev publish).
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # --- Holat / DI (M3) ---
+  flutter_riverpod: ^3.3.2 # MIT · 2026-06-10
+  riverpod_annotation: ^4.0.3 # MIT · 2026-06-10
+
+  # --- Navigatsiya ---
+  go_router: ^18.0.1 # BSD-3-Clause · 2026-09-02
+
+  # --- Lokal DB ---
+  drift: ^2.34.0 # MIT · 2026-08
+  drift_flutter: ^0.3.1 # MIT · 2026-07-11 (sqlite3 native kutubxonalarini o'zi olib keladi)
+  sqlite3: ^3.5.2 # MIT · 2026-08-19
+
+  # --- Tarmoq (yagona transport: dio; `http` paketi TAQIQ) ---
+  dio: ^5.11.1 # MIT · 2026-09-04
+
+  # --- Xavfsizlik / saqlash ---
+  flutter_secure_storage: ^11.0.0 # BSD-3-Clause · 2026-08-06
+
+  # --- ELD / BLE / fon ---
+  flutter_blue_plus: ^2.3.12 # BSD-3-Clause · 2026-08-10
+  flutter_foreground_task: ^11.0.3 # MIT · 2026-09-07
+
+  # --- Push ---
+  firebase_core: ^4.14.0 # BSD-3-Clause · 2026-08-24
+  firebase_messaging: ^16.6.0 # BSD-3-Clause · 2026-08-24
+
+  # --- i18n / vaqt ---
+  intl: ^0.20.2 # BSD-3-Clause · 2026-06-25
+  timezone: ^0.11.1 # BSD-2-Clause · 2026-06-29
+
+  # --- Imzo ---
+  signature: ^6.4.0 # MIT · 2026-07-28
+
+  # --- Log ---
+  logger: ^2.8.0 # MIT · 2026-09-05
+
+  # --- Yordamchi ---
+  path_provider: ^2.1.6 # BSD-3-Clause · 2026-06-15
+  package_info_plus: ^10.2.1 # BSD-3-Clause · 2026-07-15
+  device_info_plus: ^13.2.0 # BSD-3-Clause · 2026-06-26
+  uuid: ^4.6.0 # MIT · 2026-07-15
+  crypto: ^3.0.7 # BSD-3-Clause · 2025-11-04
+  meta: ^1.16.0 # BSD-3-Clause · 2026-05 (Dart team; domen qatlami `flutter` ga bog'lanmasligi uchun)
+  collection: ^1.19.1 # BSD-3-Clause · 2024-10-21 (Dart team, stdlib-yaqin)
+
+  # --- Monorepo paketlari ---
+  # hos_engine va sync_core `hos-dart-porter` / `offline-sync-engineer` tomonidan
+  # yaratiladi (M3, M2). Papka paydo bo'lgach izohdan chiqariladi.
+  hos_engine:
+    path: packages/hos_engine
+  sync_core:
+    path: packages/sync_core
+  # eld_api openapi-generator (dart-dio) chiqishi — tool/generate_api.sh.
+  # CR-M05: generatsiya qilindi (openapi-generator 7.25.0), analizdan
+  # `analysis_options.yaml` orqali chiqarilgan (linguist-generated).
+  eld_api:
+    path: packages/eld_api
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0 # BSD-3-Clause · 2026-05
+  # custom_lint OLIB TASHLANDI: riverpod_lint 3.x endi Dart'ning native
+  # `analysis_server_plugin` API sidan foydalanadi (analyzer ^13), custom_lint 0.8.1 esa
+  # analyzer ^8 ga bog'langan — birga resolve BO'LMAYDI. tz-mobile §2 ga CR kerak.
+  riverpod_lint: ^3.1.4 # MIT · 2026-06-10 (3.1.6+ analyzer ^13 talab qiladi — Flutter 3.44 da resolve bo'lmaydi)
+  riverpod_generator: ^4.0.4 # MIT · 2026-06-10 (analyzer ^12 — Flutter 3.44 matcher/meta pini bilan mos)
+  drift_dev: ^2.34.0 # MIT · 2026-08
+  build_runner: ^2.15.1 # BSD-3-Clause · 2026-07-08 (2.15.2+ analyzer >=13.3 talab qiladi, flutter_test meta pini bilan ziddiyat)
+  mocktail: ^1.0.5 # MIT · 2026-04-10
+  # CR-M02 QABUL QILINDI: golden_toolkit DISCONTINUED (oxirgi reliz 2023-02-21,
+  # sdk <3.0.0) — Dart 3.12 bilan resolve BO'LMAYDI. O'rniga alchemist.
+  alchemist: ^0.14.0 # MIT · 2026-03-13 (Very Good Ventures; flutter >=3.32)
+
+# --- SQLCipher (§17, M-DB1) ---
+# `sqlite3` 3.x da shifrlash alohida paket bilan emas, build hook'i orqali
+# yoqiladi (`sqlcipher_flutter_libs` 0.7.0+eol — bo'sh paket). `source:
+# sqlcipher` upstream SQLite o'rniga SQLCipher community build'ini oladi,
+# shundan keyin `PRAGMA key` barcha platformalarda va ishchi izolyatda
+# ishlaydi. Litsenziya: SQLCipher (BSD-uslubi) + OpenSSL (Android/Linux).
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlcipher
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/legal/
+
+  # --- Shriftlar (M1, tz-mobile §11.0.2, DIFF #D-26) ---
+  # Plus Jakarta Sans — SIL OFL 1.1 (`assets/fonts/OFL.txt`). Kanonik oila:
+  # Figma ekranlarining ~50 % i shu oilada chizilgan, qolganlari unga
+  # keltiriladi (D-26 yopildi).
+  #
+  # ⚠️ Fayllar **variable** (`wght` o'qi 200…800) — Google Fonts statik
+  # variantlarni bermaydi. Variable `.ttf` ni bir necha `weight:` ostida
+  # takrorlash Flutter'da noto'g'ri natija beradi (og'irlik interpolatsiya
+  # qilinmaydi), shuning uchun oila **bir marta** e'lon qilinadi, og'irlik esa
+  # `TextStyle.fontVariations: [FontVariation('wght', N)]` bilan beriladi
+  # (`lib/core/ui/typography.dart`).
+  #
+  # ⚠️ Fayl nomlarida kvadrat qavs YO'Q: Google Fonts beradigan
+  # `PlusJakartaSans[wght].ttf` nomi asset kalitida `%5B…%5D` ga kodlanadi va
+  # `rootBundle.load` uni topa olmaydi ("Unable to load asset"), natijada
+  # goldenlar shriftsiz chiziladi. Shu sababli fayllar qavssiz nomlangan.
+  fonts:
+    - family: Plus Jakarta Sans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-VariableFont_wght.ttf
+        - asset: assets/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf
+          style: italic

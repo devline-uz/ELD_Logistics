@@ -1,0 +1,421 @@
+{
+  "@@locale": "en",
+  "profileTitle": "Profile",
+  "@profileTitle": {
+    "description": "M-44 app bar title"
+  },
+  "profileNameLine": "{name} . {unit}",
+  "@profileNameLine": {
+    "description": "M-44 header: driver full name and unit number (Figma: 'Abdullah Khan . 1021')",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "profileContactLine": "{email} . {phone}",
+  "@profileContactLine": {
+    "description": "M-44 header: email and phone",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      },
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "profileLicenseLine": "{license} . {state}",
+  "@profileLicenseLine": {
+    "description": "M-44 header: license number and issuing state",
+    "placeholders": {
+      "license": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSettings": "Settings",
+  "@profileSettings": {
+    "description": "M-44 row → M-45"
+  },
+  "profileCheckNetwork": "Check network",
+  "@profileCheckNetwork": {
+    "description": "M-44 row → M-47"
+  },
+  "profileZoom": "Zoom",
+  "@profileZoom": {
+    "description": "M-44 toggle, M94 in-app text zoom"
+  },
+  "profileZoomHelper": "Larger text across the app",
+  "@profileZoomHelper": {
+    "description": "M-44 Zoom row helper line (M94)"
+  },
+  "profileZoomSemantics": "Zoom. Larger text across the app",
+  "@profileZoomSemantics": {
+    "description": "M-44 `Zoom` toggle uchun skrinrider yorlig‘i (TalkBack/VoiceOver)."
+  },
+  "profileBack": "Back",
+  "@profileBack": {
+    "description": "M11 inner screens back button tooltip"
+  },
+  "profileDarkMode": "Dark mode",
+  "@profileDarkMode": {
+    "description": "M-44 toggle, theme mode"
+  },
+  "profileFeedback": "Feedback",
+  "@profileFeedback": {
+    "description": "M-44 row → M-48"
+  },
+  "profileCustomerSupport": "Customer support",
+  "@profileCustomerSupport": {
+    "description": "M-44 row → M-50"
+  },
+  "profileUserManual": "User Manual",
+  "@profileUserManual": {
+    "description": "M-44 row, opens the manual link from /app/config"
+  },
+  "profileMyDevices": "My devices",
+  "@profileMyDevices": {
+    "description": "M-44 row → M-58 sessions"
+  },
+  "profileChangePin": "Change PIN",
+  "@profileChangePin": {
+    "description": "M-44 row → PIN change flow"
+  },
+  "profileLegal": "Terms of Use · Privacy Policy",
+  "@profileLegal": {
+    "description": "M-44 footer link row → M-52 / M-53"
+  },
+  "profileLogout": "Logout",
+  "@profileLogout": {
+    "description": "M-44 destructive row"
+  },
+  "profileLogoutConfirmTitle": "Log out?",
+  "@profileLogoutConfirmTitle": {
+    "description": "Logout confirmation dialog title"
+  },
+  "profileLogoutConfirmMessage": "You will need to sign in again before you can record duty status.",
+  "@profileLogoutConfirmMessage": {
+    "description": "Logout confirmation dialog body"
+  },
+  "profileUnavailableLink": "This link is not available yet.",
+  "@profileUnavailableLink": {
+    "description": "Shown when /app/config has no user manual URL"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "M-45 app bar title"
+  },
+  "settingsDiagnosis": "Diagnosis of device",
+  "@settingsDiagnosis": {
+    "description": "M-45 row → M-46"
+  },
+  "settingsAppUpdates": "App updates",
+  "@settingsAppUpdates": {
+    "description": "M-45 row, app version block"
+  },
+  "settingsCurrentVersion": "Current version {version}",
+  "@settingsCurrentVersion": {
+    "description": "M-45 installed app version",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLatestVersion": "Latest version {version}",
+  "@settingsLatestVersion": {
+    "description": "M-45 latest_version from GET /app/config",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsUpdateAction": "Update",
+  "@settingsUpdateAction": {
+    "description": "M-45 opens the store listing"
+  },
+  "settingsUpToDate": "You have the latest version.",
+  "@settingsUpToDate": {
+    "description": "M-45 no update available"
+  },
+  "settingsNotifications": "Notifications",
+  "@settingsNotifications": {
+    "description": "M-45 notification preferences section"
+  },
+  "settingsNotificationsLocked": "Required for compliance",
+  "@settingsNotificationsLocked": {
+    "description": "M143 tooltip for hos_* / eld_* alerts"
+  },
+  "settingsAlertHosWarning": "HOS warning",
+  "@settingsAlertHosWarning": {
+    "description": "Alert type hos_warning"
+  },
+  "settingsAlertHosViolation": "HOS violation",
+  "@settingsAlertHosViolation": {
+    "description": "Alert type hos_violation"
+  },
+  "settingsAlertEldDisconnected": "ELD disconnected",
+  "@settingsAlertEldDisconnected": {
+    "description": "Alert type eld_disconnected"
+  },
+  "settingsAlertEldMalfunction": "ELD malfunction",
+  "@settingsAlertEldMalfunction": {
+    "description": "Alert type eld_malfunction"
+  },
+  "settingsAlertUncertifiedLog": "Uncertified log",
+  "@settingsAlertUncertifiedLog": {
+    "description": "Alert type uncertified_log"
+  },
+  "settingsAlertLogEditResolved": "Log edit resolved",
+  "@settingsAlertLogEditResolved": {
+    "description": "Alert type log_edit_resolved"
+  },
+  "settingsAlertDvirDefects": "DVIR defects",
+  "@settingsAlertDvirDefects": {
+    "description": "Alert type dvir_defects"
+  },
+  "settingsAlertChatMessage": "Chat message",
+  "@settingsAlertChatMessage": {
+    "description": "Alert type chat_message"
+  },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "M-45 language section"
+  },
+  "settingsLanguageEnglish": "English (US)",
+  "@settingsLanguageEnglish": {
+    "description": "The only shipped locale"
+  },
+  "settingsLanguageOnlyEnglish": "Only English is available in this version.",
+  "@settingsLanguageOnlyEnglish": {
+    "description": "Helper under the language row"
+  },
+  "feedbackTitle": "Feedback",
+  "@feedbackTitle": {
+    "description": "M-48 app bar title"
+  },
+  "feedbackIntro": "Share your experience to help us improve.",
+  "@feedbackIntro": {
+    "description": "M-48 intro line"
+  },
+  "feedbackRatingQuestion": "How would you rate your overall experience with the mobile app?",
+  "@feedbackRatingQuestion": {
+    "description": "M-48 phone wording"
+  },
+  "feedbackRatingQuestionTablet": "How would you rate your overall experience with the app?",
+  "@feedbackRatingQuestionTablet": {
+    "description": "M113 tablet wording"
+  },
+  "feedbackFeatureQuestion": "What new features or improvements would you like to see in the mobile app?",
+  "@feedbackFeatureQuestion": {
+    "description": "M-48 phone wording"
+  },
+  "feedbackFeatureQuestionTablet": "What new features or improvements would you like to see in the app?",
+  "@feedbackFeatureQuestionTablet": {
+    "description": "M113 tablet wording"
+  },
+  "feedbackTextHint": "Write here..",
+  "@feedbackTextHint": {
+    "description": "M-48 free text placeholder (Figma wording kept)"
+  },
+  "feedbackSubmit": "Submit",
+  "@feedbackSubmit": {
+    "description": "M-48 primary action"
+  },
+  "feedbackRatingRequired": "Please select a rating.",
+  "@feedbackRatingRequired": {
+    "description": "M-48 validation"
+  },
+  "feedbackStars": "{count,plural, =1{1 star} other{{count} stars}}",
+  "@feedbackStars": {
+    "description": "Accessibility label for the star rating",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedbackSent": "Thank you! Your feedback has been sent.",
+  "@feedbackSent": {
+    "description": "M-48 success toast"
+  },
+  "feedbackQueued": "Will be sent when you''re back online.",
+  "@feedbackQueued": {
+    "description": "M-48 offline outbox toast"
+  },
+  "supportTitle": "Contact Support",
+  "@supportTitle": {
+    "description": "M-50 app bar title"
+  },
+  "supportEmptyTitle": "No Ticket Added Yet",
+  "@supportEmptyTitle": {
+    "description": "M-50 empty state title (Figma wording kept)"
+  },
+  "supportEmptyMessage": "Start to add your first ticket by clicking button below.",
+  "@supportEmptyMessage": {
+    "description": "M-50 empty state body (Figma wording kept)"
+  },
+  "supportAddTicket": "Add Ticket",
+  "@supportAddTicket": {
+    "description": "M-50 empty state action / FAB label"
+  },
+  "supportContactOn": "Contact On",
+  "@supportContactOn": {
+    "description": "M-49 channel selector label"
+  },
+  "supportContactOnValue": "Contact On: {channel}",
+  "@supportContactOnValue": {
+    "description": "M-50 list row",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "supportChannelEmail": "Email address",
+  "@supportChannelEmail": {
+    "description": "contact_on = email"
+  },
+  "supportChannelPhone": "Phone number",
+  "@supportChannelPhone": {
+    "description": "contact_on = phone"
+  },
+  "supportSubject": "Subject",
+  "@supportSubject": {
+    "description": "M-49 field label"
+  },
+  "supportSubjectHint": "Add ticket subject",
+  "@supportSubjectHint": {
+    "description": "M-49 field placeholder"
+  },
+  "supportSubjectRequired": "Enter a ticket subject.",
+  "@supportSubjectRequired": {
+    "description": "M-49 validation"
+  },
+  "supportDescription": "Ticket description",
+  "@supportDescription": {
+    "description": "M-49 field label"
+  },
+  "supportDescriptionHint": "Description",
+  "@supportDescriptionHint": {
+    "description": "M-49 field placeholder"
+  },
+  "supportConfirm": "Confirm",
+  "@supportConfirm": {
+    "description": "M-49 submit action"
+  },
+  "supportTicketNumber": "#{number}",
+  "@supportTicketNumber": {
+    "description": "M-50 short ticket reference",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "supportTicketHeading": "Ticket #{number}",
+  "@supportTicketHeading": {
+    "description": "M-51 app bar title",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "supportCreatedOn": "Created on {when}",
+  "@supportCreatedOn": {
+    "description": "M-51 creation timestamp (format §11.0.7)",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "supportStatusNew": "New",
+  "@supportStatusNew": {
+    "description": "M115 ticket status"
+  },
+  "supportStatusInProgress": "In Progress",
+  "@supportStatusInProgress": {
+    "description": "M115 ticket status"
+  },
+  "supportStatusResolved": "Resolved",
+  "@supportStatusResolved": {
+    "description": "M115 ticket status"
+  },
+  "supportStatusClosed": "Closed",
+  "@supportStatusClosed": {
+    "description": "Ticket status returned by the API"
+  },
+  "supportMessages": "Messages",
+  "@supportMessages": {
+    "description": "M-51 thread section title"
+  },
+  "supportNoMessagesTitle": "No replies yet",
+  "@supportNoMessagesTitle": {
+    "description": "M-51 empty thread title"
+  },
+  "supportNoMessagesMessage": "Replies from the support team will appear here.",
+  "@supportNoMessagesMessage": {
+    "description": "M-51 empty thread body"
+  },
+  "supportReplyHint": "Write a reply…",
+  "@supportReplyHint": {
+    "description": "M-51 composer placeholder"
+  },
+  "supportSend": "Send",
+  "@supportSend": {
+    "description": "M-51 composer action"
+  },
+  "supportTicketCreated": "Your ticket has been sent.",
+  "@supportTicketCreated": {
+    "description": "M-49 success toast"
+  },
+  "supportQueued": "Will be sent when you''re back online.",
+  "@supportQueued": {
+    "description": "M-49 / M-51 offline outbox toast"
+  },
+  "supportOfflineList": "Tickets are only available online.",
+  "@supportOfflineList": {
+    "description": "M-50 offline state message"
+  },
+  "legalPrivacyTitle": "Privacy Policy",
+  "@legalPrivacyTitle": {
+    "description": "M-52 app bar title"
+  },
+  "legalTermsTitle": "Terms of Use",
+  "@legalTermsTitle": {
+    "description": "M-53 app bar title"
+  },
+  "legalPendingTitle": "Legal text pending",
+  "@legalPendingTitle": {
+    "description": "M117 placeholder title until the customer supplies the text"
+  },
+  "legalPendingMessage": "Legal text pending. Contact {email}.",
+  "@legalPendingMessage": {
+    "description": "M117 placeholder body, support_email from GET /app/config",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "legalContactSupport": "Contact support",
+  "@legalContactSupport": {
+    "description": "M-52 / M-53 placeholder action → M-49"
+  },
+  "supportColStatus": "Status",
+  "@supportColStatus": {"description": "T-27 planshet jadvali: holat ustuni"},
+  "supportColTicket": "Ticket",
+  "@supportColTicket": {"description": "T-27 planshet jadvali: tiket raqami ustuni"},
+  "supportColCreated": "Created",
+  "@supportColCreated": {"description": "T-27 planshet jadvali: yaratilgan sana ustuni"}
+}

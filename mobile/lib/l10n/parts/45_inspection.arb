@@ -1,0 +1,290 @@
+{
+  "@@locale": "en",
+  "inspectionTitle": "Inspection Report",
+  "@inspectionTitle": {
+    "description": "M-37 screen title (Figma 1111:7825)"
+  },
+  "inspectionReviewTitle": "Review the logs for the past 7 days + today",
+  "@inspectionReviewTitle": {
+    "description": "M-37 action 1 title"
+  },
+  "inspectionReviewBody": "Click “Begin Inspection” button, and hand your device to the officer.",
+  "@inspectionReviewBody": {
+    "description": "M-37 action 1 body"
+  },
+  "inspectionBeginAction": "Begin Inspection",
+  "@inspectionBeginAction": {
+    "description": "M-37 action 1 button"
+  },
+  "inspectionEmailTitle": "Send the logs for the past 7 days + today via email",
+  "@inspectionEmailTitle": {
+    "description": "M-37 action 2 title"
+  },
+  "inspectionEmailBody": "Email your logs to the officer if they request a paper copy.",
+  "@inspectionEmailBody": {
+    "description": "M-37 action 2 body"
+  },
+  "inspectionEmailAction": "Send via email",
+  "@inspectionEmailAction": {
+    "description": "M-37 action 2 button"
+  },
+  "inspectionFileTitle": "Send the ELD output file to the DOT officer",
+  "@inspectionFileTitle": {
+    "description": "M-37 action 3 title (M108: tablet wording is canonical)"
+  },
+  "inspectionFileBody": "Send your ELD Output file for the inspection if the officer requests.",
+  "@inspectionFileBody": {
+    "description": "M-37 action 3 body"
+  },
+  "inspectionFileAction": "Send the file",
+  "@inspectionFileAction": {
+    "description": "M-37 action 3 button"
+  },
+  "inspectionOnlineRequired": "Requires an internet connection. Use “Begin Inspection” to show logs on screen.",
+  "@inspectionOnlineRequired": {
+    "description": "M111 offline hint for the two sending actions"
+  },
+  "inspectionTransferUnavailable": "The transfer service is unavailable. Show the logs on screen instead.",
+  "@inspectionTransferUnavailable": {
+    "description": "M111 message for HTTP 503"
+  },
+  "inspectionEmailModalTitle": "Send via email",
+  "@inspectionEmailModalTitle": {
+    "description": "M-40 modal title"
+  },
+  "inspectionEmailModalHint": "Email your logs to the officer if they request a paper copy",
+  "@inspectionEmailModalHint": {
+    "description": "M-40 info banner"
+  },
+  "inspectionEmailAddress": "Email Address",
+  "@inspectionEmailAddress": {
+    "description": "M-40 / M-41 email field label"
+  },
+  "inspectionEmailPlaceholder": "Enter email address",
+  "@inspectionEmailPlaceholder": {
+    "description": "M-40 email field placeholder"
+  },
+  "inspectionEmailInvalid": "Enter a valid email address.",
+  "@inspectionEmailInvalid": {
+    "description": "M-40 validation message"
+  },
+  "inspectionEmailSend": "Send Logs",
+  "@inspectionEmailSend": {
+    "description": "M-40 primary button"
+  },
+  "inspectionEmailSent": "Logs sent to {email}",
+  "@inspectionEmailSent": {
+    "description": "M-40 success message",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionCommentLabel": "Comment",
+  "@inspectionCommentLabel": {
+    "description": "M-40 / M-41 optional comment label"
+  },
+  "inspectionCommentHint": "Write output file comment",
+  "@inspectionCommentHint": {
+    "description": "M-41 comment placeholder"
+  },
+  "inspectionFileModalTitle": "Send file for Inspection",
+  "@inspectionFileModalTitle": {
+    "description": "M-41 modal title"
+  },
+  "inspectionFileModalHint": "Send the file to the DOT officer",
+  "@inspectionFileModalHint": {
+    "description": "M-41 info banner (M108)"
+  },
+  "inspectionTransferType": "Type",
+  "@inspectionTransferType": {
+    "description": "M-41 transfer method label"
+  },
+  "inspectionTransferWebService": "Web service",
+  "@inspectionTransferWebService": {
+    "description": "M-41 transfer method: FMCSA web services"
+  },
+  "inspectionTransferEmail": "Email",
+  "@inspectionTransferEmail": {
+    "description": "M-41 transfer method: email"
+  },
+  "inspectionFileSend": "Send",
+  "@inspectionFileSend": {
+    "description": "M-41 primary button"
+  },
+  "inspectionFileSent": "Output file sent ({format}, {size})",
+  "@inspectionFileSent": {
+    "description": "M-41 success message with format and size",
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionFormatFmcsa": "FMCSA ELD output",
+  "@inspectionFormatFmcsa": {
+    "description": "InspectionTransferResult.format=fmcsa_eld_output"
+  },
+  "inspectionFormatCsvPdfZip": "CSV/PDF archive",
+  "@inspectionFormatCsvPdfZip": {
+    "description": "InspectionTransferResult.format=csv_pdf_zip"
+  },
+  "inspectionKioskTitle": "Log Report",
+  "@inspectionKioskTitle": {
+    "description": "M-38 kiosk header (design 1111:8013)"
+  },
+  "inspectionKioskExit": "Exit",
+  "@inspectionKioskExit": {
+    "description": "M-38 exit button, opens the PIN dialog"
+  },
+  "inspectionKioskOffline": "Offline copy — last synced {time}",
+  "@inspectionKioskOffline": {
+    "description": "M-38 offline data source note",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionKioskExpired": "The inspection session has expired.",
+  "@inspectionKioskExpired": {
+    "description": "M-38 session expires_at reached"
+  },
+  "inspectionKioskEmpty": "No logs for this day",
+  "@inspectionKioskEmpty": {
+    "description": "M-38 empty day"
+  },
+  "inspectionExitTitle": "Exit inspection",
+  "@inspectionExitTitle": {
+    "description": "M-39 PIN dialog title"
+  },
+  "inspectionExitMessage": "Enter your PIN to leave inspection mode.",
+  "@inspectionExitMessage": {
+    "description": "M-39 PIN dialog body"
+  },
+  "inspectionExitPinLabel": "PIN",
+  "@inspectionExitPinLabel": {
+    "description": "M-39 PIN field label"
+  },
+  "inspectionExitConfirm": "Exit inspection",
+  "@inspectionExitConfirm": {
+    "description": "M-39 confirm button"
+  },
+  "inspectionExitPinInvalid": "Incorrect PIN.",
+  "@inspectionExitPinInvalid": {
+    "description": "M-39 wrong PIN message"
+  },
+  "inspectionLogDriver": "Driver name",
+  "@inspectionLogDriver": {
+    "description": "M-38 log form: driver"
+  },
+  "inspectionLogCarrier": "Carrier",
+  "@inspectionLogCarrier": {
+    "description": "M-38 log form: carrier"
+  },
+  "inspectionLogHomeTerminal": "Home Terminal",
+  "@inspectionLogHomeTerminal": {
+    "description": "M-38 log form: home terminal address"
+  },
+  "inspectionLogUnit": "Truck tractor ID",
+  "@inspectionLogUnit": {
+    "description": "M-38 log form: unit"
+  },
+  "inspectionLogTrailers": "Trailers",
+  "@inspectionLogTrailers": {
+    "description": "M-38 log form: trailers"
+  },
+  "inspectionLogDocuments": "Shipping ID",
+  "@inspectionLogDocuments": {
+    "description": "M-38 log form: shipping documents"
+  },
+  "inspectionLogDistance": "Distance",
+  "@inspectionLogDistance": {
+    "description": "M-38 log form: distance driven today"
+  },
+  "inspectionLogTimezone": "Time Zone",
+  "@inspectionLogTimezone": {
+    "description": "M-38 log form: home terminal time zone"
+  },
+  "inspectionLogEvents": "Logs",
+  "@inspectionLogEvents": {
+    "description": "M-38 events table title"
+  },
+  "inspectionColStatus": "Status",
+  "@inspectionColStatus": {
+    "description": "M-38 events table column"
+  },
+  "inspectionColTime": "Time",
+  "@inspectionColTime": {
+    "description": "M-38 events table column"
+  },
+  "inspectionColLocation": "Location",
+  "@inspectionColLocation": {
+    "description": "M-38 events table column"
+  },
+  "inspectionColOdometer": "Odometer",
+  "@inspectionColOdometer": {
+    "description": "M-38 events table column"
+  },
+  "inspectionDailyLogTitle": "DRIVER''S DAILY LOG",
+  "@inspectionDailyLogTitle": {
+    "description": "M-38 kiosk log kartasi sarlavhasi."
+  },
+  "inspectionKioskNeverSynced": "never",
+  "@inspectionKioskNeverSynced": {
+    "description": "M-38: lokal nusxa hech qachon sinxronlanmagan."
+  },
+  "inspectionExitPinHint": "6-digit PIN",
+  "@inspectionExitPinHint": {
+    "description": "M-39 PIN maydoni placeholder'i."
+  },
+  "inspectionRetry": "Try again",
+  "@inspectionRetry": {
+    "description": "Inspection amali xatosidan keyin qayta urinish."
+  },
+  "inspectionDistanceMiles": "{miles} mi",
+  "@inspectionDistanceMiles": {
+    "description": "Kunlik masofa (mil) — Log Form `Distance`.",
+    "placeholders": {
+      "miles": {
+        "type": "String"
+      }
+    }
+  },
+  "inspectionDutyOff": "OFF",
+  "@inspectionDutyOff": {
+    "description": "Duty grid row label — Off Duty (M-38)."
+  },
+  "inspectionDutySb": "SB",
+  "@inspectionDutySb": {
+    "description": "Duty grid row label — Sleeper Berth (M-38)."
+  },
+  "inspectionDutyDr": "D",
+  "@inspectionDutyDr": {
+    "description": "Duty grid row label — Driving (M-38)."
+  },
+  "inspectionDutyOn": "ON",
+  "@inspectionDutyOn": {
+    "description": "Duty grid row label — On Duty (M-38)."
+  },
+  "inspectionPinLocked": "Too many attempts. Ask the driver to sign in with a password.",
+  "@inspectionPinLocked": {
+    "description": "M-39: 5 ta xato urinishdan keyin."
+  },
+  "inspectionKioskReadOnly": "Read-only inspection view",
+  "@inspectionKioskReadOnly": {
+    "description": "M110: kiosk rejimida hech narsa tahrirlanmaydi."
+  },
+  "inspectionEmpty": "No logs to show",
+  "@inspectionEmpty": {
+    "description": "M-38 bo'sh holat sarlavhasi."
+  },
+  "inspectionEmptyHint": "There is no data to show you right now.",
+  "@inspectionEmptyHint": {
+    "description": "M-38 bo'sh holat izohi."
+  }
+}

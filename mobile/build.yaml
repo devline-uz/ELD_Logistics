@@ -1,0 +1,14 @@
+# Drift kod generatsiyasi sozlamalari (tz-mobile §5.1).
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          # Barcha vaqtlar UTC ISO-8601 matn sifatida saqlanadi: millisekund
+          # aniqligi va vaqt zonasi yo'qolmaydi (INTEGER epoch soniyalari yetarli emas).
+          store_date_time_values_as_text: true
+          named_parameters: true
+          # `PRAGMA foreign_keys = ON` beforeOpen da yoqiladi.
+          sqlite:
+            version: "3.45"
+          generate_manager: false

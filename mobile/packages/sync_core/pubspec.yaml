@@ -1,0 +1,19 @@
+name: sync_core
+description: >-
+  Pure Dart offline-sync rules for ONEBOOK ELD: outbox batching (M33), backoff,
+  conflict reason mapping (tz-mobile §5.6), retention policy (§5.2) and push
+  payload validation (M32/M41). No Flutter, no I/O, no DateTime.now().
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.12.2
+
+# M4: no `flutter` dependency, direct or transitive.
+# Verified by test/no_flutter_dependency_test.dart and tool/check_forbidden.sh.
+dependencies:
+  meta: ^1.16.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0

@@ -1,0 +1,295 @@
+{
+  "@@locale": "en",
+  "appTitle": "ONEBOOK ELD",
+  "@appTitle": {
+    "description": "Application name shown in the task switcher"
+  },
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Bottom navigation tab: driver home / duty status"
+  },
+  "navLogs": "Logs",
+  "@navLogs": {
+    "description": "Bottom navigation tab: daily logs"
+  },
+  "navChat": "Chat",
+  "@navChat": {
+    "description": "Bottom navigation tab: dispatcher chat"
+  },
+  "navProfile": "Profile",
+  "@navProfile": {
+    "description": "Bottom navigation tab: driver profile"
+  },
+  "commonRetry": "Retry",
+  "@commonRetry": {
+    "description": "Generic retry button"
+  },
+  "commonCancel": "Cancel",
+  "@commonCancel": {
+    "description": "Generic cancel button"
+  },
+  "commonOk": "OK",
+  "@commonOk": {
+    "description": "Generic confirmation button"
+  },
+  "commonLoading": "Loading…",
+  "@commonLoading": {
+    "description": "Generic loading indicator label"
+  },
+  "commonComingSoon": "Coming soon",
+  "@commonComingSoon": {
+    "description": "Placeholder label for a screen that is not implemented yet"
+  },
+  "errUnknown": "Something went wrong. Please try again.",
+  "@errUnknown": {
+    "description": "Fallback message for an unmapped error code"
+  },
+  "errNetwork": "No internet connection. Your work is saved and will sync later.",
+  "@errNetwork": {
+    "description": "CLIENT_NETWORK"
+  },
+  "errTimeout": "The server took too long to respond. Please try again.",
+  "@errTimeout": {
+    "description": "CLIENT_TIMEOUT"
+  },
+  "errTlsPinning": "Secure connection could not be verified.",
+  "@errTlsPinning": {
+    "description": "CLIENT_TLS_PINNING, screen M-55"
+  },
+  "errValidation": "Please check the highlighted fields.",
+  "@errValidation": {
+    "description": "VALIDATION_ERROR"
+  },
+  "errBadRequest": "The request could not be processed.",
+  "@errBadRequest": {
+    "description": "BAD_REQUEST"
+  },
+  "errUnauthorized": "Your session has expired. Please sign in again.",
+  "@errUnauthorized": {
+    "description": "UNAUTHORIZED"
+  },
+  "errForbidden": "You do not have permission to do this.",
+  "@errForbidden": {
+    "description": "FORBIDDEN"
+  },
+  "errNotFound": "This item is no longer available.",
+  "@errNotFound": {
+    "description": "NOT_FOUND"
+  },
+  "errConflict": "This item was changed elsewhere. Refresh and try again.",
+  "@errConflict": {
+    "description": "CONFLICT / UNIQUE_VIOLATION / STALE_VERSION"
+  },
+  "errRateLimited": "Too many attempts. Please wait a moment and try again.",
+  "@errRateLimited": {
+    "description": "RATE_LIMITED"
+  },
+  "errServer": "The server is having trouble. Please try again shortly.",
+  "@errServer": {
+    "description": "INTERNAL_ERROR / UPSTREAM_ERROR / STORAGE_ERROR"
+  },
+  "errUnavailable": "The service is temporarily unavailable.",
+  "@errUnavailable": {
+    "description": "SERVICE_UNAVAILABLE / UPSTREAM_TIMEOUT"
+  },
+  "errPayloadTooLarge": "That is too large to send.",
+  "@errPayloadTooLarge": {
+    "description": "PAYLOAD_TOO_LARGE"
+  },
+  "errInvalidCredentials": "Incorrect email or password.",
+  "@errInvalidCredentials": {
+    "description": "INVALID_CREDENTIALS"
+  },
+  "errAccountInactive": "Your account is not active. Contact your fleet manager.",
+  "@errAccountInactive": {
+    "description": "ACCOUNT_INACTIVE"
+  },
+  "errAccountSuspended": "Your account is suspended. Contact your fleet manager.",
+  "@errAccountSuspended": {
+    "description": "ACCOUNT_SUSPENDED"
+  },
+  "errLockedOut": "Too many failed attempts. Try again later.",
+  "@errLockedOut": {
+    "description": "LOCKED_OUT"
+  },
+  "errTotpRequired": "Enter the code from your authenticator app.",
+  "@errTotpRequired": {
+    "description": "TOTP_REQUIRED"
+  },
+  "errTotpInvalid": "That code is not valid.",
+  "@errTotpInvalid": {
+    "description": "TOTP_INVALID"
+  },
+  "errTotpSetupRequired": "Two-factor authentication must be set up first.",
+  "@errTotpSetupRequired": {
+    "description": "TOTP_SETUP_REQUIRED"
+  },
+  "errPinRequired": "Enter your PIN to continue.",
+  "@errPinRequired": {
+    "description": "PIN_REQUIRED"
+  },
+  "errPinInvalid": "Incorrect PIN.",
+  "@errPinInvalid": {
+    "description": "PIN_INVALID"
+  },
+  "errPinNotSet": "Set up a PIN to continue.",
+  "@errPinNotSet": {
+    "description": "PIN_NOT_SET"
+  },
+  "errPinLocked": "PIN entry is locked. Sign in with your password.",
+  "@errPinLocked": {
+    "description": "PIN_LOCKED"
+  },
+  "errSessionReplaced": "You were signed out because this account signed in on another device.",
+  "@errSessionReplaced": {
+    "description": "SESSION_REPLACED, screen M-44"
+  },
+  "errSessionExpired": "Your session has expired. Please sign in again.",
+  "@errSessionExpired": {
+    "description": "SESSION_EXPIRED / TOKEN_EXPIRED"
+  },
+  "errTokenRevoked": "You were signed out. Please sign in again.",
+  "@errTokenRevoked": {
+    "description": "TOKEN_REVOKED / TOKEN_REUSED / TOKEN_INVALID, screen M-44"
+  },
+  "errInvitationInvalid": "This invitation link is not valid.",
+  "@errInvitationInvalid": {
+    "description": "INVITATION_INVALID"
+  },
+  "errInvitationExpired": "This invitation has expired. Ask for a new one.",
+  "@errInvitationExpired": {
+    "description": "INVITATION_EXPIRED"
+  },
+  "errInvitationUsed": "This invitation has already been used.",
+  "@errInvitationUsed": {
+    "description": "INVITATION_USED"
+  },
+  "errDeviceNotAllowed": "This device is not allowed to sign in.",
+  "@errDeviceNotAllowed": {
+    "description": "DEVICE_NOT_ALLOWED"
+  },
+  "errPasswordWeak": "Choose a stronger password.",
+  "@errPasswordWeak": {
+    "description": "PASSWORD_WEAK"
+  },
+  "errPasswordReused": "Choose a password you have not used before.",
+  "@errPasswordReused": {
+    "description": "PASSWORD_REUSED"
+  },
+  "errSubscriptionReadonly": "Your company account is read-only. Contact your fleet manager.",
+  "@errSubscriptionReadonly": {
+    "description": "SUBSCRIPTION_READONLY"
+  },
+  "errSubscriptionExpired": "Your company subscription has expired.",
+  "@errSubscriptionExpired": {
+    "description": "SUBSCRIPTION_EXPIRED"
+  },
+  "errFeatureDisabled": "This feature is not enabled for your company.",
+  "@errFeatureDisabled": {
+    "description": "FEATURE_DISABLED / QUOTA_EXCEEDED"
+  },
+  "errDrImmutable": "Driving time cannot be edited.",
+  "@errDrImmutable": {
+    "description": "DR_IMMUTABLE"
+  },
+  "errLogNotReady": "This log is not ready yet.",
+  "@errLogNotReady": {
+    "description": "LOG_NOT_READY"
+  },
+  "errLogCertified": "This log is already certified.",
+  "@errLogCertified": {
+    "description": "LOG_CERTIFIED"
+  },
+  "errTimeInFuture": "The time cannot be in the future.",
+  "@errTimeInFuture": {
+    "description": "TIME_IN_FUTURE"
+  },
+  "errTimeOutOfRange": "The time is outside the allowed range.",
+  "@errTimeOutOfRange": {
+    "description": "TIME_OUT_OF_RANGE"
+  },
+  "errDuplicateEvent": "This event was already recorded.",
+  "@errDuplicateEvent": {
+    "description": "DUPLICATE_EVENT"
+  },
+  "errEventOutOfOrder": "Events must be in chronological order.",
+  "@errEventOutOfOrder": {
+    "description": "EVENT_OUT_OF_ORDER"
+  },
+  "errStatusNotAllowed": "That duty status is not allowed right now.",
+  "@errStatusNotAllowed": {
+    "description": "STATUS_NOT_ALLOWED"
+  },
+  "errEventImmutable": "This event cannot be changed.",
+  "@errEventImmutable": {
+    "description": "EVENT_IMMUTABLE / IMMUTABLE"
+  },
+  "errEditNotAllowed": "This log cannot be edited.",
+  "@errEditNotAllowed": {
+    "description": "EDIT_NOT_ALLOWED"
+  },
+  "errEditRejected": "This edit request was rejected.",
+  "@errEditRejected": {
+    "description": "EDIT_REJECTED"
+  },
+  "errMalfunctionActive": "An ELD malfunction is active. Keep paper logs.",
+  "@errMalfunctionActive": {
+    "description": "MALFUNCTION_ACTIVE"
+  },
+  "errSyncConflict": "Some records could not be synced. Review them in Logs.",
+  "@errSyncConflict": {
+    "description": "SYNC_CONFLICT"
+  },
+  "errBatchTooLarge": "Too much data to send at once. It will be split and retried.",
+  "@errBatchTooLarge": {
+    "description": "BATCH_TOO_LARGE"
+  },
+  "errDrivingModeBlocked": "Chat is unavailable while driving.",
+  "@errDrivingModeBlocked": {
+    "description": "DRIVING_MODE_BLOCKED"
+  },
+  "errMessageTooLong": "This message is too long.",
+  "@errMessageTooLong": {
+    "description": "MESSAGE_TOO_LONG"
+  },
+  "errAlreadyAssigned": "This item is already assigned.",
+  "@errAlreadyAssigned": {
+    "description": "ALREADY_ASSIGNED"
+  },
+  "errNotAssigned": "This item is not assigned to you.",
+  "@errNotAssigned": {
+    "description": "NOT_ASSIGNED"
+  },
+  "errInvalidState": "This action is not available right now.",
+  "@errInvalidState": {
+    "description": "INVALID_STATE / RESOURCE_IN_USE"
+  },
+  "errDvirInvalidTransition": "This inspection report cannot change to that state.",
+  "@errDvirInvalidTransition": {
+    "description": "DVIR_INVALID_TRANSITION"
+  },
+  "errDvirNoDefects": "Add at least one defect first.",
+  "@errDvirNoDefects": {
+    "description": "DVIR_NO_DEFECTS"
+  },
+  "errDefectTypeUnknown": "That defect type is not recognized.",
+  "@errDefectTypeUnknown": {
+    "description": "DEFECT_TYPE_UNKNOWN"
+  },
+  "errFileTooLarge": "That file is too large.",
+  "@errFileTooLarge": {
+    "description": "FILE_TOO_LARGE"
+  },
+  "errFileTypeInvalid": "That file type is not supported.",
+  "@errFileTypeInvalid": {
+    "description": "FILE_TYPE_INVALID / UNSUPPORTED_MEDIA_TYPE"
+  },
+  "errDeviceUnknown": "This ELD device is not registered.",
+  "@errDeviceUnknown": {
+    "description": "DEVICE_UNKNOWN"
+  },
+  "errDeviceProtocol": "The ELD device sent unexpected data.",
+  "@errDeviceProtocol": {
+    "description": "DEVICE_PROTOCOL_ERROR"
+  }
+}

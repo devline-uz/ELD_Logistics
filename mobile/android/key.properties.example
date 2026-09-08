@@ -1,0 +1,13 @@
+# ONEBOOK ELD — release imzolash kaliti (NAMUNA).
+#
+# Bu faylni `android/key.properties` nomi bilan NUSXALANG va to'ldiring.
+# `android/key.properties` va `*.jks` / `*.keystore` .gitignore da — REPOGA HECH QACHON
+# KOMMIT QILINMAYDI. CI da fayl KEYSTORE_* secret'laridan generatsiya qilinadi
+# (qarang: mobile/RELEASE.md).
+#
+# storeFile — .jks fayliga MUTLAQ yo'l (repodan tashqarida saqlanadi, masalan
+#             ~/keys/onebook-eld-upload.jks yoki CI da $RUNNER_TEMP/upload.jks).
+storeFile=/ABSOLUTE/PATH/OUTSIDE/REPO/onebook-eld-upload.jks
+storePassword=CHANGE_ME
+keyAlias=onebook-eld-upload
+keyPassword=CHANGE_ME

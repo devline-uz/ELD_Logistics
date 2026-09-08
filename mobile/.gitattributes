@@ -1,0 +1,4 @@
+packages/eld_api/** linguist-generated=true
+packages/eld_api/**/*.dart -diff
+*.g.dart linguist-generated=true
+*.freezed.dart linguist-generated=true

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Eld Mobile</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>eld_mobile</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<!-- ===== ELD / BLE fon rejimi (tz-mobile §10.4, M73, M74) =====
+	     `bluetooth-central` — CBCentralManager state restoration
+	     (CBCentralManagerOptionRestoreIdentifierKey, Dart tomonda
+	     FlutterBluePlus.setOptions(restoreState: true)).
+	     `location` — allowsBackgroundLocationUpdates = true,
+	     pausesLocationUpdatesAutomatically = false.
+	     `processing`/`fetch` ATAYIN yo'q — background fetch ga tayanilmaydi (M167). -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>location</string>
+	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>OneBook ELD connects to your truck's ELD over Bluetooth to record duty status, engine hours and odometer as required by FMCSA.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>OneBook ELD connects to your truck's ELD over Bluetooth to record duty status, engine hours and odometer as required by FMCSA.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>OneBook ELD records your location with each duty status change, as required by FMCSA.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>OneBook ELD records your location while driving, even when the app is in the background, as required by FMCSA.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>OneBook ELD uses motion data to detect when the vehicle starts and stops moving.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<!-- ===== S-M6 / §17.7: App Transport Security =====
+	     ATS istisnosiz: barcha trafik TLS 1.2+ orqali (https / wss).
+	     NSAllowsArbitraryLoads YO'Q — App Review'da asoslash talab qilinmaydi.
+	     Lokal dev backend kerak bo'lsa NSAllowsLocalNetworking ishlatiladi:
+	     u faqat .local / link-local / loopback manzillarga ruxsat beradi va
+	     ommaviy domenlarga TA'SIR QILMAYDI (Apple hujjati bo'yicha App Review
+	     uchun asoslash so'ralmaydi). -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>eldapi.stackyard.uz</key>
+			<dict>
+				<key>NSExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
+	<!-- M162: faqat `onebookeld://` sxemasi. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>uz.stackyard.eld</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>onebookeld</string>
+			</array>
+		</dict>
+	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>

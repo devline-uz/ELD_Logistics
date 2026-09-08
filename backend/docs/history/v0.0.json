@@ -1,0 +1,1338 @@
+{
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Multi-tenant ELD / fleet management API. Every endpoint below /api/v1 requires a bearer access token unless it is marked `@x-permission public`.",
+        "title": "ONEBOOK ELD API",
+        "termsOfService": "https://onebook-eld.com/terms",
+        "contact": {
+            "name": "ONEBOOK ELD Platform Team",
+            "email": "api@onebook-eld.com"
+        },
+        "license": {
+            "name": "Proprietary"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/app/config": {
+            "get": {
+                "description": "Versioning gate for the mobile client: `min_supported_version`, `latest_version`, `force_update` and the deployment feature flags.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "app"
+                ],
+                "summary": "Client bootstrap configuration",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.AppConfigEnvelope"
+                        }
+                    }
+                },
+                "x-permission": "public"
+            }
+        },
+        "/auth/2fa/setup": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q3.4 — mandatory for Super Admin and Administrator. The shared secret is stored AES-256-GCM encrypted and is only enabled once POST /auth/2fa/verify succeeds.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Start two factor enrolment",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPSetupEnvelope"
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "TOTP_ALREADY_ENABLED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        },
+        "/auth/2fa/verify": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q3.4 — confirming an enrolment returns the ten single use recovery codes exactly once and upgrades a limited token into a full session.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Confirm a two factor code",
+                "parameters": [
+                    {
+                        "description": "TOTP or recovery code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPVerifyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPVerifiedEnvelope"
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED / TOTP_INVALID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "TOTP_SETUP_REQUIRED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        },
+        "/auth/invitation/accept": {
+            "post": {
+                "description": "Q16 — the link is valid for 72 hours and only its SHA-256 hash is stored. Setting the password revokes every existing session of the account.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Accept an invitation",
+                "parameters": [
+                    {
+                        "description": "Invitation token and new password",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.InvitationAcceptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "INVITATION_INVALID / INVITATION_EXPIRED / INVITATION_USED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "ACCOUNT_INACTIVE",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR / PASSWORD_WEAK / PIN_INVALID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "429": {
+                        "description": "RATE_LIMITED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "public"
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Q20 — one session per device_type: signing in on the same device type revokes the previous session and answers `replaced_session: true`. Super Admin and Administrator accounts without 2FA receive a limited token and `requires_totp_setup: true`.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign in",
+                "parameters": [
+                    {
+                        "description": "Credentials",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.LoginEnvelope"
+                        }
+                    },
+                    "400": {
+                        "description": "BAD_REQUEST",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "INVALID_CREDENTIALS / TOTP_REQUIRED / TOTP_INVALID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "ACCOUNT_INACTIVE / SUBSCRIPTION_EXPIRED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "429": {
+                        "description": "RATE_LIMITED / LOCKED_OUT",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "public"
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q3.1 — `pause: true` is Leave Truck: the session becomes `paused` and is resumed with POST /auth/pin/verify.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign out or pause the session",
+                "parameters": [
+                    {
+                        "description": "Logout options",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.LogoutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT_FOUND",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        },
+        "/auth/password/forgot": {
+            "post": {
+                "description": "Q16 — always answers 202 so the endpoint cannot enumerate accounts. A new link invalidates the previous one.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Request a password reset link",
+                "parameters": [
+                    {
+                        "description": "Username or email",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.PasswordForgotRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.MessageEnvelope"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "429": {
+                        "description": "RATE_LIMITED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "public"
+            }
+        },
+        "/auth/password/reset": {
+            "post": {
+                "description": "Q16 — the token works once. A successful reset revokes every session of the account.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Reset the password",
+                "parameters": [
+                    {
+                        "description": "Reset token and new password",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.PasswordResetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "INVITATION_INVALID / INVITATION_EXPIRED / INVITATION_USED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "ACCOUNT_INACTIVE",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR / PASSWORD_WEAK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "429": {
+                        "description": "RATE_LIMITED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "public"
+            }
+        },
+        "/auth/pin/verify": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q16 — Switch driver / Return to truck. `return_to_truck` resumes the paused session. Five consecutive failures lock the PIN for 15 minutes.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Verify the driver PIN",
+                "parameters": [
+                    {
+                        "description": "PIN payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.PINVerifyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.PINVerifiedEnvelope"
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED / PIN_INVALID",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "PIN_NOT_SET",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "429": {
+                        "description": "PIN_LOCKED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "description": "Q3.1 — every refresh returns a new opaque token and invalidates the old one. Replaying a rotated token revokes the whole session and is audited as `token_reuse`.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Rotate the refresh token",
+                "parameters": [
+                    {
+                        "description": "Refresh token",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.RefreshRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.TokensEnvelope"
+                        }
+                    },
+                    "401": {
+                        "description": "TOKEN_INVALID / TOKEN_REUSED / TOKEN_REVOKED / SESSION_EXPIRED / PIN_REQUIRED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "ACCOUNT_INACTIVE",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "429": {
+                        "description": "RATE_LIMITED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "public"
+            }
+        },
+        "/auth/sessions": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q20 — the caller's own non revoked sessions, one per device type. Addresses are truncated.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "List my sessions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.SessionListEnvelope"
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        },
+        "/auth/sessions/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q20 — a session belonging to another user answers 404, never 403, so session ids cannot be probed.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Revoke one of my sessions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Session id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT_FOUND",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "VALIDATION_ERROR",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        },
+        "/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Q82 — the signed in profile with its effective permission keys and scope. Never returns a password hash, a TOTP secret or a token.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "app"
+                ],
+                "summary": "Current user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ProfileEnvelope"
+                        }
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "NOT_FOUND",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse"
+                        }
+                    }
+                },
+                "x-permission": "authenticated"
+            }
+        }
+    },
+    "definitions": {
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.AppConfig": {
+            "type": "object",
+            "properties": {
+                "access_token_ttl_seconds": {
+                    "description": "AccessTokenTTLSeconds lets a client schedule its refresh.",
+                    "type": "integer",
+                    "example": 900
+                },
+                "feature_flags": {
+                    "description": "FeatureFlags toggles optional modules per deployment.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "boolean"
+                    }
+                },
+                "force_update": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "latest_version": {
+                    "type": "string",
+                    "example": "1.4.2"
+                },
+                "min_supported_version": {
+                    "type": "string",
+                    "example": "1.0.0"
+                },
+                "server_time": {
+                    "description": "ServerTime lets the client detect clock drift before signing events.",
+                    "type": "string",
+                    "example": "2026-09-06T05:12:00Z"
+                },
+                "support_email": {
+                    "description": "SupportEmail is shown on the mobile about screen.",
+                    "type": "string",
+                    "example": "support@onebook-eld.com"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.AppConfigEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.AppConfig"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_httpx_dto.ErrorBody"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.InvitationAcceptRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "token"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 10,
+                    "example": "Str0ngPassphrase"
+                },
+                "pin": {
+                    "description": "PIN optionally sets the 6 digit driver PIN in the same call.",
+                    "type": "string",
+                    "example": "483920"
+                },
+                "token": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "Zr4KpN1vQ8sT2mL5xB7cD0eF3gH6jI9k"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.LoginEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.LoginResult"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.LoginRequest": {
+            "type": "object",
+            "required": [
+                "device_type",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "app_version": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "example": "1.4.2"
+                },
+                "company_id": {
+                    "description": "CompanyID disambiguates a username that exists in several tenants. It is\na pre-authentication hint only: the effective tenant always comes from\nthe resolved user row, never from this field.",
+                    "type": "string",
+                    "example": "3f7c2d1a-9b5e-4c8d-8e2f-1a2b3c4d5e6f"
+                },
+                "device_id": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "7c9f2f1e-2b4a-4f7d-9a1e-0f2b3c4d5e6f"
+                },
+                "device_type": {
+                    "description": "DeviceType decides which of the three concurrent session slots is used.",
+                    "type": "string",
+                    "enum": [
+                        "web",
+                        "phone",
+                        "tablet"
+                    ],
+                    "example": "web"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "example": "Str0ngPassphrase"
+                },
+                "totp_code": {
+                    "description": "TOTPCode is required once two factor authentication is enabled.",
+                    "type": "string",
+                    "example": "123456"
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "example": "jdoe"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.LoginResult": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIifQ.sig"
+                },
+                "expires_in": {
+                    "description": "ExpiresIn is the access token lifetime in seconds.",
+                    "type": "integer",
+                    "example": 900
+                },
+                "refresh_expires_at": {
+                    "description": "RefreshExpiresAt is when the refresh window closes.",
+                    "type": "string",
+                    "example": "2026-10-06T05:12:00Z"
+                },
+                "refresh_token": {
+                    "description": "RefreshToken is empty while the session is limited to 2FA enrolment.",
+                    "type": "string",
+                    "example": "o1Wm4c9vJ3xQ7pL0aZ2bY5nR8tK6sD4fH1gU3jE"
+                },
+                "replaced_session": {
+                    "description": "ReplacedSession reports that another session of the same device type was\nrevoked by this login (TZ A§20).",
+                    "type": "boolean",
+                    "example": false
+                },
+                "requires_totp_setup": {
+                    "description": "RequiresTOTPSetup marks a limited token: the account must enrol in two\nfactor authentication before anything else is permitted.",
+                    "type": "boolean",
+                    "example": false
+                },
+                "session_id": {
+                    "description": "SessionID identifies the session created by this login.",
+                    "type": "string",
+                    "example": "9e2c4a1b-7d3f-4e5a-8b6c-0d1e2f3a4b5c"
+                },
+                "subscription_readonly": {
+                    "description": "SubscriptionReadonly reports that the company subscription lapsed and\nonly read operations are accepted.",
+                    "type": "boolean",
+                    "example": false
+                },
+                "token_type": {
+                    "type": "string",
+                    "example": "Bearer"
+                },
+                "user": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.Profile"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.LogoutRequest": {
+            "type": "object",
+            "properties": {
+                "pause": {
+                    "description": "Pause keeps the session recoverable with a PIN (Leave Truck).",
+                    "type": "boolean",
+                    "example": false
+                },
+                "refresh_token": {
+                    "description": "RefreshToken optionally targets one session explicitly.",
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "o1Wm4c9vJ3xQ7pL0aZ2bY5nR8tK6sD4fH1gU3jE"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.MessageEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.MessageResponse"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.MessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "ok"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.Meta": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "per_page": {
+                    "type": "integer",
+                    "example": 25
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 123
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.PINVerified": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "enum": [
+                        "switch_driver",
+                        "return_to_truck"
+                    ],
+                    "example": "return_to_truck"
+                },
+                "session_resumed": {
+                    "description": "SessionResumed reports that a paused session was reactivated.",
+                    "type": "boolean",
+                    "example": true
+                },
+                "verified": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.PINVerifiedEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.PINVerified"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.PINVerifyRequest": {
+            "type": "object",
+            "required": [
+                "pin"
+            ],
+            "properties": {
+                "action": {
+                    "description": "Action selects what the verified PIN unlocks.",
+                    "type": "string",
+                    "enum": [
+                        "switch_driver",
+                        "return_to_truck"
+                    ],
+                    "example": "return_to_truck"
+                },
+                "pin": {
+                    "type": "string",
+                    "example": "483920"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.PasswordForgotRequest": {
+            "type": "object",
+            "required": [
+                "login"
+            ],
+            "properties": {
+                "login": {
+                    "description": "Login is the username or the email address of the account.",
+                    "type": "string",
+                    "maxLength": 254,
+                    "example": "jdoe"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.PasswordResetRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "token"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 10,
+                    "example": "Str0ngPassphrase"
+                },
+                "token": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "Zr4KpN1vQ8sT2mL5xB7cD0eF3gH6jI9k"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.Profile": {
+            "type": "object",
+            "properties": {
+                "branch_id": {
+                    "type": "string",
+                    "example": "8a7b6c5d-4e3f-2a1b-0c9d-8e7f6a5b4c3d"
+                },
+                "company_id": {
+                    "description": "CompanyID is empty for platform (super admin) accounts.",
+                    "type": "string",
+                    "example": "3f7c2d1a-9b5e-4c8d-8e2f-1a2b3c4d5e6f"
+                },
+                "email": {
+                    "description": "Email is masked for anyone but the account owner.",
+                    "type": "string",
+                    "example": "j***e@example.com"
+                },
+                "first_name": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "5c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f"
+                },
+                "is_super_admin": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "last_login_at": {
+                    "type": "string",
+                    "example": "2026-09-06T05:12:00Z"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "units.read",
+                        "drivers.read"
+                    ]
+                },
+                "pin_set": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "role_id": {
+                    "type": "string",
+                    "example": "1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e"
+                },
+                "role_name": {
+                    "type": "string",
+                    "example": "Fleet Manager"
+                },
+                "scope": {
+                    "type": "string",
+                    "enum": [
+                        "company",
+                        "branch",
+                        "self"
+                    ],
+                    "example": "company"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "invited",
+                        "active",
+                        "inactive"
+                    ],
+                    "example": "active"
+                },
+                "totp_enabled": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "username": {
+                    "type": "string",
+                    "example": "jdoe"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.ProfileEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.Profile"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.RefreshRequest": {
+            "type": "object",
+            "required": [
+                "refresh_token"
+            ],
+            "properties": {
+                "app_version": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "example": "1.4.2"
+                },
+                "refresh_token": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "example": "o1Wm4c9vJ3xQ7pL0aZ2bY5nR8tK6sD4fH1gU3jE"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.Session": {
+            "type": "object",
+            "properties": {
+                "app_version": {
+                    "type": "string",
+                    "example": "1.4.2"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-09-06T05:12:00Z"
+                },
+                "current": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "device_id": {
+                    "type": "string",
+                    "example": "7c9f2f1e-2b4a-4f7d-9a1e-0f2b3c4d5e6f"
+                },
+                "device_type": {
+                    "type": "string",
+                    "enum": [
+                        "web",
+                        "phone",
+                        "tablet"
+                    ],
+                    "example": "phone"
+                },
+                "expires_at": {
+                    "type": "string",
+                    "example": "2026-10-06T05:12:00Z"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "9e2c4a1b-7d3f-4e5a-8b6c-0d1e2f3a4b5c"
+                },
+                "ip": {
+                    "description": "IP is truncated; the full address stays in the audit trail only.",
+                    "type": "string",
+                    "example": "203.0.113.0"
+                },
+                "last_seen_at": {
+                    "type": "string",
+                    "example": "2026-09-06T07:40:00Z"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "paused",
+                        "revoked"
+                    ],
+                    "example": "active"
+                },
+                "user_agent": {
+                    "type": "string",
+                    "example": "ONEBOOK-ELD/1.4.2 (Android 14)"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.SessionListEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.Session"
+                    }
+                },
+                "meta": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.Meta"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPSetup": {
+            "type": "object",
+            "properties": {
+                "digits": {
+                    "description": "Digits and Period describe the expected authenticator configuration.",
+                    "type": "integer",
+                    "example": 6
+                },
+                "issuer": {
+                    "type": "string",
+                    "example": "ONEBOOK ELD"
+                },
+                "otpauth_url": {
+                    "description": "OtpauthURL is rendered as a QR code by the client.",
+                    "type": "string",
+                    "example": "otpauth://totp/ONEBOOK%20ELD:jdoe?secret=JBSWY3DPEHPK3PXP\u0026issuer=ONEBOOK%20ELD"
+                },
+                "period": {
+                    "type": "integer",
+                    "example": 30
+                },
+                "secret": {
+                    "description": "Secret is the base32 value for manual entry. It is shown once and is\nstored AES-256-GCM encrypted.",
+                    "type": "string",
+                    "example": "JBSWY3DPEHPK3PXP"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPSetupEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPSetup"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPVerified": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "recovery_codes": {
+                    "description": "RecoveryCodes are shown exactly once, at enrolment. Only their hashes\nare stored and each code works a single time.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "3f9a1c2d4e6b8a0c1d2e",
+                        "7b1c9d0e2f3a4b5c6d7e"
+                    ]
+                },
+                "tokens": {
+                    "description": "Tokens is filled when the verification upgraded a limited session.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.Tokens"
+                        }
+                    ]
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPVerifiedEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPVerified"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.TOTPVerifyRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "recovery_code": {
+                    "description": "RecoveryCode is accepted instead of Code when the device is lost.",
+                    "type": "string",
+                    "maxLength": 64,
+                    "example": "3f9a1c2d4e6b8a0c1d2e"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.Tokens": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIifQ.sig"
+                },
+                "expires_in": {
+                    "description": "ExpiresIn is the access token lifetime in seconds.",
+                    "type": "integer",
+                    "example": 900
+                },
+                "refresh_expires_at": {
+                    "description": "RefreshExpiresAt is when the refresh window closes.",
+                    "type": "string",
+                    "example": "2026-10-06T05:12:00Z"
+                },
+                "refresh_token": {
+                    "description": "RefreshToken is empty while the session is limited to 2FA enrolment.",
+                    "type": "string",
+                    "example": "o1Wm4c9vJ3xQ7pL0aZ2bY5nR8tK6sD4fH1gU3jE"
+                },
+                "token_type": {
+                    "type": "string",
+                    "example": "Bearer"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_domain_auth_dto.TokensEnvelope": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/github_com_devline_onebook-eld_internal_domain_auth_dto.Tokens"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_httpx_dto.ErrorBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "VALIDATION_ERROR"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_devline_onebook-eld_internal_httpx_dto.FieldError"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "validation failed"
+                }
+            }
+        },
+        "github_com_devline_onebook-eld_internal_httpx_dto.FieldError": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "example": "unit_number"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "required"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

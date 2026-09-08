@@ -1,0 +1,583 @@
+{
+  "@@locale": "en",
+  "homeEldNotConnected": "ELD not connected",
+  "@homeEldNotConnected": {
+    "description": "M-09 banner: ELD device is not connected (Figma 2177:12192)"
+  },
+  "homeEldConnected": "ELD · Connected",
+  "@homeEldConnected": {
+    "description": "M-09 banner: ELD device connected"
+  },
+  "homeOfflineQueued": "Offline — {count} records queued",
+  "@homeOfflineQueued": {
+    "description": "M-09 offline banner with outbox queue size",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "homeEldMalfunction": "ELD malfunction ({code}) — keep paper logs",
+  "@homeEldMalfunction": {
+    "description": "M-09 non-dismissible malfunction banner",
+    "placeholders": {
+      "code": {
+        "type": "String",
+        "example": "T"
+      }
+    }
+  },
+  "homeNoUnitTitle": "No unit assigned",
+  "@homeNoUnitTitle": {
+    "description": "M-09 empty state title"
+  },
+  "homeNoUnitMessage": "No unit assigned. Contact your fleet manager.",
+  "@homeNoUnitMessage": {
+    "description": "M-09 empty state message (tz-mobile 1240)"
+  },
+  "homeHoursOfService": "Hours of Service",
+  "@homeHoursOfService": {
+    "description": "M-09 HOS card title"
+  },
+  "homeTripDetails": "Trip Details",
+  "@homeTripDetails": {
+    "description": "M-09 trip details card title"
+  },
+  "homeSignature": "Signature",
+  "@homeSignature": {
+    "description": "M-09 signature card title"
+  },
+  "homeCertifyLast8Days": "Certify (Last 8 days)",
+  "@homeCertifyLast8Days": {
+    "description": "M-09 certify row label"
+  },
+  "homeNotSigned": "Not Signed",
+  "@homeNotSigned": {
+    "description": "M-09 certify badge when the day is not certified"
+  },
+  "homeSigned": "Signed",
+  "@homeSigned": {
+    "description": "M-09 certify badge when the day is certified"
+  },
+  "homePendingEdits": "Pending edits ({count})",
+  "@homePendingEdits": {
+    "description": "M-09 conditional card: carrier edit proposals awaiting the driver",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "homeUnidentifiedDriving": "Unidentified driving ({count})",
+  "@homeUnidentifiedDriving": {
+    "description": "M-09 conditional card: unidentified driving segments to claim",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "homeLogsTitle": "Logs",
+  "@homeLogsTitle": {
+    "description": "M-09 log block title (24h grid)"
+  },
+  "homeQuickInspection": "Inspection Report",
+  "@homeQuickInspection": {
+    "description": "M-09 quick action: DOT inspection report"
+  },
+  "homeQuickLogReport": "Log Report",
+  "@homeQuickLogReport": {
+    "description": "M-09 quick action: log report"
+  },
+  "homeQuickCoDriver": "Co-driver",
+  "@homeQuickCoDriver": {
+    "description": "M-09 quick action: switch co-driver"
+  },
+  "homeQuickLeaveTruck": "Leave Truck",
+  "@homeQuickLeaveTruck": {
+    "description": "M-09 quick action: leave the truck"
+  },
+  "homeUnitNumber": "Unit Number",
+  "@homeUnitNumber": {
+    "description": "M-09 unit number label"
+  },
+  "homeMenu": "Menu",
+  "@homeMenu": {
+    "description": "M-09 app bar hamburger tooltip"
+  },
+  "homeNotifications": "Notifications",
+  "@homeNotifications": {
+    "description": "M-09 app bar bell tooltip"
+  },
+  "homeMessages": "Messages",
+  "@homeMessages": {
+    "description": "M-09 app bar mail tooltip"
+  },
+  "homeSync": "Sync now",
+  "@homeSync": {
+    "description": "M-09 app bar sync tooltip"
+  },
+  "homeEditDocuments": "Edit documents",
+  "@homeEditDocuments": {
+    "description": "M-09 trip details pencil tooltip (opens M-11)"
+  },
+  "homeTotalOff": "OFF",
+  "@homeTotalOff": {
+    "description": "M-09 log totals: off duty line"
+  },
+  "homeTotalSb": "SB",
+  "@homeTotalSb": {
+    "description": "M-09 log totals: sleeper berth line"
+  },
+  "homeTotalDrive": "DR",
+  "@homeTotalDrive": {
+    "description": "M-09 log totals: driving line"
+  },
+  "homeTotalOn": "ON",
+  "@homeTotalOn": {
+    "description": "M-09 log totals: on duty line"
+  },
+  "homeViolationLabel": "Violation:",
+  "@homeViolationLabel": {
+    "description": "M-09 log block violation row prefix"
+  },
+  "homeWarningLabel": "Warning:",
+  "@homeWarningLabel": {
+    "description": "M-09 log block warning row prefix"
+  },
+  "homeNoViolations": "No violations today",
+  "@homeNoViolations": {
+    "description": "M-09 log block when the day is clean"
+  },
+  "hosBucketBreak": "BREAK",
+  "@hosBucketBreak": {
+    "description": "HOS indicator: time until the 30-minute break"
+  },
+  "hosBucketDrive": "DRIVE",
+  "@hosBucketDrive": {
+    "description": "HOS indicator: 11-hour driving limit"
+  },
+  "hosBucketShift": "SHIFT",
+  "@hosBucketShift": {
+    "description": "HOS indicator: 14-hour shift window"
+  },
+  "hosBucketCycle": "CYCLE",
+  "@hosBucketCycle": {
+    "description": "HOS indicator: 60/70-hour cycle"
+  },
+  "hosViolationDriveLimit": "Driving limit exceeded",
+  "@hosViolationDriveLimit": {
+    "description": "HOS violation drive_limit"
+  },
+  "hosViolationShiftLimit": "Shift window exceeded",
+  "@hosViolationShiftLimit": {
+    "description": "HOS violation shift_limit"
+  },
+  "hosViolationBreakRequired": "30-minute break required",
+  "@hosViolationBreakRequired": {
+    "description": "HOS violation break_required"
+  },
+  "hosViolationCycleLimit": "Cycle limit exceeded",
+  "@hosViolationCycleLimit": {
+    "description": "HOS violation cycle_limit"
+  },
+  "hosViolationUncertifiedLog": "Uncertified log",
+  "@hosViolationUncertifiedLog": {
+    "description": "HOS violation uncertified_log"
+  },
+  "hosViolationFormMannerTrailer": "Missing trailer number",
+  "@hosViolationFormMannerTrailer": {
+    "description": "HOS violation form_manner_trailer"
+  },
+  "hosViolationFormMannerDoc": "Missing shipping document",
+  "@hosViolationFormMannerDoc": {
+    "description": "HOS violation form_manner_doc"
+  },
+  "hosViolationUnidentifiedDriving": "Unidentified driving",
+  "@hosViolationUnidentifiedDriving": {
+    "description": "HOS violation unidentified_driving"
+  },
+  "hosViolationEldMalfunction": "ELD malfunction",
+  "@hosViolationEldMalfunction": {
+    "description": "HOS violation eld_malfunction"
+  },
+  "hosViolationMissingDvir": "Missing DVIR",
+  "@hosViolationMissingDvir": {
+    "description": "HOS violation missing_dvir"
+  },
+  "drawerInspectionReport": "Inspection Report",
+  "@drawerInspectionReport": {
+    "description": "M-10 drawer item (Figma 2697:33817)"
+  },
+  "drawerSwitchCoDriver": "Switch to Co-driver",
+  "@drawerSwitchCoDriver": {
+    "description": "M-10 drawer item"
+  },
+  "drawerPermissions": "Permissions",
+  "@drawerPermissions": {
+    "description": "M-10 drawer item with warning dot"
+  },
+  "drawerCheckNetwork": "Check Network",
+  "@drawerCheckNetwork": {
+    "description": "M-10 drawer item"
+  },
+  "drawerDiagnosis": "Diagnosis of Device",
+  "@drawerDiagnosis": {
+    "description": "M-10 drawer item"
+  },
+  "drawerAppUpdates": "App Updates",
+  "@drawerAppUpdates": {
+    "description": "M-10 drawer item"
+  },
+  "drawerZoom": "Zoom",
+  "@drawerZoom": {
+    "description": "M-10 drawer toggle: in-app text scale (M94)"
+  },
+  "drawerDarkMode": "Dark mode",
+  "@drawerDarkMode": {
+    "description": "M-10 drawer toggle: dark theme"
+  },
+  "drawerFeedback": "Feedback",
+  "@drawerFeedback": {
+    "description": "M-10 drawer item"
+  },
+  "drawerCustomerSupport": "Customer Support",
+  "@drawerCustomerSupport": {
+    "description": "M-10 drawer item"
+  },
+  "drawerUserManual": "User Manual",
+  "@drawerUserManual": {
+    "description": "M-10 drawer item"
+  },
+  "drawerLeaveTruck": "Leave the Truck",
+  "@drawerLeaveTruck": {
+    "description": "M-10 drawer item"
+  },
+  "drawerLogout": "Logout",
+  "@drawerLogout": {
+    "description": "M-10 drawer item, destructive"
+  },
+  "drawerTermsOfUse": "Terms of Use",
+  "@drawerTermsOfUse": {
+    "description": "M-10 drawer footer link"
+  },
+  "drawerPrivacyPolicy": "Privacy Policy",
+  "@drawerPrivacyPolicy": {
+    "description": "M-10 drawer footer link"
+  },
+  "documentsTitle": "Documents",
+  "@documentsTitle": {
+    "description": "M-11 edit documents modal title (Figma 2230:20627)"
+  },
+  "documentsTrailerNumber": "Trailer Number",
+  "@documentsTrailerNumber": {
+    "description": "M-11 trailer chips label"
+  },
+  "documentsShippingDocument": "Shipping Document",
+  "@documentsShippingDocument": {
+    "description": "M-11 shipping document chips label"
+  },
+  "documentsNote": "Note",
+  "@documentsNote": {
+    "description": "M-11 note field label"
+  },
+  "documentsNoteHint": "Add Note",
+  "@documentsNoteHint": {
+    "description": "M-11 note field placeholder"
+  },
+  "documentsAddTrailer": "Add trailer",
+  "@documentsAddTrailer": {
+    "description": "M-11 add trailer chip action"
+  },
+  "documentsAddDocument": "Add document",
+  "@documentsAddDocument": {
+    "description": "M-11 add shipping document chip action"
+  },
+  "documentsSaved": "Documents updated",
+  "@documentsSaved": {
+    "description": "M-11 success snackbar (status unchanged, M53)"
+  },
+  "dutyChangeTitle": "Change Duty Status",
+  "@dutyChangeTitle": {
+    "description": "M-12 screen title (Figma 1083:10550)"
+  },
+  "dutyStatusOffDuty": "Off Duty",
+  "@dutyStatusOffDuty": {
+    "description": "Duty status OFF (tz-mobile 9.1)"
+  },
+  "dutyStatusSleeper": "Sleeper Berth",
+  "@dutyStatusSleeper": {
+    "description": "Duty status SB"
+  },
+  "dutyStatusOnDuty": "On Duty",
+  "@dutyStatusOnDuty": {
+    "description": "Duty status ON"
+  },
+  "dutyStatusDriving": "Driving",
+  "@dutyStatusDriving": {
+    "description": "Duty status DR — automatic, never selectable (M51)"
+  },
+  "dutySleeperUnavailable": "Sleeper berth is not available on this unit",
+  "@dutySleeperUnavailable": {
+    "description": "M-12 tooltip when the unit has no sleeper berth (M52)"
+  },
+  "dutyLocationLabel": "Location",
+  "@dutyLocationLabel": {
+    "description": "M-12 location field label"
+  },
+  "dutyLocationHint": "Enter Location",
+  "@dutyLocationHint": {
+    "description": "M-12 location field placeholder"
+  },
+  "dutyLocationInaccurate": "Location may be inaccurate",
+  "@dutyLocationInaccurate": {
+    "description": "M-12 warning icon tooltip (accuracy > 150 m)"
+  },
+  "dutyNotesLabel": "Notes",
+  "@dutyNotesLabel": {
+    "description": "M-12 notes field label"
+  },
+  "dutyNotesHint": "Enter Notes",
+  "@dutyNotesHint": {
+    "description": "M-12 notes field placeholder"
+  },
+  "dutyNotesCounter": "{used}/{max}",
+  "@dutyNotesCounter": {
+    "description": "M-12 notes character counter",
+    "placeholders": {
+      "used": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "dutyNotesTooLong": "Notes must be 60 characters or fewer",
+  "@dutyNotesTooLong": {
+    "description": "M-12 notes validation error"
+  },
+  "dutyTrailerLabel": "Trailer Number",
+  "@dutyTrailerLabel": {
+    "description": "M-12 trailer chips label"
+  },
+  "dutyDocumentLabel": "Shipping Document",
+  "@dutyDocumentLabel": {
+    "description": "M-12 shipping document chips label"
+  },
+  "dutyPersonalConveyance": "Personal conveyance",
+  "@dutyPersonalConveyance": {
+    "description": "M-12 toggle under Off Duty (allow_pc)"
+  },
+  "dutyYardMove": "Yard move",
+  "@dutyYardMove": {
+    "description": "M-12 toggle under On Duty (allow_ym)"
+  },
+  "dutyReasonLabel": "Reason",
+  "@dutyReasonLabel": {
+    "description": "M-12 PC/YM reason field label"
+  },
+  "dutyReasonHint": "Enter reason",
+  "@dutyReasonHint": {
+    "description": "M-12 PC/YM reason field placeholder"
+  },
+  "dutyReasonRequired": "A reason is required for personal conveyance",
+  "@dutyReasonRequired": {
+    "description": "M-12 validation error (tz-mobile 9.8)"
+  },
+  "dutyManualNoEld": "ELD not connected — this entry will be marked as manual.",
+  "@dutyManualNoEld": {
+    "description": "M-12 yellow banner when no ELD is connected (M66)"
+  },
+  "dutySave": "Save",
+  "@dutySave": {
+    "description": "M-12 / M-11 primary action"
+  },
+  "dutySaved": "Duty status updated",
+  "@dutySaved": {
+    "description": "M-12 success snackbar"
+  },
+  "dutyQueuedOffline": "Saved offline — it will sync automatically",
+  "@dutyQueuedOffline": {
+    "description": "M-12 offline confirmation"
+  },
+  "dutyAddQuickNote": "Add quick note",
+  "@dutyAddQuickNote": {
+    "description": "M-12 plus button tooltip (opens M-13)"
+  },
+  "dutyStatusUnchanged": "Select a different status to save",
+  "@dutyStatusUnchanged": {
+    "description": "M-12 validation: nothing changed"
+  },
+  "dutyDrivingNotManual": "Driving status is recorded automatically",
+  "@dutyDrivingNotManual": {
+    "description": "M-12 / M-15 guard for DR (M51, M56)"
+  },
+  "quickNotesTitle": "Quick notes",
+  "@quickNotesTitle": {
+    "description": "M-13 modal title (Figma 1170:2313)"
+  },
+  "quickNotesLimitHint": "Notes field has max 60 character limit",
+  "@quickNotesLimitHint": {
+    "description": "M-13 info row"
+  },
+  "quickNotesAdd": "Add Notes",
+  "@quickNotesAdd": {
+    "description": "M-13 primary action"
+  },
+  "quickNotesTruncated": "Notes were truncated to 60 characters",
+  "@quickNotesTruncated": {
+    "description": "M-13 warning after truncation (M55)"
+  },
+  "quickNotePti": "PTI",
+  "@quickNotePti": {
+    "description": "M-13 fallback quick note (M54)"
+  },
+  "quickNoteHook": "Hook",
+  "@quickNoteHook": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNotePickup": "Pickup",
+  "@quickNotePickup": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteDropOff": "Drop off",
+  "@quickNoteDropOff": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteDelivery": "Delivery",
+  "@quickNoteDelivery": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteInspection": "Inspection",
+  "@quickNoteInspection": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteCheckIn": "Check in",
+  "@quickNoteCheckIn": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteFueling": "Fueling",
+  "@quickNoteFueling": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteCheckOut": "Check out",
+  "@quickNoteCheckOut": {
+    "description": "M-13 fallback quick note"
+  },
+  "quickNoteOther": "Other",
+  "@quickNoteOther": {
+    "description": "M-13 fallback quick note"
+  },
+  "locationInaccurateMessage": "It looks like your location might be inaccurate. Want to update it?",
+  "@locationInaccurateMessage": {
+    "description": "M-14 dialog message (Figma 1102:2021)"
+  },
+  "locationInaccurateHint": "It might take a few moments to proceed!",
+  "@locationInaccurateHint": {
+    "description": "M-14 info row"
+  },
+  "locationUpdateNow": "Update Now",
+  "@locationUpdateNow": {
+    "description": "M-14 primary action"
+  },
+  "locationUpdateFailed": "Could not refresh your location",
+  "@locationUpdateFailed": {
+    "description": "M-14 error when the GPS fix times out"
+  },
+  "driveTitle": "Duty Hours",
+  "@driveTitle": {
+    "description": "M-15 drive mode title (Figma 1170:2684)"
+  },
+  "driveInMotion": "In-motion",
+  "@driveInMotion": {
+    "description": "M-15 motion indicator while driving"
+  },
+  "driveStopped": "You have stopped",
+  "@driveStopped": {
+    "description": "M-15 state after a confirmed stop (M59)"
+  },
+  "driveDrivingTimeLeft": "Driving Time Left",
+  "@driveDrivingTimeLeft": {
+    "description": "M-15 min(DRIVE, SHIFT, CYCLE, BREAK)"
+  },
+  "driveCurrentLocation": "Current Location",
+  "@driveCurrentLocation": {
+    "description": "M-15 last GPS fix, reverse geocoded"
+  },
+  "driveBlockedWhileDriving": "Not available while driving",
+  "@driveBlockedWhileDriving": {
+    "description": "M-15 guard message (M58)"
+  },
+  "driveExit": "Exit drive mode",
+  "@driveExit": {
+    "description": "M-15 accessibility label for leaving the focused screen"
+  },
+  "idlePromptMessage": "You''ve been idle for 5 minutes. Are you still driving?",
+  "@idlePromptMessage": {
+    "description": "M-16 idle dialog (Figma 2181:17282)"
+  },
+  "idlePromptYes": "Yes, driving",
+  "@idlePromptYes": {
+    "description": "M-16 confirm — canonical spelling (M61)"
+  },
+  "idlePromptNo": "No",
+  "@idlePromptNo": {
+    "description": "M-16 decline: switches to On Duty at prompt time (M60)"
+  },
+  "idleAlertTitle": "Are you still driving?",
+  "@idleAlertTitle": {
+    "description": "M-16 local notification title (M62)"
+  },
+  "idleAlertBody": "Answer within 1 minute or your status changes to On Duty.",
+  "@idleAlertBody": {
+    "description": "M-16 local notification body (M62)"
+  },
+  "homeDutyStatusTitle": "Duty Status",
+  "@homeDutyStatusTitle": {
+    "description": "T-01 middle column heading"
+  },
+  "homeActionsTitle": "Actions",
+  "@homeActionsTitle": {
+    "description": "T-01 right column heading"
+  },
+  "homeActiveDriverLabel": "Active driver",
+  "@homeActiveDriverLabel": {
+    "description": "M10 ActiveDriverBanner label on the primary slot"
+  },
+  "homeCoDriverLabel": "Co-driver",
+  "@homeCoDriverLabel": {
+    "description": "M10 ActiveDriverBanner label on the second slot"
+  },
+  "homeActiveDriverBanner": "{name} is driving",
+  "@homeActiveDriverBanner": {
+    "description": "M10 banner text — the active driver is always visible",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "John Smith"
+      }
+    }
+  },
+  "homeSwitchDriver": "Switch",
+  "@homeSwitchDriver": {
+    "description": "M10 banner action that opens M-20"
+  },
+  "homeThemeToggle": "Switch theme",
+  "@homeThemeToggle": {
+    "description": "T-01 app bar theme icon tooltip (tablet only)"
+  },
+  "homeEldStatusTitle": "ELD",
+  "@homeEldStatusTitle": {
+    "description": "T-01 app bar left cluster label"
+  },
+  "homeFmcsaInspection": "FMCSA / Inspection Report",
+  "@homeFmcsaInspection": {
+    "description": "T-01 Actions panel primary button"
+  }
+}

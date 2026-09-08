@@ -1,0 +1,351 @@
+{
+  "@@locale": "en",
+  "dvirAddTitle": "Add DVIR",
+  "@dvirAddTitle": {
+    "description": "M-32 Add DVIR screen title (Figma 1089:4441)"
+  },
+  "dvirTypeLabel": "Type",
+  "@dvirTypeLabel": {
+    "description": "M-32 pre-trip / post-trip selector label"
+  },
+  "dvirTypePreTrip": "Pre-trip",
+  "@dvirTypePreTrip": {
+    "description": "DVIR inspection type: before the trip"
+  },
+  "dvirTypePostTrip": "Post-trip",
+  "@dvirTypePostTrip": {
+    "description": "DVIR inspection type: after the trip"
+  },
+  "dvirUnitNumberLabel": "Unit Number",
+  "@dvirUnitNumberLabel": {
+    "description": "M-32 tractor unit number (read-only, from /me)"
+  },
+  "dvirTrailersLabel": "Trailers",
+  "@dvirTrailersLabel": {
+    "description": "M-32 trailers multi-select label"
+  },
+  "dvirTrailersHint": "Enter Trailer Number",
+  "@dvirTrailersHint": {
+    "description": "M-32 trailers field placeholder"
+  },
+  "dvirTruckDefectsLabel": "Truck Defects",
+  "@dvirTruckDefectsLabel": {
+    "description": "M-32 truck defects row label"
+  },
+  "dvirTrailerDefectsLabel": "Trailer Defects",
+  "@dvirTrailerDefectsLabel": {
+    "description": "M-32 trailer defects row label"
+  },
+  "dvirAddDefectsHint": "Add Defects",
+  "@dvirAddDefectsHint": {
+    "description": "M-32 placeholder inside the defects picker row"
+  },
+  "dvirDefectsSelected": "{count, plural, =0{No defects} =1{1 defect} other{{count} defects}}",
+  "@dvirDefectsSelected": {
+    "description": "M-32 summary of the selected defects",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirNotesLabel": "Notes",
+  "@dvirNotesLabel": {
+    "description": "M-32 optional free-text notes"
+  },
+  "dvirNotesHint": "Add a note (optional)",
+  "@dvirNotesHint": {
+    "description": "M-32 notes placeholder"
+  },
+  "dvirDriverInfoTime": "Time",
+  "@dvirDriverInfoTime": {
+    "description": "M-32 driver information: current time"
+  },
+  "dvirDriverInfoLocation": "Location",
+  "@dvirDriverInfoLocation": {
+    "description": "M-32 driver information: current location"
+  },
+  "dvirDriverInfoOdometer": "Odometer",
+  "@dvirDriverInfoOdometer": {
+    "description": "M-32 driver information: odometer reading"
+  },
+  "dvirNext": "Next",
+  "@dvirNext": {
+    "description": "M-32 primary button, goes to the review step"
+  },
+  "dvirConfirm": "Confirm",
+  "@dvirConfirm": {
+    "description": "M-34 primary button, submits the report"
+  },
+  "dvirSave": "Save",
+  "@dvirSave": {
+    "description": "M-33 defect picker primary button"
+  },
+  "dvirTruckDefectsTitle": "Truck defects",
+  "@dvirTruckDefectsTitle": {
+    "description": "M-33 defect picker title, truck category"
+  },
+  "dvirTrailerDefectsTitle": "Trailer defects",
+  "@dvirTrailerDefectsTitle": {
+    "description": "M-33 defect picker title, trailer category"
+  },
+  "dvirDefectSearchHint": "Search defects",
+  "@dvirDefectSearchHint": {
+    "description": "M-33 search field placeholder"
+  },
+  "dvirDefectNoteHint": "Describe the defect (optional)",
+  "@dvirDefectNoteHint": {
+    "description": "M-33 per-defect comment placeholder"
+  },
+  "dvirDefectAddPhoto": "Add photo",
+  "@dvirDefectAddPhoto": {
+    "description": "M-33 per-defect photo button (max 5)"
+  },
+  "dvirDefectPhotoCount": "{count} of {max} photos",
+  "@dvirDefectPhotoCount": {
+    "description": "M-33 photo counter",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirDefectPhotoLimit": "You can attach up to {max} photos per defect.",
+  "@dvirDefectPhotoLimit": {
+    "description": "M-33 photo limit warning",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirCriticalWarning": "This is a critical defect. The unit may be placed out of service.",
+  "@dvirCriticalWarning": {
+    "description": "M106 critical defect warning"
+  },
+  "dvirCriticalBadge": "Critical",
+  "@dvirCriticalBadge": {
+    "description": "Badge next to a critical defect type"
+  },
+  "dvirDefectsEmpty": "No defects match your search",
+  "@dvirDefectsEmpty": {
+    "description": "M-33 empty search result"
+  },
+  "dvirCatalogEmpty": "Defect catalog is empty",
+  "@dvirCatalogEmpty": {
+    "description": "M-33 empty state when the server catalog is empty"
+  },
+  "dvirCatalogEmptyHint": "Connect to the internet to download the defect list.",
+  "@dvirCatalogEmptyHint": {
+    "description": "M-33 empty state hint"
+  },
+  "dvirAccidentPhotoTitle": "Accident photo",
+  "@dvirAccidentPhotoTitle": {
+    "description": "M105 separate accident photo upload, not a defect"
+  },
+  "dvirAccidentPhotoHint": "Attach a photo of the accident (not a defect).",
+  "@dvirAccidentPhotoHint": {
+    "description": "M105 accident photo helper text"
+  },
+  "dvirReviewTitle": "Review",
+  "@dvirReviewTitle": {
+    "description": "M-34 review step title"
+  },
+  "dvirNoDefects": "No Defects",
+  "@dvirNoDefects": {
+    "description": "M-34 checkbox shown when nothing was selected"
+  },
+  "dvirDriverSignature": "Driver Signature",
+  "@dvirDriverSignature": {
+    "description": "M-34 signature section title"
+  },
+  "dvirSignatureHint": "Sign here",
+  "@dvirSignatureHint": {
+    "description": "Signature pad hint"
+  },
+  "dvirSignatureClear": "Clear",
+  "@dvirSignatureClear": {
+    "description": "Signature pad clear button"
+  },
+  "dvirSignatureSave": "Save signature",
+  "@dvirSignatureSave": {
+    "description": "Signature pad save button"
+  },
+  "dvirSignatureRequired": "A driver signature is required.",
+  "@dvirSignatureRequired": {
+    "description": "M-34 validation message"
+  },
+  "dvirSignatureSaved": "Signature captured",
+  "@dvirSignatureSaved": {
+    "description": "M-34 confirmation after signing"
+  },
+  "dvirSubmitting": "Submitting…",
+  "@dvirSubmitting": {
+    "description": "M-34 submit progress"
+  },
+  "dvirSubmittedOnline": "DVIR submitted",
+  "@dvirSubmittedOnline": {
+    "description": "M-34 success message (online)"
+  },
+  "dvirSubmittedQueued": "DVIR saved and queued — it will be sent when you are back online.",
+  "@dvirSubmittedQueued": {
+    "description": "M-34 success message (offline, outbox)"
+  },
+  "dvirDetailsTitle": "DVIR details",
+  "@dvirDetailsTitle": {
+    "description": "M-35 details screen title (Figma 1166:869)"
+  },
+  "dvirDetailsStatus": "Status",
+  "@dvirDetailsStatus": {
+    "description": "M-35 backend status row (M103)"
+  },
+  "dvirDetailsMechanicNote": "Mechanic note",
+  "@dvirDetailsMechanicNote": {
+    "description": "M-35 mechanic comment (read-only)"
+  },
+  "dvirDetailsMechanicSignature": "Mechanic Signature",
+  "@dvirDetailsMechanicSignature": {
+    "description": "M-35 mechanic signature (read-only)"
+  },
+  "dvirDetailsInvoice": "Invoice",
+  "@dvirDetailsInvoice": {
+    "description": "M-35 invoice link"
+  },
+  "dvirDetailsDownloadPdf": "Download PDF",
+  "@dvirDetailsDownloadPdf": {
+    "description": "M-35 PDF download (online only)"
+  },
+  "dvirDetailsPdfOffline": "Connect to the internet to download the PDF.",
+  "@dvirDetailsPdfOffline": {
+    "description": "M-35 PDF offline hint"
+  },
+  "dvirDetailsImmutable": "Submitted DVIRs cannot be edited or deleted (M107).",
+  "@dvirDetailsImmutable": {
+    "description": "M107 immutability note"
+  },
+  "dvirDetailsNoDefects": "No defects were reported.",
+  "@dvirDetailsNoDefects": {
+    "description": "M-35 empty defect list"
+  },
+  "dvirDetailsNotFound": "This DVIR is not available.",
+  "@dvirDetailsNotFound": {
+    "description": "M-35 error/empty state"
+  },
+  "dvirKindNoDefects": "No defects",
+  "@dvirKindNoDefects": {
+    "description": "M102 badge for kind=no_defects"
+  },
+  "dvirKindDefectsNotFixed": "Defects – not fixed",
+  "@dvirKindDefectsNotFixed": {
+    "description": "M102 badge for kind=defects_not_fixed"
+  },
+  "dvirKindDefectsFixed": "Defects – fixed",
+  "@dvirKindDefectsFixed": {
+    "description": "M102 badge for kind=defects_fixed"
+  },
+  "dvirKindDraft": "Draft",
+  "@dvirKindDraft": {
+    "description": "M102 badge for a local draft"
+  },
+  "dvirKindAwaitingCertification": "Awaiting certification",
+  "@dvirKindAwaitingCertification": {
+    "description": "M102 sub-badge for status=repaired"
+  },
+  "dvirKindClosed": "Closed",
+  "@dvirKindClosed": {
+    "description": "M102 sub-badge for status=closed_no_certification"
+  },
+  "dvirCertifyTitle": "Previous defects",
+  "@dvirCertifyTitle": {
+    "description": "M-36 previous defects certification modal title"
+  },
+  "dvirCertifyMessage": "Defects were repaired on unit {unit} on {date}. Confirm the repairs are satisfactory.",
+  "@dvirCertifyMessage": {
+    "description": "M-36 modal body",
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dvirCertifyConfirm": "Confirm repairs",
+  "@dvirCertifyConfirm": {
+    "description": "M-36 primary action"
+  },
+  "dvirCertifyLater": "Later",
+  "@dvirCertifyLater": {
+    "description": "M-36 dismiss action, does not block the new DVIR"
+  },
+  "dvirCertifyQueued": "Certification queued — it will be sent when you are back online.",
+  "@dvirCertifyQueued": {
+    "description": "M-36 offline confirmation"
+  },
+  "dvirCertifyDone": "Repairs certified",
+  "@dvirCertifyDone": {
+    "description": "M-36 success message"
+  },
+  "dvirCertifyAlready": "This report was already certified.",
+  "@dvirCertifyAlready": {
+    "description": "M-36 DVIR_INVALID_TRANSITION message"
+  },
+  "dvirPhotoUnavailable": "Photo capture is not available on this device.",
+  "@dvirPhotoUnavailable": {
+    "description": "Shown when no camera/photo plugin is wired"
+  },
+  "dvirPhotoQueued": "Photo queued for upload",
+  "@dvirPhotoQueued": {
+    "description": "Photo written to files_queue (M149)"
+  },
+  "dvirBack": "Back",
+  "@dvirBack": {
+    "description": "Orqaga qaytish tugmasi (app bar) — M-32…M-35, M-37, M-38."
+  },
+  "dvirClose": "Close",
+  "@dvirClose": {
+    "description": "Modalni yopish (X) tugmasi."
+  },
+  "dvirNoUnit": "No unit detected. Connect the ELD device or change duty status to set the unit.",
+  "@dvirNoUnit": {
+    "description": "M-32: unit aniqlanmagan — DVIR yuborib bo'lmaydi."
+  },
+  "dvirPhotoTooLarge": "This photo is too large ({max} MB limit).",
+  "@dvirPhotoTooLarge": {
+    "description": "Foto §16 hajm chegarasidan katta.",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "dvirPhotoRemove": "Remove photo",
+  "@dvirPhotoRemove": {
+    "description": "Biriktirilgan fotoni olib tashlash."
+  },
+  "dvirCriticalDismiss": "Understood",
+  "@dvirCriticalDismiss": {
+    "description": "M106 kritik nuqson ogohlantirishini yopish."
+  },
+  "dvirAccidentPhotoAdd": "Add accident photo",
+  "@dvirAccidentPhotoAdd": {
+    "description": "M105: alohida foto bandi."
+  },
+  "dvirReviewDefectsEmpty": "No defects were selected.",
+  "@dvirReviewDefectsEmpty": {
+    "description": "M-34 xulosasi bo'sh."
+  },
+  "dvirOdometerMiles": "{miles} mi",
+  "@dvirOdometerMiles": {
+    "description": "Odometer qiymati (mil). Manba `odometer_m` (metr).",
+    "placeholders": {
+      "miles": {
+        "type": "String"
+      }
+    }
+  }
+}

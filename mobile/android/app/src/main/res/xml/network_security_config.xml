@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  S-M6 / §17.7 — transport siyosati (prod).
+  cleartextTrafficPermitted="false" — HTTP butunlay taqiq, faqat TLS (https / wss).
+  Foydalanuvchi o'rnatgan CA lar (MITM proxy) ISHONCHLI EMAS — faqat tizim CA lari.
+  Sertifikat pinning bu yerda EMAS: M153 bo'yicha SPKI pin Dart tomonida
+  (dio + ikkita pin, asosiy + zaxira) 11-bosqichda qo'shiladi — manifest pini
+  rotatsiyada ilovani o'ldiradi.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

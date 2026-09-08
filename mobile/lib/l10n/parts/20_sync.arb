@@ -1,0 +1,197 @@
+{
+  "@@locale": "en",
+  "syncStatusTitle": "Sync status",
+  "@syncStatusTitle": {
+    "description": "M-54 screen title"
+  },
+  "syncConflictsTitle": "Sync conflicts",
+  "@syncConflictsTitle": {
+    "description": "M-55 screen title"
+  },
+  "syncStateSynced": "Synced",
+  "@syncStateSynced": {
+    "description": "Sync indicator: everything is up to date"
+  },
+  "syncStateSyncing": "Syncing…",
+  "@syncStateSyncing": {
+    "description": "Sync indicator: a cycle is running"
+  },
+  "syncStatePending": "{count, plural, =1{1 pending} other{{count} pending}}",
+  "@syncStatePending": {
+    "description": "Sync indicator: queued items waiting to be sent",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncStateOffline": "{count, plural, =0{Offline} =1{Offline — 1 queued} other{Offline — {count} queued}}",
+  "@syncStateOffline": {
+    "description": "Sync indicator: no connection",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncStateConflict": "{count, plural, =1{1 needs attention} other{{count} need attention}}",
+  "@syncStateConflict": {
+    "description": "Sync indicator: rejected items waiting for the driver",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncLastPush": "Last upload",
+  "@syncLastPush": {
+    "description": "M-54: time of the last successful push"
+  },
+  "syncLastPull": "Last download",
+  "@syncLastPull": {
+    "description": "M-54: time of the last successful pull"
+  },
+  "syncLastError": "Last error",
+  "@syncLastError": {
+    "description": "M-54: last transport error code"
+  },
+  "syncCursor": "Cursor",
+  "@syncCursor": {
+    "description": "M-54: next_since diagnostic value"
+  },
+  "syncQueue": "Queue",
+  "@syncQueue": {
+    "description": "M-54: section header for queued items by kind"
+  },
+  "syncQueueEmpty": "Nothing waiting to sync.",
+  "@syncQueueEmpty": {
+    "description": "M-54: empty queue state"
+  },
+  "syncNever": "Never",
+  "@syncNever": {
+    "description": "M-54: placeholder when a timestamp is absent"
+  },
+  "syncRetryNow": "Retry now",
+  "@syncRetryNow": {
+    "description": "M-54: manual sync button"
+  },
+  "syncConflictsEmpty": "No conflicts. Everything you recorded was accepted.",
+  "@syncConflictsEmpty": {
+    "description": "M-55: empty state"
+  },
+  "syncConflictsCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@syncConflictsCount": {
+    "description": "M-55: number of rejected or superseded items",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncKindEvent": "Duty events",
+  "@syncKindEvent": {
+    "description": "Outbox kind label: duty status events"
+  },
+  "syncKindTelemetry": "Telemetry",
+  "@syncKindTelemetry": {
+    "description": "Outbox kind label: GPS/ECM points"
+  },
+  "syncKindDvir": "Inspections",
+  "@syncKindDvir": {
+    "description": "Outbox kind label: DVIR reports"
+  },
+  "syncKindChat": "Messages",
+  "@syncKindChat": {
+    "description": "Outbox kind label: chat messages"
+  },
+  "syncKindCertify": "Certifications",
+  "@syncKindCertify": {
+    "description": "Outbox kind label: daily log certifications"
+  },
+  "syncKindClaim": "Claims",
+  "@syncKindClaim": {
+    "description": "Outbox kind label: unidentified driving claims"
+  },
+  "syncKindLogEdit": "Log edits",
+  "@syncKindLogEdit": {
+    "description": "Outbox kind label: log edit decisions"
+  },
+  "syncKindPushToken": "Push token",
+  "@syncKindPushToken": {
+    "description": "Outbox kind label: FCM token registration"
+  },
+  "syncKindFeedback": "Feedback",
+  "@syncKindFeedback": {
+    "description": "Outbox kind label: feedback"
+  },
+  "syncKindSupport": "Support",
+  "@syncKindSupport": {
+    "description": "Outbox kind label: support requests"
+  },
+  "conflictTimeInFuture": "This entry was recorded ahead of server time and was not accepted. Check your device clock.",
+  "@conflictTimeInFuture": {
+    "description": "Conflict reason time_in_future (tz-mobile §5.6)"
+  },
+  "conflictTimeOutOfRange": "This entry is outside the accepted time range.",
+  "@conflictTimeOutOfRange": {
+    "description": "Conflict reason time_out_of_range"
+  },
+  "conflictLogLocked": "That day is already certified. Ask your fleet manager for a log edit.",
+  "@conflictLogLocked": {
+    "description": "Conflict reason log_locked"
+  },
+  "conflictSuperseded": "Another device recorded a status at the same time. The other entry was kept.",
+  "@conflictSuperseded": {
+    "description": "Conflict reason superseded (informational, M29)"
+  },
+  "conflictInvalidPayload": "This entry could not be saved (invalid data).",
+  "@conflictInvalidPayload": {
+    "description": "Conflict reason invalid_payload"
+  },
+  "conflictSpecialNotAllowed": "Personal Conveyance / Yard Move is disabled for your company.",
+  "@conflictSpecialNotAllowed": {
+    "description": "Conflict reasons pc_not_allowed / ym_not_allowed"
+  },
+  "conflictSleeperBerthUnavailable": "Sleeper Berth is not available on this unit.",
+  "@conflictSleeperBerthUnavailable": {
+    "description": "Conflict reason sleeper_berth_unavailable"
+  },
+  "conflictDriveNotManual": "Driving status is set automatically and cannot be changed by hand.",
+  "@conflictDriveNotManual": {
+    "description": "Conflict reasons drive_not_manual / auto_drive"
+  },
+  "conflictYardMoveEnded": "Yard Move ended automatically — the vehicle exceeded the speed limit.",
+  "@conflictYardMoveEnded": {
+    "description": "Conflict reason yard_move_ended"
+  },
+  "conflictUnknown": "This entry was not accepted by the server.",
+  "@conflictUnknown": {
+    "description": "Fallback for an unmapped conflict reason"
+  },
+  "conflictActionResend": "Send again",
+  "@conflictActionResend": {
+    "description": "M-55 action for time_in_future"
+  },
+  "conflictActionContactSupport": "Contact support",
+  "@conflictActionContactSupport": {
+    "description": "M-55 action for log_locked"
+  },
+  "conflictActionSendDiagnostics": "Send to diagnostics",
+  "@conflictActionSendDiagnostics": {
+    "description": "M-55 action for invalid_payload"
+  },
+  "syncConflictItemTitle": "{kind} · {date}",
+  "@syncConflictItemTitle": {
+    "description": "M-55: list tile title — outbox kind label and the day the item was queued",
+    "placeholders": {
+      "kind": {
+        "type": "String",
+        "example": "Duty events"
+      },
+      "date": {
+        "type": "String",
+        "example": "May 28, 2025"
+      }
+    }
+  }
+}

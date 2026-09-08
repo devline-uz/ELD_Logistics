@@ -1,0 +1,1871 @@
+{
+  "version": 1,
+  "note": "Golden HOS vectors shared by the Go engine and the Dart port (Q10.8). policy holds overrides on top of DefaultPolicy; day defaults to the local day of now.",
+  "vectors": [
+    {
+      "name": "simple_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T23:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T14:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T18:30:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T19:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T23:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T23:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 180,
+          "shift_left_min": 270,
+          "cycle_left_min": 3660,
+          "driving_time_left_min": 180
+        },
+        "totals": {
+          "off_min": 900,
+          "sb_min": 0,
+          "drive_min": 480,
+          "on_min": 60
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "drive_limit_violation",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T00:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T00:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 270,
+          "drive_left_min": 0,
+          "shift_left_min": 120,
+          "cycle_left_min": 3510,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 750,
+          "sb_min": 0,
+          "drive_min": 690,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "drive_limit",
+            "severity": "violation"
+          },
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "drive_limit_warning",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T23:10:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T23:10:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 320,
+          "drive_left_min": 20,
+          "shift_left_min": 170,
+          "cycle_left_min": 3560,
+          "driving_time_left_min": 20
+        },
+        "totals": {
+          "off_min": 800,
+          "sb_min": 0,
+          "drive_min": 640,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "drive_limit",
+            "severity": "warning"
+          },
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "shift_limit_violation",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T00:30:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T10:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T11:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T15:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T23:50:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T00:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 440,
+          "drive_left_min": 380,
+          "shift_left_min": 0,
+          "cycle_left_min": 3360,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 600,
+          "sb_min": 0,
+          "drive_min": 280,
+          "on_min": 560
+        },
+        "violations": [
+          {
+            "type": "shift_limit",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "shift_limit_warning",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T23:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T10:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T11:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T15:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T23:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 420,
+          "shift_left_min": 30,
+          "cycle_left_min": 3390,
+          "driving_time_left_min": 30
+        },
+        "totals": {
+          "off_min": 630,
+          "sb_min": 0,
+          "drive_min": 240,
+          "on_min": 570
+        },
+        "violations": [
+          {
+            "type": "shift_limit",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "break_reset_by_30min_off",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T22:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T22:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 360,
+          "drive_left_min": 60,
+          "shift_left_min": 210,
+          "cycle_left_min": 3600,
+          "driving_time_left_min": 60
+        },
+        "totals": {
+          "off_min": 840,
+          "sb_min": 0,
+          "drive_min": 600,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "break_required_violation",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T20:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 0,
+          "drive_left_min": 150,
+          "shift_left_min": 330,
+          "cycle_left_min": 3690,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 930,
+          "sb_min": 0,
+          "drive_min": 510,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "break_required_warning",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T19:45:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T19:45:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 15,
+          "drive_left_min": 195,
+          "shift_left_min": 375,
+          "cycle_left_min": 3735,
+          "driving_time_left_min": 15
+        },
+        "totals": {
+          "off_min": 975,
+          "sb_min": 0,
+          "drive_min": 465,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "break_on_duty_qualifies",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T21:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T21:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 420,
+          "drive_left_min": 120,
+          "shift_left_min": 270,
+          "cycle_left_min": 3630,
+          "driving_time_left_min": 120
+        },
+        "totals": {
+          "off_min": 870,
+          "sb_min": 0,
+          "drive_min": 540,
+          "on_min": 30
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "break_strict_off_sb_only",
+      "policy": {
+        "break_qualifying_statuses": [
+          "OFF",
+          "SB"
+        ]
+      },
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T21:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T21:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 0,
+          "drive_left_min": 120,
+          "shift_left_min": 270,
+          "cycle_left_min": 3630,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 870,
+          "sb_min": 0,
+          "drive_min": 540,
+          "on_min": 30
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cycle_restart_34h",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-14T08:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-12T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-12T20:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T06:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T08:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 720,
+          "cycle_left_min": 4080,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1320,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 120
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "cycle_limit_violation_70_8",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T16:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-08T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-08T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-09T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-09T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-10T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-10T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-11T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-11T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-12T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-12T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-13T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-13T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T16:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 360,
+          "drive_left_min": 540,
+          "shift_left_min": 720,
+          "cycle_left_min": 0,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 1320,
+          "sb_min": 0,
+          "drive_min": 120,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "cycle_limit",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cycle_limit_violation_60_7",
+      "policy": {
+        "cycle_limit_min": 3600,
+        "cycle_days": 7
+      },
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T16:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-09T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-09T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-10T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-10T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-11T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-11T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-12T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-12T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-13T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-13T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T16:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 360,
+          "drive_left_min": 540,
+          "shift_left_min": 720,
+          "cycle_left_min": 0,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 1320,
+          "sb_min": 0,
+          "drive_min": 120,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "cycle_limit",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cycle_limit_warning",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T15:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-08T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-08T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-09T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-09T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-10T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-10T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-11T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-11T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-12T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-12T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-13T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-13T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T21:20:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T15:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 780,
+          "cycle_left_min": 40,
+          "driving_time_left_min": 40
+        },
+        "totals": {
+          "off_min": 1380,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 60
+        },
+        "violations": [
+          {
+            "type": "cycle_limit",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cycle_recap_day_rolls_off",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T15:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-08T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-08T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-09T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-09T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-10T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-10T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-11T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-11T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-12T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-12T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-13T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-13T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T21:20:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T15:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 840,
+          "cycle_left_min": 640,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1440,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 0
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "sleeper_split_7_3",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T06:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T08:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T09:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "SB"
+        },
+        {
+          "time": "2026-01-15T21:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T02:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-16T05:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-16T06:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 780,
+          "cycle_left_min": 3480,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 300,
+          "sb_min": 420,
+          "drive_min": 600,
+          "on_min": 120
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "sleeper_split_8_2",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T04:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T08:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "SB"
+        },
+        {
+          "time": "2026-01-15T21:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T01:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-16T03:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T04:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 420,
+          "drive_left_min": 600,
+          "shift_left_min": 780,
+          "cycle_left_min": 3600,
+          "driving_time_left_min": 420
+        },
+        "totals": {
+          "off_min": 360,
+          "sb_min": 480,
+          "drive_min": 600,
+          "on_min": 0
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "sleeper_split_invalid_6_3",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T02:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T08:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "SB"
+        },
+        {
+          "time": "2026-01-15T19:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-16T01:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T02:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 420,
+          "drive_left_min": 120,
+          "shift_left_min": 0,
+          "cycle_left_min": 3660,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 540,
+          "sb_min": 360,
+          "drive_min": 540,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "shift_limit",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "personal_conveyance_not_driving",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T21:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T17:00:00Z",
+          "status": "OFF",
+          "special": "pc"
+        },
+        {
+          "time": "2026-01-15T19:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T21:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 360,
+          "drive_left_min": 300,
+          "shift_left_min": 300,
+          "cycle_left_min": 3780,
+          "driving_time_left_min": 300
+        },
+        "totals": {
+          "off_min": 1020,
+          "sb_min": 0,
+          "drive_min": 360,
+          "on_min": 60
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "yard_move_counts_as_on_duty",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T18:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "ON",
+          "special": "ym"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T18:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 180,
+          "drive_left_min": 360,
+          "shift_left_min": 480,
+          "cycle_left_min": 3840,
+          "driving_time_left_min": 180
+        },
+        "totals": {
+          "off_min": 1080,
+          "sb_min": 0,
+          "drive_min": 300,
+          "on_min": 60
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "yard_move_to_driving_on_speed",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T20:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "ON",
+          "special": "ym"
+        },
+        {
+          "time": "2026-01-15T12:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T20:30:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 0,
+          "drive_left_min": 180,
+          "shift_left_min": 330,
+          "cycle_left_min": 3690,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 930,
+          "sb_min": 0,
+          "drive_min": 480,
+          "on_min": 30
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "timezone_karachi_day_boundary",
+      "policy": {},
+      "timezone": "Asia/Karachi",
+      "now": "2026-09-06T11:00:00Z",
+      "events": [
+        {
+          "time": "2026-09-05T10:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-09-06T02:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-09-06T03:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-09-06T11:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 0,
+          "drive_left_min": 180,
+          "shift_left_min": 300,
+          "cycle_left_min": 3660,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 900,
+          "sb_min": 0,
+          "drive_min": 480,
+          "on_min": 60
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "timezone_chicago_same_events_other_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-09-06T11:00:00Z",
+      "events": [
+        {
+          "time": "2026-09-05T10:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-09-06T02:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-09-06T03:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-09-06T11:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 0,
+          "drive_left_min": 180,
+          "shift_left_min": 300,
+          "cycle_left_min": 3660,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 1080,
+          "sb_min": 0,
+          "drive_min": 360,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "break_required",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dst_spring_forward_23h_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-03-08T18:00:00Z",
+      "events": [
+        {
+          "time": "2026-03-07T12:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 840,
+          "cycle_left_min": 4200,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1380,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 0
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "dst_fall_back_25h_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-11-01T20:00:00Z",
+      "events": [
+        {
+          "time": "2026-10-31T12:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-11-01T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-11-01T20:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 480,
+          "cycle_left_min": 3840,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1140,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 360
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "out_of_order_events",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T23:30:00Z",
+      "events": [
+        {
+          "time": "2026-01-15T18:30:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T23:30:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T14:30:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T23:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T19:00:00Z",
+          "status": "DR"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 180,
+          "shift_left_min": 270,
+          "cycle_left_min": 3660,
+          "driving_time_left_min": 180
+        },
+        "totals": {
+          "off_min": 900,
+          "sb_min": 0,
+          "drive_min": 480,
+          "on_min": 60
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "open_status_from_previous_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T12:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T20:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 840,
+          "cycle_left_min": 3840,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1440,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 0
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "empty_day_no_events",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T12:00:00Z",
+      "events": [],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 840,
+          "cycle_left_min": 4200,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1440,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 0
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "only_off_duty_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T23:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-15T06:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 840,
+          "cycle_left_min": 4200,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1440,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 0
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "consecutive_identical_statuses",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T20:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T12:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T14:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T15:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T18:00:00Z",
+          "status": "DR",
+          "type": "intermediate"
+        },
+        {
+          "time": "2026-01-15T20:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 180,
+          "drive_left_min": 360,
+          "shift_left_min": 360,
+          "cycle_left_min": 3720,
+          "driving_time_left_min": 180
+        },
+        "totals": {
+          "off_min": 960,
+          "sb_min": 0,
+          "drive_min": 300,
+          "on_min": 180
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "status_change_at_local_midnight",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-15T18:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-14T20:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T06:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T16:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T18:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 720,
+          "cycle_left_min": 3480,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1320,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 120
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "multi_day_cycle_accumulation",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T01:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-11T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-12T01:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-12T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-13T01:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-13T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T01:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-15T01:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-16T01:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 120,
+          "cycle_left_min": 600,
+          "driving_time_left_min": 120
+        },
+        "totals": {
+          "off_min": 720,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 720
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "multiple_violations_one_day",
+      "policy": {},
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T01:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-08T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-08T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-09T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-09T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-10T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-10T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-11T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-11T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-12T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-12T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-13T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-13T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T13:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T23:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T10:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T01:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 0,
+          "drive_left_min": 0,
+          "shift_left_min": 0,
+          "cycle_left_min": 0,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 540,
+          "sb_min": 0,
+          "drive_min": 900,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "drive_limit",
+            "severity": "violation"
+          },
+          {
+            "type": "shift_limit",
+            "severity": "violation"
+          },
+          {
+            "type": "break_required",
+            "severity": "violation"
+          },
+          {
+            "type": "cycle_limit",
+            "severity": "violation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "policy_null_cycle_restart",
+      "policy": {
+        "cycle_restart_min": null
+      },
+      "timezone": "America/Chicago",
+      "now": "2026-01-14T14:00:00Z",
+      "events": [
+        {
+          "time": "2026-01-12T12:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-12T20:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-14T12:00:00Z",
+          "status": "ON"
+        },
+        {
+          "time": "2026-01-14T14:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 480,
+          "drive_left_min": 660,
+          "shift_left_min": 720,
+          "cycle_left_min": 3600,
+          "driving_time_left_min": 480
+        },
+        "totals": {
+          "off_min": 1320,
+          "sb_min": 0,
+          "drive_min": 0,
+          "on_min": 120
+        },
+        "violations": []
+      }
+    },
+    {
+      "name": "no_sleeper_berth_unit",
+      "policy": {
+        "sleeper_berth_available": false
+      },
+      "timezone": "America/Chicago",
+      "now": "2026-01-16T04:00:00Z",
+      "day": "2026-01-15",
+      "events": [
+        {
+          "time": "2026-01-14T22:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-15T08:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-15T13:00:00Z",
+          "status": "SB"
+        },
+        {
+          "time": "2026-01-15T21:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T01:00:00Z",
+          "status": "OFF"
+        },
+        {
+          "time": "2026-01-16T03:00:00Z",
+          "status": "DR"
+        },
+        {
+          "time": "2026-01-16T04:00:00Z",
+          "status": "OFF"
+        }
+      ],
+      "expect": {
+        "counters": {
+          "break_left_min": 420,
+          "drive_left_min": 60,
+          "shift_left_min": 0,
+          "cycle_left_min": 3600,
+          "driving_time_left_min": 0
+        },
+        "totals": {
+          "off_min": 840,
+          "sb_min": 0,
+          "drive_min": 600,
+          "on_min": 0
+        },
+        "violations": [
+          {
+            "type": "shift_limit",
+            "severity": "violation"
+          }
+        ]
+      }
+    }
+  ]
+}

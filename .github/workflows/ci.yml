@@ -1,0 +1,275 @@
+name: backend-ci
+
+on:
+  push:
+    branches: [main, develop]
+    paths: ["backend/**", ".github/workflows/ci.yml"]
+  pull_request:
+    paths: ["backend/**", ".github/workflows/ci.yml"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GO_VERSION: "1.26"
+  WORKDIR: backend
+  REGISTRY: ghcr.io
+  IMAGE_BASE: ghcr.io/${{ github.repository }}
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  # ---------------------------------------------------------------------
+  # TZ B§14 chain: lint -> swagger -> oasdiff breaking -> unit -> integration
+  # -> docker build -> staging (auto) -> production (manual approval).
+  # ---------------------------------------------------------------------
+
+  lint:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: go vet
+        run: go vet ./...
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          working-directory: backend
+          args: --timeout=5m
+
+  swagger:
+    name: swagger up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: install swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+      - name: generate spec
+        run: swag init -g cmd/api/main.go -o docs --parseDependency --parseInternal
+      - name: fail if docs/ is stale
+        run: |
+          git diff --exit-code docs/ \
+            || (echo "::error::docs/ is out of date — run 'make swag' and commit the result" && exit 1)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: swagger-spec
+          path: backend/docs/swagger.json
+
+  oasdiff:
+    name: oasdiff breaking
+    runs-on: ubuntu-latest
+    needs: [swagger]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: install oasdiff
+        run: go install github.com/oasdiff/oasdiff@latest
+      - name: diff against the latest committed snapshot
+        run: |
+          # `swagger` already proved docs/swagger.json matches the source at
+          # this commit, so the checked out file is used as-is — no
+          # regeneration needed here.
+          latest="$(ls docs/history/*.json | sort -V | tail -1)"
+          echo "base snapshot: $latest"
+          oasdiff breaking --fail-on ERR -f githubactions "$latest" docs/swagger.json
+      - name: reminder — snapshot a new version after intentional contract changes
+        if: always()
+        run: |
+          echo "If this PR intentionally changes the v1 contract before the freeze," \
+               "add a new backend/docs/history/vX.Y.json snapshot in the same PR."
+
+  test:
+    name: go test (unit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: build
+        run: go build ./...
+      - name: unit tests
+        run: go test -race -count=1 -coverprofile=coverage.out ./...
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: backend/coverage.out
+
+  integration:
+    name: go test (integration)
+    runs-on: ubuntu-latest
+    # One shared Postgres/Redis pair for the whole job — internal/testutil
+    # picks these up via TEST_DATABASE_URL / TEST_REDIS_URL and reuses them
+    # for every package instead of every package starting its own
+    # testcontainers stack (TZ B§14: "integratsiya testlari CI'da bitta
+    # service konteyner ishlatsin").
+    services:
+      postgres:
+        image: timescale/timescaledb-ha:pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: eld_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres -d eld_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/eld_test?sslmode=disable
+      TEST_REDIS_URL: redis://localhost:6379/0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: backend/go.sum
+      - name: apply migrations once
+        run: go run ./cmd/migrate -dir db/migrations -dsn "$TEST_DATABASE_URL" up
+      - name: integration tests
+        run: go test -race -count=1 -tags=integration -timeout=15m ./...
+
+  docker:
+    name: docker build
+    runs-on: ubuntu-latest
+    needs: [lint, swagger, oasdiff, test, integration]
+    outputs:
+      sha: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: build api image
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          file: backend/deploy/Dockerfile
+          target: api
+          push: false
+          build-args: VERSION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ env.IMAGE_BASE }}/api:${{ github.sha }}
+      - name: build worker image
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          file: backend/deploy/Dockerfile
+          target: worker
+          push: false
+          build-args: VERSION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ env.IMAGE_BASE }}/worker:${{ github.sha }}
+      - name: build migrate image
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          file: backend/deploy/Dockerfile
+          target: migrate
+          push: false
+          build-args: VERSION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ env.IMAGE_BASE }}/migrate:${{ github.sha }}
+
+  # -----------------------------------------------------------------------
+  # Deploy: staging is automatic on `main`; production requires a manual
+  # approval, enforced by GitHub's Environment protection rules (configured
+  # once in the repo settings, not in this file — add required reviewers to
+  # the "production" environment). Both are no-ops on pull requests.
+  # -----------------------------------------------------------------------
+
+  deploy-staging:
+    name: deploy (staging)
+    runs-on: ubuntu-latest
+    needs: [docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: https://staging.eld.example.com
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/setup-buildx-action@v3
+      - name: push api/worker/migrate images
+        run: |
+          for target in api worker migrate; do
+            docker buildx build --push \
+              --target "$target" \
+              --build-arg VERSION=${{ github.sha }} \
+              -f deploy/Dockerfile \
+              -t ${{ env.IMAGE_BASE }}/$target:${{ github.sha }} \
+              -t ${{ env.IMAGE_BASE }}/$target:staging \
+              .
+          done
+      # The actual rollout command (kubectl/ecs/ssh) depends on where staging
+      # is hosted, which is not fixed yet — see docs/runbook.md §2 for the
+      # migrate -> worker -> api ordering the real rollout script must follow.
+      - name: rollout (placeholder)
+        run: |
+          echo "TODO: trigger the staging rollout for ${{ env.IMAGE_BASE }} @ ${{ github.sha }} (see docs/runbook.md section 2)"
+
+  deploy-production:
+    name: deploy (production)
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: https://api.eld.example.com
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/setup-buildx-action@v3
+      - name: push api/worker/migrate images
+        run: |
+          for target in api worker migrate; do
+            docker buildx build --push \
+              --target "$target" \
+              --build-arg VERSION=${{ github.sha }} \
+              -f deploy/Dockerfile \
+              -t ${{ env.IMAGE_BASE }}/$target:${{ github.sha }} \
+              -t ${{ env.IMAGE_BASE }}/$target:latest \
+              .
+          done
+      - name: rollout (placeholder)
+        run: |
+          echo "TODO: trigger the production rollout for ${{ env.IMAGE_BASE }} @ ${{ github.sha }} (see docs/runbook.md section 2)"
