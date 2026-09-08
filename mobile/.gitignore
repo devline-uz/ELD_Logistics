@@ -67,3 +67,6 @@ app.*.map.json
 **/*.cer
 /ios/Runner/ExportOptions.plist
 /ios/fastlane/report.xml
+
+# FVM Version Cache
+.fvm/

@@ -8,6 +8,7 @@ mixin _$LogsDaoMixin on DatabaseAccessor<AppDatabase> {
   $HosStatesTable get hosStates => attachedDatabase.hosStates;
   $HosPoliciesTable get hosPolicies => attachedDatabase.hosPolicies;
   $LogEditRequestsTable get logEditRequests => attachedDatabase.logEditRequests;
-  $UnidentifiedEventsTable get unidentifiedEvents => attachedDatabase.unidentifiedEvents;
+  $UnidentifiedEventsTable get unidentifiedEvents =>
+      attachedDatabase.unidentifiedEvents;
   $ViolationsTable get violations => attachedDatabase.violations;
 }

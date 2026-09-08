@@ -3,7 +3,8 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
-class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, OutboxItemRow> {
+class $OutboxItemsTable extends OutboxItems
+    with TableInfo<$OutboxItemsTable, OutboxItemRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -17,7 +18,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
   static const VerificationMeta _kindMeta = const VerificationMeta('kind');
   @override
@@ -25,11 +28,16 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     'kind',
     aliasedName,
     false,
-    additionalChecks: GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 32),
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 32,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _payloadMeta = const VerificationMeta('payload');
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
   @override
   late final GeneratedColumn<String> payload = GeneratedColumn<String>(
     'payload',
@@ -38,17 +46,24 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _clientIdMeta = const VerificationMeta('clientId');
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
   @override
   late final GeneratedColumn<String> clientId = GeneratedColumn<String>(
     'client_id',
     aliasedName,
     false,
-    additionalChecks: GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 64),
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 64,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deviceSeqMeta = const VerificationMeta('deviceSeq');
+  static const VerificationMeta _deviceSeqMeta = const VerificationMeta(
+    'deviceSeq',
+  );
   @override
   late final GeneratedColumn<int> deviceSeq = GeneratedColumn<int>(
     'device_seq',
@@ -57,7 +72,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _sessionSlotMeta = const VerificationMeta('sessionSlot');
+  static const VerificationMeta _sessionSlotMeta = const VerificationMeta(
+    'sessionSlot',
+  );
   @override
   late final GeneratedColumn<int> sessionSlot = GeneratedColumn<int>(
     'session_slot',
@@ -76,7 +93,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -85,7 +104,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _attemptsMeta = const VerificationMeta('attempts');
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
   @override
   late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
     'attempts',
@@ -95,15 +116,18 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     requiredDuringInsert: false,
     defaultValue: const Constant<int>(0),
   );
-  static const VerificationMeta _nextAttemptAtMeta = const VerificationMeta('nextAttemptAt');
-  @override
-  late final GeneratedColumn<DateTime> nextAttemptAt = GeneratedColumn<DateTime>(
-    'next_attempt_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
+  static const VerificationMeta _nextAttemptAtMeta = const VerificationMeta(
+    'nextAttemptAt',
   );
+  @override
+  late final GeneratedColumn<DateTime> nextAttemptAt =
+      GeneratedColumn<DateTime>(
+        'next_attempt_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
   static const VerificationMeta _stateMeta = const VerificationMeta('state');
   @override
   late final GeneratedColumn<String> state = GeneratedColumn<String>(
@@ -114,7 +138,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('pending'),
   );
-  static const VerificationMeta _idempotencyKeyMeta = const VerificationMeta('idempotencyKey');
+  static const VerificationMeta _idempotencyKeyMeta = const VerificationMeta(
+    'idempotencyKey',
+  );
   @override
   late final GeneratedColumn<String> idempotencyKey = GeneratedColumn<String>(
     'idempotency_key',
@@ -123,7 +149,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _rejectReasonMeta = const VerificationMeta('rejectReason');
+  static const VerificationMeta _rejectReasonMeta = const VerificationMeta(
+    'rejectReason',
+  );
   @override
   late final GeneratedColumn<String> rejectReason = GeneratedColumn<String>(
     'reject_reason',
@@ -132,7 +160,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _rejectSeenMeta = const VerificationMeta('rejectSeen');
+  static const VerificationMeta _rejectSeenMeta = const VerificationMeta(
+    'rejectSeen',
+  );
   @override
   late final GeneratedColumn<bool> rejectSeen = GeneratedColumn<bool>(
     'reject_seen',
@@ -140,10 +170,14 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("reject_seen" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("reject_seen" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _supersededByMeta = const VerificationMeta('supersededBy');
+  static const VerificationMeta _supersededByMeta = const VerificationMeta(
+    'supersededBy',
+  );
   @override
   late final GeneratedColumn<String> supersededBy = GeneratedColumn<String>(
     'superseded_by',
@@ -152,7 +186,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _lastErrorMeta = const VerificationMeta('lastError');
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
   @override
   late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
     'last_error',
@@ -161,7 +197,9 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -206,12 +244,18 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     } else if (isInserting) {
       context.missing(_kindMeta);
     }
     if (data.containsKey('payload')) {
-      context.handle(_payloadMeta, payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta));
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
     } else if (isInserting) {
       context.missing(_payloadMeta);
     }
@@ -234,11 +278,17 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     if (data.containsKey('session_slot')) {
       context.handle(
         _sessionSlotMeta,
-        sessionSlot.isAcceptableOrUnknown(data['session_slot']!, _sessionSlotMeta),
+        sessionSlot.isAcceptableOrUnknown(
+          data['session_slot']!,
+          _sessionSlotMeta,
+        ),
       );
     }
     if (data.containsKey('user_id')) {
-      context.handle(_userIdMeta, userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -257,24 +307,36 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     if (data.containsKey('next_attempt_at')) {
       context.handle(
         _nextAttemptAtMeta,
-        nextAttemptAt.isAcceptableOrUnknown(data['next_attempt_at']!, _nextAttemptAtMeta),
+        nextAttemptAt.isAcceptableOrUnknown(
+          data['next_attempt_at']!,
+          _nextAttemptAtMeta,
+        ),
       );
     } else if (isInserting) {
       context.missing(_nextAttemptAtMeta);
     }
     if (data.containsKey('state')) {
-      context.handle(_stateMeta, state.isAcceptableOrUnknown(data['state']!, _stateMeta));
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
     }
     if (data.containsKey('idempotency_key')) {
       context.handle(
         _idempotencyKeyMeta,
-        idempotencyKey.isAcceptableOrUnknown(data['idempotency_key']!, _idempotencyKeyMeta),
+        idempotencyKey.isAcceptableOrUnknown(
+          data['idempotency_key']!,
+          _idempotencyKeyMeta,
+        ),
       );
     }
     if (data.containsKey('reject_reason')) {
       context.handle(
         _rejectReasonMeta,
-        rejectReason.isAcceptableOrUnknown(data['reject_reason']!, _rejectReasonMeta),
+        rejectReason.isAcceptableOrUnknown(
+          data['reject_reason']!,
+          _rejectReasonMeta,
+        ),
       );
     }
     if (data.containsKey('reject_seen')) {
@@ -286,7 +348,10 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
     if (data.containsKey('superseded_by')) {
       context.handle(
         _supersededByMeta,
-        supersededBy.isAcceptableOrUnknown(data['superseded_by']!, _supersededByMeta),
+        supersededBy.isAcceptableOrUnknown(
+          data['superseded_by']!,
+          _supersededByMeta,
+        ),
       );
     }
     if (data.containsKey('last_error')) {
@@ -316,8 +381,14 @@ class $OutboxItemsTable extends OutboxItems with TableInfo<$OutboxItemsTable, Ou
   OutboxItemRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return OutboxItemRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
       payload: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}payload'],
@@ -488,7 +559,9 @@ class OutboxItemRow extends DataClass implements Insertable<OutboxItemRow> {
       clientId: Value(clientId),
       deviceSeq: Value(deviceSeq),
       sessionSlot: Value(sessionSlot),
-      userId: userId == null && nullToAbsent ? const Value.absent() : Value(userId),
+      userId: userId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(userId),
       createdAt: Value(createdAt),
       attempts: Value(attempts),
       nextAttemptAt: Value(nextAttemptAt),
@@ -503,12 +576,17 @@ class OutboxItemRow extends DataClass implements Insertable<OutboxItemRow> {
       supersededBy: supersededBy == null && nullToAbsent
           ? const Value.absent()
           : Value(supersededBy),
-      lastError: lastError == null && nullToAbsent ? const Value.absent() : Value(lastError),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
       updatedAt: Value(updatedAt),
     );
   }
 
-  factory OutboxItemRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory OutboxItemRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return OutboxItemRow(
       id: serializer.fromJson<int>(json['id']),
@@ -584,7 +662,9 @@ class OutboxItemRow extends DataClass implements Insertable<OutboxItemRow> {
     attempts: attempts ?? this.attempts,
     nextAttemptAt: nextAttemptAt ?? this.nextAttemptAt,
     state: state ?? this.state,
-    idempotencyKey: idempotencyKey.present ? idempotencyKey.value : this.idempotencyKey,
+    idempotencyKey: idempotencyKey.present
+        ? idempotencyKey.value
+        : this.idempotencyKey,
     rejectReason: rejectReason.present ? rejectReason.value : this.rejectReason,
     rejectSeen: rejectSeen ?? this.rejectSeen,
     supersededBy: supersededBy.present ? supersededBy.value : this.supersededBy,
@@ -598,16 +678,28 @@ class OutboxItemRow extends DataClass implements Insertable<OutboxItemRow> {
       payload: data.payload.present ? data.payload.value : this.payload,
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
       deviceSeq: data.deviceSeq.present ? data.deviceSeq.value : this.deviceSeq,
-      sessionSlot: data.sessionSlot.present ? data.sessionSlot.value : this.sessionSlot,
+      sessionSlot: data.sessionSlot.present
+          ? data.sessionSlot.value
+          : this.sessionSlot,
       userId: data.userId.present ? data.userId.value : this.userId,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       attempts: data.attempts.present ? data.attempts.value : this.attempts,
-      nextAttemptAt: data.nextAttemptAt.present ? data.nextAttemptAt.value : this.nextAttemptAt,
+      nextAttemptAt: data.nextAttemptAt.present
+          ? data.nextAttemptAt.value
+          : this.nextAttemptAt,
       state: data.state.present ? data.state.value : this.state,
-      idempotencyKey: data.idempotencyKey.present ? data.idempotencyKey.value : this.idempotencyKey,
-      rejectReason: data.rejectReason.present ? data.rejectReason.value : this.rejectReason,
-      rejectSeen: data.rejectSeen.present ? data.rejectSeen.value : this.rejectSeen,
-      supersededBy: data.supersededBy.present ? data.supersededBy.value : this.supersededBy,
+      idempotencyKey: data.idempotencyKey.present
+          ? data.idempotencyKey.value
+          : this.idempotencyKey,
+      rejectReason: data.rejectReason.present
+          ? data.rejectReason.value
+          : this.rejectReason,
+      rejectSeen: data.rejectSeen.present
+          ? data.rejectSeen.value
+          : this.rejectSeen,
+      supersededBy: data.supersededBy.present
+          ? data.supersededBy.value
+          : this.supersededBy,
       lastError: data.lastError.present ? data.lastError.value : this.lastError,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -904,7 +996,8 @@ class OutboxItemsCompanion extends UpdateCompanion<OutboxItemRow> {
   }
 }
 
-class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyEventRow> {
+class $DutyEventsTable extends DutyEvents
+    with TableInfo<$DutyEventsTable, DutyEventRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -918,9 +1011,13 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
-  static const VerificationMeta _clientEventIdMeta = const VerificationMeta('clientEventId');
+  static const VerificationMeta _clientEventIdMeta = const VerificationMeta(
+    'clientEventId',
+  );
   @override
   late final GeneratedColumn<String> clientEventId = GeneratedColumn<String>(
     'client_event_id',
@@ -930,7 +1027,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
-  static const VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
+  static const VerificationMeta _serverIdMeta = const VerificationMeta(
+    'serverId',
+  );
   @override
   late final GeneratedColumn<String> serverId = GeneratedColumn<String>(
     'server_id',
@@ -939,7 +1038,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _eventTypeMeta = const VerificationMeta('eventType');
+  static const VerificationMeta _eventTypeMeta = const VerificationMeta(
+    'eventType',
+  );
   @override
   late final GeneratedColumn<String> eventType = GeneratedColumn<String>(
     'event_type',
@@ -957,7 +1058,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _specialMeta = const VerificationMeta('special');
+  static const VerificationMeta _specialMeta = const VerificationMeta(
+    'special',
+  );
   @override
   late final GeneratedColumn<String> special = GeneratedColumn<String>(
     'special',
@@ -967,7 +1070,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('none'),
   );
-  static const VerificationMeta _eventTimeMeta = const VerificationMeta('eventTime');
+  static const VerificationMeta _eventTimeMeta = const VerificationMeta(
+    'eventTime',
+  );
   @override
   late final GeneratedColumn<DateTime> eventTime = GeneratedColumn<DateTime>(
     'event_time',
@@ -976,7 +1081,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _timeSourceMeta = const VerificationMeta('timeSource');
+  static const VerificationMeta _timeSourceMeta = const VerificationMeta(
+    'timeSource',
+  );
   @override
   late final GeneratedColumn<String> timeSource = GeneratedColumn<String>(
     'time_source',
@@ -986,7 +1093,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('phone'),
   );
-  static const VerificationMeta _timeUnverifiedMeta = const VerificationMeta('timeUnverified');
+  static const VerificationMeta _timeUnverifiedMeta = const VerificationMeta(
+    'timeUnverified',
+  );
   @override
   late final GeneratedColumn<bool> timeUnverified = GeneratedColumn<bool>(
     'time_unverified',
@@ -994,10 +1103,14 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("time_unverified" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("time_unverified" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _clockSkewSecMeta = const VerificationMeta('clockSkewSec');
+  static const VerificationMeta _clockSkewSecMeta = const VerificationMeta(
+    'clockSkewSec',
+  );
   @override
   late final GeneratedColumn<int> clockSkewSec = GeneratedColumn<int>(
     'clock_skew_sec',
@@ -1007,7 +1120,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     requiredDuringInsert: false,
     defaultValue: const Constant<int>(0),
   );
-  static const VerificationMeta _deviceSeqMeta = const VerificationMeta('deviceSeq');
+  static const VerificationMeta _deviceSeqMeta = const VerificationMeta(
+    'deviceSeq',
+  );
   @override
   late final GeneratedColumn<int> deviceSeq = GeneratedColumn<int>(
     'device_seq',
@@ -1044,7 +1159,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _gpsAccuracyMMeta = const VerificationMeta('gpsAccuracyM');
+  static const VerificationMeta _gpsAccuracyMMeta = const VerificationMeta(
+    'gpsAccuracyM',
+  );
   @override
   late final GeneratedColumn<double> gpsAccuracyM = GeneratedColumn<double>(
     'gps_accuracy_m',
@@ -1053,7 +1170,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _locationTextMeta = const VerificationMeta('locationText');
+  static const VerificationMeta _locationTextMeta = const VerificationMeta(
+    'locationText',
+  );
   @override
   late final GeneratedColumn<String> locationText = GeneratedColumn<String>(
     'location_text',
@@ -1062,7 +1181,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _odometerMMeta = const VerificationMeta('odometerM');
+  static const VerificationMeta _odometerMMeta = const VerificationMeta(
+    'odometerM',
+  );
   @override
   late final GeneratedColumn<int> odometerM = GeneratedColumn<int>(
     'odometer_m',
@@ -1071,7 +1192,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _engineHoursMeta = const VerificationMeta('engineHours');
+  static const VerificationMeta _engineHoursMeta = const VerificationMeta(
+    'engineHours',
+  );
   @override
   late final GeneratedColumn<double> engineHours = GeneratedColumn<double>(
     'engine_hours',
@@ -1080,7 +1203,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _speedKmhMeta = const VerificationMeta('speedKmh');
+  static const VerificationMeta _speedKmhMeta = const VerificationMeta(
+    'speedKmh',
+  );
   @override
   late final GeneratedColumn<double> speedKmh = GeneratedColumn<double>(
     'speed_kmh',
@@ -1107,7 +1232,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _eldDeviceIdMeta = const VerificationMeta('eldDeviceId');
+  static const VerificationMeta _eldDeviceIdMeta = const VerificationMeta(
+    'eldDeviceId',
+  );
   @override
   late final GeneratedColumn<String> eldDeviceId = GeneratedColumn<String>(
     'eld_device_id',
@@ -1116,7 +1243,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _driverIdMeta = const VerificationMeta('driverId');
+  static const VerificationMeta _driverIdMeta = const VerificationMeta(
+    'driverId',
+  );
   @override
   late final GeneratedColumn<String> driverId = GeneratedColumn<String>(
     'driver_id',
@@ -1136,16 +1265,18 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
         defaultValue: const Constant<String>('[]'),
       ).withConverter<List<String>>($DutyEventsTable.$convertertrailerIds);
   @override
-  late final GeneratedColumnWithTypeConverter<List<String>, String> shippingDocIds =
-      GeneratedColumn<String>(
-        'shipping_doc_ids',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('[]'),
-      ).withConverter<List<String>>($DutyEventsTable.$convertershippingDocIds);
-  static const VerificationMeta _syncStateMeta = const VerificationMeta('syncState');
+  late final GeneratedColumnWithTypeConverter<List<String>, String>
+  shippingDocIds = GeneratedColumn<String>(
+    'shipping_doc_ids',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('[]'),
+  ).withConverter<List<String>>($DutyEventsTable.$convertershippingDocIds);
+  static const VerificationMeta _syncStateMeta = const VerificationMeta(
+    'syncState',
+  );
   @override
   late final GeneratedColumn<String> syncState = GeneratedColumn<String>(
     'sync_state',
@@ -1155,7 +1286,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('pending'),
   );
-  static const VerificationMeta _supersededByMeta = const VerificationMeta('supersededBy');
+  static const VerificationMeta _supersededByMeta = const VerificationMeta(
+    'supersededBy',
+  );
   @override
   late final GeneratedColumn<String> supersededBy = GeneratedColumn<String>(
     'superseded_by',
@@ -1172,10 +1305,14 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("locked" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("locked" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _logDateMeta = const VerificationMeta('logDate');
+  static const VerificationMeta _logDateMeta = const VerificationMeta(
+    'logDate',
+  );
   @override
   late final GeneratedColumn<String> logDate = GeneratedColumn<String>(
     'log_date',
@@ -1184,7 +1321,9 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -1244,7 +1383,10 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     if (data.containsKey('client_event_id')) {
       context.handle(
         _clientEventIdMeta,
-        clientEventId.isAcceptableOrUnknown(data['client_event_id']!, _clientEventIdMeta),
+        clientEventId.isAcceptableOrUnknown(
+          data['client_event_id']!,
+          _clientEventIdMeta,
+        ),
       );
     } else if (isInserting) {
       context.missing(_clientEventIdMeta);
@@ -1264,10 +1406,16 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
       context.missing(_eventTypeMeta);
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     }
     if (data.containsKey('special')) {
-      context.handle(_specialMeta, special.isAcceptableOrUnknown(data['special']!, _specialMeta));
+      context.handle(
+        _specialMeta,
+        special.isAcceptableOrUnknown(data['special']!, _specialMeta),
+      );
     }
     if (data.containsKey('event_time')) {
       context.handle(
@@ -1286,13 +1434,19 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     if (data.containsKey('time_unverified')) {
       context.handle(
         _timeUnverifiedMeta,
-        timeUnverified.isAcceptableOrUnknown(data['time_unverified']!, _timeUnverifiedMeta),
+        timeUnverified.isAcceptableOrUnknown(
+          data['time_unverified']!,
+          _timeUnverifiedMeta,
+        ),
       );
     }
     if (data.containsKey('clock_skew_sec')) {
       context.handle(
         _clockSkewSecMeta,
-        clockSkewSec.isAcceptableOrUnknown(data['clock_skew_sec']!, _clockSkewSecMeta),
+        clockSkewSec.isAcceptableOrUnknown(
+          data['clock_skew_sec']!,
+          _clockSkewSecMeta,
+        ),
       );
     }
     if (data.containsKey('device_seq')) {
@@ -1304,24 +1458,39 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
       context.missing(_deviceSeqMeta);
     }
     if (data.containsKey('origin')) {
-      context.handle(_originMeta, origin.isAcceptableOrUnknown(data['origin']!, _originMeta));
+      context.handle(
+        _originMeta,
+        origin.isAcceptableOrUnknown(data['origin']!, _originMeta),
+      );
     }
     if (data.containsKey('lat')) {
-      context.handle(_latMeta, lat.isAcceptableOrUnknown(data['lat']!, _latMeta));
+      context.handle(
+        _latMeta,
+        lat.isAcceptableOrUnknown(data['lat']!, _latMeta),
+      );
     }
     if (data.containsKey('lng')) {
-      context.handle(_lngMeta, lng.isAcceptableOrUnknown(data['lng']!, _lngMeta));
+      context.handle(
+        _lngMeta,
+        lng.isAcceptableOrUnknown(data['lng']!, _lngMeta),
+      );
     }
     if (data.containsKey('gps_accuracy_m')) {
       context.handle(
         _gpsAccuracyMMeta,
-        gpsAccuracyM.isAcceptableOrUnknown(data['gps_accuracy_m']!, _gpsAccuracyMMeta),
+        gpsAccuracyM.isAcceptableOrUnknown(
+          data['gps_accuracy_m']!,
+          _gpsAccuracyMMeta,
+        ),
       );
     }
     if (data.containsKey('location_text')) {
       context.handle(
         _locationTextMeta,
-        locationText.isAcceptableOrUnknown(data['location_text']!, _locationTextMeta),
+        locationText.isAcceptableOrUnknown(
+          data['location_text']!,
+          _locationTextMeta,
+        ),
       );
     }
     if (data.containsKey('odometer_m')) {
@@ -1333,7 +1502,10 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     if (data.containsKey('engine_hours')) {
       context.handle(
         _engineHoursMeta,
-        engineHours.isAcceptableOrUnknown(data['engine_hours']!, _engineHoursMeta),
+        engineHours.isAcceptableOrUnknown(
+          data['engine_hours']!,
+          _engineHoursMeta,
+        ),
       );
     }
     if (data.containsKey('speed_kmh')) {
@@ -1343,15 +1515,24 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
       );
     }
     if (data.containsKey('notes')) {
-      context.handle(_notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     }
     if (data.containsKey('eld_device_id')) {
       context.handle(
         _eldDeviceIdMeta,
-        eldDeviceId.isAcceptableOrUnknown(data['eld_device_id']!, _eldDeviceIdMeta),
+        eldDeviceId.isAcceptableOrUnknown(
+          data['eld_device_id']!,
+          _eldDeviceIdMeta,
+        ),
       );
     }
     if (data.containsKey('driver_id')) {
@@ -1369,14 +1550,23 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     if (data.containsKey('superseded_by')) {
       context.handle(
         _supersededByMeta,
-        supersededBy.isAcceptableOrUnknown(data['superseded_by']!, _supersededByMeta),
+        supersededBy.isAcceptableOrUnknown(
+          data['superseded_by']!,
+          _supersededByMeta,
+        ),
       );
     }
     if (data.containsKey('locked')) {
-      context.handle(_lockedMeta, locked.isAcceptableOrUnknown(data['locked']!, _lockedMeta));
+      context.handle(
+        _lockedMeta,
+        locked.isAcceptableOrUnknown(data['locked']!, _lockedMeta),
+      );
     }
     if (data.containsKey('log_date')) {
-      context.handle(_logDateMeta, logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta));
+      context.handle(
+        _logDateMeta,
+        logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -1395,7 +1585,10 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
   DutyEventRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DutyEventRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       clientEventId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}client_event_id'],
@@ -1440,8 +1633,14 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
         DriftSqlType.string,
         data['${effectivePrefix}origin'],
       )!,
-      lat: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lat']),
-      lng: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lng']),
+      lat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lat'],
+      ),
+      lng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lng'],
+      ),
       gpsAccuracyM: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}gps_accuracy_m'],
@@ -1518,10 +1717,10 @@ class $DutyEventsTable extends DutyEvents with TableInfo<$DutyEventsTable, DutyE
     return $DutyEventsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<List<String>, String, Object?> $convertertrailerIds =
-      const StringListConverter();
-  static JsonTypeConverter2<List<String>, String, Object?> $convertershippingDocIds =
-      const StringListConverter();
+  static JsonTypeConverter2<List<String>, String, Object?>
+  $convertertrailerIds = const StringListConverter();
+  static JsonTypeConverter2<List<String>, String, Object?>
+  $convertershippingDocIds = const StringListConverter();
 }
 
 class DutyEventRow extends DataClass implements Insertable<DutyEventRow> {
@@ -1687,9 +1886,13 @@ class DutyEventRow extends DataClass implements Insertable<DutyEventRow> {
     return DutyEventsCompanion(
       id: Value(id),
       clientEventId: Value(clientEventId),
-      serverId: serverId == null && nullToAbsent ? const Value.absent() : Value(serverId),
+      serverId: serverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverId),
       eventType: Value(eventType),
-      status: status == null && nullToAbsent ? const Value.absent() : Value(status),
+      status: status == null && nullToAbsent
+          ? const Value.absent()
+          : Value(status),
       special: Value(special),
       eventTime: Value(eventTime),
       timeSource: Value(timeSource),
@@ -1705,13 +1908,27 @@ class DutyEventRow extends DataClass implements Insertable<DutyEventRow> {
       locationText: locationText == null && nullToAbsent
           ? const Value.absent()
           : Value(locationText),
-      odometerM: odometerM == null && nullToAbsent ? const Value.absent() : Value(odometerM),
-      engineHours: engineHours == null && nullToAbsent ? const Value.absent() : Value(engineHours),
-      speedKmh: speedKmh == null && nullToAbsent ? const Value.absent() : Value(speedKmh),
-      notes: notes == null && nullToAbsent ? const Value.absent() : Value(notes),
-      unitId: unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
-      eldDeviceId: eldDeviceId == null && nullToAbsent ? const Value.absent() : Value(eldDeviceId),
-      driverId: driverId == null && nullToAbsent ? const Value.absent() : Value(driverId),
+      odometerM: odometerM == null && nullToAbsent
+          ? const Value.absent()
+          : Value(odometerM),
+      engineHours: engineHours == null && nullToAbsent
+          ? const Value.absent()
+          : Value(engineHours),
+      speedKmh: speedKmh == null && nullToAbsent
+          ? const Value.absent()
+          : Value(speedKmh),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      unitId: unitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unitId),
+      eldDeviceId: eldDeviceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(eldDeviceId),
+      driverId: driverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(driverId),
       trailerIds: Value(trailerIds),
       shippingDocIds: Value(shippingDocIds),
       syncState: Value(syncState),
@@ -1719,12 +1936,17 @@ class DutyEventRow extends DataClass implements Insertable<DutyEventRow> {
           ? const Value.absent()
           : Value(supersededBy),
       locked: Value(locked),
-      logDate: logDate == null && nullToAbsent ? const Value.absent() : Value(logDate),
+      logDate: logDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(logDate),
       createdAt: Value(createdAt),
     );
   }
 
-  factory DutyEventRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory DutyEventRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DutyEventRow(
       id: serializer.fromJson<int>(json['id']),
@@ -1870,32 +2092,54 @@ class DutyEventRow extends DataClass implements Insertable<DutyEventRow> {
   DutyEventRow copyWithCompanion(DutyEventsCompanion data) {
     return DutyEventRow(
       id: data.id.present ? data.id.value : this.id,
-      clientEventId: data.clientEventId.present ? data.clientEventId.value : this.clientEventId,
+      clientEventId: data.clientEventId.present
+          ? data.clientEventId.value
+          : this.clientEventId,
       serverId: data.serverId.present ? data.serverId.value : this.serverId,
       eventType: data.eventType.present ? data.eventType.value : this.eventType,
       status: data.status.present ? data.status.value : this.status,
       special: data.special.present ? data.special.value : this.special,
       eventTime: data.eventTime.present ? data.eventTime.value : this.eventTime,
-      timeSource: data.timeSource.present ? data.timeSource.value : this.timeSource,
-      timeUnverified: data.timeUnverified.present ? data.timeUnverified.value : this.timeUnverified,
-      clockSkewSec: data.clockSkewSec.present ? data.clockSkewSec.value : this.clockSkewSec,
+      timeSource: data.timeSource.present
+          ? data.timeSource.value
+          : this.timeSource,
+      timeUnverified: data.timeUnverified.present
+          ? data.timeUnverified.value
+          : this.timeUnverified,
+      clockSkewSec: data.clockSkewSec.present
+          ? data.clockSkewSec.value
+          : this.clockSkewSec,
       deviceSeq: data.deviceSeq.present ? data.deviceSeq.value : this.deviceSeq,
       origin: data.origin.present ? data.origin.value : this.origin,
       lat: data.lat.present ? data.lat.value : this.lat,
       lng: data.lng.present ? data.lng.value : this.lng,
-      gpsAccuracyM: data.gpsAccuracyM.present ? data.gpsAccuracyM.value : this.gpsAccuracyM,
-      locationText: data.locationText.present ? data.locationText.value : this.locationText,
+      gpsAccuracyM: data.gpsAccuracyM.present
+          ? data.gpsAccuracyM.value
+          : this.gpsAccuracyM,
+      locationText: data.locationText.present
+          ? data.locationText.value
+          : this.locationText,
       odometerM: data.odometerM.present ? data.odometerM.value : this.odometerM,
-      engineHours: data.engineHours.present ? data.engineHours.value : this.engineHours,
+      engineHours: data.engineHours.present
+          ? data.engineHours.value
+          : this.engineHours,
       speedKmh: data.speedKmh.present ? data.speedKmh.value : this.speedKmh,
       notes: data.notes.present ? data.notes.value : this.notes,
       unitId: data.unitId.present ? data.unitId.value : this.unitId,
-      eldDeviceId: data.eldDeviceId.present ? data.eldDeviceId.value : this.eldDeviceId,
+      eldDeviceId: data.eldDeviceId.present
+          ? data.eldDeviceId.value
+          : this.eldDeviceId,
       driverId: data.driverId.present ? data.driverId.value : this.driverId,
-      trailerIds: data.trailerIds.present ? data.trailerIds.value : this.trailerIds,
-      shippingDocIds: data.shippingDocIds.present ? data.shippingDocIds.value : this.shippingDocIds,
+      trailerIds: data.trailerIds.present
+          ? data.trailerIds.value
+          : this.trailerIds,
+      shippingDocIds: data.shippingDocIds.present
+          ? data.shippingDocIds.value
+          : this.shippingDocIds,
       syncState: data.syncState.present ? data.syncState.value : this.syncState,
-      supersededBy: data.supersededBy.present ? data.supersededBy.value : this.supersededBy,
+      supersededBy: data.supersededBy.present
+          ? data.supersededBy.value
+          : this.supersededBy,
       locked: data.locked.present ? data.locked.value : this.locked,
       logDate: data.logDate.present ? data.logDate.value : this.logDate,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -2392,7 +2636,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
   static const VerificationMeta _unitIdMeta = const VerificationMeta('unitId');
   @override
@@ -2430,7 +2676,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _speedKmhMeta = const VerificationMeta('speedKmh');
+  static const VerificationMeta _speedKmhMeta = const VerificationMeta(
+    'speedKmh',
+  );
   @override
   late final GeneratedColumn<double> speedKmh = GeneratedColumn<double>(
     'speed_kmh',
@@ -2439,7 +2687,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _headingDegMeta = const VerificationMeta('headingDeg');
+  static const VerificationMeta _headingDegMeta = const VerificationMeta(
+    'headingDeg',
+  );
   @override
   late final GeneratedColumn<double> headingDeg = GeneratedColumn<double>(
     'heading_deg',
@@ -2448,7 +2698,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _odometerMMeta = const VerificationMeta('odometerM');
+  static const VerificationMeta _odometerMMeta = const VerificationMeta(
+    'odometerM',
+  );
   @override
   late final GeneratedColumn<int> odometerM = GeneratedColumn<int>(
     'odometer_m',
@@ -2457,7 +2709,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _engineHoursMeta = const VerificationMeta('engineHours');
+  static const VerificationMeta _engineHoursMeta = const VerificationMeta(
+    'engineHours',
+  );
   @override
   late final GeneratedColumn<double> engineHours = GeneratedColumn<double>(
     'engine_hours',
@@ -2466,7 +2720,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _ignitionMeta = const VerificationMeta('ignition');
+  static const VerificationMeta _ignitionMeta = const VerificationMeta(
+    'ignition',
+  );
   @override
   late final GeneratedColumn<bool> ignition = GeneratedColumn<bool>(
     'ignition',
@@ -2474,9 +2730,13 @@ class $TelemetryBufferTable extends TelemetryBuffer
     true,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("ignition" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("ignition" IN (0, 1))',
+    ),
   );
-  static const VerificationMeta _fuelPctMeta = const VerificationMeta('fuelPct');
+  static const VerificationMeta _fuelPctMeta = const VerificationMeta(
+    'fuelPct',
+  );
   @override
   late final GeneratedColumn<double> fuelPct = GeneratedColumn<double>(
     'fuel_pct',
@@ -2485,7 +2745,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _coolantTempCMeta = const VerificationMeta('coolantTempC');
+  static const VerificationMeta _coolantTempCMeta = const VerificationMeta(
+    'coolantTempC',
+  );
   @override
   late final GeneratedColumn<double> coolantTempC = GeneratedColumn<double>(
     'coolant_temp_c',
@@ -2494,7 +2756,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _coolantLevelPctMeta = const VerificationMeta('coolantLevelPct');
+  static const VerificationMeta _coolantLevelPctMeta = const VerificationMeta(
+    'coolantLevelPct',
+  );
   @override
   late final GeneratedColumn<double> coolantLevelPct = GeneratedColumn<double>(
     'coolant_level_pct',
@@ -2503,7 +2767,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _oilLevelPctMeta = const VerificationMeta('oilLevelPct');
+  static const VerificationMeta _oilLevelPctMeta = const VerificationMeta(
+    'oilLevelPct',
+  );
   @override
   late final GeneratedColumn<double> oilLevelPct = GeneratedColumn<double>(
     'oil_level_pct',
@@ -2512,7 +2778,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _batteryVoltageMeta = const VerificationMeta('batteryVoltage');
+  static const VerificationMeta _batteryVoltageMeta = const VerificationMeta(
+    'batteryVoltage',
+  );
   @override
   late final GeneratedColumn<double> batteryVoltage = GeneratedColumn<double>(
     'battery_voltage',
@@ -2521,7 +2789,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _batteryPctMeta = const VerificationMeta('batteryPct');
+  static const VerificationMeta _batteryPctMeta = const VerificationMeta(
+    'batteryPct',
+  );
   @override
   late final GeneratedColumn<double> batteryPct = GeneratedColumn<double>(
     'battery_pct',
@@ -2531,15 +2801,20 @@ class $TelemetryBufferTable extends TelemetryBuffer
     requiredDuringInsert: false,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>?, String> diagnostics =
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>?, String>
+  diagnostics =
       GeneratedColumn<String>(
         'diagnostics',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<Map<String, Object?>?>($TelemetryBufferTable.$converterdiagnosticsn);
-  static const VerificationMeta _disconnectedMeta = const VerificationMeta('disconnected');
+      ).withConverter<Map<String, Object?>?>(
+        $TelemetryBufferTable.$converterdiagnosticsn,
+      );
+  static const VerificationMeta _disconnectedMeta = const VerificationMeta(
+    'disconnected',
+  );
   @override
   late final GeneratedColumn<bool> disconnected = GeneratedColumn<bool>(
     'disconnected',
@@ -2547,10 +2822,14 @@ class $TelemetryBufferTable extends TelemetryBuffer
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("disconnected" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("disconnected" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _dutyStatusMeta = const VerificationMeta('dutyStatus');
+  static const VerificationMeta _dutyStatusMeta = const VerificationMeta(
+    'dutyStatus',
+  );
   @override
   late final GeneratedColumn<String> dutyStatus = GeneratedColumn<String>(
     'duty_status',
@@ -2559,7 +2838,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _driverIdMeta = const VerificationMeta('driverId');
+  static const VerificationMeta _driverIdMeta = const VerificationMeta(
+    'driverId',
+  );
   @override
   late final GeneratedColumn<String> driverId = GeneratedColumn<String>(
     'driver_id',
@@ -2576,7 +2857,9 @@ class $TelemetryBufferTable extends TelemetryBuffer
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("sent" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("sent" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
   @override
@@ -2619,7 +2902,10 @@ class $TelemetryBufferTable extends TelemetryBuffer
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_unitIdMeta);
     }
@@ -2629,10 +2915,16 @@ class $TelemetryBufferTable extends TelemetryBuffer
       context.missing(_tsMeta);
     }
     if (data.containsKey('lat')) {
-      context.handle(_latMeta, lat.isAcceptableOrUnknown(data['lat']!, _latMeta));
+      context.handle(
+        _latMeta,
+        lat.isAcceptableOrUnknown(data['lat']!, _latMeta),
+      );
     }
     if (data.containsKey('lng')) {
-      context.handle(_lngMeta, lng.isAcceptableOrUnknown(data['lng']!, _lngMeta));
+      context.handle(
+        _lngMeta,
+        lng.isAcceptableOrUnknown(data['lng']!, _lngMeta),
+      );
     }
     if (data.containsKey('speed_kmh')) {
       context.handle(
@@ -2655,7 +2947,10 @@ class $TelemetryBufferTable extends TelemetryBuffer
     if (data.containsKey('engine_hours')) {
       context.handle(
         _engineHoursMeta,
-        engineHours.isAcceptableOrUnknown(data['engine_hours']!, _engineHoursMeta),
+        engineHours.isAcceptableOrUnknown(
+          data['engine_hours']!,
+          _engineHoursMeta,
+        ),
       );
     }
     if (data.containsKey('ignition')) {
@@ -2665,30 +2960,45 @@ class $TelemetryBufferTable extends TelemetryBuffer
       );
     }
     if (data.containsKey('fuel_pct')) {
-      context.handle(_fuelPctMeta, fuelPct.isAcceptableOrUnknown(data['fuel_pct']!, _fuelPctMeta));
+      context.handle(
+        _fuelPctMeta,
+        fuelPct.isAcceptableOrUnknown(data['fuel_pct']!, _fuelPctMeta),
+      );
     }
     if (data.containsKey('coolant_temp_c')) {
       context.handle(
         _coolantTempCMeta,
-        coolantTempC.isAcceptableOrUnknown(data['coolant_temp_c']!, _coolantTempCMeta),
+        coolantTempC.isAcceptableOrUnknown(
+          data['coolant_temp_c']!,
+          _coolantTempCMeta,
+        ),
       );
     }
     if (data.containsKey('coolant_level_pct')) {
       context.handle(
         _coolantLevelPctMeta,
-        coolantLevelPct.isAcceptableOrUnknown(data['coolant_level_pct']!, _coolantLevelPctMeta),
+        coolantLevelPct.isAcceptableOrUnknown(
+          data['coolant_level_pct']!,
+          _coolantLevelPctMeta,
+        ),
       );
     }
     if (data.containsKey('oil_level_pct')) {
       context.handle(
         _oilLevelPctMeta,
-        oilLevelPct.isAcceptableOrUnknown(data['oil_level_pct']!, _oilLevelPctMeta),
+        oilLevelPct.isAcceptableOrUnknown(
+          data['oil_level_pct']!,
+          _oilLevelPctMeta,
+        ),
       );
     }
     if (data.containsKey('battery_voltage')) {
       context.handle(
         _batteryVoltageMeta,
-        batteryVoltage.isAcceptableOrUnknown(data['battery_voltage']!, _batteryVoltageMeta),
+        batteryVoltage.isAcceptableOrUnknown(
+          data['battery_voltage']!,
+          _batteryVoltageMeta,
+        ),
       );
     }
     if (data.containsKey('battery_pct')) {
@@ -2700,7 +3010,10 @@ class $TelemetryBufferTable extends TelemetryBuffer
     if (data.containsKey('disconnected')) {
       context.handle(
         _disconnectedMeta,
-        disconnected.isAcceptableOrUnknown(data['disconnected']!, _disconnectedMeta),
+        disconnected.isAcceptableOrUnknown(
+          data['disconnected']!,
+          _disconnectedMeta,
+        ),
       );
     }
     if (data.containsKey('duty_status')) {
@@ -2716,7 +3029,10 @@ class $TelemetryBufferTable extends TelemetryBuffer
       );
     }
     if (data.containsKey('sent')) {
-      context.handle(_sentMeta, sent.isAcceptableOrUnknown(data['sent']!, _sentMeta));
+      context.handle(
+        _sentMeta,
+        sent.isAcceptableOrUnknown(data['sent']!, _sentMeta),
+      );
     }
     return context;
   }
@@ -2731,14 +3047,26 @@ class $TelemetryBufferTable extends TelemetryBuffer
   TelemetryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TelemetryRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       unitId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}unit_id'],
       )!,
-      ts: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}ts'])!,
-      lat: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lat']),
-      lng: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lng']),
+      ts: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}ts'],
+      )!,
+      lat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lat'],
+      ),
+      lng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lng'],
+      ),
       speedKmh: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}speed_kmh'],
@@ -2801,7 +3129,10 @@ class $TelemetryBufferTable extends TelemetryBuffer
         DriftSqlType.string,
         data['${effectivePrefix}driver_id'],
       ),
-      sent: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}sent'])!,
+      sent: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}sent'],
+      )!,
     );
   }
 
@@ -2810,10 +3141,10 @@ class $TelemetryBufferTable extends TelemetryBuffer
     return $TelemetryBufferTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $converterdiagnostics =
-      const JsonMapConverter();
-  static JsonTypeConverter2<Map<String, Object?>?, String?, Object?> $converterdiagnosticsn =
-      JsonTypeConverter2.asNullable($converterdiagnostics);
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $converterdiagnostics = const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>?, String?, Object?>
+  $converterdiagnosticsn = JsonTypeConverter2.asNullable($converterdiagnostics);
 }
 
 class TelemetryRow extends DataClass implements Insertable<TelemetryRow> {
@@ -2933,32 +3264,57 @@ class TelemetryRow extends DataClass implements Insertable<TelemetryRow> {
       ts: Value(ts),
       lat: lat == null && nullToAbsent ? const Value.absent() : Value(lat),
       lng: lng == null && nullToAbsent ? const Value.absent() : Value(lng),
-      speedKmh: speedKmh == null && nullToAbsent ? const Value.absent() : Value(speedKmh),
-      headingDeg: headingDeg == null && nullToAbsent ? const Value.absent() : Value(headingDeg),
-      odometerM: odometerM == null && nullToAbsent ? const Value.absent() : Value(odometerM),
-      engineHours: engineHours == null && nullToAbsent ? const Value.absent() : Value(engineHours),
-      ignition: ignition == null && nullToAbsent ? const Value.absent() : Value(ignition),
-      fuelPct: fuelPct == null && nullToAbsent ? const Value.absent() : Value(fuelPct),
+      speedKmh: speedKmh == null && nullToAbsent
+          ? const Value.absent()
+          : Value(speedKmh),
+      headingDeg: headingDeg == null && nullToAbsent
+          ? const Value.absent()
+          : Value(headingDeg),
+      odometerM: odometerM == null && nullToAbsent
+          ? const Value.absent()
+          : Value(odometerM),
+      engineHours: engineHours == null && nullToAbsent
+          ? const Value.absent()
+          : Value(engineHours),
+      ignition: ignition == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ignition),
+      fuelPct: fuelPct == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fuelPct),
       coolantTempC: coolantTempC == null && nullToAbsent
           ? const Value.absent()
           : Value(coolantTempC),
       coolantLevelPct: coolantLevelPct == null && nullToAbsent
           ? const Value.absent()
           : Value(coolantLevelPct),
-      oilLevelPct: oilLevelPct == null && nullToAbsent ? const Value.absent() : Value(oilLevelPct),
+      oilLevelPct: oilLevelPct == null && nullToAbsent
+          ? const Value.absent()
+          : Value(oilLevelPct),
       batteryVoltage: batteryVoltage == null && nullToAbsent
           ? const Value.absent()
           : Value(batteryVoltage),
-      batteryPct: batteryPct == null && nullToAbsent ? const Value.absent() : Value(batteryPct),
-      diagnostics: diagnostics == null && nullToAbsent ? const Value.absent() : Value(diagnostics),
+      batteryPct: batteryPct == null && nullToAbsent
+          ? const Value.absent()
+          : Value(batteryPct),
+      diagnostics: diagnostics == null && nullToAbsent
+          ? const Value.absent()
+          : Value(diagnostics),
       disconnected: Value(disconnected),
-      dutyStatus: dutyStatus == null && nullToAbsent ? const Value.absent() : Value(dutyStatus),
-      driverId: driverId == null && nullToAbsent ? const Value.absent() : Value(driverId),
+      dutyStatus: dutyStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dutyStatus),
+      driverId: driverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(driverId),
       sent: Value(sent),
     );
   }
 
-  factory TelemetryRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory TelemetryRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TelemetryRow(
       id: serializer.fromJson<int>(json['id']),
@@ -3051,9 +3407,13 @@ class TelemetryRow extends DataClass implements Insertable<TelemetryRow> {
     ignition: ignition.present ? ignition.value : this.ignition,
     fuelPct: fuelPct.present ? fuelPct.value : this.fuelPct,
     coolantTempC: coolantTempC.present ? coolantTempC.value : this.coolantTempC,
-    coolantLevelPct: coolantLevelPct.present ? coolantLevelPct.value : this.coolantLevelPct,
+    coolantLevelPct: coolantLevelPct.present
+        ? coolantLevelPct.value
+        : this.coolantLevelPct,
     oilLevelPct: oilLevelPct.present ? oilLevelPct.value : this.oilLevelPct,
-    batteryVoltage: batteryVoltage.present ? batteryVoltage.value : this.batteryVoltage,
+    batteryVoltage: batteryVoltage.present
+        ? batteryVoltage.value
+        : this.batteryVoltage,
     batteryPct: batteryPct.present ? batteryPct.value : this.batteryPct,
     diagnostics: diagnostics.present ? diagnostics.value : this.diagnostics,
     disconnected: disconnected ?? this.disconnected,
@@ -3069,21 +3429,39 @@ class TelemetryRow extends DataClass implements Insertable<TelemetryRow> {
       lat: data.lat.present ? data.lat.value : this.lat,
       lng: data.lng.present ? data.lng.value : this.lng,
       speedKmh: data.speedKmh.present ? data.speedKmh.value : this.speedKmh,
-      headingDeg: data.headingDeg.present ? data.headingDeg.value : this.headingDeg,
+      headingDeg: data.headingDeg.present
+          ? data.headingDeg.value
+          : this.headingDeg,
       odometerM: data.odometerM.present ? data.odometerM.value : this.odometerM,
-      engineHours: data.engineHours.present ? data.engineHours.value : this.engineHours,
+      engineHours: data.engineHours.present
+          ? data.engineHours.value
+          : this.engineHours,
       ignition: data.ignition.present ? data.ignition.value : this.ignition,
       fuelPct: data.fuelPct.present ? data.fuelPct.value : this.fuelPct,
-      coolantTempC: data.coolantTempC.present ? data.coolantTempC.value : this.coolantTempC,
+      coolantTempC: data.coolantTempC.present
+          ? data.coolantTempC.value
+          : this.coolantTempC,
       coolantLevelPct: data.coolantLevelPct.present
           ? data.coolantLevelPct.value
           : this.coolantLevelPct,
-      oilLevelPct: data.oilLevelPct.present ? data.oilLevelPct.value : this.oilLevelPct,
-      batteryVoltage: data.batteryVoltage.present ? data.batteryVoltage.value : this.batteryVoltage,
-      batteryPct: data.batteryPct.present ? data.batteryPct.value : this.batteryPct,
-      diagnostics: data.diagnostics.present ? data.diagnostics.value : this.diagnostics,
-      disconnected: data.disconnected.present ? data.disconnected.value : this.disconnected,
-      dutyStatus: data.dutyStatus.present ? data.dutyStatus.value : this.dutyStatus,
+      oilLevelPct: data.oilLevelPct.present
+          ? data.oilLevelPct.value
+          : this.oilLevelPct,
+      batteryVoltage: data.batteryVoltage.present
+          ? data.batteryVoltage.value
+          : this.batteryVoltage,
+      batteryPct: data.batteryPct.present
+          ? data.batteryPct.value
+          : this.batteryPct,
+      diagnostics: data.diagnostics.present
+          ? data.diagnostics.value
+          : this.diagnostics,
+      disconnected: data.disconnected.present
+          ? data.disconnected.value
+          : this.disconnected,
+      dutyStatus: data.dutyStatus.present
+          ? data.dutyStatus.value
+          : this.dutyStatus,
       driverId: data.driverId.present ? data.driverId.value : this.driverId,
       sent: data.sent.present ? data.sent.value : this.sent,
     );
@@ -3433,7 +3811,8 @@ class TelemetryBufferCompanion extends UpdateCompanion<TelemetryRow> {
   }
 }
 
-class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLogRow> {
+class $DailyLogsTable extends DailyLogs
+    with TableInfo<$DailyLogsTable, DailyLogRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3447,9 +3826,13 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
-  static const VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
+  static const VerificationMeta _serverIdMeta = const VerificationMeta(
+    'serverId',
+  );
   @override
   late final GeneratedColumn<String> serverId = GeneratedColumn<String>(
     'server_id',
@@ -3458,17 +3841,24 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _logDateMeta = const VerificationMeta('logDate');
+  static const VerificationMeta _logDateMeta = const VerificationMeta(
+    'logDate',
+  );
   @override
   late final GeneratedColumn<String> logDate = GeneratedColumn<String>(
     'log_date',
     aliasedName,
     false,
-    additionalChecks: GeneratedColumn.checkTextLength(minTextLength: 10, maxTextLength: 10),
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _driverIdMeta = const VerificationMeta('driverId');
+  static const VerificationMeta _driverIdMeta = const VerificationMeta(
+    'driverId',
+  );
   @override
   late final GeneratedColumn<String> driverId = GeneratedColumn<String>(
     'driver_id',
@@ -3477,7 +3867,9 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _timezoneMeta = const VerificationMeta('timezone');
+  static const VerificationMeta _timezoneMeta = const VerificationMeta(
+    'timezone',
+  );
   @override
   late final GeneratedColumn<String> timezone = GeneratedColumn<String>(
     'timezone',
@@ -3486,19 +3878,21 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _certificationStatusMeta = const VerificationMeta(
-    'certificationStatus',
-  );
+  static const VerificationMeta _certificationStatusMeta =
+      const VerificationMeta('certificationStatus');
   @override
-  late final GeneratedColumn<String> certificationStatus = GeneratedColumn<String>(
-    'certification_status',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant<String>('uncertified'),
+  late final GeneratedColumn<String> certificationStatus =
+      GeneratedColumn<String>(
+        'certification_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: const Constant<String>('uncertified'),
+      );
+  static const VerificationMeta _signedAtMeta = const VerificationMeta(
+    'signedAt',
   );
-  static const VerificationMeta _signedAtMeta = const VerificationMeta('signedAt');
   @override
   late final GeneratedColumn<DateTime> signedAt = GeneratedColumn<DateTime>(
     'signed_at',
@@ -3507,7 +3901,9 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _distanceMMeta = const VerificationMeta('distanceM');
+  static const VerificationMeta _distanceMMeta = const VerificationMeta(
+    'distanceM',
+  );
   @override
   late final GeneratedColumn<int> distanceM = GeneratedColumn<int>(
     'distance_m',
@@ -3518,15 +3914,15 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     defaultValue: const Constant<int>(0),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> totals =
-      GeneratedColumn<String>(
-        'totals',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($DailyLogsTable.$convertertotals);
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  totals = GeneratedColumn<String>(
+    'totals',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('{}'),
+  ).withConverter<Map<String, Object?>>($DailyLogsTable.$convertertotals);
   static const VerificationMeta _readyMeta = const VerificationMeta('ready');
   @override
   late final GeneratedColumn<bool> ready = GeneratedColumn<bool>(
@@ -3535,10 +3931,14 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("ready" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("ready" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -3583,7 +3983,10 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
       );
     }
     if (data.containsKey('log_date')) {
-      context.handle(_logDateMeta, logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta));
+      context.handle(
+        _logDateMeta,
+        logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta),
+      );
     } else if (isInserting) {
       context.missing(_logDateMeta);
     }
@@ -3625,7 +4028,10 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
       );
     }
     if (data.containsKey('ready')) {
-      context.handle(_readyMeta, ready.isAcceptableOrUnknown(data['ready']!, _readyMeta));
+      context.handle(
+        _readyMeta,
+        ready.isAcceptableOrUnknown(data['ready']!, _readyMeta),
+      );
     }
     if (data.containsKey('updated_at')) {
       context.handle(
@@ -3648,7 +4054,10 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
   DailyLogRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DailyLogRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       serverId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}server_id'],
@@ -3678,9 +4087,15 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
         data['${effectivePrefix}distance_m'],
       )!,
       totals: $DailyLogsTable.$convertertotals.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}totals'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}totals'],
+        )!,
       ),
-      ready: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}ready'])!,
+      ready: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}ready'],
+      )!,
       updatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
@@ -3693,8 +4108,8 @@ class $DailyLogsTable extends DailyLogs with TableInfo<$DailyLogsTable, DailyLog
     return $DailyLogsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $convertertotals =
-      const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $convertertotals = const JsonMapConverter();
 }
 
 class DailyLogRow extends DataClass implements Insertable<DailyLogRow> {
@@ -3748,7 +4163,9 @@ class DailyLogRow extends DataClass implements Insertable<DailyLogRow> {
     }
     map['distance_m'] = Variable<int>(distanceM);
     {
-      map['totals'] = Variable<String>($DailyLogsTable.$convertertotals.toSql(totals));
+      map['totals'] = Variable<String>(
+        $DailyLogsTable.$convertertotals.toSql(totals),
+      );
     }
     map['ready'] = Variable<bool>(ready);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -3758,12 +4175,16 @@ class DailyLogRow extends DataClass implements Insertable<DailyLogRow> {
   DailyLogsCompanion toCompanion(bool nullToAbsent) {
     return DailyLogsCompanion(
       id: Value(id),
-      serverId: serverId == null && nullToAbsent ? const Value.absent() : Value(serverId),
+      serverId: serverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverId),
       logDate: Value(logDate),
       driverId: Value(driverId),
       timezone: Value(timezone),
       certificationStatus: Value(certificationStatus),
-      signedAt: signedAt == null && nullToAbsent ? const Value.absent() : Value(signedAt),
+      signedAt: signedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(signedAt),
       distanceM: Value(distanceM),
       totals: Value(totals),
       ready: Value(ready),
@@ -3771,7 +4192,10 @@ class DailyLogRow extends DataClass implements Insertable<DailyLogRow> {
     );
   }
 
-  factory DailyLogRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory DailyLogRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DailyLogRow(
       id: serializer.fromJson<int>(json['id']),
@@ -3779,7 +4203,9 @@ class DailyLogRow extends DataClass implements Insertable<DailyLogRow> {
       logDate: serializer.fromJson<String>(json['logDate']),
       driverId: serializer.fromJson<String>(json['driverId']),
       timezone: serializer.fromJson<String>(json['timezone']),
-      certificationStatus: serializer.fromJson<String>(json['certificationStatus']),
+      certificationStatus: serializer.fromJson<String>(
+        json['certificationStatus'],
+      ),
       signedAt: serializer.fromJson<DateTime?>(json['signedAt']),
       distanceM: serializer.fromJson<int>(json['distanceM']),
       totals: $DailyLogsTable.$convertertotals.fromJson(
@@ -3801,7 +4227,9 @@ class DailyLogRow extends DataClass implements Insertable<DailyLogRow> {
       'certificationStatus': serializer.toJson<String>(certificationStatus),
       'signedAt': serializer.toJson<DateTime?>(signedAt),
       'distanceM': serializer.toJson<int>(distanceM),
-      'totals': serializer.toJson<Object?>($DailyLogsTable.$convertertotals.toJson(totals)),
+      'totals': serializer.toJson<Object?>(
+        $DailyLogsTable.$convertertotals.toJson(totals),
+      ),
       'ready': serializer.toJson<bool>(ready),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -3959,7 +4387,8 @@ class DailyLogsCompanion extends UpdateCompanion<DailyLogRow> {
       if (logDate != null) 'log_date': logDate,
       if (driverId != null) 'driver_id': driverId,
       if (timezone != null) 'timezone': timezone,
-      if (certificationStatus != null) 'certification_status': certificationStatus,
+      if (certificationStatus != null)
+        'certification_status': certificationStatus,
       if (signedAt != null) 'signed_at': signedAt,
       if (distanceM != null) 'distance_m': distanceM,
       if (totals != null) 'totals': totals,
@@ -4024,7 +4453,9 @@ class DailyLogsCompanion extends UpdateCompanion<DailyLogRow> {
       map['distance_m'] = Variable<int>(distanceM.value);
     }
     if (totals.present) {
-      map['totals'] = Variable<String>($DailyLogsTable.$convertertotals.toSql(totals.value));
+      map['totals'] = Variable<String>(
+        $DailyLogsTable.$convertertotals.toSql(totals.value),
+      );
     }
     if (ready.present) {
       map['ready'] = Variable<bool>(ready.value);
@@ -4054,12 +4485,15 @@ class DailyLogsCompanion extends UpdateCompanion<DailyLogRow> {
   }
 }
 
-class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosStateRow> {
+class $HosStatesTable extends HosStates
+    with TableInfo<$HosStatesTable, HosStateRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $HosStatesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _driverIdMeta = const VerificationMeta('driverId');
+  static const VerificationMeta _driverIdMeta = const VerificationMeta(
+    'driverId',
+  );
   @override
   late final GeneratedColumn<String> driverId = GeneratedColumn<String>(
     'driver_id',
@@ -4068,7 +4502,9 @@ class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosState
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _computedAtMeta = const VerificationMeta('computedAt');
+  static const VerificationMeta _computedAtMeta = const VerificationMeta(
+    'computedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> computedAt = GeneratedColumn<DateTime>(
     'computed_at',
@@ -4078,26 +4514,28 @@ class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosState
     requiredDuringInsert: true,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> counters =
-      GeneratedColumn<String>(
-        'counters',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($HosStatesTable.$convertercounters);
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  counters = GeneratedColumn<String>(
+    'counters',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('{}'),
+  ).withConverter<Map<String, Object?>>($HosStatesTable.$convertercounters);
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> recap =
-      GeneratedColumn<String>(
-        'recap',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($HosStatesTable.$converterrecap);
-  static const VerificationMeta _policyVersionIdMeta = const VerificationMeta('policyVersionId');
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  recap = GeneratedColumn<String>(
+    'recap',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('{}'),
+  ).withConverter<Map<String, Object?>>($HosStatesTable.$converterrecap);
+  static const VerificationMeta _policyVersionIdMeta = const VerificationMeta(
+    'policyVersionId',
+  );
   @override
   late final GeneratedColumn<String> policyVersionId = GeneratedColumn<String>(
     'policy_version_id',
@@ -4107,7 +4545,13 @@ class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosState
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [driverId, computedAt, counters, recap, policyVersionId];
+  List<GeneratedColumn> get $columns => [
+    driverId,
+    computedAt,
+    counters,
+    recap,
+    policyVersionId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -4139,7 +4583,10 @@ class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosState
     if (data.containsKey('policy_version_id')) {
       context.handle(
         _policyVersionIdMeta,
-        policyVersionId.isAcceptableOrUnknown(data['policy_version_id']!, _policyVersionIdMeta),
+        policyVersionId.isAcceptableOrUnknown(
+          data['policy_version_id']!,
+          _policyVersionIdMeta,
+        ),
       );
     }
     return context;
@@ -4160,10 +4607,16 @@ class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosState
         data['${effectivePrefix}computed_at'],
       )!,
       counters: $HosStatesTable.$convertercounters.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}counters'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}counters'],
+        )!,
       ),
       recap: $HosStatesTable.$converterrecap.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}recap'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}recap'],
+        )!,
       ),
       policyVersionId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -4177,10 +4630,10 @@ class $HosStatesTable extends HosStates with TableInfo<$HosStatesTable, HosState
     return $HosStatesTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $convertercounters =
-      const JsonMapConverter();
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $converterrecap =
-      const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $convertercounters = const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $converterrecap = const JsonMapConverter();
 }
 
 class HosStateRow extends DataClass implements Insertable<HosStateRow> {
@@ -4202,10 +4655,14 @@ class HosStateRow extends DataClass implements Insertable<HosStateRow> {
     map['driver_id'] = Variable<String>(driverId);
     map['computed_at'] = Variable<DateTime>(computedAt);
     {
-      map['counters'] = Variable<String>($HosStatesTable.$convertercounters.toSql(counters));
+      map['counters'] = Variable<String>(
+        $HosStatesTable.$convertercounters.toSql(counters),
+      );
     }
     {
-      map['recap'] = Variable<String>($HosStatesTable.$converterrecap.toSql(recap));
+      map['recap'] = Variable<String>(
+        $HosStatesTable.$converterrecap.toSql(recap),
+      );
     }
     if (!nullToAbsent || policyVersionId != null) {
       map['policy_version_id'] = Variable<String>(policyVersionId);
@@ -4225,7 +4682,10 @@ class HosStateRow extends DataClass implements Insertable<HosStateRow> {
     );
   }
 
-  factory HosStateRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory HosStateRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return HosStateRow(
       driverId: serializer.fromJson<String>(json['driverId']),
@@ -4233,7 +4693,9 @@ class HosStateRow extends DataClass implements Insertable<HosStateRow> {
       counters: $HosStatesTable.$convertercounters.fromJson(
         serializer.fromJson<Object?>(json['counters']),
       ),
-      recap: $HosStatesTable.$converterrecap.fromJson(serializer.fromJson<Object?>(json['recap'])),
+      recap: $HosStatesTable.$converterrecap.fromJson(
+        serializer.fromJson<Object?>(json['recap']),
+      ),
       policyVersionId: serializer.fromJson<String?>(json['policyVersionId']),
     );
   }
@@ -4243,8 +4705,12 @@ class HosStateRow extends DataClass implements Insertable<HosStateRow> {
     return <String, dynamic>{
       'driverId': serializer.toJson<String>(driverId),
       'computedAt': serializer.toJson<DateTime>(computedAt),
-      'counters': serializer.toJson<Object?>($HosStatesTable.$convertercounters.toJson(counters)),
-      'recap': serializer.toJson<Object?>($HosStatesTable.$converterrecap.toJson(recap)),
+      'counters': serializer.toJson<Object?>(
+        $HosStatesTable.$convertercounters.toJson(counters),
+      ),
+      'recap': serializer.toJson<Object?>(
+        $HosStatesTable.$converterrecap.toJson(recap),
+      ),
       'policyVersionId': serializer.toJson<String?>(policyVersionId),
     };
   }
@@ -4260,12 +4726,16 @@ class HosStateRow extends DataClass implements Insertable<HosStateRow> {
     computedAt: computedAt ?? this.computedAt,
     counters: counters ?? this.counters,
     recap: recap ?? this.recap,
-    policyVersionId: policyVersionId.present ? policyVersionId.value : this.policyVersionId,
+    policyVersionId: policyVersionId.present
+        ? policyVersionId.value
+        : this.policyVersionId,
   );
   HosStateRow copyWithCompanion(HosStatesCompanion data) {
     return HosStateRow(
       driverId: data.driverId.present ? data.driverId.value : this.driverId,
-      computedAt: data.computedAt.present ? data.computedAt.value : this.computedAt,
+      computedAt: data.computedAt.present
+          ? data.computedAt.value
+          : this.computedAt,
       counters: data.counters.present ? data.counters.value : this.counters,
       recap: data.recap.present ? data.recap.value : this.recap,
       policyVersionId: data.policyVersionId.present
@@ -4287,7 +4757,8 @@ class HosStateRow extends DataClass implements Insertable<HosStateRow> {
   }
 
   @override
-  int get hashCode => Object.hash(driverId, computedAt, counters, recap, policyVersionId);
+  int get hashCode =>
+      Object.hash(driverId, computedAt, counters, recap, policyVersionId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4369,10 +4840,14 @@ class HosStatesCompanion extends UpdateCompanion<HosStateRow> {
       map['computed_at'] = Variable<DateTime>(computedAt.value);
     }
     if (counters.present) {
-      map['counters'] = Variable<String>($HosStatesTable.$convertercounters.toSql(counters.value));
+      map['counters'] = Variable<String>(
+        $HosStatesTable.$convertercounters.toSql(counters.value),
+      );
     }
     if (recap.present) {
-      map['recap'] = Variable<String>($HosStatesTable.$converterrecap.toSql(recap.value));
+      map['recap'] = Variable<String>(
+        $HosStatesTable.$converterrecap.toSql(recap.value),
+      );
     }
     if (policyVersionId.present) {
       map['policy_version_id'] = Variable<String>(policyVersionId.value);
@@ -4397,12 +4872,15 @@ class HosStatesCompanion extends UpdateCompanion<HosStateRow> {
   }
 }
 
-class $HosPoliciesTable extends HosPolicies with TableInfo<$HosPoliciesTable, HosPolicyRow> {
+class $HosPoliciesTable extends HosPolicies
+    with TableInfo<$HosPoliciesTable, HosPolicyRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $HosPoliciesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _versionIdMeta = const VerificationMeta('versionId');
+  static const VerificationMeta _versionIdMeta = const VerificationMeta(
+    'versionId',
+  );
   @override
   late final GeneratedColumn<String> versionId = GeneratedColumn<String>(
     'version_id',
@@ -4411,16 +4889,21 @@ class $HosPoliciesTable extends HosPolicies with TableInfo<$HosPoliciesTable, Ho
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _effectiveFromMeta = const VerificationMeta('effectiveFrom');
-  @override
-  late final GeneratedColumn<DateTime> effectiveFrom = GeneratedColumn<DateTime>(
-    'effective_from',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
+  static const VerificationMeta _effectiveFromMeta = const VerificationMeta(
+    'effectiveFrom',
   );
-  static const VerificationMeta _payloadMeta = const VerificationMeta('payload');
+  @override
+  late final GeneratedColumn<DateTime> effectiveFrom =
+      GeneratedColumn<DateTime>(
+        'effective_from',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
   @override
   late final GeneratedColumn<String> payload = GeneratedColumn<String>(
     'payload',
@@ -4454,13 +4937,19 @@ class $HosPoliciesTable extends HosPolicies with TableInfo<$HosPoliciesTable, Ho
     if (data.containsKey('effective_from')) {
       context.handle(
         _effectiveFromMeta,
-        effectiveFrom.isAcceptableOrUnknown(data['effective_from']!, _effectiveFromMeta),
+        effectiveFrom.isAcceptableOrUnknown(
+          data['effective_from']!,
+          _effectiveFromMeta,
+        ),
       );
     } else if (isInserting) {
       context.missing(_effectiveFromMeta);
     }
     if (data.containsKey('payload')) {
-      context.handle(_payloadMeta, payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta));
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
     } else if (isInserting) {
       context.missing(_payloadMeta);
     }
@@ -4500,7 +4989,11 @@ class HosPolicyRow extends DataClass implements Insertable<HosPolicyRow> {
 
   /// `hos_engine` `Policy` JSON — pull da almashtiriladi (M36, birinchi qadam).
   final String payload;
-  const HosPolicyRow({required this.versionId, required this.effectiveFrom, required this.payload});
+  const HosPolicyRow({
+    required this.versionId,
+    required this.effectiveFrom,
+    required this.payload,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4518,7 +5011,10 @@ class HosPolicyRow extends DataClass implements Insertable<HosPolicyRow> {
     );
   }
 
-  factory HosPolicyRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory HosPolicyRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return HosPolicyRow(
       versionId: serializer.fromJson<String>(json['versionId']),
@@ -4536,16 +5032,21 @@ class HosPolicyRow extends DataClass implements Insertable<HosPolicyRow> {
     };
   }
 
-  HosPolicyRow copyWith({String? versionId, DateTime? effectiveFrom, String? payload}) =>
-      HosPolicyRow(
-        versionId: versionId ?? this.versionId,
-        effectiveFrom: effectiveFrom ?? this.effectiveFrom,
-        payload: payload ?? this.payload,
-      );
+  HosPolicyRow copyWith({
+    String? versionId,
+    DateTime? effectiveFrom,
+    String? payload,
+  }) => HosPolicyRow(
+    versionId: versionId ?? this.versionId,
+    effectiveFrom: effectiveFrom ?? this.effectiveFrom,
+    payload: payload ?? this.payload,
+  );
   HosPolicyRow copyWithCompanion(HosPoliciesCompanion data) {
     return HosPolicyRow(
       versionId: data.versionId.present ? data.versionId.value : this.versionId,
-      effectiveFrom: data.effectiveFrom.present ? data.effectiveFrom.value : this.effectiveFrom,
+      effectiveFrom: data.effectiveFrom.present
+          ? data.effectiveFrom.value
+          : this.effectiveFrom,
       payload: data.payload.present ? data.payload.value : this.payload,
     );
   }
@@ -4648,12 +5149,15 @@ class HosPoliciesCompanion extends UpdateCompanion<HosPolicyRow> {
   }
 }
 
-class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirDraftRow> {
+class $DvirDraftsTable extends DvirDrafts
+    with TableInfo<$DvirDraftsTable, DvirDraftRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DvirDraftsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _clientIdMeta = const VerificationMeta('clientId');
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
   @override
   late final GeneratedColumn<String> clientId = GeneratedColumn<String>(
     'client_id',
@@ -4681,15 +5185,15 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
     requiredDuringInsert: true,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> defects =
-      GeneratedColumn<String>(
-        'defects',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($DvirDraftsTable.$converterdefects);
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  defects = GeneratedColumn<String>(
+    'defects',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('{}'),
+  ).withConverter<Map<String, Object?>>($DvirDraftsTable.$converterdefects);
   @override
   late final GeneratedColumnWithTypeConverter<List<String>, String> trailerIds =
       GeneratedColumn<String>(
@@ -4709,27 +5213,27 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _driverSignatureKeyMeta = const VerificationMeta(
-    'driverSignatureKey',
-  );
+  static const VerificationMeta _driverSignatureKeyMeta =
+      const VerificationMeta('driverSignatureKey');
   @override
-  late final GeneratedColumn<String> driverSignatureKey = GeneratedColumn<String>(
-    'driver_signature_key',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<List<String>, String> localPhotoPaths =
+  late final GeneratedColumn<String> driverSignatureKey =
       GeneratedColumn<String>(
-        'local_photo_paths',
+        'driver_signature_key',
         aliasedName,
-        false,
+        true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-        defaultValue: const Constant<String>('[]'),
-      ).withConverter<List<String>>($DvirDraftsTable.$converterlocalPhotoPaths);
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<List<String>, String>
+  localPhotoPaths = GeneratedColumn<String>(
+    'local_photo_paths',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('[]'),
+  ).withConverter<List<String>>($DvirDraftsTable.$converterlocalPhotoPaths);
   static const VerificationMeta _stateMeta = const VerificationMeta('state');
   @override
   late final GeneratedColumn<String> state = GeneratedColumn<String>(
@@ -4740,7 +5244,9 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('draft'),
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -4749,7 +5255,9 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -4793,17 +5301,26 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
       context.missing(_clientIdMeta);
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_unitIdMeta);
     }
     if (data.containsKey('type')) {
-      context.handle(_typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
     if (data.containsKey('notes')) {
-      context.handle(_notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
     }
     if (data.containsKey('driver_signature_key')) {
       context.handle(
@@ -4815,7 +5332,10 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
       );
     }
     if (data.containsKey('state')) {
-      context.handle(_stateMeta, state.isAcceptableOrUnknown(data['state']!, _stateMeta));
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -4850,9 +5370,15 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
         DriftSqlType.string,
         data['${effectivePrefix}unit_id'],
       )!,
-      type: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}type'])!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
       defects: $DvirDraftsTable.$converterdefects.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}defects'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}defects'],
+        )!,
       ),
       trailerIds: $DvirDraftsTable.$convertertrailerIds.fromSql(
         attachedDatabase.typeMapping.read(
@@ -4894,12 +5420,12 @@ class $DvirDraftsTable extends DvirDrafts with TableInfo<$DvirDraftsTable, DvirD
     return $DvirDraftsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $converterdefects =
-      const JsonMapConverter();
-  static JsonTypeConverter2<List<String>, String, Object?> $convertertrailerIds =
-      const StringListConverter();
-  static JsonTypeConverter2<List<String>, String, Object?> $converterlocalPhotoPaths =
-      const StringListConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $converterdefects = const JsonMapConverter();
+  static JsonTypeConverter2<List<String>, String, Object?>
+  $convertertrailerIds = const StringListConverter();
+  static JsonTypeConverter2<List<String>, String, Object?>
+  $converterlocalPhotoPaths = const StringListConverter();
 }
 
 class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
@@ -4942,7 +5468,9 @@ class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
     map['unit_id'] = Variable<String>(unitId);
     map['type'] = Variable<String>(type);
     {
-      map['defects'] = Variable<String>($DvirDraftsTable.$converterdefects.toSql(defects));
+      map['defects'] = Variable<String>(
+        $DvirDraftsTable.$converterdefects.toSql(defects),
+      );
     }
     {
       map['trailer_ids'] = Variable<String>(
@@ -4973,7 +5501,9 @@ class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
       type: Value(type),
       defects: Value(defects),
       trailerIds: Value(trailerIds),
-      notes: notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
       driverSignatureKey: driverSignatureKey == null && nullToAbsent
           ? const Value.absent()
           : Value(driverSignatureKey),
@@ -4984,7 +5514,10 @@ class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
     );
   }
 
-  factory DvirDraftRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory DvirDraftRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DvirDraftRow(
       clientId: serializer.fromJson<String>(json['clientId']),
@@ -4997,7 +5530,9 @@ class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
         serializer.fromJson<Object?>(json['trailerIds']),
       ),
       notes: serializer.fromJson<String?>(json['notes']),
-      driverSignatureKey: serializer.fromJson<String?>(json['driverSignatureKey']),
+      driverSignatureKey: serializer.fromJson<String?>(
+        json['driverSignatureKey'],
+      ),
       localPhotoPaths: $DvirDraftsTable.$converterlocalPhotoPaths.fromJson(
         serializer.fromJson<Object?>(json['localPhotoPaths']),
       ),
@@ -5013,7 +5548,9 @@ class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
       'clientId': serializer.toJson<String>(clientId),
       'unitId': serializer.toJson<String>(unitId),
       'type': serializer.toJson<String>(type),
-      'defects': serializer.toJson<Object?>($DvirDraftsTable.$converterdefects.toJson(defects)),
+      'defects': serializer.toJson<Object?>(
+        $DvirDraftsTable.$converterdefects.toJson(defects),
+      ),
       'trailerIds': serializer.toJson<Object?>(
         $DvirDraftsTable.$convertertrailerIds.toJson(trailerIds),
       ),
@@ -5061,7 +5598,9 @@ class DvirDraftRow extends DataClass implements Insertable<DvirDraftRow> {
       unitId: data.unitId.present ? data.unitId.value : this.unitId,
       type: data.type.present ? data.type.value : this.type,
       defects: data.defects.present ? data.defects.value : this.defects,
-      trailerIds: data.trailerIds.present ? data.trailerIds.value : this.trailerIds,
+      trailerIds: data.trailerIds.present
+          ? data.trailerIds.value
+          : this.trailerIds,
       notes: data.notes.present ? data.notes.value : this.notes,
       driverSignatureKey: data.driverSignatureKey.present
           ? data.driverSignatureKey.value
@@ -5190,7 +5729,8 @@ class DvirDraftsCompanion extends UpdateCompanion<DvirDraftRow> {
       if (defects != null) 'defects': defects,
       if (trailerIds != null) 'trailer_ids': trailerIds,
       if (notes != null) 'notes': notes,
-      if (driverSignatureKey != null) 'driver_signature_key': driverSignatureKey,
+      if (driverSignatureKey != null)
+        'driver_signature_key': driverSignatureKey,
       if (localPhotoPaths != null) 'local_photo_paths': localPhotoPaths,
       if (state != null) 'state': state,
       if (createdAt != null) 'created_at': createdAt,
@@ -5242,7 +5782,9 @@ class DvirDraftsCompanion extends UpdateCompanion<DvirDraftRow> {
       map['type'] = Variable<String>(type.value);
     }
     if (defects.present) {
-      map['defects'] = Variable<String>($DvirDraftsTable.$converterdefects.toSql(defects.value));
+      map['defects'] = Variable<String>(
+        $DvirDraftsTable.$converterdefects.toSql(defects.value),
+      );
     }
     if (trailerIds.present) {
       map['trailer_ids'] = Variable<String>(
@@ -5295,7 +5837,8 @@ class DvirDraftsCompanion extends UpdateCompanion<DvirDraftRow> {
   }
 }
 
-class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, DvirReportRow> {
+class $DvirReportsTable extends DvirReports
+    with TableInfo<$DvirReportsTable, DvirReportRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -5345,7 +5888,9 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -5369,7 +5914,9 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
     ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _outOfServiceMeta = const VerificationMeta('outOfService');
+  static const VerificationMeta _outOfServiceMeta = const VerificationMeta(
+    'outOfService',
+  );
   @override
   late final GeneratedColumn<bool> outOfService = GeneratedColumn<bool>(
     'out_of_service',
@@ -5377,19 +5924,21 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("out_of_service" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("out_of_service" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> payload =
-      GeneratedColumn<String>(
-        'payload',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($DvirReportsTable.$converterpayload);
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('{}'),
+  ).withConverter<Map<String, Object?>>($DvirReportsTable.$converterpayload);
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -5420,22 +5969,34 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
       context.missing(_idMeta);
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     } else if (isInserting) {
       context.missing(_statusMeta);
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     } else if (isInserting) {
       context.missing(_kindMeta);
     }
     if (data.containsKey('type')) {
-      context.handle(_typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_unitIdMeta);
     }
@@ -5459,7 +6020,10 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
     if (data.containsKey('out_of_service')) {
       context.handle(
         _outOfServiceMeta,
-        outOfService.isAcceptableOrUnknown(data['out_of_service']!, _outOfServiceMeta),
+        outOfService.isAcceptableOrUnknown(
+          data['out_of_service']!,
+          _outOfServiceMeta,
+        ),
       );
     }
     return context;
@@ -5471,13 +6035,22 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
   DvirReportRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DvirReportRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       )!,
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
-      type: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}type'])!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
       unitId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}unit_id'],
@@ -5495,7 +6068,10 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
         data['${effectivePrefix}out_of_service'],
       )!,
       payload: $DvirReportsTable.$converterpayload.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}payload'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}payload'],
+        )!,
       ),
     );
   }
@@ -5505,8 +6081,8 @@ class $DvirReportsTable extends DvirReports with TableInfo<$DvirReportsTable, Dv
     return $DvirReportsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $converterpayload =
-      const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $converterpayload = const JsonMapConverter();
 }
 
 class DvirReportRow extends DataClass implements Insertable<DvirReportRow> {
@@ -5550,7 +6126,9 @@ class DvirReportRow extends DataClass implements Insertable<DvirReportRow> {
     map['has_critical_defect'] = Variable<bool>(hasCriticalDefect);
     map['out_of_service'] = Variable<bool>(outOfService);
     {
-      map['payload'] = Variable<String>($DvirReportsTable.$converterpayload.toSql(payload));
+      map['payload'] = Variable<String>(
+        $DvirReportsTable.$converterpayload.toSql(payload),
+      );
     }
     return map;
   }
@@ -5569,7 +6147,10 @@ class DvirReportRow extends DataClass implements Insertable<DvirReportRow> {
     );
   }
 
-  factory DvirReportRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory DvirReportRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DvirReportRow(
       id: serializer.fromJson<String>(json['id']),
@@ -5597,7 +6178,9 @@ class DvirReportRow extends DataClass implements Insertable<DvirReportRow> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'hasCriticalDefect': serializer.toJson<bool>(hasCriticalDefect),
       'outOfService': serializer.toJson<bool>(outOfService),
-      'payload': serializer.toJson<Object?>($DvirReportsTable.$converterpayload.toJson(payload)),
+      'payload': serializer.toJson<Object?>(
+        $DvirReportsTable.$converterpayload.toJson(payload),
+      ),
     };
   }
 
@@ -5633,7 +6216,9 @@ class DvirReportRow extends DataClass implements Insertable<DvirReportRow> {
       hasCriticalDefect: data.hasCriticalDefect.present
           ? data.hasCriticalDefect.value
           : this.hasCriticalDefect,
-      outOfService: data.outOfService.present ? data.outOfService.value : this.outOfService,
+      outOfService: data.outOfService.present
+          ? data.outOfService.value
+          : this.outOfService,
       payload: data.payload.present ? data.payload.value : this.payload,
     );
   }
@@ -5801,7 +6386,9 @@ class DvirReportsCompanion extends UpdateCompanion<DvirReportRow> {
       map['out_of_service'] = Variable<bool>(outOfService.value);
     }
     if (payload.present) {
-      map['payload'] = Variable<String>($DvirReportsTable.$converterpayload.toSql(payload.value));
+      map['payload'] = Variable<String>(
+        $DvirReportsTable.$converterpayload.toSql(payload.value),
+      );
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -5827,7 +6414,8 @@ class DvirReportsCompanion extends UpdateCompanion<DvirReportRow> {
   }
 }
 
-class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQueueRow> {
+class $FilesQueueTable extends FilesQueue
+    with TableInfo<$FilesQueueTable, FileQueueRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -5841,9 +6429,13 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
   );
-  static const VerificationMeta _localPathMeta = const VerificationMeta('localPath');
+  static const VerificationMeta _localPathMeta = const VerificationMeta(
+    'localPath',
+  );
   @override
   late final GeneratedColumn<String> localPath = GeneratedColumn<String>(
     'local_path',
@@ -5862,7 +6454,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _contentTypeMeta = const VerificationMeta('contentType');
+  static const VerificationMeta _contentTypeMeta = const VerificationMeta(
+    'contentType',
+  );
   @override
   late final GeneratedColumn<String> contentType = GeneratedColumn<String>(
     'content_type',
@@ -5871,7 +6465,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _sizeBytesMeta = const VerificationMeta('sizeBytes');
+  static const VerificationMeta _sizeBytesMeta = const VerificationMeta(
+    'sizeBytes',
+  );
   @override
   late final GeneratedColumn<int> sizeBytes = GeneratedColumn<int>(
     'size_bytes',
@@ -5880,7 +6476,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _presignedKeyMeta = const VerificationMeta('presignedKey');
+  static const VerificationMeta _presignedKeyMeta = const VerificationMeta(
+    'presignedKey',
+  );
   @override
   late final GeneratedColumn<String> presignedKey = GeneratedColumn<String>(
     'presigned_key',
@@ -5889,7 +6487,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _uploadUrlMeta = const VerificationMeta('uploadUrl');
+  static const VerificationMeta _uploadUrlMeta = const VerificationMeta(
+    'uploadUrl',
+  );
   @override
   late final GeneratedColumn<String> uploadUrl = GeneratedColumn<String>(
     'upload_url',
@@ -5898,7 +6498,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _expiresAtMeta = const VerificationMeta('expiresAt');
+  static const VerificationMeta _expiresAtMeta = const VerificationMeta(
+    'expiresAt',
+  );
   @override
   late final GeneratedColumn<DateTime> expiresAt = GeneratedColumn<DateTime>(
     'expires_at',
@@ -5917,7 +6519,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('pending'),
   );
-  static const VerificationMeta _attemptsMeta = const VerificationMeta('attempts');
+  static const VerificationMeta _attemptsMeta = const VerificationMeta(
+    'attempts',
+  );
   @override
   late final GeneratedColumn<int> attempts = GeneratedColumn<int>(
     'attempts',
@@ -5927,7 +6531,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     requiredDuringInsert: false,
     defaultValue: const Constant<int>(0),
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -5936,7 +6542,9 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _uploadedAtMeta = const VerificationMeta('uploadedAt');
+  static const VerificationMeta _uploadedAtMeta = const VerificationMeta(
+    'uploadedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> uploadedAt = GeneratedColumn<DateTime>(
     'uploaded_at',
@@ -5984,14 +6592,20 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
       context.missing(_localPathMeta);
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     } else if (isInserting) {
       context.missing(_kindMeta);
     }
     if (data.containsKey('content_type')) {
       context.handle(
         _contentTypeMeta,
-        contentType.isAcceptableOrUnknown(data['content_type']!, _contentTypeMeta),
+        contentType.isAcceptableOrUnknown(
+          data['content_type']!,
+          _contentTypeMeta,
+        ),
       );
     } else if (isInserting) {
       context.missing(_contentTypeMeta);
@@ -6007,7 +6621,10 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
     if (data.containsKey('presigned_key')) {
       context.handle(
         _presignedKeyMeta,
-        presignedKey.isAcceptableOrUnknown(data['presigned_key']!, _presignedKeyMeta),
+        presignedKey.isAcceptableOrUnknown(
+          data['presigned_key']!,
+          _presignedKeyMeta,
+        ),
       );
     }
     if (data.containsKey('upload_url')) {
@@ -6023,7 +6640,10 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
       );
     }
     if (data.containsKey('state')) {
-      context.handle(_stateMeta, state.isAcceptableOrUnknown(data['state']!, _stateMeta));
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
     }
     if (data.containsKey('attempts')) {
       context.handle(
@@ -6054,12 +6674,18 @@ class $FilesQueueTable extends FilesQueue with TableInfo<$FilesQueueTable, FileQ
   FileQueueRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return FileQueueRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       localPath: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}local_path'],
       )!,
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
       contentType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}content_type'],
@@ -6174,16 +6800,25 @@ class FileQueueRow extends DataClass implements Insertable<FileQueueRow> {
       presignedKey: presignedKey == null && nullToAbsent
           ? const Value.absent()
           : Value(presignedKey),
-      uploadUrl: uploadUrl == null && nullToAbsent ? const Value.absent() : Value(uploadUrl),
-      expiresAt: expiresAt == null && nullToAbsent ? const Value.absent() : Value(expiresAt),
+      uploadUrl: uploadUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uploadUrl),
+      expiresAt: expiresAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expiresAt),
       state: Value(state),
       attempts: Value(attempts),
       createdAt: Value(createdAt),
-      uploadedAt: uploadedAt == null && nullToAbsent ? const Value.absent() : Value(uploadedAt),
+      uploadedAt: uploadedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uploadedAt),
     );
   }
 
-  factory FileQueueRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory FileQueueRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return FileQueueRow(
       id: serializer.fromJson<int>(json['id']),
@@ -6251,15 +6886,21 @@ class FileQueueRow extends DataClass implements Insertable<FileQueueRow> {
       id: data.id.present ? data.id.value : this.id,
       localPath: data.localPath.present ? data.localPath.value : this.localPath,
       kind: data.kind.present ? data.kind.value : this.kind,
-      contentType: data.contentType.present ? data.contentType.value : this.contentType,
+      contentType: data.contentType.present
+          ? data.contentType.value
+          : this.contentType,
       sizeBytes: data.sizeBytes.present ? data.sizeBytes.value : this.sizeBytes,
-      presignedKey: data.presignedKey.present ? data.presignedKey.value : this.presignedKey,
+      presignedKey: data.presignedKey.present
+          ? data.presignedKey.value
+          : this.presignedKey,
       uploadUrl: data.uploadUrl.present ? data.uploadUrl.value : this.uploadUrl,
       expiresAt: data.expiresAt.present ? data.expiresAt.value : this.expiresAt,
       state: data.state.present ? data.state.value : this.state,
       attempts: data.attempts.present ? data.attempts.value : this.attempts,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      uploadedAt: data.uploadedAt.present ? data.uploadedAt.value : this.uploadedAt,
+      uploadedAt: data.uploadedAt.present
+          ? data.uploadedAt.value
+          : this.uploadedAt,
     );
   }
 
@@ -6482,12 +7123,15 @@ class FilesQueueCompanion extends UpdateCompanion<FileQueueRow> {
   }
 }
 
-class $ChatOutboxTable extends ChatOutbox with TableInfo<$ChatOutboxTable, ChatOutboxRow> {
+class $ChatOutboxTable extends ChatOutbox
+    with TableInfo<$ChatOutboxTable, ChatOutboxRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ChatOutboxTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _clientIdMeta = const VerificationMeta('clientId');
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
   @override
   late final GeneratedColumn<String> clientId = GeneratedColumn<String>(
     'client_id',
@@ -6496,7 +7140,9 @@ class $ChatOutboxTable extends ChatOutbox with TableInfo<$ChatOutboxTable, ChatO
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _conversationIdMeta = const VerificationMeta('conversationId');
+  static const VerificationMeta _conversationIdMeta = const VerificationMeta(
+    'conversationId',
+  );
   @override
   late final GeneratedColumn<String> conversationId = GeneratedColumn<String>(
     'conversation_id',
@@ -6523,7 +7169,9 @@ class $ChatOutboxTable extends ChatOutbox with TableInfo<$ChatOutboxTable, ChatO
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _fileKeyMeta = const VerificationMeta('fileKey');
+  static const VerificationMeta _fileKeyMeta = const VerificationMeta(
+    'fileKey',
+  );
   @override
   late final GeneratedColumn<String> fileKey = GeneratedColumn<String>(
     'file_key',
@@ -6560,7 +7208,9 @@ class $ChatOutboxTable extends ChatOutbox with TableInfo<$ChatOutboxTable, ChatO
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('queued'),
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -6604,28 +7254,49 @@ class $ChatOutboxTable extends ChatOutbox with TableInfo<$ChatOutboxTable, ChatO
     if (data.containsKey('conversation_id')) {
       context.handle(
         _conversationIdMeta,
-        conversationId.isAcceptableOrUnknown(data['conversation_id']!, _conversationIdMeta),
+        conversationId.isAcceptableOrUnknown(
+          data['conversation_id']!,
+          _conversationIdMeta,
+        ),
       );
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     } else if (isInserting) {
       context.missing(_kindMeta);
     }
     if (data.containsKey('text')) {
-      context.handle(_bodyMeta, body.isAcceptableOrUnknown(data['text']!, _bodyMeta));
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['text']!, _bodyMeta),
+      );
     }
     if (data.containsKey('file_key')) {
-      context.handle(_fileKeyMeta, fileKey.isAcceptableOrUnknown(data['file_key']!, _fileKeyMeta));
+      context.handle(
+        _fileKeyMeta,
+        fileKey.isAcceptableOrUnknown(data['file_key']!, _fileKeyMeta),
+      );
     }
     if (data.containsKey('lat')) {
-      context.handle(_latMeta, lat.isAcceptableOrUnknown(data['lat']!, _latMeta));
+      context.handle(
+        _latMeta,
+        lat.isAcceptableOrUnknown(data['lat']!, _latMeta),
+      );
     }
     if (data.containsKey('lng')) {
-      context.handle(_lngMeta, lng.isAcceptableOrUnknown(data['lng']!, _lngMeta));
+      context.handle(
+        _lngMeta,
+        lng.isAcceptableOrUnknown(data['lng']!, _lngMeta),
+      );
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -6652,14 +7323,26 @@ class $ChatOutboxTable extends ChatOutbox with TableInfo<$ChatOutboxTable, ChatO
         DriftSqlType.string,
         data['${effectivePrefix}conversation_id'],
       ),
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
-      body: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}text']),
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}text'],
+      ),
       fileKey: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}file_key'],
       ),
-      lat: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lat']),
-      lng: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lng']),
+      lat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lat'],
+      ),
+      lng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lng'],
+      ),
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
@@ -6738,7 +7421,9 @@ class ChatOutboxRow extends DataClass implements Insertable<ChatOutboxRow> {
           : Value(conversationId),
       kind: Value(kind),
       body: body == null && nullToAbsent ? const Value.absent() : Value(body),
-      fileKey: fileKey == null && nullToAbsent ? const Value.absent() : Value(fileKey),
+      fileKey: fileKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fileKey),
       lat: lat == null && nullToAbsent ? const Value.absent() : Value(lat),
       lng: lng == null && nullToAbsent ? const Value.absent() : Value(lng),
       status: Value(status),
@@ -6746,7 +7431,10 @@ class ChatOutboxRow extends DataClass implements Insertable<ChatOutboxRow> {
     );
   }
 
-  factory ChatOutboxRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory ChatOutboxRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ChatOutboxRow(
       clientId: serializer.fromJson<String>(json['clientId']),
@@ -6788,7 +7476,9 @@ class ChatOutboxRow extends DataClass implements Insertable<ChatOutboxRow> {
     DateTime? createdAt,
   }) => ChatOutboxRow(
     clientId: clientId ?? this.clientId,
-    conversationId: conversationId.present ? conversationId.value : this.conversationId,
+    conversationId: conversationId.present
+        ? conversationId.value
+        : this.conversationId,
     kind: kind ?? this.kind,
     body: body.present ? body.value : this.body,
     fileKey: fileKey.present ? fileKey.value : this.fileKey,
@@ -6800,7 +7490,9 @@ class ChatOutboxRow extends DataClass implements Insertable<ChatOutboxRow> {
   ChatOutboxRow copyWithCompanion(ChatOutboxCompanion data) {
     return ChatOutboxRow(
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
-      conversationId: data.conversationId.present ? data.conversationId.value : this.conversationId,
+      conversationId: data.conversationId.present
+          ? data.conversationId.value
+          : this.conversationId,
       kind: data.kind.present ? data.kind.value : this.kind,
       body: data.body.present ? data.body.value : this.body,
       fileKey: data.fileKey.present ? data.fileKey.value : this.fileKey,
@@ -6828,8 +7520,17 @@ class ChatOutboxRow extends DataClass implements Insertable<ChatOutboxRow> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(clientId, conversationId, kind, body, fileKey, lat, lng, status, createdAt);
+  int get hashCode => Object.hash(
+    clientId,
+    conversationId,
+    kind,
+    body,
+    fileKey,
+    lat,
+    lng,
+    status,
+    createdAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6988,7 +7689,8 @@ class ChatOutboxCompanion extends UpdateCompanion<ChatOutboxRow> {
   }
 }
 
-class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable, ChatMessageRow> {
+class $ChatMessagesTable extends ChatMessages
+    with TableInfo<$ChatMessagesTable, ChatMessageRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -7002,7 +7704,9 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _clientIdMeta = const VerificationMeta('clientId');
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
   @override
   late final GeneratedColumn<String> clientId = GeneratedColumn<String>(
     'client_id',
@@ -7011,7 +7715,9 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _conversationIdMeta = const VerificationMeta('conversationId');
+  static const VerificationMeta _conversationIdMeta = const VerificationMeta(
+    'conversationId',
+  );
   @override
   late final GeneratedColumn<String> conversationId = GeneratedColumn<String>(
     'conversation_id',
@@ -7020,7 +7726,9 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _senderIdMeta = const VerificationMeta('senderId');
+  static const VerificationMeta _senderIdMeta = const VerificationMeta(
+    'senderId',
+  );
   @override
   late final GeneratedColumn<String> senderId = GeneratedColumn<String>(
     'sender_id',
@@ -7047,7 +7755,9 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _fileKeyMeta = const VerificationMeta('fileKey');
+  static const VerificationMeta _fileKeyMeta = const VerificationMeta(
+    'fileKey',
+  );
   @override
   late final GeneratedColumn<String> fileKey = GeneratedColumn<String>(
     'file_key',
@@ -7084,7 +7794,9 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('sent'),
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -7133,7 +7845,10 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
     if (data.containsKey('conversation_id')) {
       context.handle(
         _conversationIdMeta,
-        conversationId.isAcceptableOrUnknown(data['conversation_id']!, _conversationIdMeta),
+        conversationId.isAcceptableOrUnknown(
+          data['conversation_id']!,
+          _conversationIdMeta,
+        ),
       );
     }
     if (data.containsKey('sender_id')) {
@@ -7143,24 +7858,42 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
       );
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     } else if (isInserting) {
       context.missing(_kindMeta);
     }
     if (data.containsKey('text')) {
-      context.handle(_bodyMeta, body.isAcceptableOrUnknown(data['text']!, _bodyMeta));
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['text']!, _bodyMeta),
+      );
     }
     if (data.containsKey('file_key')) {
-      context.handle(_fileKeyMeta, fileKey.isAcceptableOrUnknown(data['file_key']!, _fileKeyMeta));
+      context.handle(
+        _fileKeyMeta,
+        fileKey.isAcceptableOrUnknown(data['file_key']!, _fileKeyMeta),
+      );
     }
     if (data.containsKey('lat')) {
-      context.handle(_latMeta, lat.isAcceptableOrUnknown(data['lat']!, _latMeta));
+      context.handle(
+        _latMeta,
+        lat.isAcceptableOrUnknown(data['lat']!, _latMeta),
+      );
     }
     if (data.containsKey('lng')) {
-      context.handle(_lngMeta, lng.isAcceptableOrUnknown(data['lng']!, _lngMeta));
+      context.handle(
+        _lngMeta,
+        lng.isAcceptableOrUnknown(data['lng']!, _lngMeta),
+      );
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -7179,7 +7912,10 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
   ChatMessageRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return ChatMessageRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       clientId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}client_id'],
@@ -7192,14 +7928,26 @@ class $ChatMessagesTable extends ChatMessages with TableInfo<$ChatMessagesTable,
         DriftSqlType.string,
         data['${effectivePrefix}sender_id'],
       ),
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
-      body: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}text']),
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}text'],
+      ),
       fileKey: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}file_key'],
       ),
-      lat: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lat']),
-      lng: attachedDatabase.typeMapping.read(DriftSqlType.double, data['${effectivePrefix}lng']),
+      lat: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lat'],
+      ),
+      lng: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}lng'],
+      ),
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
@@ -7283,14 +8031,20 @@ class ChatMessageRow extends DataClass implements Insertable<ChatMessageRow> {
   ChatMessagesCompanion toCompanion(bool nullToAbsent) {
     return ChatMessagesCompanion(
       id: Value(id),
-      clientId: clientId == null && nullToAbsent ? const Value.absent() : Value(clientId),
+      clientId: clientId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientId),
       conversationId: conversationId == null && nullToAbsent
           ? const Value.absent()
           : Value(conversationId),
-      senderId: senderId == null && nullToAbsent ? const Value.absent() : Value(senderId),
+      senderId: senderId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(senderId),
       kind: Value(kind),
       body: body == null && nullToAbsent ? const Value.absent() : Value(body),
-      fileKey: fileKey == null && nullToAbsent ? const Value.absent() : Value(fileKey),
+      fileKey: fileKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fileKey),
       lat: lat == null && nullToAbsent ? const Value.absent() : Value(lat),
       lng: lng == null && nullToAbsent ? const Value.absent() : Value(lng),
       status: Value(status),
@@ -7298,7 +8052,10 @@ class ChatMessageRow extends DataClass implements Insertable<ChatMessageRow> {
     );
   }
 
-  factory ChatMessageRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory ChatMessageRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ChatMessageRow(
       id: serializer.fromJson<String>(json['id']),
@@ -7347,7 +8104,9 @@ class ChatMessageRow extends DataClass implements Insertable<ChatMessageRow> {
   }) => ChatMessageRow(
     id: id ?? this.id,
     clientId: clientId.present ? clientId.value : this.clientId,
-    conversationId: conversationId.present ? conversationId.value : this.conversationId,
+    conversationId: conversationId.present
+        ? conversationId.value
+        : this.conversationId,
     senderId: senderId.present ? senderId.value : this.senderId,
     kind: kind ?? this.kind,
     body: body.present ? body.value : this.body,
@@ -7361,7 +8120,9 @@ class ChatMessageRow extends DataClass implements Insertable<ChatMessageRow> {
     return ChatMessageRow(
       id: data.id.present ? data.id.value : this.id,
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
-      conversationId: data.conversationId.present ? data.conversationId.value : this.conversationId,
+      conversationId: data.conversationId.present
+          ? data.conversationId.value
+          : this.conversationId,
       senderId: data.senderId.present ? data.senderId.value : this.senderId,
       kind: data.kind.present ? data.kind.value : this.kind,
       body: data.body.present ? data.body.value : this.body,
@@ -7602,7 +8363,9 @@ class $NotificationsTable extends Notifications
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _alertTypeMeta = const VerificationMeta('alertType');
+  static const VerificationMeta _alertTypeMeta = const VerificationMeta(
+    'alertType',
+  );
   @override
   late final GeneratedColumn<String> alertType = GeneratedColumn<String>(
     'alert_type',
@@ -7629,7 +8392,9 @@ class $NotificationsTable extends Notifications
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _entityTypeMeta = const VerificationMeta('entityType');
+  static const VerificationMeta _entityTypeMeta = const VerificationMeta(
+    'entityType',
+  );
   @override
   late final GeneratedColumn<String> entityType = GeneratedColumn<String>(
     'entity_type',
@@ -7638,7 +8403,9 @@ class $NotificationsTable extends Notifications
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _entityIdMeta = const VerificationMeta('entityId');
+  static const VerificationMeta _entityIdMeta = const VerificationMeta(
+    'entityId',
+  );
   @override
   late final GeneratedColumn<String> entityId = GeneratedColumn<String>(
     'entity_id',
@@ -7655,10 +8422,14 @@ class $NotificationsTable extends Notifications
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("read" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("read" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -7704,12 +8475,18 @@ class $NotificationsTable extends Notifications
       context.missing(_alertTypeMeta);
     }
     if (data.containsKey('title')) {
-      context.handle(_titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('body')) {
-      context.handle(_bodyMeta, body.isAcceptableOrUnknown(data['body']!, _bodyMeta));
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
     } else if (isInserting) {
       context.missing(_bodyMeta);
     }
@@ -7726,7 +8503,10 @@ class $NotificationsTable extends Notifications
       );
     }
     if (data.containsKey('read')) {
-      context.handle(_readMeta, read.isAcceptableOrUnknown(data['read']!, _readMeta));
+      context.handle(
+        _readMeta,
+        read.isAcceptableOrUnknown(data['read']!, _readMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -7745,7 +8525,10 @@ class $NotificationsTable extends Notifications
   NotificationRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return NotificationRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       alertType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}alert_type'],
@@ -7754,7 +8537,10 @@ class $NotificationsTable extends Notifications
         DriftSqlType.string,
         data['${effectivePrefix}title'],
       )!,
-      body: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}body'])!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
       entityType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}entity_type'],
@@ -7763,7 +8549,10 @@ class $NotificationsTable extends Notifications
         DriftSqlType.string,
         data['${effectivePrefix}entity_id'],
       ),
-      read: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}read'])!,
+      read: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}read'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -7820,14 +8609,21 @@ class NotificationRow extends DataClass implements Insertable<NotificationRow> {
       alertType: Value(alertType),
       title: Value(title),
       body: Value(body),
-      entityType: entityType == null && nullToAbsent ? const Value.absent() : Value(entityType),
-      entityId: entityId == null && nullToAbsent ? const Value.absent() : Value(entityId),
+      entityType: entityType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(entityType),
+      entityId: entityId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(entityId),
       read: Value(read),
       createdAt: Value(createdAt),
     );
   }
 
-  factory NotificationRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory NotificationRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return NotificationRow(
       id: serializer.fromJson<String>(json['id']),
@@ -7880,7 +8676,9 @@ class NotificationRow extends DataClass implements Insertable<NotificationRow> {
       alertType: data.alertType.present ? data.alertType.value : this.alertType,
       title: data.title.present ? data.title.value : this.title,
       body: data.body.present ? data.body.value : this.body,
-      entityType: data.entityType.present ? data.entityType.value : this.entityType,
+      entityType: data.entityType.present
+          ? data.entityType.value
+          : this.entityType,
       entityId: data.entityId.present ? data.entityId.value : this.entityId,
       read: data.read.present ? data.read.value : this.read,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -7903,8 +8701,16 @@ class NotificationRow extends DataClass implements Insertable<NotificationRow> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, alertType, title, body, entityType, entityId, read, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    alertType,
+    title,
+    body,
+    entityType,
+    entityId,
+    read,
+    createdAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8068,7 +8874,9 @@ class $LogEditRequestsTable extends LogEditRequests
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _dailyLogIdMeta = const VerificationMeta('dailyLogId');
+  static const VerificationMeta _dailyLogIdMeta = const VerificationMeta(
+    'dailyLogId',
+  );
   @override
   late final GeneratedColumn<String> dailyLogId = GeneratedColumn<String>(
     'daily_log_id',
@@ -8077,18 +8885,24 @@ class $LogEditRequestsTable extends LogEditRequests
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _logDateMeta = const VerificationMeta('logDate');
+  static const VerificationMeta _logDateMeta = const VerificationMeta(
+    'logDate',
+  );
   @override
   late final GeneratedColumn<String> logDate = GeneratedColumn<String>(
     'log_date',
     aliasedName,
     false,
-    additionalChecks: GeneratedColumn.checkTextLength(minTextLength: 10, maxTextLength: 10),
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 10,
+      maxTextLength: 10,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> changes =
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  changes =
       GeneratedColumn<String>(
         'changes',
         aliasedName,
@@ -8096,7 +8910,9 @@ class $LogEditRequestsTable extends LogEditRequests
         type: DriftSqlType.string,
         requiredDuringInsert: false,
         defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($LogEditRequestsTable.$converterchanges);
+      ).withConverter<Map<String, Object?>>(
+        $LogEditRequestsTable.$converterchanges,
+      );
   static const VerificationMeta _sourceMeta = const VerificationMeta('source');
   @override
   late final GeneratedColumn<String> source = GeneratedColumn<String>(
@@ -8115,7 +8931,9 @@ class $LogEditRequestsTable extends LogEditRequests
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
     'created_at',
@@ -8124,7 +8942,9 @@ class $LogEditRequestsTable extends LogEditRequests
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _localDecisionMeta = const VerificationMeta('localDecision');
+  static const VerificationMeta _localDecisionMeta = const VerificationMeta(
+    'localDecision',
+  );
   @override
   late final GeneratedColumn<String> localDecision = GeneratedColumn<String>(
     'local_decision',
@@ -8164,21 +8984,33 @@ class $LogEditRequestsTable extends LogEditRequests
     if (data.containsKey('daily_log_id')) {
       context.handle(
         _dailyLogIdMeta,
-        dailyLogId.isAcceptableOrUnknown(data['daily_log_id']!, _dailyLogIdMeta),
+        dailyLogId.isAcceptableOrUnknown(
+          data['daily_log_id']!,
+          _dailyLogIdMeta,
+        ),
       );
     }
     if (data.containsKey('log_date')) {
-      context.handle(_logDateMeta, logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta));
+      context.handle(
+        _logDateMeta,
+        logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta),
+      );
     } else if (isInserting) {
       context.missing(_logDateMeta);
     }
     if (data.containsKey('source')) {
-      context.handle(_sourceMeta, source.isAcceptableOrUnknown(data['source']!, _sourceMeta));
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
     } else if (isInserting) {
       context.missing(_sourceMeta);
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     } else if (isInserting) {
       context.missing(_statusMeta);
     }
@@ -8193,7 +9025,10 @@ class $LogEditRequestsTable extends LogEditRequests
     if (data.containsKey('local_decision')) {
       context.handle(
         _localDecisionMeta,
-        localDecision.isAcceptableOrUnknown(data['local_decision']!, _localDecisionMeta),
+        localDecision.isAcceptableOrUnknown(
+          data['local_decision']!,
+          _localDecisionMeta,
+        ),
       );
     }
     return context;
@@ -8205,7 +9040,10 @@ class $LogEditRequestsTable extends LogEditRequests
   LogEditRequestRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return LogEditRequestRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       dailyLogId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}daily_log_id'],
@@ -8215,7 +9053,10 @@ class $LogEditRequestsTable extends LogEditRequests
         data['${effectivePrefix}log_date'],
       )!,
       changes: $LogEditRequestsTable.$converterchanges.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}changes'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}changes'],
+        )!,
       ),
       source: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -8241,11 +9082,12 @@ class $LogEditRequestsTable extends LogEditRequests
     return $LogEditRequestsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $converterchanges =
-      const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $converterchanges = const JsonMapConverter();
 }
 
-class LogEditRequestRow extends DataClass implements Insertable<LogEditRequestRow> {
+class LogEditRequestRow extends DataClass
+    implements Insertable<LogEditRequestRow> {
   final String id;
   final String? dailyLogId;
   final String logDate;
@@ -8281,7 +9123,9 @@ class LogEditRequestRow extends DataClass implements Insertable<LogEditRequestRo
     }
     map['log_date'] = Variable<String>(logDate);
     {
-      map['changes'] = Variable<String>($LogEditRequestsTable.$converterchanges.toSql(changes));
+      map['changes'] = Variable<String>(
+        $LogEditRequestsTable.$converterchanges.toSql(changes),
+      );
     }
     map['source'] = Variable<String>(source);
     map['status'] = Variable<String>(status);
@@ -8295,7 +9139,9 @@ class LogEditRequestRow extends DataClass implements Insertable<LogEditRequestRo
   LogEditRequestsCompanion toCompanion(bool nullToAbsent) {
     return LogEditRequestsCompanion(
       id: Value(id),
-      dailyLogId: dailyLogId == null && nullToAbsent ? const Value.absent() : Value(dailyLogId),
+      dailyLogId: dailyLogId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyLogId),
       logDate: Value(logDate),
       changes: Value(changes),
       source: Value(source),
@@ -8307,7 +9153,10 @@ class LogEditRequestRow extends DataClass implements Insertable<LogEditRequestRo
     );
   }
 
-  factory LogEditRequestRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory LogEditRequestRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return LogEditRequestRow(
       id: serializer.fromJson<String>(json['id']),
@@ -8356,18 +9205,24 @@ class LogEditRequestRow extends DataClass implements Insertable<LogEditRequestRo
     source: source ?? this.source,
     status: status ?? this.status,
     createdAt: createdAt ?? this.createdAt,
-    localDecision: localDecision.present ? localDecision.value : this.localDecision,
+    localDecision: localDecision.present
+        ? localDecision.value
+        : this.localDecision,
   );
   LogEditRequestRow copyWithCompanion(LogEditRequestsCompanion data) {
     return LogEditRequestRow(
       id: data.id.present ? data.id.value : this.id,
-      dailyLogId: data.dailyLogId.present ? data.dailyLogId.value : this.dailyLogId,
+      dailyLogId: data.dailyLogId.present
+          ? data.dailyLogId.value
+          : this.dailyLogId,
       logDate: data.logDate.present ? data.logDate.value : this.logDate,
       changes: data.changes.present ? data.changes.value : this.changes,
       source: data.source.present ? data.source.value : this.source,
       status: data.status.present ? data.status.value : this.status,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      localDecision: data.localDecision.present ? data.localDecision.value : this.localDecision,
+      localDecision: data.localDecision.present
+          ? data.localDecision.value
+          : this.localDecision,
     );
   }
 
@@ -8387,8 +9242,16 @@ class LogEditRequestRow extends DataClass implements Insertable<LogEditRequestRo
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, dailyLogId, logDate, changes, source, status, createdAt, localDecision);
+  int get hashCode => Object.hash(
+    id,
+    dailyLogId,
+    logDate,
+    changes,
+    source,
+    status,
+    createdAt,
+    localDecision,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8563,7 +9426,9 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _startAtMeta = const VerificationMeta('startAt');
+  static const VerificationMeta _startAtMeta = const VerificationMeta(
+    'startAt',
+  );
   @override
   late final GeneratedColumn<DateTime> startAt = GeneratedColumn<DateTime>(
     'start_at',
@@ -8581,7 +9446,9 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _distanceMMeta = const VerificationMeta('distanceM');
+  static const VerificationMeta _distanceMMeta = const VerificationMeta(
+    'distanceM',
+  );
   @override
   late final GeneratedColumn<int> distanceM = GeneratedColumn<int>(
     'distance_m',
@@ -8600,7 +9467,9 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _dismissedLocalMeta = const VerificationMeta('dismissedLocal');
+  static const VerificationMeta _dismissedLocalMeta = const VerificationMeta(
+    'dismissedLocal',
+  );
   @override
   late final GeneratedColumn<bool> dismissedLocal = GeneratedColumn<bool>(
     'dismissed_local',
@@ -8608,7 +9477,9 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("dismissed_local" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dismissed_local" IN (0, 1))',
+    ),
     defaultValue: const Constant<bool>(false),
   );
   @override
@@ -8639,17 +9510,26 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
       context.missing(_idMeta);
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_unitIdMeta);
     }
     if (data.containsKey('start_at')) {
-      context.handle(_startAtMeta, startAt.isAcceptableOrUnknown(data['start_at']!, _startAtMeta));
+      context.handle(
+        _startAtMeta,
+        startAt.isAcceptableOrUnknown(data['start_at']!, _startAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_startAtMeta);
     }
     if (data.containsKey('end_at')) {
-      context.handle(_endAtMeta, endAt.isAcceptableOrUnknown(data['end_at']!, _endAtMeta));
+      context.handle(
+        _endAtMeta,
+        endAt.isAcceptableOrUnknown(data['end_at']!, _endAtMeta),
+      );
     }
     if (data.containsKey('distance_m')) {
       context.handle(
@@ -8658,14 +9538,20 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
       );
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     } else if (isInserting) {
       context.missing(_statusMeta);
     }
     if (data.containsKey('dismissed_local')) {
       context.handle(
         _dismissedLocalMeta,
-        dismissedLocal.isAcceptableOrUnknown(data['dismissed_local']!, _dismissedLocalMeta),
+        dismissedLocal.isAcceptableOrUnknown(
+          data['dismissed_local']!,
+          _dismissedLocalMeta,
+        ),
       );
     }
     return context;
@@ -8677,7 +9563,10 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
   UnidentifiedEventRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UnidentifiedEventRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       unitId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}unit_id'],
@@ -8711,7 +9600,8 @@ class $UnidentifiedEventsTable extends UnidentifiedEvents
   }
 }
 
-class UnidentifiedEventRow extends DataClass implements Insertable<UnidentifiedEventRow> {
+class UnidentifiedEventRow extends DataClass
+    implements Insertable<UnidentifiedEventRow> {
   final String id;
   final String unitId;
   final DateTime startAt;
@@ -8752,14 +9642,19 @@ class UnidentifiedEventRow extends DataClass implements Insertable<UnidentifiedE
       id: Value(id),
       unitId: Value(unitId),
       startAt: Value(startAt),
-      endAt: endAt == null && nullToAbsent ? const Value.absent() : Value(endAt),
+      endAt: endAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endAt),
       distanceM: Value(distanceM),
       status: Value(status),
       dismissedLocal: Value(dismissedLocal),
     );
   }
 
-  factory UnidentifiedEventRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory UnidentifiedEventRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UnidentifiedEventRow(
       id: serializer.fromJson<String>(json['id']),
@@ -8810,7 +9705,9 @@ class UnidentifiedEventRow extends DataClass implements Insertable<UnidentifiedE
       endAt: data.endAt.present ? data.endAt.value : this.endAt,
       distanceM: data.distanceM.present ? data.distanceM.value : this.distanceM,
       status: data.status.present ? data.status.value : this.status,
-      dismissedLocal: data.dismissedLocal.present ? data.dismissedLocal.value : this.dismissedLocal,
+      dismissedLocal: data.dismissedLocal.present
+          ? data.dismissedLocal.value
+          : this.dismissedLocal,
     );
   }
 
@@ -8829,7 +9726,15 @@ class UnidentifiedEventRow extends DataClass implements Insertable<UnidentifiedE
   }
 
   @override
-  int get hashCode => Object.hash(id, unitId, startAt, endAt, distanceM, status, dismissedLocal);
+  int get hashCode => Object.hash(
+    id,
+    unitId,
+    startAt,
+    endAt,
+    distanceM,
+    status,
+    dismissedLocal,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8843,7 +9748,8 @@ class UnidentifiedEventRow extends DataClass implements Insertable<UnidentifiedE
           other.dismissedLocal == this.dismissedLocal);
 }
 
-class UnidentifiedEventsCompanion extends UpdateCompanion<UnidentifiedEventRow> {
+class UnidentifiedEventsCompanion
+    extends UpdateCompanion<UnidentifiedEventRow> {
   final Value<String> id;
   final Value<String> unitId;
   final Value<DateTime> startAt;
@@ -8965,7 +9871,8 @@ class UnidentifiedEventsCompanion extends UpdateCompanion<UnidentifiedEventRow> 
   }
 }
 
-class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, ViolationRow> {
+class $ViolationsTable extends Violations
+    with TableInfo<$ViolationsTable, ViolationRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -8988,7 +9895,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _severityMeta = const VerificationMeta('severity');
+  static const VerificationMeta _severityMeta = const VerificationMeta(
+    'severity',
+  );
   @override
   late final GeneratedColumn<String> severity = GeneratedColumn<String>(
     'severity',
@@ -8998,7 +9907,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('violation'),
   );
-  static const VerificationMeta _occurredAtMeta = const VerificationMeta('occurredAt');
+  static const VerificationMeta _occurredAtMeta = const VerificationMeta(
+    'occurredAt',
+  );
   @override
   late final GeneratedColumn<DateTime> occurredAt = GeneratedColumn<DateTime>(
     'occurred_at',
@@ -9007,7 +9918,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _logDateMeta = const VerificationMeta('logDate');
+  static const VerificationMeta _logDateMeta = const VerificationMeta(
+    'logDate',
+  );
   @override
   late final GeneratedColumn<String> logDate = GeneratedColumn<String>(
     'log_date',
@@ -9016,7 +9929,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _dailyLogIdMeta = const VerificationMeta('dailyLogId');
+  static const VerificationMeta _dailyLogIdMeta = const VerificationMeta(
+    'dailyLogId',
+  );
   @override
   late final GeneratedColumn<String> dailyLogId = GeneratedColumn<String>(
     'daily_log_id',
@@ -9025,7 +9940,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _driverIdMeta = const VerificationMeta('driverId');
+  static const VerificationMeta _driverIdMeta = const VerificationMeta(
+    'driverId',
+  );
   @override
   late final GeneratedColumn<String> driverId = GeneratedColumn<String>(
     'driver_id',
@@ -9043,7 +9960,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _policyVersionIdMeta = const VerificationMeta('policyVersionId');
+  static const VerificationMeta _policyVersionIdMeta = const VerificationMeta(
+    'policyVersionId',
+  );
   @override
   late final GeneratedColumn<String> policyVersionId = GeneratedColumn<String>(
     'policy_version_id',
@@ -9053,16 +9972,18 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     requiredDuringInsert: false,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String> details =
-      GeneratedColumn<String>(
-        'details',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant<String>('{}'),
-      ).withConverter<Map<String, Object?>>($ViolationsTable.$converterdetails);
-  static const VerificationMeta _resolvedAtMeta = const VerificationMeta('resolvedAt');
+  late final GeneratedColumnWithTypeConverter<Map<String, Object?>, String>
+  details = GeneratedColumn<String>(
+    'details',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant<String>('{}'),
+  ).withConverter<Map<String, Object?>>($ViolationsTable.$converterdetails);
+  static const VerificationMeta _resolvedAtMeta = const VerificationMeta(
+    'resolvedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> resolvedAt = GeneratedColumn<DateTime>(
     'resolved_at',
@@ -9071,7 +9992,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _resolvedReasonMeta = const VerificationMeta('resolvedReason');
+  static const VerificationMeta _resolvedReasonMeta = const VerificationMeta(
+    'resolvedReason',
+  );
   @override
   late final GeneratedColumn<String> resolvedReason = GeneratedColumn<String>(
     'resolved_reason',
@@ -9080,7 +10003,9 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -9123,7 +10048,10 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
       context.missing(_idMeta);
     }
     if (data.containsKey('type')) {
-      context.handle(_typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
@@ -9142,12 +10070,18 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
       context.missing(_occurredAtMeta);
     }
     if (data.containsKey('log_date')) {
-      context.handle(_logDateMeta, logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta));
+      context.handle(
+        _logDateMeta,
+        logDate.isAcceptableOrUnknown(data['log_date']!, _logDateMeta),
+      );
     }
     if (data.containsKey('daily_log_id')) {
       context.handle(
         _dailyLogIdMeta,
-        dailyLogId.isAcceptableOrUnknown(data['daily_log_id']!, _dailyLogIdMeta),
+        dailyLogId.isAcceptableOrUnknown(
+          data['daily_log_id']!,
+          _dailyLogIdMeta,
+        ),
       );
     }
     if (data.containsKey('driver_id')) {
@@ -9157,12 +10091,18 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
       );
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     }
     if (data.containsKey('policy_version_id')) {
       context.handle(
         _policyVersionIdMeta,
-        policyVersionId.isAcceptableOrUnknown(data['policy_version_id']!, _policyVersionIdMeta),
+        policyVersionId.isAcceptableOrUnknown(
+          data['policy_version_id']!,
+          _policyVersionIdMeta,
+        ),
       );
     }
     if (data.containsKey('resolved_at')) {
@@ -9174,7 +10114,10 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     if (data.containsKey('resolved_reason')) {
       context.handle(
         _resolvedReasonMeta,
-        resolvedReason.isAcceptableOrUnknown(data['resolved_reason']!, _resolvedReasonMeta),
+        resolvedReason.isAcceptableOrUnknown(
+          data['resolved_reason']!,
+          _resolvedReasonMeta,
+        ),
       );
     }
     if (data.containsKey('updated_at')) {
@@ -9194,8 +10137,14 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
   ViolationRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return ViolationRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      type: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}type'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
       severity: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}severity'],
@@ -9225,7 +10174,10 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
         data['${effectivePrefix}policy_version_id'],
       ),
       details: $ViolationsTable.$converterdetails.fromSql(
-        attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}details'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}details'],
+        )!,
       ),
       resolvedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -9247,8 +10199,8 @@ class $ViolationsTable extends Violations with TableInfo<$ViolationsTable, Viola
     return $ViolationsTable(attachedDatabase, alias);
   }
 
-  static JsonTypeConverter2<Map<String, Object?>, String, Object?> $converterdetails =
-      const JsonMapConverter();
+  static JsonTypeConverter2<Map<String, Object?>, String, Object?>
+  $converterdetails = const JsonMapConverter();
 }
 
 class ViolationRow extends DataClass implements Insertable<ViolationRow> {
@@ -9312,7 +10264,9 @@ class ViolationRow extends DataClass implements Insertable<ViolationRow> {
       map['policy_version_id'] = Variable<String>(policyVersionId);
     }
     {
-      map['details'] = Variable<String>($ViolationsTable.$converterdetails.toSql(details));
+      map['details'] = Variable<String>(
+        $ViolationsTable.$converterdetails.toSql(details),
+      );
     }
     if (!nullToAbsent || resolvedAt != null) {
       map['resolved_at'] = Variable<DateTime>(resolvedAt);
@@ -9330,15 +10284,25 @@ class ViolationRow extends DataClass implements Insertable<ViolationRow> {
       type: Value(type),
       severity: Value(severity),
       occurredAt: Value(occurredAt),
-      logDate: logDate == null && nullToAbsent ? const Value.absent() : Value(logDate),
-      dailyLogId: dailyLogId == null && nullToAbsent ? const Value.absent() : Value(dailyLogId),
-      driverId: driverId == null && nullToAbsent ? const Value.absent() : Value(driverId),
-      unitId: unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
+      logDate: logDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(logDate),
+      dailyLogId: dailyLogId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyLogId),
+      driverId: driverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(driverId),
+      unitId: unitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unitId),
       policyVersionId: policyVersionId == null && nullToAbsent
           ? const Value.absent()
           : Value(policyVersionId),
       details: Value(details),
-      resolvedAt: resolvedAt == null && nullToAbsent ? const Value.absent() : Value(resolvedAt),
+      resolvedAt: resolvedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(resolvedAt),
       resolvedReason: resolvedReason == null && nullToAbsent
           ? const Value.absent()
           : Value(resolvedReason),
@@ -9346,7 +10310,10 @@ class ViolationRow extends DataClass implements Insertable<ViolationRow> {
     );
   }
 
-  factory ViolationRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory ViolationRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ViolationRow(
       id: serializer.fromJson<String>(json['id']),
@@ -9379,7 +10346,9 @@ class ViolationRow extends DataClass implements Insertable<ViolationRow> {
       'driverId': serializer.toJson<String?>(driverId),
       'unitId': serializer.toJson<String?>(unitId),
       'policyVersionId': serializer.toJson<String?>(policyVersionId),
-      'details': serializer.toJson<Object?>($ViolationsTable.$converterdetails.toJson(details)),
+      'details': serializer.toJson<Object?>(
+        $ViolationsTable.$converterdetails.toJson(details),
+      ),
       'resolvedAt': serializer.toJson<DateTime?>(resolvedAt),
       'resolvedReason': serializer.toJson<String?>(resolvedReason),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -9409,10 +10378,14 @@ class ViolationRow extends DataClass implements Insertable<ViolationRow> {
     dailyLogId: dailyLogId.present ? dailyLogId.value : this.dailyLogId,
     driverId: driverId.present ? driverId.value : this.driverId,
     unitId: unitId.present ? unitId.value : this.unitId,
-    policyVersionId: policyVersionId.present ? policyVersionId.value : this.policyVersionId,
+    policyVersionId: policyVersionId.present
+        ? policyVersionId.value
+        : this.policyVersionId,
     details: details ?? this.details,
     resolvedAt: resolvedAt.present ? resolvedAt.value : this.resolvedAt,
-    resolvedReason: resolvedReason.present ? resolvedReason.value : this.resolvedReason,
+    resolvedReason: resolvedReason.present
+        ? resolvedReason.value
+        : this.resolvedReason,
     updatedAt: updatedAt ?? this.updatedAt,
   );
   ViolationRow copyWithCompanion(ViolationsCompanion data) {
@@ -9420,17 +10393,25 @@ class ViolationRow extends DataClass implements Insertable<ViolationRow> {
       id: data.id.present ? data.id.value : this.id,
       type: data.type.present ? data.type.value : this.type,
       severity: data.severity.present ? data.severity.value : this.severity,
-      occurredAt: data.occurredAt.present ? data.occurredAt.value : this.occurredAt,
+      occurredAt: data.occurredAt.present
+          ? data.occurredAt.value
+          : this.occurredAt,
       logDate: data.logDate.present ? data.logDate.value : this.logDate,
-      dailyLogId: data.dailyLogId.present ? data.dailyLogId.value : this.dailyLogId,
+      dailyLogId: data.dailyLogId.present
+          ? data.dailyLogId.value
+          : this.dailyLogId,
       driverId: data.driverId.present ? data.driverId.value : this.driverId,
       unitId: data.unitId.present ? data.unitId.value : this.unitId,
       policyVersionId: data.policyVersionId.present
           ? data.policyVersionId.value
           : this.policyVersionId,
       details: data.details.present ? data.details.value : this.details,
-      resolvedAt: data.resolvedAt.present ? data.resolvedAt.value : this.resolvedAt,
-      resolvedReason: data.resolvedReason.present ? data.resolvedReason.value : this.resolvedReason,
+      resolvedAt: data.resolvedAt.present
+          ? data.resolvedAt.value
+          : this.resolvedAt,
+      resolvedReason: data.resolvedReason.present
+          ? data.resolvedReason.value
+          : this.resolvedReason,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
@@ -9639,7 +10620,9 @@ class ViolationsCompanion extends UpdateCompanion<ViolationRow> {
       map['policy_version_id'] = Variable<String>(policyVersionId.value);
     }
     if (details.present) {
-      map['details'] = Variable<String>($ViolationsTable.$converterdetails.toSql(details.value));
+      map['details'] = Variable<String>(
+        $ViolationsTable.$converterdetails.toSql(details.value),
+      );
     }
     if (resolvedAt.present) {
       map['resolved_at'] = Variable<DateTime>(resolvedAt.value);
@@ -9711,7 +10694,9 @@ class $RefDefectTypesTable extends RefDefectTypes
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _categoryMeta = const VerificationMeta('category');
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
   @override
   late final GeneratedColumn<String> category = GeneratedColumn<String>(
     'category',
@@ -9720,7 +10705,9 @@ class $RefDefectTypesTable extends RefDefectTypes
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _appliesToMeta = const VerificationMeta('appliesTo');
+  static const VerificationMeta _appliesToMeta = const VerificationMeta(
+    'appliesTo',
+  );
   @override
   late final GeneratedColumn<String> appliesTo = GeneratedColumn<String>(
     'applies_to',
@@ -9730,7 +10717,9 @@ class $RefDefectTypesTable extends RefDefectTypes
     requiredDuringInsert: false,
     defaultValue: const Constant<String>('vehicle'),
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -9740,7 +10729,14 @@ class $RefDefectTypesTable extends RefDefectTypes
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, code, label, category, appliesTo, updatedAt];
+  List<GeneratedColumn> get $columns => [
+    id,
+    code,
+    label,
+    category,
+    appliesTo,
+    updatedAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -9759,12 +10755,18 @@ class $RefDefectTypesTable extends RefDefectTypes
       context.missing(_idMeta);
     }
     if (data.containsKey('code')) {
-      context.handle(_codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
     } else if (isInserting) {
       context.missing(_codeMeta);
     }
     if (data.containsKey('label')) {
-      context.handle(_labelMeta, label.isAcceptableOrUnknown(data['label']!, _labelMeta));
+      context.handle(
+        _labelMeta,
+        label.isAcceptableOrUnknown(data['label']!, _labelMeta),
+      );
     } else if (isInserting) {
       context.missing(_labelMeta);
     }
@@ -9797,8 +10799,14 @@ class $RefDefectTypesTable extends RefDefectTypes
   RefDefectTypeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return RefDefectTypeRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      code: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}code'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
       label: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}label'],
@@ -9824,7 +10832,8 @@ class $RefDefectTypesTable extends RefDefectTypes
   }
 }
 
-class RefDefectTypeRow extends DataClass implements Insertable<RefDefectTypeRow> {
+class RefDefectTypeRow extends DataClass
+    implements Insertable<RefDefectTypeRow> {
   final String id;
   final String code;
   final String label;
@@ -9860,13 +10869,18 @@ class RefDefectTypeRow extends DataClass implements Insertable<RefDefectTypeRow>
       id: Value(id),
       code: Value(code),
       label: Value(label),
-      category: category == null && nullToAbsent ? const Value.absent() : Value(category),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
       appliesTo: Value(appliesTo),
       updatedAt: Value(updatedAt),
     );
   }
 
-  factory RefDefectTypeRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory RefDefectTypeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return RefDefectTypeRow(
       id: serializer.fromJson<String>(json['id']),
@@ -9930,7 +10944,8 @@ class RefDefectTypeRow extends DataClass implements Insertable<RefDefectTypeRow>
   }
 
   @override
-  int get hashCode => Object.hash(id, code, label, category, appliesTo, updatedAt);
+  int get hashCode =>
+      Object.hash(id, code, label, category, appliesTo, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -10078,7 +11093,9 @@ class $RefQuickNotesTable extends RefQuickNotes
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _categoryMeta = const VerificationMeta('category');
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
   @override
   late final GeneratedColumn<String> category = GeneratedColumn<String>(
     'category',
@@ -10087,7 +11104,9 @@ class $RefQuickNotesTable extends RefQuickNotes
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -10116,7 +11135,10 @@ class $RefQuickNotesTable extends RefQuickNotes
       context.missing(_idMeta);
     }
     if (data.containsKey('text')) {
-      context.handle(_labelMeta, label.isAcceptableOrUnknown(data['text']!, _labelMeta));
+      context.handle(
+        _labelMeta,
+        label.isAcceptableOrUnknown(data['text']!, _labelMeta),
+      );
     } else if (isInserting) {
       context.missing(_labelMeta);
     }
@@ -10143,7 +11165,10 @@ class $RefQuickNotesTable extends RefQuickNotes
   RefQuickNoteRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return RefQuickNoteRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       label: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}text'],
@@ -10195,12 +11220,17 @@ class RefQuickNoteRow extends DataClass implements Insertable<RefQuickNoteRow> {
     return RefQuickNotesCompanion(
       id: Value(id),
       label: Value(label),
-      category: category == null && nullToAbsent ? const Value.absent() : Value(category),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
       updatedAt: Value(updatedAt),
     );
   }
 
-  factory RefQuickNoteRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory RefQuickNoteRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return RefQuickNoteRow(
       id: serializer.fromJson<String>(json['id']),
@@ -10351,7 +11381,8 @@ class RefQuickNotesCompanion extends UpdateCompanion<RefQuickNoteRow> {
   }
 }
 
-class $RefTrailersTable extends RefTrailers with TableInfo<$RefTrailersTable, RefTrailerRow> {
+class $RefTrailersTable extends RefTrailers
+    with TableInfo<$RefTrailersTable, RefTrailerRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -10383,7 +11414,9 @@ class $RefTrailersTable extends RefTrailers with TableInfo<$RefTrailersTable, Re
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -10412,12 +11445,18 @@ class $RefTrailersTable extends RefTrailers with TableInfo<$RefTrailersTable, Re
       context.missing(_idMeta);
     }
     if (data.containsKey('number')) {
-      context.handle(_numberMeta, number.isAcceptableOrUnknown(data['number']!, _numberMeta));
+      context.handle(
+        _numberMeta,
+        number.isAcceptableOrUnknown(data['number']!, _numberMeta),
+      );
     } else if (isInserting) {
       context.missing(_numberMeta);
     }
     if (data.containsKey('unit_id')) {
-      context.handle(_unitIdMeta, unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+      context.handle(
+        _unitIdMeta,
+        unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta),
+      );
     }
     if (data.containsKey('updated_at')) {
       context.handle(
@@ -10436,7 +11475,10 @@ class $RefTrailersTable extends RefTrailers with TableInfo<$RefTrailersTable, Re
   RefTrailerRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return RefTrailerRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
       number: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}number'],
@@ -10485,12 +11527,17 @@ class RefTrailerRow extends DataClass implements Insertable<RefTrailerRow> {
     return RefTrailersCompanion(
       id: Value(id),
       number: Value(number),
-      unitId: unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
+      unitId: unitId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unitId),
       updatedAt: Value(updatedAt),
     );
   }
 
-  factory RefTrailerRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory RefTrailerRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return RefTrailerRow(
       id: serializer.fromJson<String>(json['id']),
@@ -10657,7 +11704,9 @@ class $SyncCursorTableTable extends SyncCursorTable
     requiredDuringInsert: false,
     defaultValue: const Constant<int>(1),
   );
-  static const VerificationMeta _nextSinceMeta = const VerificationMeta('nextSince');
+  static const VerificationMeta _nextSinceMeta = const VerificationMeta(
+    'nextSince',
+  );
   @override
   late final GeneratedColumn<String> nextSince = GeneratedColumn<String>(
     'next_since',
@@ -10666,7 +11715,9 @@ class $SyncCursorTableTable extends SyncCursorTable
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _lastPushAtMeta = const VerificationMeta('lastPushAt');
+  static const VerificationMeta _lastPushAtMeta = const VerificationMeta(
+    'lastPushAt',
+  );
   @override
   late final GeneratedColumn<DateTime> lastPushAt = GeneratedColumn<DateTime>(
     'last_push_at',
@@ -10675,7 +11726,9 @@ class $SyncCursorTableTable extends SyncCursorTable
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _lastPullAtMeta = const VerificationMeta('lastPullAt');
+  static const VerificationMeta _lastPullAtMeta = const VerificationMeta(
+    'lastPullAt',
+  );
   @override
   late final GeneratedColumn<DateTime> lastPullAt = GeneratedColumn<DateTime>(
     'last_pull_at',
@@ -10684,7 +11737,9 @@ class $SyncCursorTableTable extends SyncCursorTable
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _lastErrorMeta = const VerificationMeta('lastError');
+  static const VerificationMeta _lastErrorMeta = const VerificationMeta(
+    'lastError',
+  );
   @override
   late final GeneratedColumn<String> lastError = GeneratedColumn<String>(
     'last_error',
@@ -10693,7 +11748,9 @@ class $SyncCursorTableTable extends SyncCursorTable
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _lastErrorAtMeta = const VerificationMeta('lastErrorAt');
+  static const VerificationMeta _lastErrorAtMeta = const VerificationMeta(
+    'lastErrorAt',
+  );
   @override
   late final GeneratedColumn<DateTime> lastErrorAt = GeneratedColumn<DateTime>(
     'last_error_at',
@@ -10735,13 +11792,19 @@ class $SyncCursorTableTable extends SyncCursorTable
     if (data.containsKey('last_push_at')) {
       context.handle(
         _lastPushAtMeta,
-        lastPushAt.isAcceptableOrUnknown(data['last_push_at']!, _lastPushAtMeta),
+        lastPushAt.isAcceptableOrUnknown(
+          data['last_push_at']!,
+          _lastPushAtMeta,
+        ),
       );
     }
     if (data.containsKey('last_pull_at')) {
       context.handle(
         _lastPullAtMeta,
-        lastPullAt.isAcceptableOrUnknown(data['last_pull_at']!, _lastPullAtMeta),
+        lastPullAt.isAcceptableOrUnknown(
+          data['last_pull_at']!,
+          _lastPullAtMeta,
+        ),
       );
     }
     if (data.containsKey('last_error')) {
@@ -10753,7 +11816,10 @@ class $SyncCursorTableTable extends SyncCursorTable
     if (data.containsKey('last_error_at')) {
       context.handle(
         _lastErrorAtMeta,
-        lastErrorAt.isAcceptableOrUnknown(data['last_error_at']!, _lastErrorAtMeta),
+        lastErrorAt.isAcceptableOrUnknown(
+          data['last_error_at']!,
+          _lastErrorAtMeta,
+        ),
       );
     }
     return context;
@@ -10765,7 +11831,10 @@ class $SyncCursorTableTable extends SyncCursorTable
   SyncCursorRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return SyncCursorRow(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       nextSince: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}next_since'],
@@ -10839,15 +11908,28 @@ class SyncCursorRow extends DataClass implements Insertable<SyncCursorRow> {
   SyncCursorTableCompanion toCompanion(bool nullToAbsent) {
     return SyncCursorTableCompanion(
       id: Value(id),
-      nextSince: nextSince == null && nullToAbsent ? const Value.absent() : Value(nextSince),
-      lastPushAt: lastPushAt == null && nullToAbsent ? const Value.absent() : Value(lastPushAt),
-      lastPullAt: lastPullAt == null && nullToAbsent ? const Value.absent() : Value(lastPullAt),
-      lastError: lastError == null && nullToAbsent ? const Value.absent() : Value(lastError),
-      lastErrorAt: lastErrorAt == null && nullToAbsent ? const Value.absent() : Value(lastErrorAt),
+      nextSince: nextSince == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextSince),
+      lastPushAt: lastPushAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastPushAt),
+      lastPullAt: lastPullAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastPullAt),
+      lastError: lastError == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastError),
+      lastErrorAt: lastErrorAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastErrorAt),
     );
   }
 
-  factory SyncCursorRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory SyncCursorRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SyncCursorRow(
       id: serializer.fromJson<int>(json['id']),
@@ -10890,10 +11972,16 @@ class SyncCursorRow extends DataClass implements Insertable<SyncCursorRow> {
     return SyncCursorRow(
       id: data.id.present ? data.id.value : this.id,
       nextSince: data.nextSince.present ? data.nextSince.value : this.nextSince,
-      lastPushAt: data.lastPushAt.present ? data.lastPushAt.value : this.lastPushAt,
-      lastPullAt: data.lastPullAt.present ? data.lastPullAt.value : this.lastPullAt,
+      lastPushAt: data.lastPushAt.present
+          ? data.lastPushAt.value
+          : this.lastPushAt,
+      lastPullAt: data.lastPullAt.present
+          ? data.lastPullAt.value
+          : this.lastPullAt,
       lastError: data.lastError.present ? data.lastError.value : this.lastError,
-      lastErrorAt: data.lastErrorAt.present ? data.lastErrorAt.value : this.lastErrorAt,
+      lastErrorAt: data.lastErrorAt.present
+          ? data.lastErrorAt.value
+          : this.lastErrorAt,
     );
   }
 
@@ -10911,7 +11999,14 @@ class SyncCursorRow extends DataClass implements Insertable<SyncCursorRow> {
   }
 
   @override
-  int get hashCode => Object.hash(id, nextSince, lastPushAt, lastPullAt, lastError, lastErrorAt);
+  int get hashCode => Object.hash(
+    id,
+    nextSince,
+    lastPushAt,
+    lastPullAt,
+    lastError,
+    lastErrorAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -11021,7 +12116,8 @@ class SyncCursorTableCompanion extends UpdateCompanion<SyncCursorRow> {
   }
 }
 
-class $KvSettingsTable extends KvSettings with TableInfo<$KvSettingsTable, KvSettingRow> {
+class $KvSettingsTable extends KvSettings
+    with TableInfo<$KvSettingsTable, KvSettingRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -11044,7 +12140,9 @@ class $KvSettingsTable extends KvSettings with TableInfo<$KvSettingsTable, KvSet
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
     'updated_at',
@@ -11068,12 +12166,18 @@ class $KvSettingsTable extends KvSettings with TableInfo<$KvSettingsTable, KvSet
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('key')) {
-      context.handle(_keyMeta, key.isAcceptableOrUnknown(data['key']!, _keyMeta));
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
     } else if (isInserting) {
       context.missing(_keyMeta);
     }
     if (data.containsKey('value')) {
-      context.handle(_valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+      context.handle(
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -11094,7 +12198,10 @@ class $KvSettingsTable extends KvSettings with TableInfo<$KvSettingsTable, KvSet
   KvSettingRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return KvSettingRow(
-      key: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}key'])!,
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
       value: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}value'],
@@ -11116,7 +12223,11 @@ class KvSettingRow extends DataClass implements Insertable<KvSettingRow> {
   final String key;
   final String value;
   final DateTime updatedAt;
-  const KvSettingRow({required this.key, required this.value, required this.updatedAt});
+  const KvSettingRow({
+    required this.key,
+    required this.value,
+    required this.updatedAt,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -11127,10 +12238,17 @@ class KvSettingRow extends DataClass implements Insertable<KvSettingRow> {
   }
 
   KvSettingsCompanion toCompanion(bool nullToAbsent) {
-    return KvSettingsCompanion(key: Value(key), value: Value(value), updatedAt: Value(updatedAt));
+    return KvSettingsCompanion(
+      key: Value(key),
+      value: Value(value),
+      updatedAt: Value(updatedAt),
+    );
   }
 
-  factory KvSettingRow.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory KvSettingRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return KvSettingRow(
       key: serializer.fromJson<String>(json['key']),
@@ -11148,11 +12266,12 @@ class KvSettingRow extends DataClass implements Insertable<KvSettingRow> {
     };
   }
 
-  KvSettingRow copyWith({String? key, String? value, DateTime? updatedAt}) => KvSettingRow(
-    key: key ?? this.key,
-    value: value ?? this.value,
-    updatedAt: updatedAt ?? this.updatedAt,
-  );
+  KvSettingRow copyWith({String? key, String? value, DateTime? updatedAt}) =>
+      KvSettingRow(
+        key: key ?? this.key,
+        value: value ?? this.value,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
   KvSettingRow copyWithCompanion(KvSettingsCompanion data) {
     return KvSettingRow(
       key: data.key.present ? data.key.value : this.key,
@@ -11263,7 +12382,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $OutboxItemsTable outboxItems = $OutboxItemsTable(this);
   late final $DutyEventsTable dutyEvents = $DutyEventsTable(this);
-  late final $TelemetryBufferTable telemetryBuffer = $TelemetryBufferTable(this);
+  late final $TelemetryBufferTable telemetryBuffer = $TelemetryBufferTable(
+    this,
+  );
   late final $DailyLogsTable dailyLogs = $DailyLogsTable(this);
   late final $HosStatesTable hosStates = $HosStatesTable(this);
   late final $HosPoliciesTable hosPolicies = $HosPoliciesTable(this);
@@ -11273,13 +12394,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ChatOutboxTable chatOutbox = $ChatOutboxTable(this);
   late final $ChatMessagesTable chatMessages = $ChatMessagesTable(this);
   late final $NotificationsTable notifications = $NotificationsTable(this);
-  late final $LogEditRequestsTable logEditRequests = $LogEditRequestsTable(this);
-  late final $UnidentifiedEventsTable unidentifiedEvents = $UnidentifiedEventsTable(this);
+  late final $LogEditRequestsTable logEditRequests = $LogEditRequestsTable(
+    this,
+  );
+  late final $UnidentifiedEventsTable unidentifiedEvents =
+      $UnidentifiedEventsTable(this);
   late final $ViolationsTable violations = $ViolationsTable(this);
   late final $RefDefectTypesTable refDefectTypes = $RefDefectTypesTable(this);
   late final $RefQuickNotesTable refQuickNotes = $RefQuickNotesTable(this);
   late final $RefTrailersTable refTrailers = $RefTrailersTable(this);
-  late final $SyncCursorTableTable syncCursorTable = $SyncCursorTableTable(this);
+  late final $SyncCursorTableTable syncCursorTable = $SyncCursorTableTable(
+    this,
+  );
   late final $KvSettingsTable kvSettings = $KvSettingsTable(this);
   late final Index idxOutboxReady = Index(
     'idx_outbox_ready',
@@ -11401,5 +12527,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     idxViolationsLogDate,
   ];
   @override
-  DriftDatabaseOptions get options => const DriftDatabaseOptions(storeDateTimeAsText: true);
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
