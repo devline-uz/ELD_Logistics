@@ -175,17 +175,22 @@ void main() {
       expect(controller.queuedRecords, 4);
     });
 
-    test('server xatosi: sessiya bo\'shatilmaydi va xato ko\'rsatiladi', () async {
+    // #B-1: avval server xatosi chiqishni to'xtatardi va haydovchi tugmani
+    // qayta bosib `401 TOKEN_REVOKED` ga tushardi. Endi `Logout` **best-effort**
+    // va **idempotent** — server javobi qanday bo'lsa ham lokal sessiya
+    // tozalanadi (outbox tegilmaydi, M17).
+    test('server xatosi (TOKEN_REVOKED/5xx) chiqishni to\'xtatmaydi', () async {
       final FakeDutyStatusRepository duty = FakeDutyStatusRepository();
       addTearDown(duty.dispose);
       final FakeAuthRepository auth = FakeAuthRepository()
-        ..logoutError = const ApiError(code: ApiErrorCode.internalError, message: 'boom');
+        ..logoutError = const ApiError(code: ApiErrorCode.tokenRevoked, message: 'revoked');
 
       final ProviderContainer container = _container(duty: duty, auth: auth, paired: false);
-      await container.read(leaveTruckControllerProvider.notifier).logout();
+      await expectLater(container.read(leaveTruckControllerProvider.notifier).logout(), completes);
 
-      expect(container.read(sessionManagerProvider).isSignedOut, isFalse);
-      expect(container.read(leaveTruckControllerProvider).error, isNotNull);
+      expect(auth.calls, contains('logout:false'));
+      expect(container.read(sessionManagerProvider).isSignedOut, isTrue);
+      expect(container.read(leaveTruckControllerProvider).error, isNull);
     });
   });
 }

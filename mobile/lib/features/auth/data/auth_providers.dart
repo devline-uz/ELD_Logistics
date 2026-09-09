@@ -13,10 +13,12 @@ import 'package:logger/logger.dart';
 
 import '../../../core/device/app_version.dart';
 import '../../../core/device/device_profile.dart';
+import '../../../core/error/api_error.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/network/refresh_coordinator.dart';
 import '../../../core/security/active_slot.dart';
 import '../../../core/security/secure_vault.dart';
+import '../../../core/session/session_terminator.dart';
 import '../../../core/time/time_providers.dart';
 import '../domain/auth_models.dart';
 import '../domain/auth_repository.dart';
@@ -51,20 +53,45 @@ final Provider<DeviceKind> deviceKindProvider = Provider<DeviceKind>((Ref ref) {
   return profile.isTablet ? DeviceKind.tablet : DeviceKind.phone;
 });
 
-/// Refresh mutexi (§4.7). `AuthApi` ni kech (lazy) oladi — Dio bilan
-/// aylanma bog'liqlikni buzish uchun.
+/// Refresh mutexi (§4.7).
+///
+/// Graf **bir yo'nalishli**: `authDio → refreshCoordinator →
+/// tokenRefreshClient → refreshAuthApi → authRefreshDio`. Refresh o'zining
+/// alohida, `AuthInterceptor` siz transportida ketgani uchun sikl yo'q
+/// (avvalgi `Dio → coordinator → AuthApi → Dio` zanjiri `CircularDependencyError`
+/// bergan edi va har bir autentifikatsiyalangan so'rovni yiqitgan).
 final Provider<RefreshCoordinator> refreshCoordinatorProvider = Provider<RefreshCoordinator>((
   Ref ref,
 ) {
   return RefreshCoordinator(
     vault: ref.watch(secureVaultProvider),
-    client: _LazyRefreshClient(() => ref.read(authTokenRefreshClientProvider)),
+    client: ref.watch(authTokenRefreshClientProvider),
+    // #B-3: refresh `TOKEN_REVOKED` qaytarsa sessiya majburiy tugatiladi —
+    // aks holda ilova tokensiz «login qilingan» holatda osilib qolardi.
+    // `ref.read` chaqiruv paytida bajariladi, shuning uchun grafda sikl yo'q.
+    onSessionTerminated: (DriverSlot slot, ApiError error) =>
+        ref.read(sessionTerminatorProvider).terminateRevoked(slot, error),
   );
 });
 
+/// `POST /auth/refresh` uchun sof transport — `refreshCoordinator` ga
+/// bog'liq emas, shu sababli grafda qaytish yoyi hosil qilmaydi.
+final Provider<Dio> authRefreshDioProvider = Provider<Dio>(
+  (Ref ref) => ApiClient.createRefreshTransport(
+    vault: ref.watch(secureVaultProvider),
+    appVersion: ref.watch(resolvedAppVersionProvider).header,
+    logger: ref.watch(authLoggerProvider),
+  ),
+);
+
+/// Faqat refresh uchun `AuthApi` (interceptorsiz Dio ustida).
+final Provider<AuthApi> authRefreshApiProvider = Provider<AuthApi>(
+  (Ref ref) => AuthApi(ref.watch(authRefreshDioProvider)),
+);
+
 final Provider<TokenRefreshClient> authTokenRefreshClientProvider = Provider<TokenRefreshClient>(
   (Ref ref) => AuthTokenRefreshClient(
-    api: ref.watch(authApiProvider),
+    api: ref.watch(authRefreshApiProvider),
     appVersion: ref.watch(resolvedAppVersionProvider),
     timeSource: ref.watch(timeSourceProvider),
   ),
@@ -128,15 +155,3 @@ final Provider<AuthRepository> activeAuthRepositoryProvider = Provider<AuthRepos
       ? ref.watch(authRepositoryProvider)
       : ref.watch(slotAuthRepositoryProvider(slot));
 });
-
-/// `RefreshCoordinator` → `AuthApi` → `Dio` → `RefreshCoordinator` siklini
-/// uzadigan yupqa o'ram.
-class _LazyRefreshClient implements TokenRefreshClient {
-  const _LazyRefreshClient(this._resolve);
-
-  final TokenRefreshClient Function() _resolve;
-
-  @override
-  Future<RefreshOutcome> refresh({required DriverSlot slot, required String refreshToken}) =>
-      _resolve().refresh(slot: slot, refreshToken: refreshToken);
-}

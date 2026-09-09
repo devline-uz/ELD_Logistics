@@ -21,6 +21,12 @@ abstract final class AppFormats {
   /// Sana tasmasi (8 kun): `Fri 07`.
   static final DateFormat dayStrip = DateFormat('EEE dd', kFormatLocale);
 
+  /// Sana tasmasi — hafta kuni qatori: `Fri` (#B-16).
+  static final DateFormat dayStripWeekday = DateFormat('EEE', kFormatLocale);
+
+  /// Sana tasmasi — kun raqami qatori: `07` (#B-16).
+  static final DateFormat dayStripNumber = DateFormat('dd', kFormatLocale);
+
   /// Ro'yxat sarlavhasi / guruh: `Tue, May 20`.
   static final DateFormat listHeader = DateFormat('EEE, MMM d', kFormatLocale);
 
@@ -36,6 +42,14 @@ abstract final class AppFormats {
 
   /// `EEE dd`.
   static String dayStripOf(DateTime? value) => value == null ? kEmptyValue : dayStrip.format(value);
+
+  /// `EEE`.
+  static String dayStripWeekdayOf(DateTime? value) =>
+      value == null ? kEmptyValue : dayStripWeekday.format(value);
+
+  /// `dd`.
+  static String dayStripNumberOf(DateTime? value) =>
+      value == null ? kEmptyValue : dayStripNumber.format(value);
 
   /// `EEE, MMM d`.
   static String listHeaderOf(DateTime? value) =>

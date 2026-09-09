@@ -120,6 +120,10 @@
   "@settingsAppUpdates": {
     "description": "M-45 row, app version block"
   },
+  "settingsCurrentVersionLabel": "Current version",
+  "@settingsCurrentVersionLabel": { "description": "M-45 'App updates' modal - installed version row label" },
+  "settingsLatestVersionLabel": "Latest version",
+  "@settingsLatestVersionLabel": { "description": "M-45 'App updates' modal - latest_version row label" },
   "settingsCurrentVersion": "Current version {version}",
   "@settingsCurrentVersion": {
     "description": "M-45 installed app version",

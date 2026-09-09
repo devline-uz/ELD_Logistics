@@ -1,4 +1,4 @@
-package uz.stackyard.eld_mobile
+package com.devline.eld_logistics
 
 import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 /**
  * S-H5 (M157 / M158) — ekran himoyasi.
  *
- * Dart tomoni `uz.stackyard.eld_mobile/screen_security` kanali orqali chaqiradi:
+ * Dart tomoni `com.devline.eld_logistics/screen_security` kanali orqali chaqiradi:
  *   - `setSecure(bool enabled)` -> `null`
  *       `true`  : WindowManager.LayoutParams.FLAG_SECURE yoqiladi — skrinshot,
  *                 ekran yozuvi va app-switcher snapshot'i bloklanadi.
@@ -74,6 +74,6 @@ class MainActivity : FlutterActivity() {
         (window.attributes.flags and WindowManager.LayoutParams.FLAG_SECURE) != 0
 
     private companion object {
-        const val SCREEN_SECURITY_CHANNEL = "uz.stackyard.eld_mobile/screen_security"
+        const val SCREEN_SECURITY_CHANNEL = "com.devline.eld_logistics/screen_security"
     }
 }

@@ -1,7 +1,10 @@
 /// `AppButton` — primary / secondary / text (tz-mobile §11.0.4).
 ///
 /// Balandlik: telefon 48, planshet 56, haydash rejimida ≥64 (M8).
-/// Radius 12 (`Radii.button`). Matn **parametr** sifatida keladi.
+/// Radius **8** (`Radii.button`, #B-13). Matn **parametr** sifatida keladi.
+///
+/// Figma parite: birlamchi CTA **qora** `neutralStrong` (#B-12), ikkilamchi —
+/// `fillSubtle` to'ldirish, **chegarasiz** (#B-14).
 library;
 
 import 'package:flutter/material.dart';
@@ -27,7 +30,7 @@ class AppButton extends StatelessWidget {
     super.key,
   });
 
-  /// To'ldirilgan brend tugmasi.
+  /// Birlamchi CTA — Figma `#1C1E24` to'ldirish (#B-12).
   const factory AppButton.primary({
     required String label,
     VoidCallback? onPressed,
@@ -39,7 +42,7 @@ class AppButton extends StatelessWidget {
     Key? key,
   }) = _PrimaryButton;
 
-  /// Chegarali, `surface` fonli tugma.
+  /// Ikkilamchi CTA — `fillSubtle` to'ldirish, chegarasiz (#B-14).
   const factory AppButton.secondary({
     required String label,
     VoidCallback? onPressed,
@@ -166,9 +169,8 @@ class AppButton extends StatelessWidget {
           foreground: c.textDisabled,
         ),
         AppButtonVariant.secondary => AppColorsResolved(
-          background: c.surface,
+          background: c.fillSubtle,
           foreground: c.textDisabled,
-          border: c.stroke,
         ),
         AppButtonVariant.text => AppColorsResolved(
           background: c.transparent,
@@ -181,11 +183,13 @@ class AppButton extends StatelessWidget {
       };
     }
     return switch (variant) {
-      AppButtonVariant.primary => AppColorsResolved(background: accent, foreground: c.onPrimary),
+      AppButtonVariant.primary => AppColorsResolved(
+        background: destructive ? accent : c.neutralStrong,
+        foreground: destructive ? c.onPrimary : c.onNeutralStrong,
+      ),
       AppButtonVariant.secondary => AppColorsResolved(
-        background: c.surface,
+        background: c.fillSubtle,
         foreground: destructive ? c.error : c.textPrimary,
-        border: c.stroke,
       ),
       AppButtonVariant.text => AppColorsResolved(background: c.transparent, foreground: accent),
       AppButtonVariant.neutral => AppColorsResolved(

@@ -28,7 +28,12 @@ class DiagnosisScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
     // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
     maxContentWidth: ContentWidth.single,
-    appBar: AppBarPrimary(title: context.l10n.diagnosisTitle, leading: const AppBackButton()),
+    // Figma `1131:965` app bar: faqat orqaga tugmasi + sarlavha.
+    appBar: AppBarPrimary(
+      title: context.l10n.diagnosisTitle,
+      leading: const AppBackButton(),
+      showDefaultActions: false,
+    ),
     backgroundColor: context.colors.bg,
     phone: (BuildContext context) => const DiagnosisBody(),
     tablet: (BuildContext context) => const DiagnosisBody(),

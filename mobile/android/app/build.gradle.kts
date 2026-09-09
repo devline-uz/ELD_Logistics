@@ -15,7 +15,7 @@ val keystoreProperties = Properties().apply {
 }
 
 android {
-    namespace = "uz.stackyard.eld_mobile"
+    namespace = "com.devline.eld_logistics"
     // B-93: `flutter_secure_storage` AAR metadatasi compileSdk >= 37 talab qiladi
     // (Flutter SDK hozir 36 beradi). compileSdk faqat kompilyatsiya API sathini
     // oshiradi — targetSdk (runtime xatti-harakati) va minSdk ga TEGMAYDI.
@@ -29,7 +29,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "uz.stackyard.eld_mobile"
+        applicationId = "com.devline.eld_logistics"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         // tz-mobile §18: minimal qo'llab-quvvatlanadigan versiya — Android 10 (API 29).

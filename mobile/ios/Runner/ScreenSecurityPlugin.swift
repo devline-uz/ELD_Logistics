@@ -17,15 +17,15 @@ import UIKit
 ///    Foydalanuvchi qo'lda olgan skrinshotni iOS bloklab bo'lmaydi — Dart tomoni
 ///    `screenshotTaken` eventini audit log uchun ishlatadi.
 ///
-/// Kanal: `uz.stackyard.eld_mobile/screen_security`
+/// Kanal: `com.devline.eld_logistics/screen_security`
 ///   - `setSecure(bool)` -> null
 ///   - `isSecure()`      -> bool
-/// Event kanal: `uz.stackyard.eld_mobile/screen_security_events`
+/// Event kanal: `com.devline.eld_logistics/screen_security_events`
 ///   - `"screenshotTaken"` | `"screenRecordingStarted"` | `"screenRecordingStopped"`
 final class ScreenSecurityPlugin: NSObject {
 
-    static let channelName = "uz.stackyard.eld_mobile/screen_security"
-    static let eventChannelName = "uz.stackyard.eld_mobile/screen_security_events"
+    static let channelName = "com.devline.eld_logistics/screen_security"
+    static let eventChannelName = "com.devline.eld_logistics/screen_security_events"
 
     static let shared = ScreenSecurityPlugin()
 

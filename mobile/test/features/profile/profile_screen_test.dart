@@ -148,7 +148,10 @@ void main() {
       expect(
         tester
             .getSemantics(
-              find.ancestor(of: find.byType(Switch).first, matching: find.byType(Semantics)).first,
+              // #B-18: Material `Switch` emas, `AppSwitch` (Semantics ichida).
+              find
+                  .descendant(of: find.byType(AppSwitch).first, matching: find.byType(Semantics))
+                  .first,
             )
             .label,
         isNotEmpty,

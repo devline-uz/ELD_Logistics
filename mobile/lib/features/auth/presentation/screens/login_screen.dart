@@ -53,6 +53,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final LoginController controller = ref.read(loginControllerProvider.notifier);
     final AppLocalizations l10n = context.l10n;
 
+    // Kontroller matnini holat bilan sinxronlaydi (masalan, tashqi
+    // override — golden test — yoki saqlangan qoralama yuklanganda).
+    // Faqat farqlanganda yozamiz — foydalanuvchi terayotganda kursor
+    // sakramasligi uchun (onChanged holatni allaqachon tenglashtiradi).
+    if (_username.text != state.username) {
+      _username.text = state.username;
+    }
+    if (_password.text != state.password) {
+      _password.text = state.password;
+    }
+
     ref.listen<LoginState>(loginControllerProvider, (LoginState? prev, LoginState next) {
       if (next.status.isSuccess && prev?.status.isSuccess != true) {
         _password.clear();

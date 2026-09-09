@@ -1,4 +1,9 @@
 /// `M-09` ning yuqori bloki (M88: scroll'siz ko'rinadigan qism).
+///
+/// Figma parite (`2177:12192`): kartalar `AppCard` (`#F6F6F6`, `r12`, pad 20),
+/// status kartasi ichida **oq doira badge** + `10h 45m 32s` taymer, ostida
+/// ajratuvchi + `⇄` va **ikonkali pill** status tugmalari, HOS bloki esa
+/// 2×2 `HosCardGrid` (sarlavha o'ngida grid ↔ halqa almashtirgichi).
 library;
 
 import 'package:flutter/material.dart';
@@ -9,21 +14,21 @@ import '../../../duty_status/domain/duty_status_models.dart';
 import '../../../duty_status/presentation/widgets/hos_indicator_row.dart';
 import '../../domain/home_models.dart';
 
-/// Karta uchun umumiy qobiq (fon `surface`, radius `Radii.card`).
+/// Karta uchun umumiy qobiq — `AppCard` + ixtiyoriy sarlavha qatori.
 class HomeCard extends StatelessWidget {
-  const HomeCard({required this.child, this.title, this.trailing, super.key});
+  const HomeCard({required this.child, this.title, this.trailing, this.divider = true, super.key});
 
   final Widget child;
   final String? title;
   final Widget? trailing;
 
+  /// Sarlavha ostidagi ajratuvchi (Figma: HOS blokida yo'q).
+  final bool divider;
+
   @override
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
-    return Container(
-      margin: const EdgeInsets.only(bottom: Spacing.cardGap),
-      padding: const EdgeInsets.all(Spacing.cardPadding),
-      decoration: BoxDecoration(color: c.surface, borderRadius: Radii.cardRadius),
+    return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -36,7 +41,10 @@ class HomeCard extends StatelessWidget {
                 ?trailing,
               ],
             ),
-            const Divider(height: Spacing.s20),
+            if (divider)
+              const Divider(height: Spacing.s20)
+            else
+              const SizedBox(height: Spacing.s15),
           ],
           child,
         ],
@@ -59,7 +67,10 @@ class HomeDateUnitCard extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: _Badged(badge: date.day.toString(), text: AppFormats.listHeaderOf(date)),
+            child: _Badged(
+              badge: AppFormats.dayStripNumberOf(date),
+              text: AppFormats.listHeaderOf(date),
+            ),
           ),
           Container(width: Strokes.thin, height: Spacing.s40, color: c.stroke),
           Expanded(
@@ -90,7 +101,7 @@ class _Badged extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: const EdgeInsets.all(Spacing.s10),
-          decoration: BoxDecoration(color: c.surfaceAlt, shape: BoxShape.circle),
+          decoration: BoxDecoration(color: c.surface, shape: BoxShape.circle),
           child: Text(badge, style: context.text.body12.copyWith(color: c.textPrimary)),
         ),
         const SizedBox(width: Spacing.s10),
@@ -107,7 +118,12 @@ class _Badged extends StatelessWidget {
   }
 }
 
-/// Joriy status + hisoblagich + **uchta** status tugmasi (M52).
+/// Joriy status + hisoblagich + status pill'lari.
+///
+/// Figma da **ikkita** pill (`SB`, `OFF`) bor, TZ M52 esa **uchtasini** talab
+/// qiladi (`OFF · SB · ON`) — TZ Figma dan ustun (M2), shuning uchun uchta
+/// pill chiziladi, lekin ko'rinishi Figma bo'yicha (qisqa yorliq + rangli
+/// ikonka), yorliqlar kesilmaydi.
 class HomeStatusCard extends StatelessWidget {
   const HomeStatusCard({
     required this.status,
@@ -115,6 +131,7 @@ class HomeStatusCard extends StatelessWidget {
     required this.elapsed,
     required this.sleeperAvailable,
     required this.onSelected,
+    this.onSwap,
     super.key,
   });
 
@@ -123,6 +140,9 @@ class HomeStatusCard extends StatelessWidget {
   final Duration elapsed;
   final bool sleeperAvailable;
   final ValueChanged<DutyStatusValue> onSelected;
+
+  /// `⇄` — co-driver almashtirish (M-20).
+  final VoidCallback? onSwap;
 
   @override
   Widget build(BuildContext context) {
@@ -141,48 +161,76 @@ class HomeStatusCard extends StatelessWidget {
       DutySpecial.none => '',
     };
 
+    // Figma: karta pastida quyuqroq teal "footer" polosa taymer uchun
+    // ajratilgan (ikonka/label ustki qismda qoladi).
+    final Color footerColor = Color.lerp(c.decoTeal, Colors.black, 0.18) ?? c.decoTeal;
+
     return HomeCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
-            decoration: BoxDecoration(color: c.decoTeal, borderRadius: Radii.cardRadius),
+          ClipRRect(
+            borderRadius: Radii.cardRadius,
             child: Column(
               children: <Widget>[
-                Icon(Icons.local_shipping_outlined, color: c.onPrimary, size: Spacing.s30),
-                const SizedBox(height: Spacing.s5),
-                Text(label, style: context.text.body2.copyWith(color: c.onPrimary)),
-                if (specialLabel.isNotEmpty)
-                  Text(specialLabel, style: context.text.body16.copyWith(color: c.onPrimary)),
-                Text(
-                  AppFormats.durationHms(elapsed),
-                  style: context.text.body12.copyWith(
-                    color: c.onPrimary,
-                    fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
+                  color: c.decoTeal,
+                  child: Column(
+                    children: <Widget>[
+                      // Figma: ikonka oq doira badge ichida, holatga bog'liq.
+                      Container(
+                        padding: const EdgeInsets.all(Spacing.s10),
+                        decoration: BoxDecoration(color: c.surface, shape: BoxShape.circle),
+                        child: Icon(
+                          homeStatusIcon(current),
+                          color: c.decoTeal,
+                          size: Spacing.s20,
+                        ),
+                      ),
+                      const SizedBox(height: Spacing.s10),
+                      Text(label, style: context.text.body11.copyWith(color: c.onPrimary)),
+                      if (specialLabel.isNotEmpty)
+                        Text(specialLabel, style: context.text.body16.copyWith(color: c.onPrimary)),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: Spacing.s10),
+                  color: footerColor,
+                  alignment: Alignment.center,
+                  child: Text(
+                    // §11.0.7: davomiylik formati TZ bo'yicha `10h 45m 32s`
+                    // (Figma `10:45²³` emas) — TZ Figma dan ustun (M2).
+                    homeElapsedLabel(l10n, elapsed),
+                    style: context.text.body16.copyWith(
+                      color: c.onPrimary,
+                      fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: Spacing.s15),
+          _SwapDivider(onTap: onSwap, label: l10n.homeQuickCoDriver),
+          const SizedBox(height: Spacing.s15),
           Row(
             children: <Widget>[
               for (final DutyStatusValue value in DutyStatusValue.selectable) ...<Widget>[
                 Expanded(
-                  child: AppButton.secondary(
-                    label: switch (value) {
-                      DutyStatusValue.off => l10n.dutyStatusOffDuty,
-                      DutyStatusValue.sleeper => l10n.dutyStatusSleeper,
-                      DutyStatusValue.on => l10n.dutyStatusOnDuty,
-                      DutyStatusValue.driving => l10n.dutyStatusDriving,
-                    },
+                  child: _StatusPill(
+                    label: homeStatusPillLabel(l10n, value),
+                    icon: homeStatusIcon(value),
+                    iconColor: homeStatusIconColor(c, value),
                     onPressed: value == DutyStatusValue.sleeper && !sleeperAvailable
                         ? null
                         : () => onSelected(value),
                   ),
                 ),
-                if (value != DutyStatusValue.selectable.last) const SizedBox(width: Spacing.s5),
+                if (value != DutyStatusValue.selectable.last) const SizedBox(width: Spacing.s10),
               ],
             ],
           ),
@@ -192,20 +240,169 @@ class HomeStatusCard extends StatelessWidget {
   }
 }
 
-/// `Hours of Service` kartasi — telefonda 4 chiziq, planshetda 4 halqa (M87).
-class HomeHosCard extends StatelessWidget {
+/// `HH:mm:ss` o'rniga Figma formati — `10h 45m 32s` (§11.0.7 davomiylik).
+String homeElapsedLabel(AppLocalizations l10n, Duration elapsed) {
+  final Duration value = elapsed.isNegative ? Duration.zero : elapsed;
+  String two(int n) => n.toString().padLeft(2, '0');
+  return l10n.homeElapsedHms(
+    two(value.inHours),
+    two(value.inMinutes.remainder(60)),
+    two(value.inSeconds.remainder(60)),
+  );
+}
+
+/// Pill yorliqlari — Figma: `OFF`, `SB`, `ON` (kesilmaydi).
+String homeStatusPillLabel(AppLocalizations l10n, DutyStatusValue value) => switch (value) {
+  DutyStatusValue.off => l10n.homeStatusPillOff,
+  DutyStatusValue.sleeper => l10n.homeStatusPillSb,
+  DutyStatusValue.on => l10n.homeStatusPillOn,
+  DutyStatusValue.driving => l10n.homeStatusPillDr,
+};
+
+IconData homeStatusIcon(DutyStatusValue value) => switch (value) {
+  DutyStatusValue.off => Icons.power_settings_new,
+  DutyStatusValue.sleeper => Icons.nightlight_round,
+  DutyStatusValue.on => Icons.local_shipping,
+  DutyStatusValue.driving => Icons.drive_eta,
+};
+
+/// Figma: `SB` — amber oy, `OFF` — qizil power (M81: ikkala temada bir xil).
+Color homeStatusIconColor(AppColors c, DutyStatusValue value) => switch (value) {
+  DutyStatusValue.off => c.primary,
+  DutyStatusValue.sleeper => c.warning,
+  DutyStatusValue.on => c.decoTeal,
+  DutyStatusValue.driving => c.success,
+};
+
+/// Ajratuvchi chiziq + markazda `⇄` tugmasi.
+class _SwapDivider extends StatelessWidget {
+  const _SwapDivider({required this.onTap, required this.label});
+
+  final VoidCallback? onTap;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Container(height: Strokes.thin, color: c.stroke),
+        ),
+        Semantics(
+          button: onTap != null,
+          label: label,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Spacing.s15),
+              child: Icon(Icons.swap_horiz, size: Spacing.s20, color: c.textSecondary),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(height: Strokes.thin, color: c.stroke),
+        ),
+      ],
+    );
+  }
+}
+
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({
+    required this.label,
+    required this.icon,
+    required this.iconColor,
+    this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final Color iconColor;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    final bool enabled = onPressed != null;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: label,
+      child: Material(
+        color: c.surface,
+        borderRadius: Radii.buttonRadius,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: Radii.buttonRadius,
+          child: Container(
+            height: TouchTarget.phone,
+            decoration: BoxDecoration(
+              borderRadius: Radii.buttonRadius,
+              border: Border.all(color: c.stroke, width: Strokes.thin),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(icon, size: Spacing.s20, color: enabled ? iconColor : c.textDisabled),
+                const SizedBox(width: Spacing.s5),
+                Text(
+                  label,
+                  style: context.text.body13.copyWith(
+                    color: enabled ? c.textPrimary : c.textDisabled,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// `Hours of Service` kartasi — 2×2 karta grid, sarlavha o'ngida grid ↔ halqa
+/// almashtirgichi (Figma `2177:12192`).
+class HomeHosCard extends StatefulWidget {
   const HomeHosCard({required this.state, super.key});
 
   final HomeState state;
 
   @override
-  Widget build(BuildContext context) => HomeCard(
-    title: context.l10n.homeHoursOfService,
-    child: HosIndicatorRow(snapshot: state.hos),
-  );
+  State<HomeHosCard> createState() => _HomeHosCardState();
+}
+
+class _HomeHosCardState extends State<HomeHosCard> {
+  bool _rings = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = context.l10n;
+    final List<HosGaugeData> gauges = hosGauges(context, widget.state.hos);
+    return HomeCard(
+      title: l10n.homeHoursOfService,
+      divider: false,
+      trailing: Semantics(
+        button: true,
+        label: l10n.homeHosToggleView,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => setState(() => _rings = !_rings),
+          child: Padding(
+            padding: const EdgeInsets.all(Spacing.s5),
+            child: Icon(Icons.swap_horiz, size: Spacing.s20, color: context.colors.textSecondary),
+          ),
+        ),
+      ),
+      child: _rings ? HosRingRow(gauges: gauges, diameter: 72) : HosCardGrid(gauges: gauges),
+    );
+  }
 }
 
 /// Tezkor amallar qatori (M87: `Inspection · Log Report · Co-driver · Leave Truck`).
+///
+/// Figma: to'rtta **alohida chegarali karta**, gorizontal scroll.
 class HomeQuickActions extends StatelessWidget {
   const HomeQuickActions({
     required this.onInspection,
@@ -224,7 +421,7 @@ class HomeQuickActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
     return SizedBox(
-      height: 96,
+      height: 90,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
@@ -265,26 +462,33 @@ class _QuickAction extends StatelessWidget {
       child: Semantics(
         button: true,
         label: label,
-        child: InkWell(
-          onTap: onTap,
+        child: Material(
+          color: c.surface,
           borderRadius: Radii.cardRadius,
-          child: Container(
-            width: 96,
-            padding: const EdgeInsets.all(Spacing.s10),
-            decoration: BoxDecoration(color: c.surface, borderRadius: Radii.cardRadius),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(icon, color: c.icon, size: Spacing.s25),
-                const SizedBox(height: Spacing.s5),
-                Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.text.body16.copyWith(color: c.textPrimary),
-                ),
-              ],
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: Radii.cardRadius,
+            child: Container(
+              width: 88,
+              padding: const EdgeInsets.all(Spacing.s10),
+              decoration: BoxDecoration(
+                borderRadius: Radii.cardRadius,
+                border: Border.all(color: c.stroke, width: Strokes.thin),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(icon, color: c.icon, size: Spacing.s25),
+                  const SizedBox(height: Spacing.s5),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.text.body16.copyWith(color: c.textPrimary),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

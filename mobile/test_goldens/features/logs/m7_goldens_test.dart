@@ -5,9 +5,11 @@
 /// M-29/M-30 (`certify`).
 library;
 
+import 'package:eld_mobile/core/i18n/l10n_extension.dart';
 import 'package:eld_mobile/core/session/session_context.dart';
 import 'package:eld_mobile/core/time/time_providers.dart';
 import 'package:eld_mobile/core/time/time_source.dart';
+import 'package:eld_mobile/core/ui/ui.dart';
 import 'package:eld_mobile/features/certify/domain/certify_models.dart';
 import 'package:eld_mobile/features/certify/presentation/controllers/certify_providers.dart';
 import 'package:eld_mobile/features/certify/presentation/screens/certify_screen.dart';
@@ -21,6 +23,7 @@ import 'package:eld_mobile/features/logs/presentation/screens/log_report_screen.
 import 'package:eld_mobile/features/unidentified/domain/unidentified_models.dart';
 import 'package:eld_mobile/features/unidentified/presentation/controllers/unidentified_controller.dart';
 import 'package:eld_mobile/features/unidentified/presentation/screens/unidentified_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hos_engine/hos_engine.dart' show DutyStatus, ViolationType;
@@ -65,10 +68,50 @@ final List<LogDayRef> _strip = <LogDayRef>[
     ),
 ];
 
+/// Ishlab chiqarishdagi `_MainShell` (core/router) qobig'i: `Log Report`
+/// ekrani doim pastki navigatsiya bilan ko'rinadi (Figma `BNB-19`).
+/// Golden etaloni bilan solishtirish uchun shu yerda takrorlanadi.
+class _LogsNavShell extends StatelessWidget {
+  const _LogsNavShell({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: child,
+    bottomNavigationBar: AppNavBar(
+      currentIndex: 1,
+      onSelected: (int _) {},
+      items: <AppNavItem>[
+        AppNavItem(
+          icon: Icons.home_outlined,
+          selectedIcon: Icons.home,
+          label: context.l10n.navHome,
+        ),
+        AppNavItem(
+          icon: Icons.article_outlined,
+          selectedIcon: Icons.article,
+          label: context.l10n.navLogs,
+        ),
+        AppNavItem(
+          icon: Icons.chat_bubble_outline,
+          selectedIcon: Icons.chat_bubble,
+          label: context.l10n.navChat,
+        ),
+        AppNavItem(
+          icon: Icons.person_outline,
+          selectedIcon: Icons.person,
+          label: context.l10n.navProfile,
+        ),
+      ],
+    ),
+  );
+}
+
 void main() {
   screenGoldenMatrix(
     'm22_log_report_main',
-    builder: () => const LogReportScreen(),
+    builder: () => const _LogsNavShell(child: LogReportScreen()),
     overrides: () => _overrides(
       logs: FakeLogsRepository(day: sampleDay(), strip: _strip),
     ),
@@ -76,7 +119,7 @@ void main() {
 
   screenGoldenMatrix(
     'm23_log_report_logs',
-    builder: () => const LogReportScreen(initialTab: 'logs'),
+    builder: () => const _LogsNavShell(child: LogReportScreen(initialTab: 'logs')),
     overrides: () => _overrides(
       logs: FakeLogsRepository(
         strip: _strip,
@@ -85,6 +128,7 @@ void main() {
             sampleEvent(status: DutyStatus.off, hour: 0),
             sampleEvent(id: 'e2', status: DutyStatus.dr, hour: 6),
             sampleEvent(id: 'e3', status: DutyStatus.on, hour: 9, edited: true),
+            sampleEvent(id: 'e4', status: DutyStatus.sb, hour: 15),
           ],
           alerts: const <LogAlert>[
             LogAlert(level: LogAlertLevel.warning, type: ViolationType.formMannerTrailer),
@@ -184,6 +228,9 @@ void main() {
           CertifyDay(date: DateTime(2026, 9, 6), status: CertifyStatus.uncertified),
           CertifyDay(date: DateTime(2026, 9, 5), status: CertifyStatus.notReady),
           CertifyDay(date: DateTime(2026, 9, 4), status: CertifyStatus.certified),
+          CertifyDay(date: DateTime(2026, 9, 3), status: CertifyStatus.certified),
+          CertifyDay(date: DateTime(2026, 9, 2), status: CertifyStatus.certified),
+          CertifyDay(date: DateTime(2026, 9, 1), status: CertifyStatus.certified),
         ],
       ),
     ),

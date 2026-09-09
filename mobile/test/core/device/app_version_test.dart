@@ -15,7 +15,7 @@ void main() {
     const AppVersion version = AppVersion(
       version: '1.0.3',
       buildNumber: '12',
-      packageName: 'uz.stackyard.eld_mobile',
+      packageName: 'com.devline.eld_logistics',
     );
 
     expect(version.isBelow('1.1.0'), isTrue);

@@ -34,7 +34,13 @@ class ChatScreen extends ConsumerWidget {
 
     return AdaptiveScaffold(
       applyHorizontalPadding: false,
-      appBar: AppBarPrimary(title: l10n.chatTitle),
+      // Figma `1118-114`: chapda `<` qaytish, sarlavha chapga tekislangan,
+      // o'ngda amal guruhi **yo'q** (#B-26).
+      appBar: AppBarPrimary(
+        title: l10n.chatTitle,
+        leading: const AppBackButton(),
+        showDefaultActions: false,
+      ),
       banners: <Widget>[
         if (queued > 0)
           BannerStrip(message: l10n.chatQueuedBanner(queued), tone: BannerTone.offline),
@@ -172,6 +178,7 @@ class _MessageList extends ConsumerWidget {
                     controller.setSendWhenStopped(value: value),
               ),
           ],
+          if (ui.peerTyping) const ChatTypingBubble(),
         ],
       ),
     );

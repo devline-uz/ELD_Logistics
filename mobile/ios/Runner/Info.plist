@@ -85,7 +85,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>uz.stackyard.eld</string>
+			<string>com.devline.eldLogistics</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>onebookeld</string>

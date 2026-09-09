@@ -34,6 +34,9 @@ abstract final class AuthPath {
   static const String totpVerify = '/auth/2fa/verify';
   static const String me = '/me';
 
+  /// `GET /drivers` (`drivers.read`) — haydovchi yozuvi va uning uniti.
+  static const String drivers = '/drivers';
+
   /// `M-58 Sessions` — `GET` ro'yxat, `DELETE /auth/sessions/{id}` bekor qilish.
   static const String sessions = '/auth/sessions';
 }
@@ -192,6 +195,31 @@ class AuthApi {
     return AuthDecoder.profile(AuthDecoder.envelope(response.data))!;
   });
 
+  /// `GET /drivers` → joriy foydalanuvchining **haydovchi yozuvi**.
+  ///
+  /// `/auth/login` va `/me` javobida `drivers.id` ham, tayinlangan unit ham
+  /// yo'q (`contracts/swagger.json`), shuning uchun Home uchun kerakli
+  /// `driver_id`/`unit_id`/`unit_number` shu ro'yxatdan olinadi. So'rov
+  /// `search=<username>` bilan toraytiriladi — begona haydovchilarning PII si
+  /// tortib olinmaydi (M159); moslik `user_id` bo'yicha aniqlanadi.
+  Future<DriverRecord?> driverRecord({
+    required String userId,
+    String? username,
+    DriverSlot slot = DriverSlot.primary,
+  }) => guardApiCall(() async {
+    final Response<Object?> response = await _dio.get<Object?>(
+      AuthPath.drivers,
+      queryParameters: <String, Object?>{
+        if (username != null && username.isNotEmpty) 'search': username,
+        // `per_page` faqat 10/25/50 ni qabul qiladi (`httpx.AllowedPerPage`).
+        'per_page': 10,
+        'include_inactive': true,
+      },
+      options: _authorized(slot: slot),
+    );
+    return AuthDecoder.driverRecord(response.data, userId: userId);
+  });
+
   // --- M-58 Sessions ---------------------------------------------------------
 
   /// `GET /auth/sessions` — `1 web + 1 phone + 1 tablet` siyosati ko'rinishi.
@@ -346,6 +374,50 @@ abstract final class AuthDecoder {
     expiresAt: _dateTime(json['expires_at']),
     current: json['current'] == true,
   );
+
+  /// `GET /drivers` ro'yxatidan `user_id` bo'yicha bitta qatorni tanlaydi.
+  static DriverRecord? driverRecord(Object? raw, {required String userId}) {
+    final Object? data = raw is Map ? raw['data'] : null;
+    if (data is! List) {
+      return null;
+    }
+    final List<Map<String, Object?>> rows = <Map<String, Object?>>[
+      for (final Object? item in data)
+        if (item is Map) item.cast<String, Object?>(),
+    ];
+    Map<String, Object?>? match;
+    for (final Map<String, Object?> row in rows) {
+      if (_string(row['user_id']) == userId) {
+        match = row;
+        break;
+      }
+    }
+    // Ro'yxatda faqat bitta qator bo'lsa (self-scope) — o'sha.
+    match ??= rows.length == 1 ? rows.first : null;
+    if (match == null) {
+      return null;
+    }
+    final String? id = _string(match['id']);
+    if (id == null) {
+      return null;
+    }
+    final String name = <String?>[
+      _string(match['first_name']),
+      _string(match['last_name']),
+    ].whereType<String>().join(' ').trim();
+    return DriverRecord(
+      driverId: id,
+      userId: _string(match['user_id']) ?? userId,
+      fullName: name.isEmpty ? null : name,
+      email: _string(match['email']),
+      phone: _string(match['phone']),
+      licenseMasked: _string(match['license_no_masked']),
+      licenseRegion: _string(match['license_region']),
+      homeTerminal: _string(match['home_terminal']),
+      unitId: _string(match['default_unit_id']),
+      unitNumber: _string(match['default_unit_number']),
+    );
+  }
 
   static String? _string(Object? value) {
     if (value is String && value.isNotEmpty) {

@@ -23,28 +23,52 @@ class HomeTripCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
-    return HomeCard(
-      title: l10n.homeTripDetails,
-      trailing: IconButton(
-        tooltip: l10n.homeEditDocuments,
-        onPressed: onEdit,
-        icon: const Icon(Icons.edit_outlined),
-      ),
-      child: Column(
-        children: <Widget>[
-          _TripRow(
-            icon: Icons.description_outlined,
-            label: l10n.documentsShippingDocument,
-            value: trip.shippingDocs.join(', '),
+    final AppColors c = context.colors;
+    // Figma: tahrirlash FAB'i kartaning o'ng pastki burchagiga chiqib turadi
+    // (oq doira + soya), sarlavha qatorida qalam ikonkasi yo'q.
+    return Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        HomeCard(
+          title: l10n.homeTripDetails,
+          child: Column(
+            children: <Widget>[
+              _TripRow(
+                icon: Icons.description_outlined,
+                label: l10n.documentsShippingDocument,
+                value: trip.shippingDocs.join(', '),
+              ),
+              _TripRow(
+                icon: Icons.local_shipping_outlined,
+                label: l10n.documentsTrailerNumber,
+                value: trip.trailers.join(', '),
+              ),
+              _TripRow(icon: Icons.notes_outlined, label: l10n.dutyNotesLabel, value: trip.notes),
+            ],
           ),
-          _TripRow(
-            icon: Icons.local_shipping_outlined,
-            label: l10n.documentsTrailerNumber,
-            value: trip.trailers.join(', '),
+        ),
+        Positioned(
+          right: Spacing.s10,
+          bottom: -Spacing.s15,
+          child: Semantics(
+            button: true,
+            label: l10n.homeEditDocuments,
+            child: Material(
+              color: c.surface,
+              shape: const CircleBorder(),
+              elevation: 3,
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: onEdit,
+                child: Padding(
+                  padding: const EdgeInsets.all(Spacing.s10),
+                  child: Icon(Icons.edit_outlined, size: Spacing.s20, color: c.textPrimary),
+                ),
+              ),
+            ),
           ),
-          _TripRow(icon: Icons.notes_outlined, label: l10n.dutyNotesLabel, value: trip.notes),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -95,7 +119,6 @@ class HomeCertifyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
     final AppColors c = context.colors;
-    final bool uncertified = days.any((CertifyDay day) => !day.certified);
 
     return HomeCard(
       title: l10n.homeSignature,
@@ -116,11 +139,6 @@ class HomeCertifyCard extends StatelessWidget {
                   l10n.homeCertifyLast8Days,
                   style: context.text.body14.copyWith(color: c.textSecondary),
                 ),
-              ),
-              StatusBadge(
-                label: uncertified ? l10n.homeNotSigned : l10n.homeSigned,
-                tone: uncertified ? StatusTone.error : StatusTone.success,
-                dense: true,
               ),
             ],
           ),
@@ -157,31 +175,28 @@ class HomeAlertCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Spacing.cardGap),
-      child: Semantics(
-        button: true,
-        label: label,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: Radii.cardRadius,
-          child: Container(
-            padding: const EdgeInsets.all(Spacing.cardPadding),
-            decoration: BoxDecoration(
-              color: c.warningBg,
-              borderRadius: Radii.cardRadius,
-              border: Border.all(color: c.warning, width: Strokes.thin),
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.warning_amber_outlined, color: c.warningDark),
-                const SizedBox(width: Spacing.s10),
-                Expanded(
-                  child: Text(label, style: context.text.body13.copyWith(color: c.warningDark)),
-                ),
-                Icon(Icons.chevron_right, color: c.warningDark),
-              ],
-            ),
+    return Semantics(
+      button: true,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: Radii.cardRadius,
+        child: Container(
+          padding: const EdgeInsets.all(Spacing.cardPadding),
+          decoration: BoxDecoration(
+            color: c.warningBg,
+            borderRadius: Radii.cardRadius,
+            border: Border.all(color: c.warning, width: Strokes.thin),
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.warning_amber_outlined, color: c.warningDark),
+              const SizedBox(width: Spacing.s10),
+              Expanded(
+                child: Text(label, style: context.text.body13.copyWith(color: c.warningDark)),
+              ),
+              Icon(Icons.chevron_right, color: c.warningDark),
+            ],
           ),
         ),
       ),

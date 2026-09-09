@@ -91,6 +91,17 @@ abstract interface class AuthRepository {
   /// Oxirgi ma'lum profil (oflayn ko'rsatish uchun).
   DriverProfile? get cachedProfile;
 
+  /// Oxirgi ma'lum haydovchi yozuvi (`drivers.id`, tayinlangan unit).
+  ///
+  /// `null` — hali o'qilmagan yoki oflayn login qilingan.
+  DriverRecord? get cachedDriverRecord;
+
+  /// `GET /drivers` dan haydovchi yozuvini o'qiydi va keshlaydi.
+  ///
+  /// Tarmoq yo'q yoki ruxsat bo'lmasa `null` qaytaradi — login oqimi
+  /// **hech qachon** shu sababdan yiqilmaydi.
+  Future<DriverRecord?> loadDriverRecord();
+
   /// `M-58` — `GET /auth/sessions` (1 web + 1 phone + 1 tablet, §4.6).
   Future<List<DriverSession>> sessions();
 

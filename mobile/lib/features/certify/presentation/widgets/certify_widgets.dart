@@ -18,7 +18,7 @@ StatusBadge certifyBadge(BuildContext context, CertifyStatus status) {
     ),
     CertifyStatus.uncertified => StatusBadge(
       label: l10n.certifyBadgeUncertified,
-      tone: StatusTone.neutral,
+      tone: StatusTone.error,
       dense: true,
     ),
     CertifyStatus.needsRecertify => StatusBadge(
@@ -41,6 +41,9 @@ StatusBadge certifyBadge(BuildContext context, CertifyStatus status) {
 }
 
 /// `M-29` ro'yxatining satri: checkbox + sana + badge.
+///
+/// Figma `1102:397`: satrlar **bitta** kulrang karta ichida, alohida chegara yo'q
+/// (satr 305x35, oraliq 20).
 class CertifyDayTile extends StatelessWidget {
   const CertifyDayTile({
     required this.day,
@@ -57,45 +60,59 @@ class CertifyDayTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors c = context.colors;
     final bool enabled = day.selectable;
+    // Figma `1102:397`: sertifikatlangan kun checkbox'i **to'ldirilgan**
+    // ko'rinadi (bajarilgan belgisi) — o'chirilgan bo'lsa ham (#B-25).
+    final bool checked = selected || day.status == CertifyStatus.certified;
 
     return Semantics(
       selected: selected,
       enabled: enabled,
-      child: Material(
-        color: c.surface,
-        borderRadius: Radii.cardRadius,
-        child: InkWell(
-          onTap: enabled ? onToggle : null,
-          borderRadius: Radii.cardRadius,
-          child: Ink(
-            decoration: BoxDecoration(
-              borderRadius: Radii.cardRadius,
-              border: Border.all(
-                color: selected ? c.primary : c.stroke,
-                width: selected ? Strokes.emphasis : Strokes.thin,
+      child: InkWell(
+        onTap: enabled ? onToggle : null,
+        borderRadius: Radii.badgeRadius,
+        child: Row(
+          children: <Widget>[
+            AppCheckbox(value: checked, onChanged: enabled ? (bool _) => onToggle() : null),
+            const SizedBox(width: Spacing.s10),
+            Expanded(
+              child: Text(
+                AppFormats.listHeaderOf(day.date),
+                // Figma: barcha sana matnlari bir xil (to'q) rangda —
+                // o'chirilgan qator ham xiralashtirilmaydi (#B-25).
+                style: context.text.body15.copyWith(color: c.textPrimary),
               ),
             ),
-            padding: const EdgeInsets.all(Spacing.s15),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  selected ? Icons.check_box : Icons.check_box_outline_blank,
-                  color: enabled ? (selected ? c.primary : c.strokeStrong) : c.textDisabled,
-                ),
-                const SizedBox(width: Spacing.s10),
-                Expanded(
-                  child: Text(
-                    AppFormats.listHeaderOf(day.date),
-                    style: context.text.body12.copyWith(
-                      color: enabled ? c.textPrimary : c.textDisabled,
-                    ),
-                  ),
-                ),
-                certifyBadge(context, day.status),
-              ],
+            certifyBadge(context, day.status),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// `Certify Today` qatori — ro'yxat ustidagi alohida karta (Figma 345x48).
+class CertifyTodayRow extends StatelessWidget {
+  const CertifyTodayRow({required this.onTap, super.key});
+
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    return AppCard(
+      grouped: true,
+      onTap: onTap,
+      padding: const EdgeInsets.symmetric(horizontal: Spacing.s20, vertical: Spacing.s15),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              context.l10n.certifyToday,
+              style: context.text.body14.copyWith(color: c.textPrimary),
             ),
           ),
-        ),
+          Icon(Icons.chevron_right, size: Spacing.s20, color: c.textPrimary),
+        ],
       ),
     );
   }

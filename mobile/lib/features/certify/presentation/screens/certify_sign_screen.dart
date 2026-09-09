@@ -14,7 +14,6 @@ import '../../domain/certify_models.dart';
 import '../controllers/certify_list_controller.dart';
 import '../controllers/certify_providers.dart';
 import '../controllers/certify_sign_controller.dart';
-import '../widgets/certify_widgets.dart';
 
 class CertifySignScreen extends ConsumerStatefulWidget {
   const CertifySignScreen({required this.date, super.key});
@@ -54,6 +53,8 @@ class _CertifySignScreenState extends ConsumerState<CertifySignScreen>
           tooltip: l10n.commonCancel,
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
+        // Figma `1102:817`: `Sign` ekranida o'ng tarafda amal ikonkalari yo'q.
+        showDefaultActions: false,
       ),
       banners: <Widget>[
         if (day.value?.status == CertifyStatus.notReady)
@@ -128,20 +129,32 @@ class CertifySignBody extends ConsumerWidget {
     final CertifySignController controller = ref.read(certifySignControllerProvider.notifier);
     final bool notReady = day.value?.status == CertifyStatus.notReady;
 
+    // Figma `1102:817`: `Driver Signature` sarlavhasi va `Use my signature`
+    // tugmasi **bitta qatorda** — sarlavha chapda, tugma o'ngda (#B-25).
+    final Widget signatureHeader = Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(
+            l10n.certifyDriverSignature,
+            style: context.text.body8.copyWith(color: c.textPrimary),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        if (state.hasSavedSignature) ...<Widget>[
+          const SizedBox(width: Spacing.s10),
+          AppChip(
+            label: l10n.certifyUseMySignature,
+            selected: state.useSaved,
+            onTap: controller.toggleUseSaved,
+          ),
+        ],
+      ],
+    );
+
     final Widget pad = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(l10n.certifyDriverSignature, style: context.text.body8.copyWith(color: c.textPrimary)),
-        const SizedBox(height: Spacing.s10),
-        if (state.hasSavedSignature)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: AppChip(
-              label: l10n.certifyUseMySignature,
-              selected: state.useSaved,
-              onTap: controller.toggleUseSaved,
-            ),
-          ),
+        signatureHeader,
         if (!state.useSaved) ...<Widget>[
           const SizedBox(height: Spacing.s10),
           SignaturePad(
@@ -152,43 +165,20 @@ class CertifySignBody extends ConsumerWidget {
           ),
         ],
         const SizedBox(height: Spacing.s10),
-        InkWell(
+        _CertifyCheckboxRow(
+          checked: state.remember,
           onTap: controller.toggleRemember,
-          child: Row(
-            children: <Widget>[
-              Icon(
-                state.remember ? Icons.check_box : Icons.check_box_outline_blank,
-                color: state.remember ? c.primary : c.strokeStrong,
-              ),
-              const SizedBox(width: Spacing.s10),
-              Expanded(
-                child: Text(
-                  l10n.certifySaveMySignature,
-                  style: context.text.body13.copyWith(color: c.textPrimary),
-                ),
-              ),
-            ],
-          ),
+          label: l10n.certifySaveMySignature,
         ),
-      ],
-    );
-
-    final Widget summary = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Text(
-          AppFormats.listHeaderOf(state.dates.isEmpty ? null : state.dates.last),
-          style: context.text.body11.copyWith(color: c.textPrimary),
+        const SizedBox(height: Spacing.s10),
+        // Figma: huquqiy matn imzo maydonidan **keyin**, tasdiqlash
+        // checkbox'i bilan birga (#B-25).
+        _CertifyCheckboxRow(
+          checked: state.agreed,
+          onTap: controller.toggleAgree,
+          label: l10n.certifyLegalText,
+          multiline: true,
         ),
-        if (state.dates.length > 1) ...<Widget>[
-          const SizedBox(height: Spacing.s5),
-          Text(
-            l10n.certifyDaysSummary(state.dates.length),
-            style: context.text.body16.copyWith(color: c.textSecondary),
-          ),
-        ],
-        const SizedBox(height: Spacing.s15),
-        const CertifyLegalText(),
         if (state.error != null) ...<Widget>[
           const SizedBox(height: Spacing.s10),
           Text(
@@ -198,6 +188,19 @@ class CertifySignBody extends ConsumerWidget {
         ],
       ],
     );
+
+    // Figma etalonida bir nechta kun tanlangan holat aks ettirilmagan —
+    // faqat M126 (bir nechta kunni bitta imzo bilan sertifikatsiyalash)
+    // amalga oshirilganda ko'rinadi, aks holda hech narsa chizilmaydi.
+    final Widget? summary = state.dates.length > 1
+        ? Padding(
+            padding: const EdgeInsets.only(bottom: Spacing.s15),
+            child: Text(
+              l10n.certifyDaysSummary(state.dates.length),
+              style: context.text.body16.copyWith(color: c.textSecondary),
+            ),
+          )
+        : null;
 
     Future<void> confirm() async {
       final CertifyOutcome? outcome = await controller.confirm();
@@ -216,7 +219,9 @@ class CertifySignBody extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: Spacing.s15),
       child: Row(
         children: <Widget>[
+          // Figma `1102:817`: `Confirm` `Cancel`dan biroz kengroq (~45/50 nisbat).
           Expanded(
+            flex: 9,
             child: AppButton.secondary(
               label: l10n.commonCancel,
               onPressed: () => Navigator.of(context).maybePop(),
@@ -225,6 +230,7 @@ class CertifySignBody extends ConsumerWidget {
           ),
           const SizedBox(width: Spacing.s10),
           Expanded(
+            flex: 10,
             child: AppButton.primary(
               label: notReady ? l10n.certifyBadgeNotReady : l10n.certifyConfirm,
               busy: state.submitting,
@@ -236,7 +242,10 @@ class CertifySignBody extends ConsumerWidget {
       ),
     );
 
-    final List<Widget> content = <Widget>[summary, const SizedBox(height: Spacing.s20), pad];
+    final List<Widget> content = <Widget>[
+      if (summary != null) ...<Widget>[summary, const SizedBox(height: Spacing.s20)],
+      pad,
+    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -246,7 +255,9 @@ class CertifySignBody extends ConsumerWidget {
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Expanded(child: SingleChildScrollView(child: summary)),
+                    Expanded(
+                      child: SingleChildScrollView(child: summary ?? const SizedBox.shrink()),
+                    ),
                     const SizedBox(width: Spacing.s20),
                     Expanded(child: SingleChildScrollView(child: pad)),
                   ],
@@ -258,6 +269,43 @@ class CertifySignBody extends ConsumerWidget {
         ),
         buttons,
       ],
+    );
+  }
+}
+
+/// Figma dagi sertifikatsiya checkbox qatori (#B-25): chapda `AppCheckbox`,
+/// o'ngda matn. Uzun huquqiy matn uchun [multiline] bilan yuqoriga tekislanadi.
+class _CertifyCheckboxRow extends StatelessWidget {
+  const _CertifyCheckboxRow({
+    required this.checked,
+    required this.onTap,
+    required this.label,
+    this.multiline = false,
+  });
+
+  final bool checked;
+  final VoidCallback onTap;
+  final String label;
+  final bool multiline;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: Spacing.s5),
+        child: Row(
+          crossAxisAlignment: multiline ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          children: <Widget>[
+            AppCheckbox(value: checked, onChanged: (bool _) => onTap()),
+            const SizedBox(width: Spacing.s10),
+            Expanded(
+              child: Text(label, style: context.text.body14.copyWith(color: c.textPrimary)),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

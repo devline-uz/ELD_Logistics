@@ -64,6 +64,18 @@ abstract final class AppPalette {
   /// (D-29: 76 marta). Alfa [AppColors.overlaySoft] da qo'llanadi.
   static const Color overlay = Color(0xFFC2C1CD);
 
+  /// Karta to'ldirishi — Figma `#F6F6F6` (#B-08).
+  static const Color cardFill = Color(0xFFF6F6F6);
+
+  /// Ikkilamchi CTA to'ldirishi — Figma `#F2F2F5` (#B-14).
+  static const Color neutralFill = Color(0xFFF2F2F5);
+
+  /// iOS uslubidagi switch yoqilgan treki — Figma `#22C55E` (#B-18).
+  static const Color switchTrackOn = Color(0xFF22C55E);
+
+  /// ELD banneri — Figma `#D70004` (#B-25).
+  static const Color alertRed = Color(0xFFD70004);
+
   // --- Neutral 1…11 ---
   static const Color neutral1 = Color(0xFFFCFCFD);
   static const Color neutral2 = Color(0xFFF4F5F6);
@@ -301,6 +313,21 @@ class AppColors extends ThemeExtension<AppColors> {
   /// [neutralStrong] ustidagi matn/ikonka.
   Color get onNeutralStrong => isDark ? AppPalette.neutral10 : AppPalette.neutral1;
 
+  /// App bar foni — `#C2C1CD` @20 % `surface` ustida (#B-03).
+  Color get appBarSurface => Color.alphaBlend(overlaySoft, surface);
+
+  /// Karta yuzasi — Figma `#F6F6F6`, chegarasiz (#B-08).
+  Color get cardSurface => isDark ? surfaceAlt : AppPalette.cardFill;
+
+  /// Ikkilamchi CTA / segmented konteyner to'ldirishi (#B-14, #B-15).
+  Color get fillSubtle => isDark ? surfaceAlt : AppPalette.neutralFill;
+
+  /// `AppSwitch` yoqilgan holatdagi treki (#B-18).
+  Color get switchTrackOn => AppPalette.switchTrackOn;
+
+  /// ELD banneri foni (#B-25).
+  Color get alert => AppPalette.alertRed;
+
   /// Modal ortidagi qoraytirish — `#1C1E24` @ 35 %.
   Color get scrim => AppPalette.neutral10.withValues(alpha: 0.35);
 
@@ -315,10 +342,10 @@ class AppColors extends ThemeExtension<AppColors> {
 
   /// Duty status rangi (`OFF`/`SB`/`D`/`ON`) — grid va badge uchun yagona manba.
   Color dutyColor(DutySlot slot) => switch (slot) {
-    DutySlot.offDuty => textSecondary,
-    DutySlot.sleeper => AppPalette.decoPurple,
+    DutySlot.offDuty => AppPalette.neutral6,
+    DutySlot.sleeper => AppPalette.warning,
     DutySlot.driving => AppPalette.success,
-    DutySlot.onDuty => AppPalette.decoBlue,
+    DutySlot.onDuty => AppPalette.decoTeal,
   };
 
   @override

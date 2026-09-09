@@ -81,7 +81,9 @@ class _Body extends StatelessWidget {
         ),
         LogInfoRow(label: l10n.logsColumnNotes, value: AppFormats.orNa(event.notes)),
         const SizedBox(height: Spacing.s10),
-        Row(
+        Wrap(
+          spacing: Spacing.s10,
+          runSpacing: Spacing.s5,
           children: <Widget>[
             StatusBadge(
               label: originLabel(l10n, event.origin),
@@ -89,7 +91,6 @@ class _Body extends StatelessWidget {
               dense: true,
             ),
             if (event.edited) ...<Widget>[
-              const SizedBox(width: Spacing.s10),
               StatusBadge(
                 label: l10n.logsDetailEdited,
                 tone: StatusTone.warning,
@@ -97,8 +98,17 @@ class _Body extends StatelessWidget {
                 dense: true,
               ),
             ],
+            // M99: `Action` ustuni Figma jadvalida yo'q — qulf/tahrirlash
+            // belgisi kengaytirilgan ko'rinishda (M-25) ko'rsatiladi.
+            if (!event.isEditable) ...<Widget>[
+              StatusBadge(
+                label: l10n.logsLockedRow,
+                tone: StatusTone.neutral,
+                icon: Icons.lock_outline,
+                dense: true,
+              ),
+            ],
             if (event.pendingSync) ...<Widget>[
-              const SizedBox(width: Spacing.s10),
               StatusBadge(
                 label: l10n.editsPendingSync,
                 tone: StatusTone.neutral,

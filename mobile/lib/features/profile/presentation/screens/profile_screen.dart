@@ -121,7 +121,9 @@ class _PreferencesCard extends ConsumerWidget {
         SettingsRow(
           label: l10n.profileZoom,
           showChevron: false,
-          trailing: SettingsToggle(
+          // #B-18: `AppSwitch` (yashil `switchTrackOn` track + to'liq oq thumb);
+          // Material `Switch` ishlatilmaydi.
+          trailing: AppSwitch(
             value: ui.zoom == ZoomLevel.large,
             semanticLabel: l10n.profileZoomSemantics,
             onChanged: (bool value) => notifier.setZoom(value ? ZoomLevel.large : ZoomLevel.normal),
@@ -130,7 +132,7 @@ class _PreferencesCard extends ConsumerWidget {
         SettingsRow(
           label: l10n.profileDarkMode,
           showChevron: false,
-          trailing: SettingsToggle(
+          trailing: AppSwitch(
             value: isDark,
             semanticLabel: l10n.profileDarkMode,
             onChanged: (bool value) =>

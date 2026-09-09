@@ -27,8 +27,12 @@ const String kSyncPullPath = '/sync/pull';
 /// Kunlik log formasidan sessiya profilini qayta o'qish davri.
 const Duration kSessionProfileRefresh = Duration(hours: 12);
 
-/// `GET /violations` sahifasi hajmi (14 kunlik oyna uchun yetarli).
-const int kViolationsPageSize = 200;
+/// `GET /violations` sahifasi hajmi.
+///
+/// `#B-BUG2`: backend `per_page` uchun faqat **10/25/50** ni qabul qiladi
+/// (`httpx.AllowedPerPage`); boshqa qiymat `422 VALIDATION_ERROR` beradi.
+/// Shuning uchun bu yerda maksimal ruxsat etilgan qiymat turadi.
+const int kViolationsPageSize = 50;
 
 class DioSyncTransport implements SyncTransport {
   DioSyncTransport({required Dio dio, SyncSideChannel? sideChannel}) : this._(dio, sideChannel);
@@ -188,7 +192,9 @@ class DioSyncTransport implements SyncTransport {
       final Response<Map<String, Object?>> response = await _dio.get<Map<String, Object?>>(
         '/violations',
         queryParameters: <String, Object?>{
-          if (since != null && since.isNotEmpty) 'from': since,
+          // `from` — **RFC3339**; kursor boshqa formatda kelsa yuborilmaydi
+          // (`httpx.QueryTime` uni `422` bilan rad etardi).
+          if (_rfc3339(since) case final String from) 'from': from,
           'per_page': kViolationsPageSize,
         },
         options: Options(extra: <String, Object?>{RequestExtra.slot: slot}),
@@ -198,6 +204,15 @@ class DioSyncTransport implements SyncTransport {
     } on DioException {
       return const <Map<String, Object?>>[];
     }
+  }
+
+  /// `since` kursorini `GET /violations?from=` uchun RFC3339 ga keltiradi.
+  static String? _rfc3339(String? since) {
+    if (since == null || since.isEmpty) {
+      return null;
+    }
+    final DateTime? parsed = DateTime.tryParse(since);
+    return parsed?.toUtc().toIso8601String();
   }
 
   /// `kv_settings` uchun profil bo'lagi.

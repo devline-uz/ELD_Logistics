@@ -2,6 +2,7 @@
 /// `M-12`, `M-13`, `M-14` golden testlari.
 library;
 
+import 'package:eld_mobile/core/ui/ui.dart';
 import 'package:eld_mobile/features/duty_status/presentation/screens/change_duty_status_screen.dart';
 import 'package:eld_mobile/features/duty_status/presentation/widgets/location_inaccurate_dialog.dart';
 import 'package:eld_mobile/features/duty_status/presentation/widgets/quick_notes_sheet.dart';
@@ -29,7 +30,25 @@ void main() {
   m4GoldenMatrix(
     'm14_location_inaccurate',
     devices: <GoldenDevice>[GoldenDevice.phone],
-    child: () => const Scaffold(body: Center(child: LocationInaccurateDialog())),
+    child: () => const _LocationInaccurateGolden(),
     overrides: () => m4Overrides(duty: FakeDutyStatusRepository()),
+  );
+}
+
+// M-14: chaqiruvchi ekran (`M-05` Home) boshqa modulga tegishli — golden
+// shu sabab `showLocationInaccurateDialog` chaqirganda ko'rinadigan scrim'ni
+// neytral fon ustida takrorlaydi (host ekranning o'zi emas).
+class _LocationInaccurateGolden extends StatelessWidget {
+  const _LocationInaccurateGolden();
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: context.colors.bg,
+    body: Stack(
+      children: <Widget>[
+        ModalBarrier(color: context.colors.scrim, dismissible: false),
+        const LocationInaccurateDialog(),
+      ],
+    ),
   );
 }

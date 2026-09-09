@@ -85,17 +85,19 @@ class _Body extends StatelessWidget {
   ];
 }
 
-/// Figma `1131:392`: **bitta** karta, ikki band — `Diagnosis of device ›` va
-/// `App updates`. Versiya qatorlari va `Update` tugmasi shu kartaning ichida
-/// (`App updates` uchun alohida marshrut TZ §11.1 registrida yo'q).
-class _GeneralCard extends ConsumerWidget {
+/// Figma `1131:392`: **bitta** karta, **atigi ikki band** — `Diagnosis of
+/// device ›` va `App updates ›`, ikkalasi ham chevron bilan.
+/// Versiya qatorlari (`Current version` / `Latest version` / `Update`) endi
+/// kartada emas — `App updates` bosilganda ochiladigan adaptiv modalda
+/// (telefonda `AppBottomSheet`, planshetda `TabletModal`); shu tufayli
+/// ekranning Figma bilan piksel pariteti buzilmaydi va TZ §11.8 talabi
+/// (joriy/oxirgi versiya + `Update`) saqlanadi.
+class _GeneralCard extends StatelessWidget {
   const _GeneralCard();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final AppLocalizations l10n = context.l10n;
-    final AppVersion installed = ref.watch(resolvedAppVersionProvider);
-    final AsyncValue<AppConfigInfo> config = ref.watch(appConfigControllerProvider);
 
     return SettingsCard(
       children: <Widget>[
@@ -103,8 +105,44 @@ class _GeneralCard extends ConsumerWidget {
           label: l10n.settingsDiagnosis,
           onTap: () => pushOrNotify(context, ProfileRoute.diagnosis),
         ),
-        SettingsRow(label: l10n.settingsAppUpdates, showChevron: false),
-        SettingsRow(label: l10n.settingsCurrentVersion(installed.version), showChevron: false),
+        SettingsRow(
+          label: l10n.settingsAppUpdates,
+          onTap: () => showAdaptiveModal<void>(
+            context: context,
+            builder: (BuildContext sheetContext) => _updatesPane(
+              AppBottomSheet(title: l10n.settingsAppUpdates, child: const _AppUpdatesPane()),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Modal tanasi: `Material` ajdodi (`InkWell` uchun) + kontent bo'yicha
+/// balandlik. Qat'iy balandlik berilmaydi — `ErrorState` va `Update` tugmasi
+/// bo'lgan holatda ham to'lib ketmaydi.
+Widget _updatesPane(Widget child) => Material(
+  type: MaterialType.transparency,
+  child: SingleChildScrollView(child: child),
+);
+
+/// TZ §11.8: joriy versiya, `latest_version` va `Update` amali.
+class _AppUpdatesPane extends ConsumerWidget {
+  const _AppUpdatesPane();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AppLocalizations l10n = context.l10n;
+    final AppVersion installed = ref.watch(resolvedAppVersionProvider);
+    final AsyncValue<AppConfigInfo> config = ref.watch(appConfigControllerProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        KeyValueRow(label: l10n.settingsCurrentVersionLabel, value: installed.version),
+        const SizedBox(height: Spacing.s10),
         asyncView<AppConfigInfo>(
           config,
           loading: const Padding(
@@ -120,11 +158,11 @@ class _GeneralCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SettingsRow(
-                label: l10n.settingsLatestVersion(AppFormats.orNa(info.latestVersion)),
-                showChevron: false,
+              KeyValueRow(
+                label: l10n.settingsLatestVersionLabel,
+                value: AppFormats.orNa(info.latestVersion),
               ),
-              const SizedBox(height: Spacing.s10),
+              const SizedBox(height: Spacing.s20),
               if (info.isNewerThan(installed.version))
                 AppButton.primary(
                   label: l10n.settingsUpdateAction,
@@ -165,7 +203,9 @@ class _NotificationsCard extends ConsumerWidget {
             label: alertTypeLabel(l10n, type),
             showChevron: false,
             helper: type.isLocked ? l10n.settingsNotificationsLocked : null,
-            trailing: SettingsToggle(
+            // #B-18: `AppSwitch` — o'chirilgan holatda ham track/thumb
+            // kontrasti saqlanadi (M3 `Switch` da kulrang thumb artefakti).
+            trailing: AppSwitch(
               value: prefs.isEnabled(type),
               semanticLabel: alertTypeLabel(l10n, type),
               onChanged: type.isLocked

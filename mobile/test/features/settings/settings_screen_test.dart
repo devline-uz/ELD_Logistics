@@ -26,6 +26,13 @@ class _GatedConfigRepository extends FakeAppConfigRepository {
   }
 }
 
+/// Figma `1131:392`: kartada faqat ikki band — versiya ma'lumoti `App updates`
+/// modalida. Har test uni ochib tekshiradi.
+Future<void> openAppUpdates(WidgetTester tester) async {
+  await tester.tap(find.text(l10n.settingsAppUpdates));
+  await settle(tester);
+}
+
 void main() {
   group('M-45 Settings', () {
     testWidgets('to\'la holat: ikki band + versiya qatorlari', (WidgetTester tester) async {
@@ -33,8 +40,13 @@ void main() {
 
       expect(find.text(l10n.settingsDiagnosis), findsOneWidget);
       expect(find.text(l10n.settingsAppUpdates), findsOneWidget);
-      expect(find.text(l10n.settingsCurrentVersion('1.0.0')), findsOneWidget);
-      expect(find.text(l10n.settingsLatestVersion('1.0.0')), findsOneWidget);
+      // Figma: kartada versiya qatorlari yo'q — ular modalda.
+      expect(find.text(l10n.settingsCurrentVersionLabel), findsNothing);
+
+      await openAppUpdates(tester);
+      expect(find.text(l10n.settingsCurrentVersionLabel), findsOneWidget);
+      expect(find.text(l10n.settingsLatestVersionLabel), findsOneWidget);
+      expect(find.text('1.0.0'), findsNWidgets(2));
       // Versiyalar teng — `Update` tugmasi o'rniga «up to date».
       expect(find.text(l10n.settingsUpToDate), findsOneWidget);
       expect(appButton(l10n.settingsUpdateAction), findsNothing);
@@ -48,7 +60,8 @@ void main() {
           config: FakeAppConfigRepository(config: const AppConfigInfo(latestVersion: '2.1.0')),
         ),
       );
-      expect(find.text(l10n.settingsLatestVersion('2.1.0')), findsOneWidget);
+      await openAppUpdates(tester);
+      expect(find.text('2.1.0'), findsOneWidget);
       expect(appButton(l10n.settingsUpdateAction), findsOneWidget);
     });
 
@@ -58,7 +71,8 @@ void main() {
         const SettingsScreen(),
         overrides: m11Overrides(config: FakeAppConfigRepository(config: const AppConfigInfo())),
       );
-      expect(find.text(l10n.settingsLatestVersion('N/A')), findsOneWidget);
+      await openAppUpdates(tester);
+      expect(find.text('N/A'), findsOneWidget);
     });
 
     testWidgets('yuklanish: skeleton', (WidgetTester tester) async {
@@ -68,22 +82,24 @@ void main() {
         const SettingsScreen(),
         overrides: m11Overrides(config: _GatedConfigRepository(gate)),
       );
+      await openAppUpdates(tester);
       expect(find.byType(SkeletonBox), findsWidgets);
       gate.complete();
       await settle(tester);
-      expect(find.text(l10n.settingsLatestVersion('1.0.0')), findsOneWidget);
+      expect(find.text(l10n.settingsLatestVersionLabel), findsOneWidget);
     });
 
     testWidgets('xato holati: ErrorState + Retry', (WidgetTester tester) async {
       final FakeAppConfigRepository config = FakeAppConfigRepository(error: kServerError);
       await pumpM11Screen(tester, const SettingsScreen(), overrides: m11Overrides(config: config));
 
+      await openAppUpdates(tester);
       expect(find.byType(ErrorState), findsOneWidget);
       config.error = null;
       await tester.tap(find.text(l10n.commonRetry));
       await settle(tester);
       expect(find.byType(ErrorState), findsNothing);
-      expect(find.text(l10n.settingsLatestVersion('1.0.0')), findsOneWidget);
+      expect(find.text(l10n.settingsLatestVersionLabel), findsOneWidget);
     });
 
     testWidgets('M143: majburiy alert turlari o\'chirilgan toggle bilan', (
@@ -99,8 +115,9 @@ void main() {
         of: find.text(alertTypeLabel(l10n, locked)),
         matching: find.byType(Row),
       );
-      final Switch toggle = tester.widget<Switch>(
-        find.descendant(of: row.first, matching: find.byType(Switch)),
+      // #B-18: Material `Switch` emas, `AppSwitch`.
+      final AppSwitch toggle = tester.widget<AppSwitch>(
+        find.descendant(of: row.first, matching: find.byType(AppSwitch)),
       );
       expect(toggle.onChanged, isNull);
       expect(find.text(l10n.settingsNotificationsLocked), findsWidgets);
@@ -115,12 +132,12 @@ void main() {
 
       final Finder toggle = find.descendant(
         of: find.ancestor(of: find.text(label), matching: find.byType(Row)).first,
-        matching: find.byType(Switch),
+        matching: find.byType(AppSwitch),
       );
-      final bool before = tester.widget<Switch>(toggle).value;
+      final bool before = tester.widget<AppSwitch>(toggle).value;
       await tester.tap(toggle);
       await tester.pumpAndSettle();
-      expect(tester.widget<Switch>(toggle).value, isNot(before));
+      expect(tester.widget<AppSwitch>(toggle).value, isNot(before));
     });
 
     testWidgets('til bo\'limi: faqat English (M92)', (WidgetTester tester) async {
@@ -142,6 +159,9 @@ void main() {
       );
       expect(find.text(l10n.settingsDiagnosis), findsOneWidget);
       expect(find.text(l10n.settingsNotifications), findsOneWidget);
+      // Modal planshetda `TabletModal` sifatida ochiladi, kontroller bitta.
+      await openAppUpdates(tester);
+      expect(find.text(l10n.settingsLatestVersionLabel), findsOneWidget);
       expect(config.calls.length, 1);
     });
   });

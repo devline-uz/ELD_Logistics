@@ -108,9 +108,11 @@ void main() {
 
     test('dutyColor har slot uchun barqaror', () {
       const AppColors c = AppColors.light;
+      // #B-17 (Figma): ON=cyan, DR=yashil, SB=amber, OFF=kulrang.
       expect(c.dutyColor(DutySlot.driving), c.hosDrive);
-      expect(c.dutyColor(DutySlot.onDuty), c.decoBlue);
-      expect(c.dutyColor(DutySlot.offDuty), c.textSecondary);
+      expect(c.dutyColor(DutySlot.onDuty), c.decoTeal);
+      expect(c.dutyColor(DutySlot.sleeper), c.warning);
+      expect(c.dutyColor(DutySlot.offDuty), AppPalette.neutral6);
     });
 
     test('lerp faqat temaga bog\'liq maydonlarni aralashtiradi', () {

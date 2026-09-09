@@ -12,6 +12,7 @@ class DriveTimerRing extends StatelessWidget {
     required this.progress,
     required this.color,
     this.diameter = 240,
+    this.strokeWidth = 12,
     super.key,
   });
 
@@ -26,6 +27,10 @@ class DriveTimerRing extends StatelessWidget {
 
   final Color color;
   final double diameter;
+
+  /// Figma `1170:2684`: halqa treki progress bilan bir xil qalinlikda
+  /// (~14 px) — default `12` kichikroq ekranlar uchun saqlanadi.
+  final double strokeWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +47,11 @@ class DriveTimerRing extends StatelessWidget {
             SizedBox.expand(
               child: CircularProgressIndicator(
                 value: progress.clamp(0.0, 1.0),
-                strokeWidth: 12,
-                backgroundColor: c.surfaceAlt,
+                strokeWidth: strokeWidth,
+                // Figma: bo'sh trek to'q kulrang (`strokeStrong`), och
+                // `surfaceAlt` emas — progress bilan kontrast yetarli bo'lishi
+                // uchun.
+                backgroundColor: c.strokeStrong,
                 valueColor: AlwaysStoppedAnimation<Color>(color),
               ),
             ),

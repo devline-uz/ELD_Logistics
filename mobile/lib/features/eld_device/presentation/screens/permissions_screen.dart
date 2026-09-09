@@ -28,7 +28,12 @@ class PermissionsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
     // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
     maxContentWidth: ContentWidth.single,
-    appBar: AppBarPrimary(title: context.l10n.permissionsTitle, leading: const AppBackButton()),
+    // Figma `1107:2310` app bar: faqat orqaga tugmasi + sarlavha.
+    appBar: AppBarPrimary(
+      title: context.l10n.permissionsTitle,
+      leading: const AppBackButton(),
+      showDefaultActions: false,
+    ),
     backgroundColor: context.colors.bg,
     phone: (BuildContext context) => const PermissionsBody(),
     tablet: (BuildContext context) => const PermissionsBody(),

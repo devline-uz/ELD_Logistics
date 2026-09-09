@@ -40,14 +40,9 @@ class ChangeDutyStatusScreen extends ConsumerWidget {
 
     return AdaptiveScaffold(
       backgroundColor: context.colors.bg,
-      appBar: AppBarPrimary(
-        title: l10n.dutyChangeTitle,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).maybePop(),
-          tooltip: l10n.commonCancel,
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
+      // Figma `1083:10550`: chapga tekislangan sarlavha, orqaga tugmasi
+      // **yo'q** (chiqish `Cancel` orqali), o'ngda `bell · mail · refresh`.
+      appBar: AppBarPrimary(title: l10n.dutyChangeTitle),
       banners: <Widget>[
         // M66: ELD ulanmagan — event `manual_no_eld` bo'lib yoziladi.
         if (!state.eldConnected)
@@ -95,9 +90,11 @@ class _Body extends StatelessWidget {
       );
     }
 
+    // #B-22: M-12 da telefon ham **halqa** gauge ishlatadi (M-09 dagi
+    // chiziqli variant emas) — Figma `1083:10550`.
     final Widget indicators = Padding(
       padding: const EdgeInsets.symmetric(vertical: Spacing.s15),
-      child: HosIndicatorRow(snapshot: snapshot),
+      child: HosRingRow(gauges: hosGauges(context, snapshot), diameter: twoColumn ? 104 : 80),
     );
     final Widget form = _FormCard(
       state: state,
@@ -125,13 +122,7 @@ class _FormCard extends StatelessWidget {
     final AppColors c = context.colors;
     final DutySpecial? special = state.availableSpecial;
 
-    return Container(
-      padding: const EdgeInsets.all(Spacing.cardPadding),
-      decoration: BoxDecoration(
-        color: c.surfaceAlt,
-        borderRadius: Radii.cardRadius,
-        border: Border.all(color: c.stroke, width: Strokes.thin),
-      ),
+    return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -152,8 +143,11 @@ class _FormCard extends StatelessWidget {
                     style: context.text.body13.copyWith(color: c.textPrimary),
                   ),
                 ),
-                Switch.adaptive(
+                AppSwitch(
                   value: state.draft.special == special,
+                  semanticLabel: special == DutySpecial.personalConveyance
+                      ? l10n.dutyPersonalConveyance
+                      : l10n.dutyYardMove,
                   onChanged: (bool value) => controller.toggleSpecial(enabled: value),
                 ),
               ],
@@ -215,7 +209,6 @@ class _FormCard extends StatelessWidget {
             inputFormatters: <TextInputFormatter>[
               LengthLimitingTextInputFormatter(kMaxDutyNotesLength),
             ],
-            helperText: l10n.dutyNotesCounter(state.draft.notes.length, kMaxDutyNotesLength),
             errorText: state.issues.contains(DutyIssue.notesTooLong) ? l10n.dutyNotesTooLong : null,
             onChanged: controller.setNotes,
             suffix: IconButton(
@@ -263,7 +256,7 @@ class _FormCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: AppButton.secondary(
+                child: DutyOutlineButton(
                   label: l10n.commonCancel,
                   onPressed: () => Navigator.of(context).maybePop(),
                 ),

@@ -2,6 +2,8 @@
 ///
 /// * [HosLinearIndicator] — **telefon** (393 dp da halqa kichik chiqadi).
 /// * [HosRingIndicator]  — **planshet**, `CustomPainter`, chiziq 12 dp.
+/// * [HosCardGrid]       — **M-09 Home**: 2×2 karta grid (#B-22).
+/// * [HosRingRow]        — **M-12**: to'rtta halqa bir qatorda (#B-22).
 ///
 /// Ikkalasi bir xil [HosBucket] modelidan ranglarni oladi (M81: HOS ranglari
 /// ikkala temada bir xil). Bo'lim nomi **parametr** sifatida keladi.
@@ -16,6 +18,7 @@ import '../radius.dart';
 import '../spacing.dart';
 import '../theme.dart';
 import '../tokens.dart';
+import 'app_card.dart';
 
 /// To'rtta HOS hisoblagichi.
 enum HosBucket {
@@ -176,7 +179,9 @@ class HosRingIndicator extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Spacing.s10),
-          Text(data.label, style: context.text.body14.copyWith(color: c.textSecondary)),
+          // Figma: bo'lim yorlig'i **bo'lim rangida** (BREAK amber, DRIVE
+          // yashil, SHIFT ko'k, CYCLE qizil) — #B-22.
+          Text(data.label, style: context.text.body14.copyWith(color: color)),
         ],
       ),
     );
@@ -229,4 +234,159 @@ class _HosRingPainter extends CustomPainter {
       old.color != color ||
       old.trackColor != trackColor ||
       old.strokeWidth != strokeWidth;
+}
+
+/// M-09 Home: **2×2 karta grid** — yorliq + qiymat chipi + knobli bar (#B-22).
+class HosCardIndicator extends StatelessWidget {
+  const HosCardIndicator({required this.data, super.key});
+
+  final HosGaugeData data;
+
+  /// Bar qalinligi (Figma 6) va knob diametri (Figma 12).
+  static const double trackHeight = 6;
+  static const double knobSize = 12;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppColors c = context.colors;
+    final Color color = data.bucket.color(c);
+
+    return Semantics(
+      label: data.label,
+      value: data.formatted,
+      child: AppCard(
+        padding: const EdgeInsets.all(Spacing.s15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    data.label,
+                    // Figma: yorliq **rangli** (#B-22).
+                    style: context.text.body16.copyWith(color: color),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Spacing.s10,
+                    vertical: Spacing.s5 / 2,
+                  ),
+                  // Figma: chip **kulrang fon + to'q matn** (#B-22).
+                  decoration: BoxDecoration(color: c.fillSubtle, borderRadius: Radii.badgeRadius),
+                  child: Text(
+                    data.formatted,
+                    style: context.text.body14.copyWith(
+                      color: data.exhausted ? c.error : c.textPrimary,
+                      fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: Spacing.s10),
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double width = constraints.maxWidth;
+                final double filled = (width * data.progress).clamp(0.0, width);
+                return SizedBox(
+                  height: knobSize,
+                  child: Stack(
+                    alignment: Alignment.centerLeft,
+                    children: <Widget>[
+                      Container(
+                        height: trackHeight,
+                        decoration: BoxDecoration(
+                          color: c.surfaceAlt,
+                          borderRadius: Radii.pillRadius,
+                        ),
+                      ),
+                      Container(
+                        height: trackHeight,
+                        width: filled,
+                        decoration: BoxDecoration(color: color, borderRadius: Radii.pillRadius),
+                      ),
+                      Positioned(
+                        left: (filled - knobSize / 2).clamp(0.0, width - knobSize),
+                        child: Container(
+                          width: knobSize,
+                          height: knobSize,
+                          decoration: BoxDecoration(
+                            color: c.surface,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: color, width: Strokes.emphasis),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// To'rt hisoblagichning 2×2 grid ko'rinishi (M-09, #B-22).
+class HosCardGrid extends StatelessWidget {
+  const HosCardGrid({required this.gauges, this.gap = Spacing.s10, super.key});
+
+  final List<HosGaugeData> gauges;
+  final double gap;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    children: <Widget>[
+      for (int row = 0; row * 2 < gauges.length; row++) ...<Widget>[
+        if (row > 0) SizedBox(height: gap),
+        // `CrossAxisAlignment.stretch` cheklanmagan balandlikda (`ListView`)
+        // yiqiladi; kartalar `mainAxisSize.min` bo'lgani uchun `start` yetarli.
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            for (int col = 0; col < 2; col++) ...<Widget>[
+              if (col > 0) SizedBox(width: gap),
+              Expanded(
+                child: row * 2 + col < gauges.length
+                    ? HosCardIndicator(data: gauges[row * 2 + col])
+                    : const SizedBox.shrink(),
+              ),
+            ],
+          ],
+        ),
+      ],
+    ],
+  );
+}
+
+/// M-12: to'rtta halqa gauge bir qatorda (#B-22).
+class HosRingRow extends StatelessWidget {
+  const HosRingRow({required this.gauges, this.diameter = 64, this.strokeWidth = 6, super.key});
+
+  final List<HosGaugeData> gauges;
+  final double diameter;
+
+  /// Halqa qalinligi. Qatordagi diametr kichik (64–72 dp) bo'lgani uchun
+  /// standart 12 dp markazdagi `HH:mm` ni siqadi — default 6 dp.
+  final double strokeWidth;
+
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      for (final HosGaugeData gauge in gauges)
+        Expanded(
+          child: Center(
+            child: HosRingIndicator(data: gauge, diameter: diameter, strokeWidth: strokeWidth),
+          ),
+        ),
+    ],
+  );
 }

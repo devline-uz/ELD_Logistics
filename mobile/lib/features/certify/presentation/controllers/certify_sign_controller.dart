@@ -16,6 +16,7 @@ class CertifySignState {
     this.useSaved = false,
     this.savedSignatureId,
     this.remember = false,
+    this.agreed = false,
     this.submitting = false,
     this.outcome,
     this.error,
@@ -35,6 +36,10 @@ class CertifySignState {
   /// `Save my signature` checkbox'i.
   final bool remember;
 
+  /// Huquqiy matn yonidagi tasdiqlash checkbox'i (Figma `1102:817`) — belgilanmasa
+  /// `Confirm` faollashmaydi.
+  final bool agreed;
+
   final bool submitting;
   final CertifyOutcome? outcome;
   final ApiError? error;
@@ -42,7 +47,10 @@ class CertifySignState {
   bool get hasSavedSignature => savedSignatureId != null;
 
   bool get canConfirm =>
-      !submitting && dates.isNotEmpty && (png != null || (useSaved && hasSavedSignature));
+      !submitting &&
+      agreed &&
+      dates.isNotEmpty &&
+      (png != null || (useSaved && hasSavedSignature));
 
   CertifySignState copyWith({
     List<DateTime>? dates,
@@ -51,6 +59,7 @@ class CertifySignState {
     bool? useSaved,
     String? savedSignatureId,
     bool? remember,
+    bool? agreed,
     bool? submitting,
     CertifyOutcome? outcome,
     ApiError? error,
@@ -61,6 +70,7 @@ class CertifySignState {
     useSaved: useSaved ?? this.useSaved,
     savedSignatureId: savedSignatureId ?? this.savedSignatureId,
     remember: remember ?? this.remember,
+    agreed: agreed ?? this.agreed,
     submitting: submitting ?? this.submitting,
     outcome: outcome ?? this.outcome,
     error: clearError ? null : (error ?? this.error),
@@ -101,6 +111,8 @@ class CertifySignController extends Notifier<CertifySignState> {
   );
 
   void toggleRemember() => state = state.copyWith(remember: !state.remember);
+
+  void toggleAgree() => state = state.copyWith(agreed: !state.agreed);
 
   /// M126/M128: bitta imzo — har kun uchun alohida outbox yozuvi.
   Future<CertifyOutcome?> confirm() async {

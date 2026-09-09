@@ -88,8 +88,9 @@ class UnidentifiedBody extends ConsumerWidget {
                 crossAxisSpacing: Spacing.s20,
                 // `Pending sync` badge bilan eng baland karta 274 px (D-28
                 // dan keyin qator balandligi aniq: `round(fs x 1.26)`);
-                // 310 — o'sha balandlik + kichik zaxira.
-                mainAxisExtent: 310,
+                // 320 — o'sha balandlik + kichik zaxira (core `KeyValueRow`
+                // ga o'tgandan keyin qayta o'lchandi).
+                mainAxisExtent: 320,
               ),
               itemCount: list.length,
               itemBuilder: (BuildContext _, int index) =>
@@ -122,14 +123,31 @@ class _BlockCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _Row(label: l10n.unidentifiedStart, value: AppFormats.fullDateTime(block.start)),
-          _Row(label: l10n.unidentifiedEnd, value: AppFormats.fullDateTime(block.end)),
-          _Row(label: l10n.unidentifiedDuration, value: AppFormats.durationHms(block.duration)),
-          _Row(
+          KeyValueRow(
+            label: l10n.unidentifiedStart,
+            value: AppFormats.fullDateTime(block.start),
+            dense: true,
+          ),
+          KeyValueRow(
+            label: l10n.unidentifiedEnd,
+            value: AppFormats.fullDateTime(block.end),
+            dense: true,
+          ),
+          KeyValueRow(
+            label: l10n.unidentifiedDuration,
+            value: AppFormats.durationHms(block.duration),
+            dense: true,
+          ),
+          KeyValueRow(
             label: l10n.unidentifiedDistance,
             value: l10n.unidentifiedDistanceMiles(block.distanceMiles.toStringAsFixed(2)),
+            dense: true,
           ),
-          _Row(label: l10n.unidentifiedUnit, value: AppFormats.orNa(block.unitId)),
+          KeyValueRow(
+            label: l10n.unidentifiedUnit,
+            value: AppFormats.orNa(block.unitId),
+            dense: true,
+          ),
           if (block.pendingSync) ...<Widget>[
             const SizedBox(height: Spacing.s5),
             StatusBadge(
@@ -167,29 +185,6 @@ class _BlockCard extends ConsumerWidget {
               ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Row extends StatelessWidget {
-  const _Row({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final AppColors c = context.colors;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Spacing.s5),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(label, style: context.text.body16.copyWith(color: c.textSecondary)),
-          ),
-          Text(value, style: context.text.body14.copyWith(color: c.textPrimary)),
         ],
       ),
     );

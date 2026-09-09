@@ -68,8 +68,8 @@ void main() {
   const MethodChannel channel = MethodChannel(ScreenSecurityChannels.method);
 
   test('kanal nomlari platforma kodi bilan bir xil', () {
-    expect(ScreenSecurityChannels.method, 'uz.stackyard.eld_mobile/screen_security');
-    expect(ScreenSecurityChannels.events, 'uz.stackyard.eld_mobile/screen_security_events');
+    expect(ScreenSecurityChannels.method, 'com.devline.eld_logistics/screen_security');
+    expect(ScreenSecurityChannels.events, 'com.devline.eld_logistics/screen_security_events');
   });
 
   test('setSecure argumentni sof bool sifatida yuboradi (map emas)', () async {
@@ -89,7 +89,7 @@ void main() {
 
   test('kanal yo\'q bo\'lsa ilova yiqilmaydi', () async {
     final ScreenProtection protection = ScreenProtection(
-      channel: const MethodChannel('uz.stackyard.eld_mobile/missing_channel'),
+      channel: const MethodChannel('com.devline.eld_logistics/missing_channel'),
     );
 
     await expectLater(protection.setSecure(true), completes);

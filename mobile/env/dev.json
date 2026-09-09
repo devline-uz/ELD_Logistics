@@ -1,6 +1,6 @@
 {
-  "API_BASE_URL": "https://dev.eldapi.stackyard.uz/api/v1",
-  "WS_URL": "wss://dev.eldapi.stackyard.uz/api/v1/ws",
+  "API_BASE_URL": "https://eldapi.stackyard.uz/api/v1",
+  "WS_URL": "wss://eldapi.stackyard.uz/api/v1/ws",
   "SENTRY_DSN": "",
   "ENABLE_DEV_MENU": true,
   "ENV_NAME": "dev",

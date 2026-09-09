@@ -80,12 +80,13 @@ class _EditDocumentsFormState extends ConsumerState<EditDocumentsForm> {
           onRemove: (String value) => setState(() => _docs.remove(value)),
         ),
         const SizedBox(height: Spacing.s15),
+        // Figma: `Note` maydoni ~1 qator balandligida (avval 2-3 qator edi).
         AppTextField(
           label: l10n.documentsNote,
           hint: l10n.documentsNoteHint,
           controller: _note,
-          maxLines: 3,
-          minLines: 2,
+          maxLines: 2,
+          minLines: 1,
         ),
         if (!widget.asModal) ...<Widget>[
           const SizedBox(height: Spacing.s20),
@@ -117,7 +118,37 @@ class _EditDocumentsFormState extends ConsumerState<EditDocumentsForm> {
         child: body,
       );
     }
-    return AppBottomSheet(title: l10n.documentsTitle, child: body);
+    // Figma `2230:20627`: sarlavha chapga tekislangan + `×` yopish tugmasi
+    // (`AppBottomSheet.title` markazlashgan bo'lgani uchun bu yerda o'z
+    // sarlavha qatorimiz ishlatiladi).
+    return AppBottomSheet(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  l10n.documentsTitle,
+                  style: context.text.body8.copyWith(color: context.colors.textPrimary),
+                ),
+              ),
+              Semantics(
+                button: true,
+                label: l10n.commonCancel,
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  icon: Icon(Icons.close, color: context.colors.textSecondary),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: Spacing.s10),
+          body,
+        ],
+      ),
+    );
   }
 
   Future<void> _addTrailer(List<TrailerOption> catalog) async {

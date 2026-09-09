@@ -163,21 +163,37 @@ class _AppBootstrapState extends ConsumerState<AppBootstrap> {
 
   /// Login javobidagi profil → `kv_settings` (`driver_id`, `driver_name`, …).
   ///
-  /// Qolgan kalitlar (`carrier_name`, `home_terminal_address`, `unit_number`,
-  /// `vehicle_label`) `sync/pull` dan keladi — [PullApplier] yozadi.
+  /// `#B-BUG1`: `/auth/login` va `/me` faqat **user** obyektini beradi — unda
+  /// na `drivers.id`, na tayinlangan unit bor, shuning uchun Home doimo
+  /// «No unit assigned» ko'rsatardi. [AuthRepository.cachedDriverRecord]
+  /// (`GET /drivers`) shu bo'shliqni to'ldiradi; `carrier_name`,
+  /// `home_terminal_address` va davlat raqami keyin `sync/pull` dan aniqlanadi
+  /// ([PullApplier] yozadi). Chiqishda kalitlar `SessionDataCleaner` tomonidan
+  /// o'chiriladi (S-M4).
   Future<void> _writeSessionProfile() async {
     final AuthRepository auth = ref.read(authRepositoryProvider);
     final DriverProfile? profile = auth.cachedProfile;
     if (profile == null) {
       return;
     }
+    final DriverRecord? record = auth.cachedDriverRecord ?? await auth.loadDriverRecord();
     await ref
         .read(sessionProfileProvider.notifier)
         .write(
           SessionProfile(
-            driverId: profile.id,
-            driverName: profile.fullName,
-            driverEmail: profile.email,
+            // Lokal ko'zgu (`daily_logs`, `duty_events`) `drivers.id` bo'yicha
+            // filtrlanadi — `user_id` emas.
+            driverId: record?.driverId ?? profile.id,
+            driverName: record?.fullName ?? profile.fullName,
+            driverEmail: profile.email ?? record?.email,
+            driverPhone: record?.phone,
+            driverLicense: record?.licenseMasked,
+            driverLicenseState: record?.licenseRegion,
+            unitId: record?.unitId,
+            unitNumber: record?.unitNumber,
+            // Davlat raqami hali noma'lum — unit raqami vaqtincha ko'rsatiladi.
+            vehicleLabel: record?.unitNumber,
+            homeTerminalAddress: record?.homeTerminal,
           ),
         );
   }

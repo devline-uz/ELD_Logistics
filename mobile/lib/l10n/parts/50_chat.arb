@@ -15,6 +15,8 @@
   "@chatInputHint": { "description": "M-42 composer placeholder, verbatim from Figma 1118-114" },
   "chatSendAction": "Send",
   "@chatSendAction": { "description": "M-42 send button semantics label" },
+  "chatTyping": "Typing…",
+  "@chatTyping": { "description": "M-42 typing indicator bubble (\u2022\u2022\u2022) semantics label" },
   "chatAttachAction": "Attach",
   "@chatAttachAction": { "description": "M-42 '+' button that opens the attachment sheet (M139)" },
   "chatAttachPhoto": "Photo",

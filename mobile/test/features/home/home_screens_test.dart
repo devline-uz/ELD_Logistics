@@ -69,7 +69,8 @@ void main() {
         overrides: m4Overrides(duty: duty, home: home),
       );
       expect(find.text('Hours of Service'), findsOneWidget);
-      expect(find.byType(HosLinearIndicator), findsNWidgets(4));
+      // #B-22: Figma `2177:12192` — 2x2 karta grid (chiziqli ro'yxat emas).
+      expect(find.byType(HosCardIndicator), findsNWidgets(4));
       expect(find.text('1021'), findsOneWidget);
       expect(find.text('Inspection Report'), findsOneWidget);
       expect(find.text('Leave Truck'), findsOneWidget);
@@ -119,8 +120,10 @@ void main() {
         child: const HomeScreen(),
         overrides: m4Overrides(duty: duty, home: home),
       );
-      await scrollTo(tester, find.text('Not Signed'));
-      expect(find.text('Not Signed'), findsOneWidget);
+      // Figma: `Signature` kartasida badge yo'q — holat 8 ta rangli nuqta
+      // bilan ko'rsatiladi (sertifikatlanmagan kun = `error`).
+      await scrollTo(tester, find.text('Certify (Last 8 days)'));
+      expect(find.text('Certify (Last 8 days)'), findsOneWidget);
     });
   });
 
@@ -133,13 +136,23 @@ void main() {
         ),
         overrides: m4Overrides(duty: duty, home: home),
       );
+      expect(find.text('Inspection Report'), findsOneWidget);
+      expect(find.text('Switch to Co-driver'), findsOneWidget);
       expect(find.text('Permissions'), findsOneWidget);
       expect(find.text('Check Network'), findsOneWidget);
       expect(find.text('Diagnosis of Device'), findsOneWidget);
+      await scrollTo(tester, find.text('App Updates'));
       expect(find.text('App Updates'), findsOneWidget);
+      await scrollTo(tester, find.text('Zoom'));
       expect(find.text('Zoom'), findsOneWidget);
       expect(find.text('Dark mode'), findsOneWidget);
+      await scrollTo(tester, find.text('Leave the Truck'));
+      expect(find.text('Leave the Truck'), findsOneWidget);
+      // Figma (`1202:9259`): `Privacy Policy`/`Terms of Use` — Logout'dan
+      // keyin, ro'yxat bandi uslubida (M-10 VERIFY).
       expect(find.text('Logout'), findsOneWidget);
+      expect(find.text('Privacy Policy'), findsOneWidget);
+      expect(find.text('Terms of Use'), findsOneWidget);
       expect(find.text('Maintenance'), findsNothing);
     });
 

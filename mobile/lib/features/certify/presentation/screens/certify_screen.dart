@@ -27,10 +27,18 @@ class CertifyScreen extends ConsumerWidget {
       backgroundColor: context.colors.bg,
       appBar: AppBarPrimary(
         title: l10n.certifyTitle,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).maybePop(),
-          tooltip: l10n.commonCancel,
-          icon: const Icon(Icons.arrow_back_ios_new),
+        showDefaultActions: false,
+        leading: const AppBackButton(),
+        // Figma: `Certify` bold 18 + `(Last 8 days)` yengilroq suffiks.
+        titleWidget: Text.rich(
+          TextSpan(
+            children: <InlineSpan>[
+              TextSpan(text: l10n.certifyTitleShort, style: context.text.body8),
+              TextSpan(text: ' ', style: context.text.body16),
+              TextSpan(text: l10n.certifyTitleSuffix, style: context.text.body16),
+            ],
+          ),
+          style: TextStyle(color: context.colors.textPrimary),
         ),
       ),
       phone: (BuildContext c) => CertifyDaysBody(days: days, twoColumn: false),
@@ -101,42 +109,41 @@ class _List extends ConsumerWidget {
       context.push(CertifyRoute.signFor(dates.last));
     }
 
-    final Widget list = ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: Spacing.s15),
-      itemCount: days.length,
-      separatorBuilder: (BuildContext _, int _) => const SizedBox(height: Spacing.s5),
-      itemBuilder: (BuildContext _, int index) {
-        final CertifyDay day = days[index];
-        return CertifyDayTile(
-          day: day,
-          selected: controller.isSelected(day),
-          onToggle: () => controller.toggle(day),
-        );
-      },
+    final CertifyDay? todayDay = controller.todayIn(days);
+
+    final Widget list = ListView(
+      padding: const EdgeInsets.symmetric(vertical: Spacing.s20),
+      children: <Widget>[
+        if (todayDay != null) ...<Widget>[
+          CertifyTodayRow(onTap: () => context.push(CertifyRoute.signFor(todayDay.date))),
+          const SizedBox(height: Spacing.s15),
+        ],
+        AppCard(
+          grouped: true,
+          padding: const EdgeInsets.all(Spacing.s20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              for (int i = 0; i < days.length; i++) ...<Widget>[
+                if (i > 0) const SizedBox(height: Spacing.s20),
+                CertifyDayTile(
+                  day: days[i],
+                  selected: controller.isSelected(days[i]),
+                  onToggle: () => controller.toggle(days[i]),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
     );
 
     final Widget actions = Padding(
-      padding: const EdgeInsets.only(bottom: Spacing.s15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              AppButton.text(
-                label: selectedCount == 0 ? l10n.certifySelectAll : l10n.certifyUnselectAll,
-                onPressed: () =>
-                    selectedCount == 0 ? controller.selectAll(days) : controller.clear(),
-              ),
-            ],
-          ),
-          const SizedBox(height: Spacing.s5),
-          AppButton.primary(
-            label: actionLabel,
-            onPressed: action == CertifyAction.none ? null : openSign,
-            expand: true,
-          ),
-        ],
+      padding: const EdgeInsets.only(bottom: Spacing.s20),
+      child: AppButton.primary(
+        label: actionLabel,
+        onPressed: action == CertifyAction.none ? null : openSign,
+        expand: true,
       ),
     );
 

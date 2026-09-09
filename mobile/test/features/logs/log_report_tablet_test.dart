@@ -33,20 +33,21 @@ void main() {
     ) async {
       await pumpM7(tester, const LogReportScreen(initialTab: 'main'), surface: _tablet);
 
-      final Finder cards = find.byType(LogCard);
+      final Finder cards = find.byType(AppCard);
       expect(cards, findsNWidgets(2));
-      final double firstDy = tester.getTopLeft(cards.at(0)).dy;
-      final double secondDy = tester.getTopLeft(cards.at(1)).dy;
-      expect(firstDy, secondDy, reason: 'planshetda kartalar bitta qatorda');
+      // #B-21: ikkinchi karta ustida bo'lim sarlavhasi bor, shuning uchun
+      // dy teng emas — yonma-yonlik dx bilan tekshiriladi.
       expect(tester.getTopLeft(cards.at(1)).dx, greaterThan(tester.getTopLeft(cards.at(0)).dx));
+      expect(find.byType(LogSectionTitle), findsOneWidget);
     });
 
     testWidgets('telefonda kartalar vertikal', (WidgetTester tester) async {
       await pumpM7(tester, const LogReportScreen(initialTab: 'main'), surface: _phone);
 
-      final Finder cards = find.byType(LogCard);
+      final Finder cards = find.byType(AppCard);
       expect(cards, findsNWidgets(2));
       expect(tester.getTopLeft(cards.at(1)).dy, greaterThan(tester.getTopLeft(cards.at(0)).dy));
+      expect(tester.getTopLeft(cards.at(1)).dx, tester.getTopLeft(cards.at(0)).dx);
     });
   });
 

@@ -223,3 +223,45 @@ class TotpVerification {
   /// 2FA muvaffaqiyatli bo'lsa server to'liq token to'plamini qaytaradi.
   final AuthTokens? tokens;
 }
+
+/// `GET /drivers` dagi **haydovchi yozuvi** (`drivers` jadvali qatori).
+///
+/// `POST /auth/login` va `GET /me` faqat **user** obyektini beradi: unda na
+/// `drivers.id`, na tayinlangan unit bor. Home (`M-09`) esa aynan shu ikkisiga
+/// tayanadi — shuning uchun login'dan keyin bir marta shu yozuv o'qiladi va
+/// `kv_settings` ga yoziladi (`#B-BUG1`).
+class DriverRecord {
+  const DriverRecord({
+    required this.driverId,
+    required this.userId,
+    this.fullName,
+    this.email,
+    this.phone,
+    this.licenseMasked,
+    this.licenseRegion,
+    this.homeTerminal,
+    this.unitId,
+    this.unitNumber,
+  });
+
+  /// `drivers.id` — `duty_status_events.driver_id` va `daily_logs.driver_id`
+  /// aynan shu id ga tayanadi (`/me` qaytaradigan `user_id` emas).
+  final String driverId;
+  final String userId;
+  final String? fullName;
+  final String? email;
+  final String? phone;
+
+  /// Ochiq litsenziya raqami **hech qachon** olinmaydi (`drivers.license.view`).
+  final String? licenseMasked;
+  final String? licenseRegion;
+  final String? homeTerminal;
+  final String? unitId;
+  final String? unitNumber;
+
+  bool get hasUnit => (unitId ?? '').isNotEmpty || (unitNumber ?? '').isNotEmpty;
+
+  /// PII logga chiqmaydi (M159).
+  @override
+  String toString() => 'DriverRecord($driverId)';
+}

@@ -1013,9 +1013,17 @@
   "@syncRetryNow": {
     "description": "M-54: manual sync button"
   },
+  "syncConflictsEmptyTitle": "All caught up",
+  "@syncConflictsEmptyTitle": {
+    "description": "M-55: empty state title"
+  },
   "syncConflictsEmpty": "No conflicts. Everything you recorded was accepted.",
   "@syncConflictsEmpty": {
     "description": "M-55: empty state"
+  },
+  "syncErrorLoading": "Could not load sync data.",
+  "@syncErrorLoading": {
+    "description": "M-54/M-55: generic load failure message"
   },
   "syncConflictsCount": "{count, plural, =1{1 item} other{{count} items}}",
   "@syncConflictsCount": {
@@ -1711,6 +1719,56 @@
   "homeFmcsaInspection": "FMCSA / Inspection Report",
   "@homeFmcsaInspection": {
     "description": "T-01 Actions panel primary button"
+  },
+  "homeBrandOne": "One",
+  "@homeBrandOne": {
+    "description": "M-09 app bar logo lockup: first word, rendered in the primary colour (Figma 2177:12192)"
+  },
+  "homeBrandRest": "Book ELD",
+  "@homeBrandRest": {
+    "description": "M-09 app bar logo lockup: remainder of the brand name 'OneBook ELD' (M90)"
+  },
+  "homeElapsedHms": "{h}h {m}m {s}s",
+  "@homeElapsedHms": {
+    "description": "M-09 duty status elapsed timer (Figma '10h 45m 32s')",
+    "placeholders": {
+      "h": {
+        "type": "String",
+        "example": "10"
+      },
+      "m": {
+        "type": "String",
+        "example": "45"
+      },
+      "s": {
+        "type": "String",
+        "example": "32"
+      }
+    }
+  },
+  "homeStatusPillOff": "OFF",
+  "@homeStatusPillOff": {
+    "description": "M-09 short duty status pill: Off Duty"
+  },
+  "homeStatusPillSb": "SB",
+  "@homeStatusPillSb": {
+    "description": "M-09 short duty status pill: Sleeper Berth"
+  },
+  "homeStatusPillOn": "ON",
+  "@homeStatusPillOn": {
+    "description": "M-09 short duty status pill: On Duty"
+  },
+  "homeStatusPillDr": "DR",
+  "@homeStatusPillDr": {
+    "description": "M-09 short duty status pill: Driving (auto-set, not selectable)"
+  },
+  "homeHosToggleView": "Switch Hours of Service view",
+  "@homeHosToggleView": {
+    "description": "M-09 Hours of Service header action: toggle between card grid and rings"
+  },
+  "dutyStatusSleep": "Sleep",
+  "@dutyStatusSleep": {
+    "description": "M-12 short label for the Sleeper Berth tile (Figma 1083:10550)"
   },
   "eldBannerConnected": "ELD · Connected",
   "@eldBannerConnected": {
@@ -2821,6 +2879,10 @@
   "@chatSendAction": {
     "description": "M-42 send button semantics label"
   },
+  "chatTyping": "Typing…",
+  "@chatTyping": {
+    "description": "M-42 typing indicator bubble (•••) semantics label"
+  },
   "chatAttachAction": "Attach",
   "@chatAttachAction": {
     "description": "M-42 '+' button that opens the attachment sheet (M139)"
@@ -3225,6 +3287,42 @@
   "@logsColumnAction": {
     "description": "M99: kanonik ustun nomi (planshetdagi 'Edit' rad etildi)"
   },
+  "logsTotalOff": "OFF {value}",
+  "@logsTotalOff": {
+    "description": "M-23 jamilar satri — OFF ustuni (M98)",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "logsTotalSb": "SB {value}",
+  "@logsTotalSb": {
+    "description": "M-23 jamilar satri — SB ustuni (M98)",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "logsTotalDr": "DR {value}",
+  "@logsTotalDr": {
+    "description": "M-23 jamilar satri — DR ustuni (M98)",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "logsTotalOn": "ON {value}",
+  "@logsTotalOn": {
+    "description": "M-23 jamilar satri — ON ustuni (M98)",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "logsTotals": "OFF {off} · SB {sb} · DR {dr} · ON {on}",
   "@logsTotals": {
     "description": "M98: qisqartma + HH:mm",
@@ -3304,6 +3402,14 @@
   "certifyTitle": "Certify (Last 8 days)",
   "@certifyTitle": {
     "description": "M124: oyna doim 8 kun"
+  },
+  "certifyTitleShort": "Certify",
+  "@certifyTitleShort": {
+    "description": "M-29 app bar sarlavhasining qalin qismi"
+  },
+  "certifyTitleSuffix": "(Last 8 days)",
+  "@certifyTitleSuffix": {
+    "description": "M-29 app bar sarlavhasining yengil suffiksi"
   },
   "certifyToday": "Certify Today",
   "certifyAll": "Certify All",
@@ -3566,6 +3672,14 @@
   "settingsAppUpdates": "App updates",
   "@settingsAppUpdates": {
     "description": "M-45 row, app version block"
+  },
+  "settingsCurrentVersionLabel": "Current version",
+  "@settingsCurrentVersionLabel": {
+    "description": "M-45 'App updates' modal - installed version row label"
+  },
+  "settingsLatestVersionLabel": "Latest version",
+  "@settingsLatestVersionLabel": {
+    "description": "M-45 'App updates' modal - latest_version row label"
   },
   "settingsCurrentVersion": "Current version {version}",
   "@settingsCurrentVersion": {

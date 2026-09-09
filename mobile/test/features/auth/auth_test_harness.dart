@@ -69,6 +69,12 @@ class FakeAuthRepository implements AuthRepository {
   @override
   DriverProfile? cachedProfile;
 
+  @override
+  DriverRecord? cachedDriverRecord;
+
+  @override
+  Future<DriverRecord?> loadDriverRecord() async => cachedDriverRecord;
+
   /// Har chaqiruvni sanaydi — testlar tekshiradi.
   final List<String> calls = <String>[];
 

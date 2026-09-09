@@ -24,7 +24,12 @@ class CheckNetworkScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) => AdaptiveScaffold(
     // #B-64: planshetda tana cheklovsiz cho'zilmaydi.
     maxContentWidth: ContentWidth.single,
-    appBar: AppBarPrimary(title: context.l10n.checkNetworkTitle, leading: const AppBackButton()),
+    // Figma `1122:319` app bar: faqat orqaga tugmasi + sarlavha.
+    appBar: AppBarPrimary(
+      title: context.l10n.checkNetworkTitle,
+      leading: const AppBackButton(),
+      showDefaultActions: false,
+    ),
     backgroundColor: context.colors.bg,
     phone: (BuildContext context) => const CheckNetworkBody(),
     tablet: (BuildContext context) => const CheckNetworkBody(),
