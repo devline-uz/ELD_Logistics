@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import QRCode from 'qrcode';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -12,13 +12,14 @@ import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { totpVerifySchema, type TotpVerifyFormValues } from '@/features/auth/schemas';
+import { buildTotpVerifySchema, type TotpVerifyFormValues } from '@/features/auth/schemas';
 import { isApiError } from '@/lib/errors';
 import type { TotpSetup } from '@/api/types';
 
 /** `/2fa/setup` — TZ §7.1.2. Faqat cheklangan token bilan kirish mumkin. */
 export function TwoFactorSetupPage() {
   const { t } = useTranslation();
+  const schema = useMemo(() => buildTotpVerifySchema(t), [t]);
   const navigate = useNavigate();
   const [setup, setSetup] = useState<TotpSetup | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
@@ -51,7 +52,7 @@ export function TwoFactorSetupPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TotpVerifyFormValues>({
-    resolver: zodResolver(totpVerifySchema),
+    resolver: zodResolver(schema),
     defaultValues: { code: '' },
     mode: 'onBlur',
   });

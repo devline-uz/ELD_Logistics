@@ -37,7 +37,7 @@ import { Icon } from '@/components/ui/Icon';
 import { PermissionGate } from '@/components/ui/PermissionGate';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
-import { saveBlob } from '@/lib/download';
+import { saveBlob, UnexpectedFileTypeError } from '@/lib/download';
 import { formatPersonName } from '@/lib/format';
 import { PERM } from '@/lib/permissions';
 
@@ -111,8 +111,14 @@ export function DvirDetailPage() {
       const blob = await pdf.mutateAsync(data.id ?? '');
       saveBlob(blob, `dvir-${unitLabel}-${(data.id ?? '').slice(0, 8)}.pdf`);
       toast.show({ variant: 'success', message: t('dvir.toast.pdfDownloaded') });
-    } catch {
-      toast.show({ variant: 'error', message: t('dvir.toast.pdfFailed') });
+    } catch (error) {
+      // TD12: server `.pdf` o'rniga HTML xato sahifasini qaytargan bo'lsa
+      // fayl saqlanmaydi — alohida tushunarli xabar ko'rsatiladi.
+      const message =
+        error instanceof UnexpectedFileTypeError
+          ? t('dvir.toast.pdfInvalidType')
+          : t('dvir.toast.pdfFailed');
+      toast.show({ variant: 'error', message });
     }
   };
 

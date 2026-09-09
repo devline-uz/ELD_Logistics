@@ -92,4 +92,22 @@ describe('FiltersBar', () => {
     await userEvent.click(clearAll);
     expect(onClearAll).toHaveBeenCalled();
   });
+
+  it('renders the current-page search hint and links it to the input (TD3)', () => {
+    vi.useRealTimers();
+    render(
+      <FiltersBar
+        search=""
+        onSearchChange={vi.fn()}
+        searchHint="Search filters only the rows loaded on this page."
+        activeFilters={{}}
+        onFilterChange={vi.fn()}
+        onClearAll={vi.fn()}
+      />,
+    );
+
+    const hint = screen.getByText(/only the rows loaded on this page/i);
+    expect(hint).toBeInTheDocument();
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', hint.id);
+  });
 });

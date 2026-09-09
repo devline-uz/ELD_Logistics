@@ -188,6 +188,7 @@ export function DefectTypesPage() {
         <FiltersBar
           search={listParams.search}
           onSearchChange={listParams.setSearch}
+          searchHint={t('ui.data.filtersBar.currentPageSearchHint')}
           filters={filterDefs}
           activeFilters={listParams.filters}
           onFilterChange={listParams.setFilter}

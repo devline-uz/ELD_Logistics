@@ -8,6 +8,8 @@ export interface GuardedRouteOptions {
   permission?: Permission;
   anyOf?: readonly Permission[];
   allOf?: readonly Permission[];
+  /** `super_admin` bayrog'i — faqat `/companies*` (9.15, §7.14). */
+  superAdminOnly?: boolean;
 }
 
 /**

@@ -23,7 +23,7 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 import { useWriteGuard } from '@/hooks/useWriteGuard';
-import { PERM } from '@/lib/permissions';
+import { PERM, usePermission } from '@/lib/permissions';
 
 import { RouteDirectionsDrawer } from '../components/RouteDirectionsDrawer';
 import { RouteFormModal } from '../components/RouteFormModal';
@@ -45,6 +45,7 @@ export function RouteListPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const { canWrite, disabledReason } = useWriteGuard();
+  const can = usePermission();
   const { formatDateTime } = useDateFormat();
   const { formatDistance } = useUnitSystem();
 
@@ -70,6 +71,32 @@ export function RouteListPage() {
   );
 
   const list = useRoutesList(queryParams);
+
+  // `GET /routes` matn qidiruviga ega emas (swagger: `status/unit_id/driver_id`)
+  // — TD3: `search` faqat joriy sahifa ichida filtrlaydi va `FiltersBar`
+  // ostidagi izoh buni foydalanuvchiga aytadi.
+  const searchTerm = listParams.search.trim().toLowerCase();
+  const rows = useMemo(() => {
+    const all = list.data?.data ?? [];
+    if (!searchTerm) return all;
+    return all.filter((route) => {
+      const haystack = [
+        route.unit_number,
+        route.driver_name,
+        route.origin?.text,
+        route.destination?.text,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(searchTerm);
+    });
+  }, [list.data, searchTerm]);
+
+  // TD7: qator `/tracking/units/:id` ga olib boradi — `tracking.view_live`
+  // ruxsati bo'lmagan foydalanuvchi 403 ekranga tushmasligi uchun qator
+  // umuman bosilmaydi (havola yo'q — DataTable `onRowClick` berilmaydi).
+  const canOpenTracking = can(PERM.trackingViewLive);
 
   const columns = buildRoutesColumns(t, (listParams.page - 1) * listParams.perPage, {
     formatDateTime,
@@ -114,6 +141,7 @@ export function RouteListPage() {
             search={listParams.search}
             onSearchChange={listParams.setSearch}
             searchPlaceholder={t('routes.list.filters.searchPlaceholder')}
+            searchHint={t('ui.data.filtersBar.currentPageSearchHint')}
             filters={filterDefs}
             activeFilters={listParams.filters}
             onFilterChange={listParams.setFilter}
@@ -124,7 +152,7 @@ export function RouteListPage() {
           <DataTable
             tableId="routes"
             columns={columns}
-            data={list.data?.data ?? []}
+            data={rows}
             isLoading={list.isLoading}
             isError={list.isError}
             errorMessage={list.error?.message}
@@ -140,8 +168,12 @@ export function RouteListPage() {
             order={listParams.order}
             onSortChange={listParams.setSort}
             getRowId={(route, index) => route.id ?? String(index)}
-            onRowClick={(route) =>
-              route.unit_id && navigate(`/tracking/units/${encodeURIComponent(route.unit_id)}`)
+            onRowClick={
+              canOpenTracking
+                ? (route) =>
+                    route.unit_id &&
+                    navigate(`/tracking/units/${encodeURIComponent(route.unit_id)}`)
+                : undefined
             }
             rowActions={(route) => (
               <RowActionsMenu

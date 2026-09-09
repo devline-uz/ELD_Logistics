@@ -10,6 +10,12 @@ export interface RouteGuardProps {
   anyOf?: readonly Permission[];
   /** Hammasi talab qilinadi. */
   allOf?: readonly Permission[];
+  /**
+   * `super_admin` bayrog'i (rol emas, `PERM` katalogida yo'q, F33) — faqat
+   * `/companies*` Super Admin konsoli (9.15, §7.14). `permission`/`anyOf`/
+   * `allOf` bilan birga berilsa hammasi qondirilishi kerak.
+   */
+  superAdminOnly?: boolean;
   children: ReactNode;
 }
 
@@ -20,9 +26,18 @@ export interface RouteGuardProps {
  * kiritilganda **403 ekrani** ko'rsatiladi — redirect ham, 404 ham emas.
  * 404 faqat ma'lumot darajasida (backend `NOT_FOUND`) chiqadi.
  */
-export function RouteGuard({ permission, anyOf, allOf, children }: RouteGuardProps) {
+export function RouteGuard({
+  permission,
+  anyOf,
+  allOf,
+  superAdminOnly,
+  children,
+}: RouteGuardProps) {
   const can = usePermission();
 
+  if (superAdminOnly === true && !can.isSuperAdmin) {
+    return <ForbiddenScreen requiredPermission="super_admin" />;
+  }
   if (permission !== undefined && !can(permission)) {
     return <ForbiddenScreen requiredPermission={permission} />;
   }

@@ -21,4 +21,10 @@ describe('Avatar', () => {
     expect(image.tagName).toBe('IMG');
     expect(image).toHaveAttribute('src', '/avatars/jane.png');
   });
+
+  it('renders no initials when given a blank name', () => {
+    render(<Avatar name="   " />);
+    const avatar = screen.getByRole('img');
+    expect(avatar).toHaveTextContent('');
+  });
 });

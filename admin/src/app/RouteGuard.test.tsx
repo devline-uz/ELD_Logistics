@@ -8,10 +8,12 @@ import { RouteGuard } from '@/app/RouteGuard';
 import { PermissionGate } from '@/components/ui/PermissionGate';
 import { PERM } from '@/lib/permissions';
 
-function renderWithPermissions(ui: React.ReactNode, permissions: string[]) {
+function renderWithPermissions(ui: React.ReactNode, permissions: string[], isSuperAdmin = false) {
   return render(
     <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <PermissionsProvider permissions={permissions}>{ui}</PermissionsProvider>
+      <PermissionsProvider permissions={permissions} isSuperAdmin={isSuperAdmin}>
+        {ui}
+      </PermissionsProvider>
     </MemoryRouter>,
   );
 }
@@ -39,6 +41,31 @@ describe('RouteGuard', () => {
     expect(screen.queryByText('unit list')).not.toBeInTheDocument();
     expect(screen.getByText('You do not have permission to view this page')).toBeInTheDocument();
     expect(screen.queryByText('Not found')).not.toBeInTheDocument();
+  });
+
+  it('9.15: renders the page for super_admin when superAdminOnly is set', () => {
+    renderWithPermissions(
+      <RouteGuard superAdminOnly>
+        <p>companies list</p>
+      </RouteGuard>,
+      [],
+      true,
+    );
+
+    expect(screen.getByText('companies list')).toBeInTheDocument();
+  });
+
+  it('9.15: shows the 403 screen for a non-super_admin user even with full permissions', () => {
+    renderWithPermissions(
+      <RouteGuard superAdminOnly>
+        <p>companies list</p>
+      </RouteGuard>,
+      [PERM.unitsRead],
+      false,
+    );
+
+    expect(screen.queryByText('companies list')).not.toBeInTheDocument();
+    expect(screen.getByText('You do not have permission to view this page')).toBeInTheDocument();
   });
 });
 

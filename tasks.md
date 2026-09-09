@@ -276,7 +276,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
       Yoqish/CSP qadamlari — `docs/deploy.md` §5
 - [x] 9.13 `README` — ishga tushirish, `npm run api` oqimi, env, skriptlar, bosqichlar holati 0–9, deploy havolasi
 - [x] 9.14 **Yakuniy ko'rik:** `frontend-security-reviewer` + `frontend-code-reviewer` + §16/§17 reestrini yangilash
-- [ ] 9.15 **[MAY]** Super Admin konsoli (§7.14)
+- [x] 9.15 **[MAY]** Super Admin konsoli (§7.14)
 ```
 
 ## 18.3 Parallel ishlash xaritasi
@@ -325,19 +325,27 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] TD2 `batchSettled<K,R>(keys, fn, concurrency)` → `src/lib/batch.ts` (9.14).
       `features/logs/lib/hosByDate.ts` `api/queries/hos.ts` ga `useHosSummariesByDate` bo'lib
       ko'chdi; ikkala batch ham endi bitta yordamchidan foydalanadi (`lib/batch.test.ts`)
-- [ ] TD3 Qidiruv faqat joriy sahifada ishlashini UI'da ko'rsatish
-      (`LogsByUnitPage`, `ViolationsPage`, `UnassignedDrivingPage` — backend `search` parametri yo'q,
-      lekin pagination `total` filtrlanmagan holda keladi → foydalanuvchi chalg'ishi mumkin)
-- [ ] TD4 `ConfirmDialog` da sabab uzunligi (3–500) tekshirilmaydi — faqat bo'sh emasligi
-- [ ] TD5 Zod xabarlari inglizcha hardcode (`features/routes/schemas.ts`, `features/auth/schemas.ts`)
-      — i18n kalitlariga o'tkazish loyiha bo'ylab **yagona qaror** sifatida rejalashtirilsin
-      (4.13 ko'rigi; bitta modulda yakka tuzatish naqshni yanada chalkashtiradi)
+- [x] TD3 `FiltersBar` ga `searchHint` propi qo'shildi (`aria-describedby` bilan bog'langan,
+      `ui.data.filtersBar.currentPageSearchHint`). Mahalliy qidiruvli 6 ekranda ishlatildi:
+      `LogsByUnitPage`, `ViolationsPage`, `UnassignedDrivingPage`, `TrackingListPage`,
+      `DefectTypesPage`, `RouteListPage` (oxirgisida qidiruv umuman ishlamas edi — endi
+      joriy sahifa ichida unit/driver/origin/destination bo'yicha filtrlaydi)
+- [x] TD4 `ConfirmDialog` sabab maydoniga 3–500 belgi validatsiyasi qo'shildi
+      (`'required'`/`'length'` holatlari, `aria-invalid`+`aria-describedby`,
+      yangi kalit `ui.overlay.confirmDialog.reasonLength`); chaqiruvchi
+      joylar (DVIR repair/cancel, maintenance cancel, log edit/annotate reject)
+      o'zgarishsiz qoldi — ularning testlarida ishlatilgan sabab matnlari
+      hammasi 3–500 oralig'ida, a11y testi (`ConfirmDialog — danger + requireReason`) yashil
+- [x] TD5 `features/auth/schemas.ts` `build<X>Schema(t)` fabrikalariga o'tkazildi
+      (`auth.validation.*` kalitlari); 6 ta auth sahifasi `useMemo(() => build...(t), [t])`
+      bilan yangilandi; `features/auth/schemas.test.ts` qo'shildi
 - [x] TD6 `RouteDirectionsDrawer` `formatCoordinatePair` ga o'tkazildi (9.14) — inline
       `toFixed(7)` nusxalari loyihada qolmadi
-- [ ] TD7 `RouteListPage` qator bosilishi `/tracking/units/:id` ga olib boradi — `routes.read`
-      ruxsati bor, lekin `tracking.view_live` yo'q foydalanuvchi 403 ekranga tushadi
-      (havolani ruxsatga qarab yashirish yoki 403 ni oldindan tushuntirish)
-- [ ] TD8 `build.sourcemap: 'hidden'` — `.map` fayllar hamon `dist/` ga chiqadi (91 ta);
+- [x] TD7 `RouteListPage` `onRowClick` endi faqat `tracking.view_live` ruxsati bo'lganda
+      beriladi — ruxsatsiz foydalanuvchida qator umuman bosilmaydi (`tabIndex` ham yo'q)
+- [x] TD8 `.map` fayllar `dist/` ga chiqadi (175 ta), lekin 9.12 da deploy'dan chetlatildi:
+      `rsync --exclude '*.map'` + nginx `.map` -> 404 + Sentry `filesToDeleteAfterUpload`.
+      Eski matn: `build.sourcemap: 'hidden'` o'zi yetarli emas edi;
       deploy skriptida ular serverga **yuklanmasligi** shart (F211) — 9-bosqich CI vazifasi
       ∆(13 ekran ishlatadi; backend yakuniy hakam, lekin klient tekshiruvi foydali)
 
@@ -349,7 +357,10 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [ ] TD11 `npm audit`: react-router 2 critical + 1 high (GHSA-337j-9hxr-rhxg, GHSA-wrjc-x8rr-h8h6).
       `react-router-dom@7.18.3` — breaking major. 9.10 da hal qilinadi.
 
-- [ ] TD12 `api/queries/dvir.ts` PDF yuklab olish — `Content-Type` tekshirilmaydi; server HTML xato sahifasi `.pdf` nomi bilan saqlanishi mumkin.
+- [x] TD12 `lib/download.ts` ga `assertBlobType` + `UnexpectedFileTypeError` qo'shildi;
+      `useDvirPdfDownload` javob `application/pdf` emasligini xato deb qaraydi,
+      `DvirDetailPage` `dvir.toast.pdfInvalidType` xabarini ko'rsatadi.
+      ∆ CSV eksportlari (`units`, `drivers`, `logs`) hali tekshirilmaydi — keyingi tozalash.
 
 - [ ] TD13 `VITE_FILES_UPLOAD_HOST` / `VITE_FILES_BASE_URL` prod muhitda to'ldirilishi shart — aks holda yuklash host oq ro'yxati o'chiq qoladi.
 
@@ -359,16 +370,24 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [ ] TD15 `features/chat/lib/dateGroups.ts` va `features/notifications/lib/groupByDay.ts` —
       "Today/Yesterday" ikki xil algoritm bilan. Birlashtirish katta refaktor.
 
-- [ ] TD17 `saveBlob` (`lib/download.ts`) 5 joyda inline takrorlangan edi — 9.14 da birlashtirildi;
+- [x] TD17 `saveBlob` (`lib/download.ts`) 5 joyda inline takrorlangan edi — 9.14 da birlashtirildi;
       `ReportTab` object URL'ni `<iframe>` uchun tirik saqlaydi, u ataylab alohida qolgan
-- [ ] TD18 `components/ui/` qamrovi 78.5% (F212 talabi ≥ 90%) — yetishmayotgani asosan
-      `DateRangePicker`/`TimePicker`/`Drawer` klaviatura shoxlari; `components/map/` 31%
-      (jsdom'da MapLibre ishlamaydi — Playwright bilan qoplanadi)
-- [ ] TD19 O'lik eksportlar: `forgetDeviceId` (`features/auth/device-id.ts`),
-      `isSameDateGroup` (`features/chat/lib/dateGroups.ts`), `useIsSuperAdmin`,
-      `isFeatureEnabled`/`selectClockSkewWarning` (`store/company-store.ts`) — hech qayerdan
-      chaqirilmaydi; API yuzasi sifatida qoldirildi, keyingi tozalashda ko'riladi
+- [x] TD18 `components/ui/` qamrovi 77.4% → **95.95%** statements (F212 talabi ≥ 90%
+      bajarildi). Qo'shilgan xatti-harakat testlari: `MultiSelect`/`Select` (klaviatura
+      navigatsiyasi, tashqariga bosish, qidiruv, type-ahead, disabled shoxlar),
+      `DatePicker`/`DateRangePicker` (o'q tugmalari bilan fokus ko'chishi, oy almashtirish,
+      tashqariga bosish, presetlar, diapazon svopi), `Tabs` (Home/End, bog'liqsiz tugma,
+      hammasi disabled), `Drawer` (backdrop bosilishi, `closeOnBackdrop=false`), `TimePicker`
+      (ArrowDown chegarasi), `Tooltip` (blur bilan yopilish), `Avatar` (bo'sh ism), `cn.ts`
+      (yangi test fayli), `PermissionGate` (yangi test fayli — avval 0%).
+      `components/map/` 31% (jsdom'da MapLibre ishlamaydi — Playwright bilan qoplanadi) — bu
+      TD18 doirasidan tashqarida qoldi.
+- [x] TD19 O'lik eksportlar o'chirildi: `forgetDeviceId`, `isSameDateGroup`, `isFeatureEnabled`,
+      `selectClockSkewWarning` + `CLOCK_SKEW_WARNING_MS`, `DEFAULT_SESSION_FLAGS`.
+      `useIsSuperAdmin` tegilmadi (9.15 da ishlatilmoqda).
+      ∆ Ochiq: soat siljishi (>120s) ogohlantirish banneri (fe-api §4) hech qayerda
+      amalga oshirilmagan — alohida vazifa sifatida rejalashtirilsin.
 
-- [ ] TD16 dev-bog'liqliklar `npm audit`: vitest/@vitest/coverage-v8 (critical), vite (high).
+- [x] TD16 dev-bog'liqliklar `npm audit` — 9.10 da yopildi (vite 5->8, vitest 2->5, jsdom 25->28).
       Bundle'ga tushmaydi. 9.10 da yangilanadi.
 

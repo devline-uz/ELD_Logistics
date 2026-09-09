@@ -182,6 +182,7 @@ export function TrackingListPage() {
           search={listParams.search}
           onSearchChange={listParams.setSearch}
           searchPlaceholder={t('tracking.list.filters.searchPlaceholder')}
+          searchHint={t('ui.data.filtersBar.currentPageSearchHint')}
           filters={filterDefs}
           activeFilters={listParams.filters}
           onFilterChange={listParams.setFilter}

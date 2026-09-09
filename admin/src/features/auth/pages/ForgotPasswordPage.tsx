@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { forgotPasswordSchema, type ForgotPasswordFormValues } from '@/features/auth/schemas';
+import { buildForgotPasswordSchema, type ForgotPasswordFormValues } from '@/features/auth/schemas';
 
 /**
  * `/forgot-password` — TZ §7.1.3.
@@ -19,6 +19,7 @@ import { forgotPasswordSchema, type ForgotPasswordFormValues } from '@/features/
  */
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
+  const schema = useMemo(() => buildForgotPasswordSchema(t), [t]);
   const [submitted, setSubmitted] = useState(false);
 
   const {
@@ -26,7 +27,7 @@ export function ForgotPasswordPage() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema),
+    resolver: zodResolver(schema),
     defaultValues: { login: '' },
     mode: 'onBlur',
   });

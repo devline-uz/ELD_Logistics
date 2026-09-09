@@ -185,6 +185,7 @@ export function LogsByUnitPage() {
           search={listParams.search}
           onSearchChange={listParams.setSearch}
           searchPlaceholder={t('logs.byUnit.filters.searchPlaceholder')}
+          searchHint={t('ui.data.filtersBar.currentPageSearchHint')}
           filters={filterDefs}
           activeFilters={listParams.filters}
           onFilterChange={listParams.setFilter}

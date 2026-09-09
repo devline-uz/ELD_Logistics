@@ -26,13 +26,3 @@ export function resolveDateGroupKind(
   if (diff < 7) return 'weekday';
   return 'older';
 }
-
-/** Ketma-ket xabarlar orasida yangi ajratgich kerakligini aniqlaydi (kun almashgan). */
-export function isSameDateGroup(
-  a: string | undefined,
-  b: string | undefined,
-  timezone: string,
-): boolean {
-  if (!a || !b) return false;
-  return toZonedTime(a, timezone).toDateString() === toZonedTime(b, timezone).toDateString();
-}

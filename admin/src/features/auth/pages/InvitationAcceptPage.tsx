@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,7 +11,10 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { applyServerErrors } from '@/components/form/applyServerErrors';
 import { PasswordStrength } from '@/features/auth/components/PasswordStrength';
-import { invitationAcceptSchema, type InvitationAcceptFormValues } from '@/features/auth/schemas';
+import {
+  buildInvitationAcceptSchema,
+  type InvitationAcceptFormValues,
+} from '@/features/auth/schemas';
 import { isApiError } from '@/lib/errors';
 import { useToast } from '@/components/feedback/toast-context';
 
@@ -23,6 +26,7 @@ import { useToast } from '@/components/feedback/toast-context';
  */
 export function InvitationAcceptPage() {
   const { t } = useTranslation();
+  const schema = useMemo(() => buildInvitationAcceptSchema(t), [t]);
   const navigate = useNavigate();
   const toast = useToast();
   const [searchParams] = useSearchParams();
@@ -30,7 +34,7 @@ export function InvitationAcceptPage() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const form = useForm<InvitationAcceptFormValues>({
-    resolver: zodResolver(invitationAcceptSchema),
+    resolver: zodResolver(schema),
     defaultValues: { password: '', confirmPassword: '' },
     mode: 'onBlur',
   });

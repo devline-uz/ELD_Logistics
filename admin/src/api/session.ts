@@ -40,8 +40,32 @@ export function getCompanyId(): string | null {
   return authState().impersonatedCompanyId;
 }
 
+/**
+ * Tenant konteksti o'zgarganda xabardor qilinadigan tinglovchilar (D54,
+ * `docs/tz/16-17-registry-open-questions.md`).
+ *
+ * Ro'yxatdan o'tuvchilar: `QueryProvider` (`queryClient.clear()` — oldingi
+ * tenant ma'lumoti ekranda qolib ketmasligi uchun) va `lib/ws.ts`
+ * (`resetProtocolState()` + ulanishni qayta ko'rib chiqish — F155: super
+ * admin impersonatsiya rejimida real-vaqt o'chiriladi, chunki brauzer WS
+ * `X-Company-Id` header'ini yubora olmaydi).
+ */
+export type CompanyChangedListener = (companyId: string | null) => void;
+
+const companyListeners = new Set<CompanyChangedListener>();
+
+export function onCompanyChanged(listener: CompanyChangedListener): () => void {
+  companyListeners.add(listener);
+  return () => {
+    companyListeners.delete(listener);
+  };
+}
+
 export function setCompanyId(id: string | null): void {
+  const previous = authState().impersonatedCompanyId;
   authState().setImpersonatedCompanyId(id);
+  if (previous === id) return;
+  for (const listener of companyListeners) listener(id);
 }
 
 /* ------------------------------------------------------------------ *

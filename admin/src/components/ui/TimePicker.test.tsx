@@ -47,6 +47,21 @@ describe('TimePicker', () => {
     expect(onChange).toHaveBeenCalledWith({ hours: 9, minutes: 5, seconds: 0 });
   });
 
+  it('decrements the hours value with ArrowDown, clamped at zero', async () => {
+    const onChange = vi.fn();
+    render(
+      <TimePicker
+        label="Duty time"
+        value={{ hours: 0, minutes: 5, seconds: 0 }}
+        onChange={onChange}
+      />,
+    );
+    const hours = screen.getByLabelText('Hours');
+    hours.focus();
+    await userEvent.keyboard('{ArrowDown}');
+    expect(onChange).toHaveBeenCalledWith({ hours: 0, minutes: 5, seconds: 0 });
+  });
+
   it('clamps typed values to the valid range', async () => {
     const onChange = vi.fn();
     render(

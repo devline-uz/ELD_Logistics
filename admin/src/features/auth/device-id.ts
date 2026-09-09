@@ -32,14 +32,6 @@ function storeDeviceId(id: string): void {
   }
 }
 
-export function forgetDeviceId(): void {
-  try {
-    localStorage.removeItem(DEVICE_ID_KEY);
-  } catch {
-    // e'tiborsiz
-  }
-}
-
 /**
  * Login so'rovida yuboriladigan `device_id` ni tanlaydi.
  * `remember` bo'lsa — saqlangan (yoki yangi yaratilib saqlangan) qiymat;

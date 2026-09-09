@@ -13,11 +13,13 @@ import {
   dvirListErrorHandler,
   dvirListHandler,
   dvirPdfHandler,
+  dvirPdfHtmlHandler,
   dvirPendingCertificationHandler,
   dvirRepairConflictHandler,
   dvirRepairHandler,
   dvirReportFixture,
 } from '@/mocks/handlers/dvir';
+import { UnexpectedFileTypeError } from '@/lib/download';
 
 import {
   useDvirCertify,
@@ -143,5 +145,15 @@ describe('useDvirPdfDownload', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toBeInstanceOf(Blob);
+  });
+
+  it('HTML javobni PDF sifatida qabul qilmaydi (TD12)', async () => {
+    server.use(dvirPdfHtmlHandler);
+    const { result } = renderHook(() => useDvirPdfDownload(), { wrapper: withQueryClient() });
+
+    result.current.mutate('dvir-1');
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error).toBeInstanceOf(UnexpectedFileTypeError);
   });
 });

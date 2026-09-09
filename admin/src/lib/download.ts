@@ -20,3 +20,29 @@ export function saveBlob(blob: Blob, filename: string): void {
     URL.revokeObjectURL(objectUrl);
   }
 }
+
+/**
+ * Server xato sahifasi (`text/html`) `.pdf` nomi bilan saqlanib qolmasligi
+ * uchun javob turini tekshiradi (TD12). `fetch` javobidan olingan `Blob`
+ * ning `type` maydoni `Content-Type` ni saqlaydi.
+ */
+export class UnexpectedFileTypeError extends Error {
+  readonly expectedType: string;
+  readonly receivedType: string;
+
+  constructor(expectedType: string, receivedType: string) {
+    super(`Expected ${expectedType} response, received ${receivedType || 'unknown type'}`);
+    this.name = 'UnexpectedFileTypeError';
+    this.expectedType = expectedType;
+    this.receivedType = receivedType;
+  }
+}
+
+/** `blob.type` kutilgan MIME turiga mos bo'lmasa `UnexpectedFileTypeError` tashlaydi. */
+export function assertBlobType(blob: Blob, expectedType: string): Blob {
+  const received = (blob.type ?? '').split(';')[0]?.trim().toLowerCase() ?? '';
+  if (received !== expectedType) {
+    throw new UnexpectedFileTypeError(expectedType, received);
+  }
+  return blob;
+}

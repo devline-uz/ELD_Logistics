@@ -956,7 +956,7 @@ qoida bu yerda qo'llanmagan edi).
 **Tuzatildi:** `safeDownloadUrl()` — faqat `https:` qabul qilinadi,
 aks holda havola umuman ochilmaydi.
 
-### D54 — [OCHIQ] Tenant almashtirish (`X-Company-Id`) uchun kesh/WS reset yo'q
+### D54 — [YOPILDI 9.15] Tenant almashtirish (`X-Company-Id`) uchun kesh/WS reset yo'q
 
 **Topilish:** 9.14. `setCompanyId()` / `authState().setImpersonatedCompanyId()`
 mavjud va `X-Company-Id` header'ini boshqaradi, lekin **hech qanday UI uni
@@ -967,9 +967,54 @@ Shu sababli hozir cross-tenant kesh sizishi **yuzaga kelmaydi**.
 va WS qayta obunasi (`resetProtocolState()` + `subscribe`) chaqirilmasa,
 oldingi tenant ma'lumotlari ekranda qolib ketadi.
 
-**Tuzatish taklifi:** `setCompanyId()` ni `endSession()` singari hodisa
-tarqatadigan qilish (`onCompanyChanged`) va `QueryProvider` + `lib/ws.ts` ni
-unga obuna qilish.
+**Tuzatildi (9.15):** `setCompanyId()` endi `onCompanyChanged()` hodisasini
+tarqatadi (`endSession()`/`onSessionEnded()` bilan bir xil naqsh,
+`src/api/session.ts`). `QueryProvider` unga obuna bo'lib `queryClient.clear()`
+chaqiradi; `lib/ws.ts` ulanishni yopadi va `resetProtocolState()` bajaradi.
+F155 ham shu bilan birga amalga oshirildi: `ensureConnected()` endi
+`getCompanyId()` bo'sh bo'lmaguncha ulanmaydi (impersonatsiya rejimida
+real-vaqt butunlay o'chiriladi — brauzer WS `X-Company-Id` header'ini
+yubora olmaydi, noto'g'ri tenant oqimi xavfi). Impersonatsiyadan chiqilganda
+(`companyId === null`) ulanish avtomatik tiklanadi. Testlar:
+`src/lib/ws.test.ts` («D54 tenant almashtirish reseti»), `src/api/session.test.ts`.
 
-**Kim yopadi:** `/companies*` ekranlarini yozadigan agent.
-**Qachon:** super_admin moduli qo'shilganda (MVP dan keyin).
+**Kim yopdi:** `/companies*` ekranlarini yozgan agent (9.15).
+
+### D55 — [OCHIQ] `GET /companies/{id}` yo'q — bitta tenant olish faqat ro'yxat orqali
+
+**Topilish:** 9.15. Swagger `/companies` uchun faqat `GET` (ro'yxat), `POST`;
+`/companies/{id}` uchun faqat `PATCH`; `/companies/{id}/subscription` uchun
+faqat `PATCH`. Bitta kompaniyani **id bo'yicha o'qish** endpointi umuman yo'q.
+
+**Ta'sir:** Edit/Subscription formalari mustaqil deep-link (`/companies/:id`)
+bo'la olmaydi va sahifa yangilanganda (F5) ma'lumotni qayta ola olmaydi —
+frontend faqat ro'yxat so'rovidan kelgan qator obyektini ishlatadi
+(`src/features/superadmin/pages/CompaniesPage.tsx`). Amalda muammo yo'q,
+chunki formalar modal (ro'yxat ochiq turadi), lekin kelajakda "company detail"
+sahifasi kerak bo'lsa bu bo'shliq to'sqinlik qiladi.
+
+**MVP yechimi:** modal-based Edit/Subscription, alohida `/companies/:id`
+marshruti yo'q. **Kim yopadi:** backend `GET /companies/{id}` qo'shsa.
+
+### D56 — [OCHIQ] Super Admin impersonatsiyasida tenant ruxsatlari manbai noaniq
+
+**Topilish:** 9.15. `createPermissionChecker` super_admin bayrog'iga hech
+qanday permission kaliti bermaydi (ataylab — F33, `companies.*` kaliti
+katalogda yo'q). Tenantga "Enter as this company" orqali kirilganda
+(`X-Company-Id` o'rnatiladi) frontend `/` ga yo'naltiradi, lekin ekrandagi
+`can(...)` tekshiruvlari hamon **platforma administratorining o'z**
+`GET /me` javobidagi `permissions[]`/`is_super_admin`iga asoslanadi — bu
+ro'yxat `X-Company-Id` almashganda o'zgarmaydi (frontend qayta `GET /me`
+so'ramaydi). Agar backend `X-Company-Id` rejimida `GET /me`ni boshqacha
+javob bermasa, super admin impersonatsiya qilganda amalda hech bir ekranni
+ko'ra olmaydi (barcha `RouteGuard`lar 403 beradi).
+
+**MVP yechimi:** F153 talabiga ko'ra bu modul MVP dan tashqarida — frontend
+faqat `X-Company-Id`/kesh/WS reset zanjirini to'g'ri ulaydi (D54). Backend
+qaysi shaklda javob berishini aniqlashtirgandan keyin (masalan impersonatsiya
+rejimida `GET /me` shu tenant uchun to'liq ruxsat ro'yxatini qaytarishi
+kerak bo'lsa) frontend o'zgarishsiz ishlaydi — `PermissionsProvider` allaqachon
+`GET /me`dan oladi.
+
+**Kim yopadi:** backend kontrakti tasdiqlangandan keyin, agar frontendda
+qo'shimcha ish kerak bo'lsa.

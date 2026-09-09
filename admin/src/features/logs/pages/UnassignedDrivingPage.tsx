@@ -108,6 +108,7 @@ export function UnassignedDrivingPage() {
             search={listParams.search}
             onSearchChange={listParams.setSearch}
             searchPlaceholder={t('logs.unassigned.filters.searchPlaceholder')}
+            searchHint={t('ui.data.filtersBar.currentPageSearchHint')}
             filters={filterDefs}
             activeFilters={listParams.filters}
             onFilterChange={listParams.setFilter}

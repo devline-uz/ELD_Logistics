@@ -35,6 +35,7 @@ import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tan
 
 import { api } from '@/api/client';
 import { unitsKeys } from '@/api/queries/units';
+import { assertBlobType } from '@/lib/download';
 import type { ApiError } from '@/lib/errors';
 import type {
   DvirCertify,
@@ -158,7 +159,8 @@ export function useDvirCertify() {
  * olinadi, `Authorization` header talab qiladi (`client.ts` middleware'idan
  * avtomatik) → oddiy `<a href>` ishlamaydi (fe-api §8 yuklab olish oqimi).
  * Javob `application/pdf` yoki (Chrome mavjud bo'lmasa) `text/html` bo'lishi
- * mumkin — ekran agenti `Content-Type` ni tekshirishi kerak.
+ * mumkin — TD12: `assertBlobType` xato sahifasini PDF sifatida saqlanishdan
+ * to'xtatadi va `UnexpectedFileTypeError` tashlaydi.
  */
 export function useDvirPdfDownload() {
   return useMutation({
@@ -167,7 +169,7 @@ export function useDvirPdfDownload() {
         params: { path: { id } },
         parseAs: 'blob',
       });
-      return data as Blob;
+      return assertBlobType(data as Blob, 'application/pdf');
     },
   });
 }

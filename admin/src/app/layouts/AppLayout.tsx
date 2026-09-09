@@ -11,6 +11,7 @@ import { MainNav } from '@/components/layout/MainNav';
 import { SubscriptionBanner } from '@/components/layout/SubscriptionBanner';
 import { PermissionGate } from '@/components/ui/PermissionGate';
 import { NotificationsDropdown } from '@/features/notifications/components/NotificationsDropdown';
+import { ImpersonationBanner } from '@/features/superadmin/components/ImpersonationBanner';
 import { PERM } from '@/lib/permissions';
 
 /**
@@ -52,6 +53,7 @@ export function AppLayout() {
           }
         />
         <MainNav />
+        <ImpersonationBanner />
         <SubscriptionBanner />
         <LiveUpdatesBanner />
         <Breadcrumbs />

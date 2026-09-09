@@ -18,11 +18,6 @@ export interface SessionFlagsApi extends SessionFlags {
   setSessionFlags: (flags: Partial<SessionFlags>) => void;
 }
 
-export const DEFAULT_SESSION_FLAGS: SessionFlags = {
-  subscriptionReadonly: false,
-  replacedSession: false,
-};
-
 /**
  * Auth store'dagi sessiya bayroqlari + ularni yangilash funksiyasi.
  *

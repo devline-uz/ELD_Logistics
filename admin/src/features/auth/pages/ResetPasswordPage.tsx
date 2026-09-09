@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,13 +11,14 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { applyServerErrors } from '@/components/form/applyServerErrors';
 import { PasswordStrength } from '@/features/auth/components/PasswordStrength';
-import { resetPasswordSchema, type ResetPasswordFormValues } from '@/features/auth/schemas';
+import { buildResetPasswordSchema, type ResetPasswordFormValues } from '@/features/auth/schemas';
 import { isApiError } from '@/lib/errors';
 import { useToast } from '@/components/feedback/toast-context';
 
 /** `/reset-password?token=` — TZ §7.1.3. */
 export function ResetPasswordPage() {
   const { t } = useTranslation();
+  const schema = useMemo(() => buildResetPasswordSchema(t), [t]);
   const navigate = useNavigate();
   const toast = useToast();
   const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ export function ResetPasswordPage() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const form = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(schema),
     defaultValues: { password: '', confirmPassword: '' },
     mode: 'onBlur',
   });

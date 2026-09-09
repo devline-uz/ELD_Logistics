@@ -41,19 +41,29 @@ export function ConfirmDialog({
   const reasonErrorId = `${uid}-reason-error`;
 
   const [reason, setReason] = useState('');
-  const [reasonError, setReasonError] = useState(false);
+  const [reasonError, setReasonError] = useState<'required' | 'length' | null>(null);
 
   useEffect(() => {
     if (!open) {
       setReason('');
-      setReasonError(false);
+      setReasonError(null);
     }
   }, [open]);
 
+  const REASON_MIN_LENGTH = 3;
+  const REASON_MAX_LENGTH = 500;
+
   const handleConfirm = () => {
-    if (requireReason && reason.trim().length === 0) {
-      setReasonError(true);
-      return;
+    if (requireReason) {
+      const trimmed = reason.trim();
+      if (trimmed.length === 0) {
+        setReasonError('required');
+        return;
+      }
+      if (trimmed.length < REASON_MIN_LENGTH || trimmed.length > REASON_MAX_LENGTH) {
+        setReasonError('length');
+        return;
+      }
     }
     onConfirm(requireReason ? reason.trim() : undefined);
   };
@@ -109,13 +119,13 @@ export function ConfirmDialog({
             id={reasonFieldId}
             required
             aria-required="true"
-            aria-invalid={reasonError}
+            aria-invalid={reasonError !== null}
             aria-describedby={reasonError ? reasonErrorId : undefined}
             value={reason}
             onChange={(event) => {
               setReason(event.target.value);
               if (reasonError) {
-                setReasonError(false);
+                setReasonError(null);
               }
             }}
             rows={3}
@@ -123,7 +133,12 @@ export function ConfirmDialog({
           />
           {reasonError ? (
             <p id={reasonErrorId} role="alert" className="mt-1 text-body-sm text-error-dark">
-              {t('ui.overlay.confirmDialog.reasonRequired')}
+              {reasonError === 'required'
+                ? t('ui.overlay.confirmDialog.reasonRequired')
+                : t('ui.overlay.confirmDialog.reasonLength', {
+                    min: REASON_MIN_LENGTH,
+                    max: REASON_MAX_LENGTH,
+                  })}
             </p>
           ) : null}
         </div>

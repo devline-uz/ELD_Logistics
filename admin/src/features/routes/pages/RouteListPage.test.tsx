@@ -73,4 +73,36 @@ describe('RouteListPage', () => {
     expect(await screen.findByText(/close as not completed/i)).toBeInTheDocument();
     expect(screen.queryByRole('menuitem', { name: /^complete$/i })).not.toBeInTheDocument();
   });
+
+  it('does not make rows clickable without tracking.view_live (TD7)', async () => {
+    server.use(routesListHandler);
+    renderPage([PERM.routesRead]);
+
+    await screen.findByText('Dallas, TX');
+    const rows = screen.getAllByRole('row').slice(1);
+    for (const row of rows) {
+      expect(row).not.toHaveAttribute('tabindex');
+    }
+  });
+
+  it('makes rows clickable when tracking.view_live is granted (TD7)', async () => {
+    server.use(routesListHandler);
+    renderPage([PERM.routesRead, PERM.trackingViewLive]);
+
+    await screen.findByText('Dallas, TX');
+    const rows = screen.getAllByRole('row').slice(1);
+    expect(rows[0]).toHaveAttribute('tabindex', '0');
+  });
+
+  it('filters the current page client-side and explains the limit (TD3)', async () => {
+    server.use(routesListHandler);
+    const user = userEvent.setup();
+    renderPage();
+
+    await screen.findByText('Dallas, TX');
+    expect(screen.getByText(/only the rows loaded on this page/i)).toBeInTheDocument();
+
+    await user.type(screen.getByRole('textbox'), 'zzzz-no-match');
+    expect(await screen.findByText(/no data found/i)).toBeInTheDocument();
+  });
 });

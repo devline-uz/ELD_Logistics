@@ -422,6 +422,11 @@ export type ImportRowError = Dto<'files', 'ImportRowError'>;
  * xato beradi (`paths['/units']` `never` ga sirg'alib ketmaydi).
  * ------------------------------------------------------------------ */
 
+/** `GET /companies` — Super Admin konsoli (9.15, §7.14). `super_admin` bayrog'i. */
+export type AdminCompaniesListParams = NonNullable<
+  paths['/companies']['get']['parameters']['query']
+>;
+
 export type UnitsListParams = NonNullable<paths['/units']['get']['parameters']['query']>;
 export type UnitHistoryParams = NonNullable<
   paths['/units/{id}/history']['get']['parameters']['query']

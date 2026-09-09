@@ -659,3 +659,37 @@ describe('lib/ws — useChannel bilan integratsiya', () => {
     expect(sample.type).toBe('unit_last_state');
   });
 });
+
+describe('lib/ws — D54 tenant almashtirish reseti (F155)', () => {
+  it('super admin tenantga kirganda ulanishni yopadi va qayta ulanmaydi', async () => {
+    const { ws, session, useConnectionStore } = await setup();
+    ws.subscribeChannel('tracking', undefined, () => undefined);
+    await connectAndWelcome();
+    expect(useConnectionStore.getState().status).toBe('live');
+
+    session.setCompanyId('company-42');
+    await tick(0);
+
+    expect(useConnectionStore.getState().status).toBe('offline');
+    // Keyingi obunachi ham ulanishni qayta tiklamaydi — impersonatsiya davom etadi.
+    ws.subscribeChannel('chat', undefined, () => undefined);
+    await tick(0);
+    expect(useConnectionStore.getState().status).toBe('offline');
+  });
+
+  it('impersonatsiyadan chiqilganda ulanish va kanallar qayta tiklanadi', async () => {
+    const { ws, session } = await setup();
+    ws.subscribeChannel('tracking', undefined, () => undefined);
+    await connectAndWelcome();
+
+    session.setCompanyId('company-42');
+    await tick(0);
+    expect(MockWebSocket.instances.at(-1)?.readyState).toBe(MockWebSocket.CLOSED);
+
+    session.setCompanyId(null);
+    await tick(0);
+
+    const socket = lastSocket();
+    expect(socket.readyState).not.toBe(MockWebSocket.CLOSED);
+  });
+});

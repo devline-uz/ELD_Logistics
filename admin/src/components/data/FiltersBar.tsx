@@ -4,7 +4,7 @@
  * filtr ta'riflari (`FilterDef[]`) va joriy qiymatlar chaqiruvchidan keladi
  * (odatda `useListParams`).
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 
 import { Icon } from '@/components/ui/Icon';
@@ -30,6 +30,12 @@ export interface FiltersBarProps {
   search: string;
   onSearchChange: (value: string) => void;
   searchPlaceholder?: string;
+  /**
+   * Qidiruv maydoni ostidagi tushuntirish (TD3) — backend matn qidiruvini
+   * qo'llab-quvvatlamaydigan ekranlarda «faqat joriy sahifa bo'yicha»
+   * ekanini bildiradi. Matn chaqiruvchidan (i18n kaliti) keladi.
+   */
+  searchHint?: string;
   filters?: FilterDef[];
   activeFilters: Record<string, string>;
   onFilterChange: (key: string, value: string | undefined) => void;
@@ -43,6 +49,7 @@ export function FiltersBar({
   search,
   onSearchChange,
   searchPlaceholder,
+  searchHint,
   filters = [],
   activeFilters,
   onFilterChange,
@@ -51,6 +58,7 @@ export function FiltersBar({
   className,
 }: FiltersBarProps) {
   const { t } = useTranslation();
+  const hintId = useId();
   const [inputValue, setInputValue] = useState(search);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -89,6 +97,7 @@ export function FiltersBar({
           placeholder={searchPlaceholder ?? t('ui.data.filtersBar.searchPlaceholder')}
           containerClassName="w-full max-w-xs"
           aria-label={searchPlaceholder ?? t('ui.data.filtersBar.searchPlaceholder')}
+          aria-describedby={searchHint ? hintId : undefined}
         />
 
         {filters.map((filter) => (
@@ -113,6 +122,12 @@ export function FiltersBar({
           </button>
         ) : null}
       </div>
+
+      {searchHint ? (
+        <p id={hintId} className="text-body-sm text-neutral-500">
+          {searchHint}
+        </p>
+      ) : null}
 
       {activeBadges.length > 0 ? (
         <div className="flex flex-wrap items-center gap-2">

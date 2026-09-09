@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { applyTokens } from '@/api/refresh';
 import { loadSessionContext } from '@/app/bootstrap';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { resolveDeviceId } from '@/features/auth/device-id';
-import { loginSchema, type LoginFormValues } from '@/features/auth/schemas';
+import { buildLoginSchema, type LoginFormValues } from '@/features/auth/schemas';
 import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -25,6 +25,7 @@ const SESSION_END_MESSAGES: Record<string, string> = {
 /** `/login` — TZ §7.1.1. */
 export function LoginPage() {
   const { t } = useTranslation();
+  const schema = useMemo(() => buildLoginSchema(t), [t]);
   const navigate = useNavigate();
   const toast = useToast();
   const [searchParams] = useSearchParams();
@@ -40,7 +41,7 @@ export function LoginPage() {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(schema),
     defaultValues: { identifier: '', password: '', remember: false },
     mode: 'onBlur',
   });

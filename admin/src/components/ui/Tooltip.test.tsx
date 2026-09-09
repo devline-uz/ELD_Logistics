@@ -39,4 +39,22 @@ describe('Tooltip', () => {
     await user.keyboard('{Escape}');
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
+
+  it('closes on blur', async () => {
+    const user = userEvent.setup();
+    render(
+      <div>
+        <Tooltip content="Extra detail">
+          <button type="button">Info</button>
+        </Tooltip>
+        <button type="button">Next</button>
+      </div>,
+    );
+
+    await user.tab();
+    expect(screen.getByRole('tooltip')).toBeInTheDocument();
+
+    await user.tab();
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
 });

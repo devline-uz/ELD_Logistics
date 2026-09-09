@@ -143,6 +143,16 @@ export const dvirPdfHandler = http.get(
     }),
 );
 
+/** `GET /dvir-reports/{id}/pdf` — 200, lekin HTML xato sahifasi (TD12). */
+export const dvirPdfHtmlHandler = http.get(
+  url('/dvir-reports/:id/pdf'),
+  () =>
+    new HttpResponse(new Blob(['<html>error</html>']), {
+      status: 200,
+      headers: { 'Content-Type': 'text/html' },
+    }),
+);
+
 /** `GET /dvir-reports/{id}/pdf` — `502` (Chrome renderer ishlamayapti). */
 export const dvirPdfUpstreamErrorHandler = http.get(url('/dvir-reports/:id/pdf'), () =>
   jsonError('UPSTREAM_ERROR', 'PDF renderer unavailable', 502),

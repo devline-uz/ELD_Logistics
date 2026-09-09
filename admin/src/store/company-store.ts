@@ -62,12 +62,6 @@ export const DEFAULT_APP_CONFIG: AppConfigState = Object.freeze({
   loaded: false,
 });
 
-/**
- * Soat siljishi shu chegaradan oshsa ogohlantirish banneri ko'rsatiladi
- * (fe-api §4: «>120s farqda ogohlantirish»).
- */
-export const CLOCK_SKEW_WARNING_MS = 120_000;
-
 export interface CompanyStoreState {
   company: CompanyContext;
   appConfig: AppConfigState;
@@ -99,14 +93,4 @@ export function companyState(): CompanyStoreState {
 /** Joriy kompaniya konteksti — React'siz. */
 export function getCompanyContext(): CompanyContext {
   return companyState().company;
-}
-
-/** Feature flag qiymati; noma'lum bayroq — `false`. */
-export function isFeatureEnabled(flag: string): boolean {
-  return companyState().appConfig.featureFlags[flag] === true;
-}
-
-/** Soat siljishi ogohlantirish chegarasidan oshganmi. */
-export function selectClockSkewWarning(state: CompanyStoreState): boolean {
-  return Math.abs(state.appConfig.clockSkewMs) > CLOCK_SKEW_WARNING_MS;
 }

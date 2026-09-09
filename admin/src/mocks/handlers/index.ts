@@ -12,6 +12,7 @@
  */
 import { auditLogListHandler, auditLogTablesHandler } from './audit';
 import { chatBaseHandlers } from './chat';
+import { adminCompaniesListHandler, adminCompanyCreateHandler } from './companies';
 import { companyGetHandler, companyHistoryListHandler, companyUpdateHandler } from './company';
 import { dashboardBaseHandlers } from './dashboard';
 import { feedbackListHandler } from './feedback';
@@ -51,4 +52,6 @@ export const handlers = [
   auditLogTablesHandler,
   inspectionLogsHandler,
   inspectionEmailSendHandler,
+  adminCompaniesListHandler,
+  adminCompanyCreateHandler,
 ];

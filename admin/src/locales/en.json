@@ -70,6 +70,16 @@
       "description": "Enter the 6-digit code from your authenticator app to finish signing in.",
       "invalidCode": "That code is not valid. Please try again.",
       "submit": "Verify and sign in"
+    },
+    "validation": {
+      "confirmRequired": "Confirm your new password.",
+      "identifierRequired": "Enter your email or username.",
+      "mismatch": "Passwords do not match.",
+      "passwordLetter": "Must include at least one letter.",
+      "passwordMin": "Must be at least 10 characters.",
+      "passwordNumber": "Must include at least one number.",
+      "passwordRequired": "Enter your password.",
+      "totpCode": "Enter the 6-digit code from your authenticator app."
     }
   },
   "banner": {
@@ -479,6 +489,7 @@
         }
       },
       "filtersBar": {
+        "currentPageSearchHint": "Search filters only the rows loaded on this page.",
         "removeFilter": "Remove {{label}} filter",
         "searchPlaceholder": "Search…"
       },
@@ -560,6 +571,7 @@
       "confirmDialog": {
         "reasonLabel": "Reason",
         "reasonRequired": "Please provide a reason before continuing.",
+        "reasonLength": "Reason must be between {{min}} and {{max}} characters.",
         "title": "Are you absolutely sure?"
       },
       "emptyState": {
@@ -1921,6 +1933,7 @@
       "repairFailed": "The repair could not be recorded",
       "pdfDownloaded": "DVIR PDF downloaded",
       "pdfFailed": "The PDF could not be downloaded",
+      "pdfInvalidType": "The server did not return a PDF. Try again or contact support.",
       "uploadFailed": "The invoice could not be uploaded"
     },
     "errors": {

@@ -1,0 +1,120 @@
+{
+  "nav": {
+    "companies": "Companies"
+  },
+  "superadmin": {
+    "impersonation": {
+      "banner": "Viewing as {{company}}",
+      "exit": "Exit",
+      "toast": {
+        "entered": "Now viewing {{company}}"
+      }
+    },
+    "companies": {
+      "title": "Companies",
+      "add": "Add Company",
+      "columns": {
+        "name": "Name",
+        "region": "Region",
+        "plan": "Plan",
+        "subscriptionStatus": "Subscription Status",
+        "subscriptionEndAt": "Subscription End",
+        "createdAt": "Created",
+        "action": "Action"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by company name…",
+        "status": "Subscription Status",
+        "region": "Region"
+      },
+      "actions": {
+        "subscription": "Subscription",
+        "enter": "Enter as this company"
+      },
+      "empty": {
+        "title": "No Data Found",
+        "description": "There is no data to show you right now",
+        "filteredTitle": "No results",
+        "filteredDescription": "No records match your filters"
+      },
+      "region": {
+        "PK": "Pakistan",
+        "UZ": "Uzbekistan",
+        "US": "United States",
+        "other": "Other"
+      },
+      "unitSystem": {
+        "metric": "Metric",
+        "imperial": "Imperial"
+      },
+      "regulationProfile": {
+        "us_fmcsa": "US FMCSA",
+        "generic": "Generic",
+        "canada": "Canada",
+        "texas": "Texas",
+        "california": "California",
+        "alaska": "Alaska",
+        "hawaii": "Hawaii"
+      },
+      "status": {
+        "trial": "Trial",
+        "active": "Active",
+        "grace": "Grace",
+        "readonly": "Read-only"
+      },
+      "form": {
+        "addTitle": "Add Company",
+        "editTitle": "Edit Company",
+        "name": "Company Name",
+        "region": "Region",
+        "unitSystem": "Unit System",
+        "regulationProfile": "Regulation Profile",
+        "timezone": "Timezone",
+        "timezonePlaceholder": "e.g. America/Chicago",
+        "address": "Address",
+        "homeTerminalAddress": "Home Terminal Address",
+        "email": "Email",
+        "phone": "Phone",
+        "registrationNo": "Registration No",
+        "plan": "Plan",
+        "subscriptionStatus": "Subscription Status",
+        "subscriptionEndAt": "Subscription End Date",
+        "clearEndAt": "No end date (perpetual)",
+        "clearEndAtHint": "Removes the subscription end date entirely — for internal/perpetual tenants.",
+        "administratorSection": "Administrator invitation",
+        "administratorHint": "A 72-hour invitation is sent out of band to this address. The link is never shown here.",
+        "administratorFirstName": "First Name",
+        "administratorLastName": "Last Name",
+        "administratorEmail": "Administrator Email",
+        "validation": {
+          "nameMin": "Must be at least 2 characters",
+          "nameMax": "Must be at most 160 characters",
+          "timezoneRequired": "Timezone is required",
+          "timezoneMax": "Must be at most 64 characters",
+          "addressMax": "Must be at most 512 characters",
+          "emailMax": "Must be at most 254 characters",
+          "emailInvalid": "Enter a valid email address",
+          "phoneMax": "Must be at most 32 characters",
+          "registrationMax": "Must be at most 64 characters",
+          "planMax": "Must be at most 64 characters",
+          "administratorFirstNameRequired": "First name is required",
+          "administratorLastNameRequired": "Last name is required",
+          "administratorEmailRequired": "Email is required"
+        }
+      },
+      "subscription": {
+        "title": "Subscription — {{name}}"
+      },
+      "toast": {
+        "created": "Company {{name}} created",
+        "updated": "Company {{name}} updated",
+        "subscriptionUpdated": "Subscription updated for {{name}}",
+        "saveFailed": "Could not save the company"
+      },
+      "errors": {
+        "nameTaken": "A company with this name already exists",
+        "idempotencyConflict": "This request was already submitted"
+      }
+    }
+  }
+}

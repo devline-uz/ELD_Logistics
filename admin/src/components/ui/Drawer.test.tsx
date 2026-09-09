@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import '@/app/i18n';
 import { Drawer } from '@/components/ui/Drawer';
@@ -55,5 +55,29 @@ describe('Drawer', () => {
     await user.click(screen.getByRole('button', { name: /close/i }));
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('closes when the backdrop is clicked', async () => {
+    const user = userEvent.setup();
+    render(<TestHarness />);
+
+    await user.click(screen.getByRole('button', { name: 'Track on map' }));
+    const dialog = screen.getByRole('dialog');
+    await user.click(dialog.parentElement as HTMLElement);
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('does not close on backdrop click when closeOnBackdrop is false', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(
+      <Drawer open onClose={onClose} title="Unit 101 route" closeOnBackdrop={false}>
+        <p>Drawer body</p>
+      </Drawer>,
+    );
+    const dialog = screen.getByRole('dialog');
+    await user.click(dialog.parentElement as HTMLElement);
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

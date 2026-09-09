@@ -69,6 +69,19 @@ describe('filterNav', () => {
       expect(logs.children.some((leaf) => leaf.path === '/violations')).toBe(false);
     }
   });
+
+  it('9.15: hides Companies for a regular user with every permission granted', () => {
+    const can = createPermissionChecker({
+      permissions: Object.values(PERM),
+      isSuperAdmin: false,
+    });
+    expect(filterNav(NAV_ENTRIES, can).some((entry) => entry.id === 'companies')).toBe(false);
+  });
+
+  it('9.15: shows Companies only for super_admin, even with zero permissions', () => {
+    const can = createPermissionChecker({ permissions: [], isSuperAdmin: true });
+    expect(filterNav(NAV_ENTRIES, can).some((entry) => entry.id === 'companies')).toBe(true);
+  });
 });
 
 describe('breadcrumb helpers', () => {

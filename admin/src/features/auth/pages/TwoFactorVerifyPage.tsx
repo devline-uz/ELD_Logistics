@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -10,7 +11,7 @@ import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { totpVerifySchema, type TotpVerifyFormValues } from '@/features/auth/schemas';
+import { buildTotpVerifySchema, type TotpVerifyFormValues } from '@/features/auth/schemas';
 import { isApiError } from '@/lib/errors';
 import type { LoginRequest } from '@/api/types';
 
@@ -41,6 +42,7 @@ function isPendingLoginState(value: unknown): value is TwoFactorVerifyLocationSt
  */
 export function TwoFactorVerifyPage() {
   const { t } = useTranslation();
+  const schema = useMemo(() => buildTotpVerifySchema(t), [t]);
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as unknown;
@@ -51,7 +53,7 @@ export function TwoFactorVerifyPage() {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<TotpVerifyFormValues>({
-    resolver: zodResolver(totpVerifySchema),
+    resolver: zodResolver(schema),
     defaultValues: { code: '' },
     mode: 'onBlur',
   });

@@ -9,7 +9,7 @@
  * o'zi esa `RouteGuard` bilan 403 ekraniga olib boradi (fe-permissions §3).
  */
 
-import { PERM, type Permission } from '@/lib/permissions';
+import { PERM, type Permission, type PermissionChecker } from '@/lib/permissions';
 import type { ProfileLabelBucket } from '@/lib/profileLabel';
 
 export interface NavLeaf {
@@ -25,8 +25,16 @@ export interface NavLeaf {
   profileLabelKey?: string;
   /** Flyout punktining tavsif matni (dizayndagi lorem ipsum o'rniga). */
   descriptionKey?: string;
-  /** Ko'rinish sharti — kamida bittasi yetarli. */
+  /**
+   * Ko'rinish sharti — kamida bittasi yetarli. `superAdminOnly` elementlari
+   * uchun bo'sh massiv (permission kaliti yo'q, `can.isSuperAdmin` tekshiradi).
+   */
   anyOf: readonly Permission[];
+  /**
+   * `super_admin` bayrog'i — rol emas, `PERM` katalogida yo'q (F33).
+   * Faqat Super Admin konsoli (`/companies`, 9.15, §7.14) uchun.
+   */
+  superAdminOnly?: boolean;
 }
 
 /**
@@ -274,6 +282,13 @@ export const NAV_ENTRIES: readonly NavEntry[] = [
     labelKey: 'nav.chat',
     anyOf: [PERM.chatRead],
   },
+  {
+    id: 'companies',
+    path: '/companies',
+    labelKey: 'nav.companies',
+    anyOf: [],
+    superAdminOnly: true,
+  },
 ];
 
 /**
@@ -310,12 +325,14 @@ export type VisibleNavEntry = VisibleNavLeaf | VisibleNavGroup;
 /**
  * Nav daraxtini ruxsatlar bo'yicha filtrlaydi. Bo'sh qolgan guruh butunlay
  * tushib qoladi (fe-permissions §3 — "Nav elementi / flyout punkti → yashiriladi").
+ *
+ * `can` to'liq `PermissionChecker` (callable + `.any`/`.all`/`.isSuperAdmin`)
+ * — `superAdminOnly` elementlari (`/companies`, 9.15) `can.isSuperAdmin`
+ * bilan tekshiriladi, oddiy `anyOf` permission tekshiruvidan mustaqil.
  */
-export function filterNav(
-  entries: readonly NavEntry[],
-  can: (permission: Permission) => boolean,
-): VisibleNavEntry[] {
-  const allowed = (leaf: NavLeaf) => leaf.anyOf.some(can);
+export function filterNav(entries: readonly NavEntry[], can: PermissionChecker): VisibleNavEntry[] {
+  const allowed = (leaf: NavLeaf) =>
+    leaf.superAdminOnly === true ? can.isSuperAdmin : leaf.anyOf.some(can);
   const result: VisibleNavEntry[] = [];
 
   for (const entry of entries) {

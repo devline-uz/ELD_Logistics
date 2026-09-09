@@ -14,7 +14,7 @@
  */
 import ReconnectingWebSocket, { type Options as RwsOptions } from 'reconnecting-websocket';
 
-import { getAccessToken, onSessionEnded } from '@/api/session';
+import { getAccessToken, getCompanyId, onCompanyChanged, onSessionEnded } from '@/api/session';
 import { connectionState, type ConnectionStatus } from '@/stores/connection';
 
 import {
@@ -100,6 +100,11 @@ function ensureConnected(): void {
   // Token yo'q bo'lsa ulanmaymiz — aks holda server handshake'ni uzadi va
   // bu cheksiz reconnect siklini hosil qiladi.
   if (!getAccessToken()) return;
+  // F155/D54: Super Admin tenant almashtirganda real-vaqt o'chiriladi —
+  // brauzer WS upgrade so'rovi `X-Company-Id` header'ini yubora olmaydi,
+  // shuning uchun ulanish bo'lsa ham u har doim o'z (super admin) tenantiga
+  // tegishli bo'lib qolardi — boshqa kompaniya oqimini bermasligi kerak.
+  if (getCompanyId()) return;
 
   setStatus('connecting');
   const socket = new ReconnectingWebSocket(url, undefined, RWS_OPTIONS);
@@ -423,6 +428,24 @@ export function subscribeChannel(
 onSessionEnded(() => {
   closeConnection(1000, 'session-ended', 'offline');
   resetProtocolState();
+});
+
+/**
+ * D54: tenant almashtirilganda (super admin `X-Company-Id`ni o'rnatadi/
+ * tozalaydi) ulanish yopiladi va protokol holati tozalanadi — eski
+ * tenantning `lastTs`/`seenIds`/`forbidden` holati yangisiga sizmaydi.
+ *
+ * Impersonatsiyadan chiqilganda (`companyId === null`) `ensureConnected()`
+ * darhol qayta ulanishga urinadi; impersonatsiya rejimida (F155) ulanish
+ * ataylab ochilmaydi — `ensureConnected()` yuqoridagi `getCompanyId()`
+ * tekshiruvi bilan bloklanadi.
+ */
+onCompanyChanged((companyId) => {
+  closeConnection(1000, 'company-changed', 'offline');
+  resetProtocolState();
+  if (companyId === null) {
+    ensureConnected();
+  }
 });
 
 if (typeof document !== 'undefined') {

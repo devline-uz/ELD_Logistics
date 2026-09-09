@@ -1,3 +1,4 @@
+import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -31,5 +32,35 @@ describe('Checkbox', () => {
       'true',
     );
     expect(screen.getByRole('alert')).toHaveTextContent('Required');
+  });
+
+  it('applies a muted style when disabled', () => {
+    render(<Checkbox label="Accept" disabled />);
+    expect(screen.getByRole('checkbox', { name: 'Accept' })).toBeDisabled();
+  });
+
+  it('forwards the DOM node via an object ref', () => {
+    const ref = createRef<HTMLInputElement>();
+    render(<Checkbox label="Accept" ref={ref} />);
+    expect(ref.current).toBe(screen.getByRole('checkbox', { name: 'Accept' }));
+  });
+
+  it('forwards the DOM node via a callback ref', () => {
+    const callback = vi.fn();
+    render(<Checkbox label="Accept" ref={callback} />);
+    expect(callback).toHaveBeenCalledWith(screen.getByRole('checkbox', { name: 'Accept' }));
+  });
+
+  it('renders with a description but no label', () => {
+    render(<Checkbox description="Helper text" />);
+    expect(screen.getByText('Helper text')).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toBeInTheDocument();
+  });
+
+  it('renders without a label or description', () => {
+    render(<Checkbox />);
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeInTheDocument();
+    expect(checkbox.closest('label')?.querySelector('span.flex.flex-col')).toBeNull();
   });
 });

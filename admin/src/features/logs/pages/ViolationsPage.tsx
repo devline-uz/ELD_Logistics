@@ -120,6 +120,7 @@ export function ViolationsPage() {
           search={listParams.search}
           onSearchChange={listParams.setSearch}
           searchPlaceholder={t('logs.violationsList.filters.searchPlaceholder')}
+          searchHint={t('ui.data.filtersBar.currentPageSearchHint')}
           filters={filterDefs}
           activeFilters={listParams.filters}
           onFilterChange={listParams.setFilter}
