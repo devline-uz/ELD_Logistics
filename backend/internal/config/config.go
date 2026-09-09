@@ -38,6 +38,14 @@ type Config struct {
 
 	TOTPIssuer string `env:"TOTP_ISSUER" envDefault:"ONEBOOK ELD"`
 
+	// TOTPEnrolmentRequired gates the mandatory 2FA enrolment of Super Admin
+	// and Administrator accounts (TZ B§3.4). It defaults to on; setting
+	// AUTH_TOTP_ENROLMENT_REQUIRED=false lets those roles sign in with the
+	// password alone, which is a temporary demo concession and must be turned
+	// back on before the platform is handed to real operators. Accounts that
+	// already enrolled keep being asked for their code either way.
+	TOTPEnrolmentRequired bool `env:"AUTH_TOTP_ENROLMENT_REQUIRED" envDefault:"true"`
+
 	AccessTokenTTL   time.Duration `env:"ACCESS_TOKEN_TTL" envDefault:"15m"`
 	RefreshTTLDriver time.Duration `env:"REFRESH_TTL_DRIVER" envDefault:"720h"`
 	RefreshTTLAdmin  time.Duration `env:"REFRESH_TTL_ADMIN" envDefault:"168h"`

@@ -103,6 +103,8 @@ func buildSecurity(cfg *config.Config, pool *db.Pool, store cache.Store, log *sl
 		Logger:           log,
 		DriverRefreshTTL: cfg.RefreshTTLDriver,
 		AdminRefreshTTL:  cfg.RefreshTTLAdmin,
+
+		TOTPEnrolmentRequired: cfg.TOTPEnrolmentRequired,
 	})
 
 	return security{

@@ -84,6 +84,11 @@ type Deps struct {
 
 	DriverRefreshTTL time.Duration
 	AdminRefreshTTL  time.Duration
+	// TOTPEnrolmentRequired mirrors config.Config.TOTPEnrolmentRequired: when
+	// false, Super Admin and Administrator accounts are no longer forced into
+	// the enrolment flow. The zero value is false, so every caller that wants
+	// the TZ B§3.4 behaviour must set it explicitly.
+	TOTPEnrolmentRequired bool
 	// Now is overridable in tests.
 	Now func() time.Time
 }
@@ -101,9 +106,10 @@ type Service struct {
 	store       cache.Store
 	log         *slog.Logger
 
-	driverTTL time.Duration
-	adminTTL  time.Duration
-	now       func() time.Time
+	driverTTL           time.Duration
+	adminTTL            time.Duration
+	totpEnrolmentForced bool
+	now                 func() time.Time
 }
 
 // NewService wires the auth service.
@@ -121,7 +127,10 @@ func NewService(d Deps) *Service {
 		log:         d.Logger,
 		driverTTL:   d.DriverRefreshTTL,
 		adminTTL:    d.AdminRefreshTTL,
-		now:         d.Now,
+
+		totpEnrolmentForced: d.TOTPEnrolmentRequired,
+
+		now: d.Now,
 	}
 	if s.log == nil {
 		s.log = slog.Default()
@@ -209,7 +218,7 @@ func (s *Service) twoFactorGate(
 				"the two factor code is not valid")
 		}
 		return "", nil
-	case core.TOTPRequiredForRole(acc.role.Name, acc.isSuperAdmin):
+	case s.totpEnrolmentForced && core.TOTPRequiredForRole(acc.role.Name, acc.isSuperAdmin):
 		// The account may only enrol in 2FA until it is done.
 		return core.RestrictionTOTPSetup, nil
 	default:

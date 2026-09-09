@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1.7
-# Multi-stage build. Targets: `api`, `worker`, `migrate`.
+# Multi-stage build. Targets: `api`, `worker`, `migrate`, `seed`.
 #   docker build -f deploy/Dockerfile --target api    -t onebook-eld/api .
 #   docker build -f deploy/Dockerfile --target worker -t onebook-eld/worker .
+#   docker build -f deploy/Dockerfile --target seed   -t onebook-eld/seed .
 
 ARG GO_VERSION=1.26
 
@@ -26,7 +27,9 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/worker  ./cmd/worker && \
     GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
-    go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/migrate ./cmd/migrate
+    go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/migrate ./cmd/migrate && \
+    GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
+    go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o /out/seed    ./cmd/seed
 
 # ---------- api ----------
 FROM gcr.io/distroless/static-debian12:nonroot AS api
@@ -51,3 +54,12 @@ COPY --from=builder /out/migrate /app/migrate
 COPY --from=builder /src/db/migrations /app/db/migrations
 USER nonroot:nonroot
 ENTRYPOINT ["/app/migrate"]
+
+# ---------- seed ----------
+# Dev-only tool: fills the database with the demo dataset (cmd/seed). It
+# refuses to run against APP_ENV=prod unless given -force.
+FROM gcr.io/distroless/static-debian12:nonroot AS seed
+WORKDIR /app
+COPY --from=builder /out/seed /app/seed
+USER nonroot:nonroot
+ENTRYPOINT ["/app/seed"]

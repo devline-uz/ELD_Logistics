@@ -23,8 +23,13 @@ func DefaultCORS(origins []string, allowAll bool) CORSOptions {
 		AllowedOrigins: origins,
 		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut,
 			http.MethodPatch, http.MethodDelete, http.MethodOptions},
+		// Nomlar haqiqiy handler/middleware o'qiydigan nomlar bilan bir xil
+		// bo'lishi shart: brauzer preflight javobida yo'q header'ni ko'rsa
+		// so'rovni umuman yubormaydi. `Idempotency-Key` — swagger parametri va
+		// `HeaderIdempotencyKey`; `X-Company-Id` — `HeaderCompanyID`.
 		AllowedHeaders: []string{"Authorization", "Content-Type", "Accept",
-			HeaderRequestID, "X-Idempotency-Key", "X-Device-Id", "X-App-Version"},
+			HeaderRequestID, HeaderIdempotencyKey, HeaderCompanyID,
+			"X-Device-Id", "X-App-Version"},
 		ExposedHeaders: []string{HeaderRequestID, "Retry-After", "X-RateLimit-Remaining"},
 		MaxAge:         10 * time.Minute,
 		AllowAll:       allowAll,

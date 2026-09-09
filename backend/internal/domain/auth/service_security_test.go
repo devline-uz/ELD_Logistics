@@ -125,6 +125,10 @@ func newHarness(t *testing.T, opts ...func(*harness)) *harness {
 		Store:       h.store,
 		Logger:      slog.New(slog.NewJSONHandler(io.Discard, nil)),
 		Now:         nowFn,
+
+		// The harness exercises the TZ B§3.4 default; the off switch has its
+		// own test (TestAdministratorSkipsEnrolmentWhenNotRequired).
+		TOTPEnrolmentRequired: true,
 	})
 	return h
 }
@@ -322,6 +326,45 @@ func TestAdministratorWithoutTOTPGetsLimitedTokenOnly(t *testing.T) {
 	claims, err := tokens.Parse(out.AccessToken)
 	require.NoError(t, err)
 	require.Equal(t, core.RestrictionTOTPSetup, claims.Restricted)
+}
+
+func TestAdministratorSkipsEnrolmentWhenNotRequired(t *testing.T) {
+	// AUTH_TOTP_ENROLMENT_REQUIRED=false: the role no longer forces enrolment,
+	// so an Administrator signs in with a full session. Everything else about
+	// the login is unchanged.
+	h := newHarness(t, func(h *harness) {
+		h.role.Name = "Administrator"
+		h.repo.roles[h.role.ID] = h.role
+	})
+	h.svc.totpEnrolmentForced = false
+
+	out, err := h.svc.Login(context.Background(), loginRequest(), meta())
+	require.NoError(t, err)
+	require.False(t, out.RequiresTOTPSetup)
+	require.NotEmpty(t, out.RefreshToken, "a full session receives a refresh token")
+
+	tokens, err := core.NewTokenService(testSecret, core.DefaultAccessTTL)
+	require.NoError(t, err)
+	tokens.SetClock(func() time.Time { return h.now })
+	claims, err := tokens.Parse(out.AccessToken)
+	require.NoError(t, err)
+	require.Empty(t, claims.Restricted, "the session must not be restricted")
+}
+
+// TestEnrolledAdministratorStillNeedsACodeWhenNotRequired pins the half of the
+// gate the switch must NOT touch: an account that already enrolled keeps being
+// asked for its code.
+func TestEnrolledAdministratorStillNeedsACodeWhenNotRequired(t *testing.T) {
+	h := newHarness(t, func(h *harness) {
+		h.role.Name = "Administrator"
+		h.repo.roles[h.role.ID] = h.role
+		h.user.TotpEnabled = true
+	})
+	h.svc.totpEnrolmentForced = false
+
+	_, err := h.svc.Login(context.Background(), loginRequest(), meta())
+	require.Error(t, err)
+	require.True(t, apierr.Is(err, apierr.CodeTOTPRequired))
 }
 
 func TestLoginRejectsExpiredSubscriptionBeyondGrace(t *testing.T) {
