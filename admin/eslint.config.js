@@ -110,7 +110,14 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
       // Bosqich 1 dan keyin 'error' ga ko'tarildi (fe-conventions §4, i18n-keeper).
-      'i18next/no-literal-string': ['error', { markupOnly: true, onlyAttribute: [] }],
+      // Bosqich 9 (i18n-keeper, 9.5): JSX matn tugunlari + foydalanuvchiga
+      // ko'rinadigan atributlar (placeholder/title/aria-label/alt) tekshiriladi.
+      // Boshqa atributlar (masalan `type`, `rel`, `target`, `aria-hidden`) —
+      // matn emas, shovqin bo'lmasligi uchun ro'yxatga kiritilmagan.
+      'i18next/no-literal-string': [
+        'error',
+        { markupOnly: true, onlyAttribute: ['placeholder', 'title', 'aria-label', 'alt'] },
+      ],
 
       'no-restricted-imports': [
         'error',

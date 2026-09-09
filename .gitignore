@@ -7,3 +7,6 @@ test-results/
 .env.local
 *.log
 .DS_Store
+
+# `npm run build:analyze` (ANALYZE=1) natijasi — har kim o'zi generatsiya qiladi
+docs/bundle-stats.html

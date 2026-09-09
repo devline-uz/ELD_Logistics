@@ -22,7 +22,7 @@ import { Modal } from '@/components/ui/Modal';
 import type { SelectOption } from '@/components/ui/Select';
 import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
 
-import { routeFormDefaultValues, routeFormSchema, type RouteFormValues } from '../schemas';
+import { buildRouteFormSchema, routeFormDefaultValues, type RouteFormValues } from '../schemas';
 import { formatPersonName } from '@/lib/format';
 
 export interface RouteFormModalProps {
@@ -65,9 +65,10 @@ export function RouteFormModal({ open, onClose, route }: RouteFormModalProps) {
   const create = useRouteCreate();
   const update = useRouteUpdate();
   const pending = create.isPending || update.isPending;
+  const schema = useMemo(() => buildRouteFormSchema(t), [t]);
 
   const form = useForm<RouteFormValues>({
-    resolver: zodResolver(routeFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: route ? routeToFormValues(route) : routeFormDefaultValues,
     mode: 'onBlur',
   });

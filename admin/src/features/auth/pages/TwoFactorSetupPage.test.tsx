@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import '@/app/i18n';
 import {
+  meHandler,
   totpSetupHandler,
   totpVerifyInvalidHandler,
   totpVerifySuccessHandler,
@@ -30,7 +31,7 @@ afterEach(() => {
 
 describe('TwoFactorSetupPage', () => {
   it('loads the QR code / secret and completes enrolment with a valid code', async () => {
-    server.use(totpSetupHandler, totpVerifySuccessHandler);
+    server.use(totpSetupHandler, totpVerifySuccessHandler, meHandler());
     const user = userEvent.setup();
     renderSetup();
 

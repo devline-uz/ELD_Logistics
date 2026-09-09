@@ -85,7 +85,7 @@ export function useGeofenceLayer(map: MapLibreMap | null, options: UseGeofenceLa
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
       const geofenceSource = map.getSource(GEOFENCE_SOURCE) as GeoJSONSource | undefined;
       if (geofenceSource) {
-        geofenceSource.setData({
+        void geofenceSource.setData({
           type: 'FeatureCollection',
           features:
             options.destination && options.geofenceM
@@ -106,7 +106,7 @@ export function useGeofenceLayer(map: MapLibreMap | null, options: UseGeofenceLa
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
       const directionsSource = map.getSource(DIRECTIONS_SOURCE) as GeoJSONSource | undefined;
       if (directionsSource) {
-        directionsSource.setData({
+        void directionsSource.setData({
           type: 'FeatureCollection',
           features:
             options.directions && options.directions.length > 0

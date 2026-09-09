@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: admin/package-lock.json
 
@@ -44,16 +44,30 @@ jobs:
       - name: Build
         run: npm run build
 
+      # 9.4: boshlang'ich JS <= 250 KB gzip (TZ §12 F192). Skript qo'shimcha
+      # ravishda `index.html` da inline `<script>` yo'qligini (CSP script-src
+      # 'self') va prod bundle'da `console.*` qolmaganini (F206) tekshiradi.
+      - name: Bundle budget · inline-script · console.* gate
+        run: npm run bundle:budget
+
       # fe-security F210 (MUST): zaifliklarga qarshi darvoza.
       # Prod bog'liqliklari (`--omit=dev`) bloklovchi — bundle'ga tushadigan
       # narsa. Dev-only zaifliklar (vite/vitest/@vitest/coverage-v8 kabi)
       # bundle'ga tushmaydi, shuning uchun ular alohida, faqat ogohlantiruvchi
       # qadamda ko'rsatiladi va build'ni yiqitmaydi.
+      # fe-security F210 (MUST): zaifliklarga qarshi darvoza.
+      # 9.10 dan keyin `high`/`critical` **butun daraxtda** 0 — shuning uchun
+      # dev bog'liqliklari ham bloklovchi. Prod uchun alohida, qat'iyroq
+      # qadam qoldirilgan: bundle'ga tushadigan narsa hech qachon regressiya
+      # qilmasligi kerak.
+      #
+      # Qolgan (bloklamaydigan) zaiflik: react-router-dom 6.x — 2 ta
+      # `moderate`. Yagona tuzatish yo'li — 7.x (breaking major).
+      # Qaror va reja: docs/tz/16-17-registry-open-questions.md -> D46.
       - name: Audit production dependencies (blocking)
         run: npm audit --omit=dev --audit-level=high
 
-      - name: Audit dev dependencies (warning only)
-        continue-on-error: true
+      - name: Audit all dependencies (blocking)
         run: npm audit --audit-level=high
 
       # Uch bosqichli klient generatsiyasi (fe-api §2):

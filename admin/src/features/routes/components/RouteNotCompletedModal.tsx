@@ -3,7 +3,7 @@
  * `other` uchun `note` majburiy. Faqat `ongoing` route uchun (409 aks holda).
  */
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -21,9 +21,9 @@ import { useResetFormOnOpen } from '@/hooks/useResetFormOnOpen';
 import { isApiError } from '@/lib/errors';
 
 import {
+  buildNotCompletedSchema,
   NOT_COMPLETED_REASONS,
   notCompletedDefaultValues,
-  notCompletedSchema,
   type NotCompletedFormValues,
 } from '../schemas';
 
@@ -38,9 +38,10 @@ export function RouteNotCompletedModal({ open, onClose, route }: RouteNotComplet
   const toast = useToast();
   const mutation = useRouteNotCompleted();
   const [formMessage, setFormMessage] = useState<string | undefined>(undefined);
+  const schema = useMemo(() => buildNotCompletedSchema(t), [t]);
 
   const form = useForm<NotCompletedFormValues>({
-    resolver: zodResolver(notCompletedSchema),
+    resolver: zodResolver(schema),
     defaultValues: notCompletedDefaultValues,
     mode: 'onBlur',
   });

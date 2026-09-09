@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 import { ForbiddenScreen } from '@/components/feedback/ForbiddenScreen';
 import { NotFoundScreen } from '@/components/feedback/NotFoundScreen';
 import { ApiError } from '@/lib/errors';
+import { captureException } from '@/lib/sentry';
 
 /**
  * Router darajasidagi `errorElement`.
@@ -20,6 +22,13 @@ export function RouteErrorBoundary() {
     : error instanceof ApiError
       ? error.status
       : undefined;
+
+  // Kutilmagan xatolar monitoringga yuboriladi. Sentry o'chirilgan bo'lsa
+  // (DSN yo'q) `captureException` — no-op, ekran o'zgarishsiz ishlaydi.
+  useEffect(() => {
+    if (status === 403 || status === 404) return;
+    captureException(error, { source: 'RouteErrorBoundary', status });
+  }, [error, status]);
 
   if (status === 404) {
     return <NotFoundScreen />;

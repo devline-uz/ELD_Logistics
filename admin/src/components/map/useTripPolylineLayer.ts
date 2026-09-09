@@ -8,7 +8,8 @@
  */
 import { useEffect, useRef } from 'react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
-import maplibregl, { LngLatBounds } from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+import { LngLatBounds } from 'maplibre-gl';
 
 import { whenStyleReady } from './mapReady';
 import type { LngLatTuple } from './polyline';
@@ -94,7 +95,7 @@ export function useTripPolylineLayer(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
       const overviewSource = map.getSource(OVERVIEW_SOURCE_ID) as
         maplibregl.GeoJSONSource | undefined;
-      overviewSource?.setData({
+      void overviewSource?.setData({
         type: 'FeatureCollection',
         features: toLineFeatures(options.overviewLines ?? []),
       });
@@ -102,7 +103,7 @@ export function useTripPolylineLayer(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
       const activeSource = map.getSource(ACTIVE_SOURCE_ID) as maplibregl.GeoJSONSource | undefined;
       const activeCoords = options.activeLine ?? [];
-      activeSource?.setData({
+      void activeSource?.setData({
         type: 'FeatureCollection',
         features: toLineFeatures(activeCoords.length > 0 ? [activeCoords] : []),
       });

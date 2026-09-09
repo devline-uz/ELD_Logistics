@@ -17,7 +17,8 @@
  * faqat konteyner, boshqaruvlar va hayot davri (lifecycle) uchun javobgar.
  */
 import { forwardRef, useEffect, useImperativeHandle, useRef, type CSSProperties } from 'react';
-import maplibregl, { type LngLatLike, type Map as MapLibreMap } from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+import type { LngLatLike, Map as MapLibreMap } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 export interface MapCanvasHandle {

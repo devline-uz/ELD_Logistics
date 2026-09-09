@@ -5,6 +5,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 import { login } from '@/api/auth.api';
 import { applyTokens } from '@/api/refresh';
+import { loadSessionContext } from '@/app/bootstrap';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
@@ -81,6 +82,14 @@ export function TwoFactorVerifyPage() {
           replacedSession: result.replaced_session ?? false,
         },
       );
+
+      // Login bilan bir xil sabab (D49): sessiya ochilgach profil/ruxsatlar
+      // navigatsiyadan oldin yuklanishi kerak.
+      const session = await loadSessionContext().catch(() => null);
+      if (session === null || !session.authenticated) {
+        setError('code', { message: t('auth.twoFactorVerify.invalidCode') });
+        return;
+      }
 
       void navigate('/', { replace: true });
     } catch (error) {

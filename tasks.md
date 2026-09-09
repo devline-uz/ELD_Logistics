@@ -239,19 +239,37 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 **Chiqish mezoni:** §14 va §15 dagi barcha maqsadlar bajarilgan, `eldadmin.stackyard.uz` da ishlaydi.
 
 ```markdown
-- [ ] 9.1 Playwright: §14.4 dagi 8 oqim
+- [x] 9.1 Playwright: §14.4 dagi 8 oqim
+      (`admin/e2e/01-login.spec.ts` … `08-permissions.spec.ts`; MSW dev serverda
+      `VITE_ENABLE_MSW=1`, `admin/src/mocks/browser.ts`; login bir marta
+      `global-setup.ts` + `sessionStorage` orqali qayta ishlatiladi;
+      D49 — login'dan keyingi profil bo'shlig'i topildi va ro'yxatga yozildi)
 - [ ] 9.2 `axe-core` asosiy 10 ekranda — kritik xato 0
 - [ ] 9.3 Lighthouse: Performance ≥ 90, A11y ≥ 95, Best Practices ≥ 95
-- [ ] 9.4 Bundle byudjeti: boshlang'ich JS ≤ 250 KB gzip; `rollup-plugin-visualizer` hisoboti
-- [ ] 9.5 `i18n-keeper`: yo'qolgan/ortiqcha kalitlar 0, hardcode string 0 (`i18next/no-literal-string` → error)
-- [ ] 9.6 Barcha `enum` qiymatlari uchun i18n kalitlari (`enums.*`) to'liqligi testi
-- [ ] 9.7 Xato kodlari uchun i18n kalitlari to'liqligi
-- [ ] 9.8 `metric`/`imperial` va `generic`/`fmcsa_us` bo'yicha to'liq e2e o'tish
-- [ ] 9.9 CSP va xavfsizlik header'lari (nginx/Caddy konfiguratsiyasi) + `securityheaders.com` tekshiruvi
-- [ ] 9.10 `npm audit` — `high`/`critical` 0
-- [ ] 9.11 Deploy: statik build → `eldadmin.stackyard.uz`, SPA fallback (`try_files … /index.html`), gzip/brotli, cache header'lari (`index.html` — `no-cache`, assets — `immutable`)
-- [ ] 9.12 Sentry (ixtiyoriy) + sourcemap serverdan olib tashlanadi
-- [ ] 9.13 `README` — ishga tushirish, `npm run api` oqimi, bosqichlar holati
+- [x] 9.4 Bundle byudjeti: boshlang'ich JS ≤ 250 KB gzip; `rollup-plugin-visualizer` hisoboti
+      (o'lchov **152 KB**; `npm run bundle:budget` + CI qadami; `npm run build:analyze`;
+      hisobot `docs/perf-stage-9.md`)
+- [x] 9.5 `i18n-keeper`: yo'qolgan/ortiqcha kalitlar 0, hardcode string 0 (`i18next/no-literal-string` → error)
+- [x] 9.6 Barcha `enum` qiymatlari uchun i18n kalitlari (`enums.*`) to'liqligi testi
+- [x] 9.7 Xato kodlari uchun i18n kalitlari to'liqligi
+- [x] 9.8 `metric`/`imperial` va `generic`/`fmcsa_us` bo'yicha to'liq e2e o'tish
+      (`admin/e2e/09-conversions.spec.ts` — Settings›Company orqali round-trip,
+      Maintenance Due yorlig'i va Reports nav/sarlavha almashinuvi + F215
+      chegaraviy qiymatlar: 0, manfiy, juda katta odometer)
+- [x] 9.9 CSP va xavfsizlik header'lari (nginx/Caddy konfiguratsiyasi) + `securityheaders.com` tekshiruvi
+      (`admin/deploy/{nginx,csp,security-headers}.conf`; Report-Only → bloklovchi rollout `docs/deploy.md` §4)
+- [x] 9.10 `npm audit` — `high`/`critical` **0** (prod ham, dev ham; CI'da bloklovchi).
+      Vite 5→8, Vitest 2→5, plugin-react 4→6, jsdom 25→28, maplibre-gl 4→6 (D47),
+      `js-yaml` override. Qolgan 2 `moderate`: react-router 6.x → D46
+- [x] 9.11 Deploy: statik build → `eldadmin.stackyard.uz`, SPA fallback (`try_files … /index.html`), gzip/brotli, cache header'lari (`index.html` — `no-cache`, assets — `immutable`)
+      (`admin/deploy/nginx.conf` + `docs/deploy.md`)
+- [x] 9.12 Sourcemap serverdan olib tashlanadi (`sourcemap: 'hidden'` +
+      `rsync --exclude '*.map'` + nginx `.map` → 404, TD8 yopildi) **va** Sentry SDK
+      ulandi: `src/lib/sentry.ts` (DSN bo'sh bo'lsa chunk yuklanmaydi),
+      `sentry.scrub.ts` PII filtri (F206), `@sentry/vite-plugin` faqat
+      `SENTRY_AUTH_TOKEN` bo'lganda + `filesToDeleteAfterUpload`.
+      Yoqish/CSP qadamlari — `docs/deploy.md` §5
+- [x] 9.13 `README` — ishga tushirish, `npm run api` oqimi, env, skriptlar, bosqichlar holati 0–9, deploy havolasi
 - [ ] 9.14 **Yakuniy ko'rik:** `frontend-security-reviewer` + `frontend-code-reviewer` + §16/§17 reestrini yangilash
 - [ ] 9.15 **[MAY]** Super Admin konsoli (§7.14)
 ```
@@ -285,11 +303,11 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 | 2 | Fleet moduli | ✅ | `feat/stage-2-fleet` |
 | 3 | Logs va HOS | ✅ | `feat/stage-3-logs` |
 | 4 | Tracking va xarita | ✅ | `feat/stage-2-fleet` |
-| 5 | DVIR va Maintenance | ⬜ | `feat/stage-5-dvir-maintenance` |
-| 6 | Reports va eksport | ⬜ | `feat/stage-6-reports` |
-| 7 | Real-vaqt, Chat, Dashboard | ⬜ | `feat/stage-7-realtime` |
-| 8 | Settings, Support, Audit | ⬜ | `feat/stage-8-settings` |
-| 9 | Sayqal va deploy | ⬜ | `feat/stage-9-polish` |
+| 5 | DVIR va Maintenance | ✅ | `feat/stage-5-dvir-maintenance` |
+| 6 | Reports va eksport | ✅ | `feat/stage-6-reports` |
+| 7 | Real-vaqt, Chat, Dashboard | ✅ | `feat/stage-7-realtime` |
+| 8 | Settings, Support, Audit | ✅ | `feat/stage-8-settings` |
+| 9 | Sayqal va deploy | 🚧 | `feat/stage-9-polish` |
 
 /
 ---

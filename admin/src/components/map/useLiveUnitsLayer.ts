@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import type { Root } from 'react-dom/client';
 import type { GeoJSONSource, Map as MapLibreMap, MapGeoJSONFeature } from 'maplibre-gl';
-import maplibregl from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 
 import type { LiveUnit } from '@/api/types';
 
@@ -303,7 +303,7 @@ export function useLiveUnitsLayer(
     if (!map) return;
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- tsc talab qiladi (Source'da setData yo'q)
     const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined;
-    source?.setData(buildGeoJson(unitsRef.current));
+    void source?.setData(buildGeoJson(unitsRef.current));
   }, [map]);
 
   // Ma'lumot o'zgarganda — bir marta qo'llash.

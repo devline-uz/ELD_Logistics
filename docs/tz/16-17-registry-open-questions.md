@@ -762,3 +762,133 @@ qabul qiladi va yashirilsa saqlashda joriy qiymat yo'qolishi mumkin.
 
 **Backend CR nomzodi:** talab qilinmaydi; TZ §7.13.3 ro'yxatiga maydonni
 qo'shish (hujjat tomonidagi tuzatish).
+
+### D46 — `react-router-dom` 6.x: ikkita `moderate` zaiflik, tuzatish faqat 7.x da (Bosqich 9.10)
+
+`npm audit` `react-router` 6.0.0–7.17.0 uchun ikkita maslahatnoma beradi:
+
+- **GHSA-wrjc-x8rr-h8h6** — `<Link>` / `useNavigate` da teskari slash
+  orqali ochiq qayta yo'naltirish (CVE-2025-68470 bypass);
+- **GHSA-337j-9hxr-rhxg** — `deserializeErrors()` orqali konstruktor
+  injeksiyasi, **faqat SSR gidratatsiyasida**.
+
+Ikkalasi ham `moderate`. Yagona tuzatish yo'li — `react-router-dom@7.x`,
+bu **breaking major** (data router API, `RouterProvider` majburiy,
+`json()`/`defer()` olib tashlangan) va butun `src/app/router/*.routes.tsx`
+(13 modul fayli) hamda barcha `useNavigate`/`Link` chaqiruvlariga ta'sir
+qiladi.
+
+**Qaror (Bosqich 9.10):** yangilanmadi. Sabablar:
+
+1. Ilova **to'liq klient tomonda** ishlaydi — SSR yo'q, shuning uchun
+   `deserializeErrors()` yo'li umuman bajarilmaydi.
+2. Ochiq qayta yo'naltirish yo'li tashqi (foydalanuvchi boshqaradigan) URL
+   `<Link to>` ga uzatilishini talab qiladi. Panelda navigatsiya manzillari
+   faqat ichki konstantalardan quriladi; yagona tashqi havolalar
+   `rel="noopener noreferrer"` bilan `<a>` orqali va `lib/` dagi
+   `https?:` sxema tekshiruvidan o'tadi (F202).
+3. CI darvozasi `--audit-level=high` — `moderate` bloklamaydi, `high` va
+   `critical` esa **0**.
+
+**Reja:** router 7 ga migratsiya alohida texnik-qarz vazifasi sifatida
+Bosqich 10 ga rejalashtiriladi (§7 ekranlariga funksional ta'siri yo'q,
+lekin to'liq regressiya testi talab qiladi).
+
+### D47 — `maplibre-gl` 4.7 → 6.8: kritik XSS tufayli majburiy major yangilanish (Bosqich 9.10)
+
+**GHSA-jrc7-96c5-q579** (`critical`): `maplibre-gl` ≤ 6.4.0 da
+`DOM.sanitize()` jonli `NamedNodeMap` ustida iteratsiya qilib, ba'zi
+atributlarni o'tkazib yuboradi — sanitizator bypass'i. Tuzatish faqat
+**6.8.0** da; 4.x va 5.x liniyalari uchun backport yo'q.
+
+`maplibre-gl` — **prod** bog'liqlik, shuning uchun CI'dagi
+`npm audit --omit=dev --audit-level=high` darvozasi (F210) yiqilar edi.
+
+**Qaror:** `maplibre-gl@^6.8.0` ga o'tildi. Ilovaga ta'siri minimal, chunki
+xarita popup'lari `setHTML()` emas, **`setDOMContent()`** bilan quriladi
+(React root) — ya'ni zaif kod yo'li avvaldan ishlatilmagan; yangilash
+audit darvozasi uchun bajarildi.
+
+**Migratsiya (mexanik, 6 fayl):**
+
+- v5 da standart (default) eksport olib tashlangan:
+  `import maplibregl from 'maplibre-gl'` → `import * as maplibregl from 'maplibre-gl'`
+  (`MapCanvas.tsx`, `useLiveUnitsLayer.ts`, `useTripPolylineLayer.ts`,
+  `RouteDirectionsMap.tsx`).
+- Global `GeoJSON` namespace endi kutubxona bilan avtomatik kelmaydi:
+  `@types/geojson` devDependency + `tsconfig.app.json` → `types: [..., "geojson"]`.
+- `GeoJSONSource.setData()` endi `Promise` qaytaradi (style yuklanishini
+  kutadi) — chaqiruvlar `void` bilan belgilandi
+  (`useGeofenceLayer.ts`, `useLiveUnitsLayer.ts`, `useTripPolylineLayer.ts`).
+
+**Ochiq qoldi (QA uchun):** 183 test fayli va typecheck yashil, lekin
+xaritaning **runtime** xatti-harakati (tile yuklanishi, klasterlash,
+`fitBounds`, marker DOM'i) avtomatlashtirilgan test bilan qoplanmagan —
+Tracking, Trip va Route Directions ekranlarida **qo'lda vizual regressiya
+tekshiruvi** talab qilinadi. Lazy chunk hajmi 203 → 261 KB gzip ga o'sdi
+(byudjetga kirmaydi, `docs/perf-stage-9.md` §3).
+
+### D48 — Fayl saqlash hosti CSP `connect-src`/`img-src` uchun aniqlanmagan (Bosqich 9.9, infra)
+
+`admin/deploy/csp.conf` da fayl hosti hozircha o'rin egallovchi
+`https://files.stackyard.uz` sifatida yozilgan. Haqiqiy qiymat
+`VITE_FILES_BASE_URL` va `VITE_FILES_UPLOAD_HOST` (presign `upload_url`
+hosti) bilan mos bo'lishi **shart**: aks holda DVIR fotolari ko'rinmaydi
+(`img-src`) va fayl yuklash `PUT` so'rovi CSP bilan bloklanadi
+(`connect-src`).
+
+**Kim yopadi:** infra/backend jamoasi — S3/MinIO public host nomi.
+**Qachon:** `docs/deploy.md` §4 dagi CSP Report-Only bosqichidan **oldin**.
+
+### D49 — [KRITIK] Login'dan keyin profil/ruxsatlar yuklanmaydi → darhol 403 (9.1 e2e orqali topildi)
+
+**Topilish:** Bosqich 9.1 Playwright oqim 1 (Login → Dashboard → Logout)
+haqiqiy `/login` formasini to'ldirib kuzatdi: muvaffaqiyatli kirishdan keyin
+`navigate('/')` ishlaydi, lekin Dashboard o'rniga **`ForbiddenScreen`**
+("Required permission: dashboard.read") ko'rsatiladi. Sahifani qo'lda
+yangilash (`F5`) muammoni yo'qotadi — Dashboard to'g'ri ko'rinadi.
+
+**Sabab:** `AppProviders` tartibi (`src/app/providers.tsx`) —
+`BootstrapGate` butun `RouterProvider`ni **bitta marta**, ilova
+yuklanganda o'raydi (`src/main.tsx`). `runBootstrap()` (`GET /me` orqali
+profil/ruxsatlarni `authState`ga yozadi) shu yagona bootstrap bosqichida
+chaqiriladi — agar foydalanuvchi ilova yuklangan payt **tizimga kirmagan**
+bo'lsa (odatiy holat — `/login` sahifasi), bootstrap `{authenticated:
+false}` bilan tugaydi va `PermissionsContext` bo'sh qoladi.
+`LoginPage.tsx`ning `onSubmit`i (`src/features/auth/pages/LoginPage.tsx`)
+faqat `applyTokens(...)` chaqiradi va `navigate('/')` qiladi — **`GET /me`
+ni hech qachon so'ramaydi**. React Router mijoz-tomon navigatsiyasi
+`BootstrapGate`ni qayta render qilmaydi (u marshrut daraxtidan tashqarida),
+shuning uchun `authState().profile` `null` bo'lib qolaveradi va
+`RouteGuard`/`usePermission()` har doim bo'sh ruxsat to'plamini ko'radi —
+**har qanday** muvaffaqiyatli login darhol 403 bilan tugaydi, toki
+foydalanuvchi sahifani qo'lda yangilamaguncha (bu holda `hasStoredRefreshToken()`
+`sessionStorage`dan topadi va to'liq bootstrap qayta ishlaydi).
+
+**Ta'sir:** Ishlab chiqarishda **har bir** muvaffaqiyatli login shu xatoga
+uchraydi (2FA orqali kirish ham — `TwoFactorVerifyPage.tsx` ehtimol xuddi
+shu naqshni qaytaradi, tekshirilmagan). Bu MVP uchun bloklovchi — foydalanuvchi
+tajribasi: "kirdim, lekin hech narsa ko'rinmaydi", F5 bosishni bilmasa ilova
+ishlamaydigan ko'rinadi.
+
+**Tuzatish taklifi (frontend, `src/features/auth/**`/`src/app/providers/**`
+egasi uchun — bu agent ularga tegishi taqiqlangan, W2):**
+`LoginPage.tsx` (va `TwoFactorVerifyPage.tsx`) `onSubmit`ida `applyTokens(...)`dan
+keyin `fetchProfile()` chaqirib `authState().setProfile(profile)` bilan
+yozish kerak (`bootstrap.ts`dagi naqsh bilan bir xil) — yoki markazlashgan
+yechim: `BootstrapGate`ni login/2FA muvaffaqiyatidan keyin ham qayta
+ishga tushiradigan holatga keltirish (masalan `authState`ning
+`accessToken`iga obuna bo'lib, `null → non-null` o'tishda profilni
+so'rash).
+
+**Bu bosqichdagi vaqtinchalik chetlanish:** `e2e/01-login.spec.ts`
+login qadamidan keyin **`page.reload()`** qiladi (izoh bilan, shu D49ga
+havola) — aks holda yagona "Login → Dashboard" oqimi doim qizil bo'lardi.
+Qolgan 7 oqim bu xatodan **ta'sirlanmaydi**, chunki ular
+`sessionStorage`ga oldindan yozilgan refresh token bilan **yangi sahifa
+yuklanishidan** boshlanadi (`e2e/fixtures.ts`) — bootstrap to'liq ishlaydi.
+
+**Kim yopadi:** `src/features/auth/**` egasi (0-bosqich agenti) yoki
+asosiy sessiya.
+**Qachon:** 9.14 yakuniy ko'rikdan oldin — bu MVP uchun bloklovchi bug,
+[MAY] emas.

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { startTotpSetup, verifyTotp } from '@/api/auth.api';
 import { applyTokens } from '@/api/refresh';
+import { loadSessionContext } from '@/app/bootstrap';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { Alert } from '@/components/feedback/Alert';
 import { Button } from '@/components/ui/Button';
@@ -61,6 +62,18 @@ export function TwoFactorSetupPage() {
       const result = await verifyTotp({ code: values.code });
       if (result.tokens) {
         applyTokens(result.tokens, { limited: false });
+      }
+      // Cheklangan (limited) sessiya to'liq sessiyaga aylandi — ruxsatlar
+      // faqat `GET /me` dan keladi, shuning uchun navigatsiyadan oldin
+      // profilni yuklaymiz (D49).
+      const session = await loadSessionContext().catch(() => null);
+      if (session === null) {
+        setFormError(t('errors.unknown'));
+        return;
+      }
+      if (!session.authenticated) {
+        setFormError(t('errors.sessionExpired'));
+        return;
       }
       void navigate('/', { replace: true });
     } catch (error) {

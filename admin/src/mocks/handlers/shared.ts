@@ -4,10 +4,24 @@
  */
 import { HttpResponse } from 'msw';
 
-import { API_BASE_URL } from '@/test/msw-server';
 import type { ErrorResponse, ListMeta } from '@/api/types';
 
-/** `src/test/msw-server.ts` dagi baza URL bilan to'liq yo'l quradi. */
+/**
+ * Baza URL — `import.meta.env.VITE_API_BASE_URL` orqali (9.1 tuzatishi).
+ *
+ * Oldin `@/test/msw-server`dan import qilingan edi — bu fayl **faqat**
+ * `mocks/handlers/*` orqali ishlatilsa muammo yo'q (Vitest, `tsc`), lekin
+ * `src/mocks/browser.ts` (9.1, real brauzer bundle) ham shu handler'larni
+ * import qiladi: `@/test/msw-server` `msw/node`ni import qiladi va u
+ * Node'ning `net`/`http` modullariga tayanadi — brauzerda bootstrap vaqtida
+ * "Class extends value undefined" xatosi bilan yiqiladi. Vitest'da
+ * `vite.config.ts` `test.env.VITE_API_BASE_URL` ham xuddi shu qiymatni
+ * beradi (`http://eldapi.test/api/v1`), shuning uchun bu o'zgarish mavjud
+ * testlarning birortasini buzmaydi.
+ */
+export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
+
+/** Baza URL bilan to'liq yo'l quradi. */
 export const url = (path: string): string => `${API_BASE_URL}${path}`;
 
 /** Backend xato konverti — `{"error":{"code","message","details"}}` (fe-api §6). */

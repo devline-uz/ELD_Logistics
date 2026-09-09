@@ -114,13 +114,13 @@ export function DataTable<TData>({
       ...columns,
       {
         id: '__actions',
-        header: '',
+        header: () => <span className="sr-only">{t('ui.data.dataTable.rowActions')}</span>,
         enableHiding: false,
         enableSorting: false,
         cell: ({ row }) => rowActions(row.original),
       },
     ];
-  }, [columns, rowActions]);
+  }, [columns, rowActions, t]);
 
   const table = useReactTable({
     data,

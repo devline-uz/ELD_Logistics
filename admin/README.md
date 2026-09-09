@@ -6,9 +6,10 @@ Vazifalar reestri: [`../tasks.md`](../tasks.md).
 
 ## Stack
 
-React 18.3 · TypeScript 5 (`strict`) · Vite 5 · Tailwind CSS 3.4 ·
+React 18.3 · TypeScript 5 (`strict`) · Vite 8 · Tailwind CSS 3.4 ·
 TanStack Query v5 · React Router v6 · react-hook-form + zod ·
-`openapi-typescript` + `openapi-fetch` · Vitest + Testing Library + Playwright ·
+`openapi-typescript` + `openapi-fetch` · MapLibre GL 6 ·
+Vitest 5 + Testing Library + Playwright ·
 ESLint 9 (flat config) + Prettier.
 
 **Taqiqlangan:** UI-kit'lar (MUI, AntD, Chakra), `moment`, `axios`, `redux`.
@@ -16,7 +17,7 @@ Yangi kutubxona faqat asoslangan CR bilan.
 
 ## Talablar
 
-- Node.js **≥ 20** (ishlab chiqilgan versiya: 24.x)
+- Node.js **≥ 20.19** (Vite 8 talabi; ishlab chiqilgan versiya: 24.x, CI: 22.x)
 - npm 10+
 
 ## Ishga tushirish
@@ -30,14 +31,16 @@ npm run dev               # http://localhost:5173
 
 ## Muhit o'zgaruvchilari
 
-| Nom                  | Kerakli  | Izoh                                                    |
-| -------------------- | -------- | ------------------------------------------------------- |
-| `VITE_API_BASE_URL`  | ha       | `https://eldapi.stackyard.uz/api/v1`                    |
-| `VITE_WS_URL`        | ha       | `wss://eldapi.stackyard.uz/api/v1/ws`                   |
-| `VITE_MAP_STYLE_URL` | keyinroq | MapLibre style JSON (§17 Q1 — provayder tasdiqlanmagan) |
-| `VITE_SENTRY_DSN`    | yo'q     | ixtiyoriy                                               |
-| `VITE_API_DOCS_URL`  | dev      | Swagger docs bazasi — `npm run api` uchun               |
-| `DOCS_TOKEN`         | dev      | Swagger spec bearer tokeni — **bundle'ga tushmaydi**    |
+| Nom                      | Kerakli | Izoh                                                       |
+| ------------------------ | ------- | ---------------------------------------------------------- |
+| `VITE_API_BASE_URL`      | ha      | `https://eldapi.stackyard.uz/api/v1`                       |
+| `VITE_WS_URL`            | ha      | `wss://eldapi.stackyard.uz/api/v1/ws`                      |
+| `VITE_MAP_STYLE_URL`     | prod    | MapTiler style JSON — kalit **domen bo'yicha cheklangan**  |
+| `VITE_FILES_BASE_URL`    | prod    | DVIR foto/imzo va invoice fayllari uchun `https://` baza   |
+| `VITE_FILES_UPLOAD_HOST` | prod    | presign `upload_url` uchun host oq ro'yxati (vergul bilan) |
+| `VITE_SENTRY_DSN`        | yo'q    | ixtiyoriy — SDK hali ulanmagan, `docs/deploy.md` §5        |
+| `VITE_API_DOCS_URL`      | dev     | Swagger docs bazasi — `npm run api` uchun                  |
+| `DOCS_TOKEN`             | dev     | Swagger spec bearer tokeni — **bundle'ga tushmaydi**       |
 
 `.env` fayllari repozitoriyga tushmaydi; `.env.example` yuritiladi.
 Bundle'ga hech qanday maxfiy kalit qo'yilmaydi — xarita tile kaliti domen bo'yicha
@@ -45,22 +48,24 @@ cheklangan bo'lishi shart.
 
 ## Skriptlar
 
-| Buyruq                 | Nima qiladi                                                         |
-| ---------------------- | ------------------------------------------------------------------- |
-| `npm run dev`          | Vite dev server (5173)                                              |
-| `npm run build`        | `tsc -b --noEmit` + `vite build` → `dist/`                          |
-| `npm run preview`      | build natijasini lokal ko'rish                                      |
-| `npm run typecheck`    | `tsc -b --noEmit`                                                   |
-| `npm run lint`         | ESLint + Prettier tekshiruvi                                        |
-| `npm run lint:fix`     | ESLint `--fix` + Prettier `--write`                                 |
-| `npm run test`         | Vitest (bir marta)                                                  |
-| `npm run test:cov`     | Vitest + v8 qamrov hisoboti                                         |
-| `npm run e2e`          | Playwright                                                          |
-| `npm run api`          | spec → konvertatsiya → tip generatsiyasi → `lint:fix`               |
-| `npm run api:fetch`    | `openapi/swagger.json` ni yuklab oladi (`DOCS_TOKEN` kerak)         |
-| `npm run api:convert`  | Swagger 2.0 → OpenAPI 3.0 (`openapi/openapi3.json`)                 |
-| `npm run api:gen`      | `openapi-typescript` → `src/api/schema.d.ts` + `@generated` banner  |
-| `npm run i18n:extract` | kodda ishlatilgan i18n kalitlarini `src/locales/en.json` ga yig'adi |
+| Buyruq                  | Nima qiladi                                                         |
+| ----------------------- | ------------------------------------------------------------------- |
+| `npm run dev`           | Vite dev server (5173)                                              |
+| `npm run build`         | `tsc -b --noEmit` + `vite build` → `dist/`                          |
+| `npm run preview`       | build natijasini lokal ko'rish                                      |
+| `npm run typecheck`     | `tsc -b --noEmit`                                                   |
+| `npm run lint`          | ESLint + Prettier tekshiruvi                                        |
+| `npm run lint:fix`      | ESLint `--fix` + Prettier `--write`                                 |
+| `npm run test`          | Vitest (bir marta)                                                  |
+| `npm run test:cov`      | Vitest + v8 qamrov hisoboti                                         |
+| `npm run e2e`           | Playwright                                                          |
+| `npm run api`           | spec → konvertatsiya → tip generatsiyasi → `lint:fix`               |
+| `npm run api:fetch`     | `openapi/swagger.json` ni yuklab oladi (`DOCS_TOKEN` kerak)         |
+| `npm run api:convert`   | Swagger 2.0 → OpenAPI 3.0 (`openapi/openapi3.json`)                 |
+| `npm run api:gen`       | `openapi-typescript` → `src/api/schema.d.ts` + `@generated` banner  |
+| `npm run i18n:extract`  | kodda ishlatilgan i18n kalitlarini `src/locales/en.json` ga yig'adi |
+| `npm run bundle:budget` | `dist/` byudjeti + inline-script + `console.*` darvozasi (9.4)      |
+| `npm run build:analyze` | `ANALYZE=1` bilan build → `docs/bundle-stats.html` (gitignored)     |
 
 ### API tiplarini yangilash
 
@@ -139,8 +144,9 @@ va PDF/eksport `blob` yuklab olish.
 - `src/lib/permissions.ts` — `PERM` konstantalari, `createPermissionChecker()`,
   `usePermission()` (`can(p)` · `can.any([...])` · `can.all([...])`).
   `super_admin` — **rol emas, alohida bayroq**: frontendda faqat `companies.*` ni ochadi.
-  > **BLOKER:** kalitlar hozircha **taxminiy** — `GET /permissions` 401 qaytaradi.
-  > `DOCS_TOKEN` kelgach 0.17 CI testi haqiqiy ro'yxat bilan solishtiradi.
+  **104** kalit — manba `openapi/swagger.json` dagi `x-permission`.
+  `src/lib/permissions.catalog.test.ts` katalogni spec bilan **ikki tomonlama**
+  solishtiradi (yo'qolgan ham, ortiqcha kalit ham testni yiqitadi).
 - `src/app/providers/PermissionsProvider.tsx` — ruxsat ro'yxatini props orqali oladi
   (auth store 0.12/0.15 da ulanadi; testda to'g'ridan-to'g'ri ro'yxat beriladi).
 - `src/components/ui/PermissionGate.tsx` — `permission` / `anyOf` / `allOf`;
@@ -166,9 +172,69 @@ va PDF/eksport `blob` yuklab olish.
 
 ```bash
 npm run typecheck && npm run lint && npm run test && npm run build
+npm run bundle:budget      # dist/ ustidan: byudjet + inline-script + console.*
+npm audit --audit-level=high
 ```
 
-To'rttasi yashil bo'lmasa PR birlashtirilmaydi.
+Hammasi yashil bo'lmasa PR birlashtirilmaydi. Bir xil qadamlar
+`.github/workflows/ci.yml` da avtomatlashtirilgan (Node 22).
+
+### Bundle byudjeti
+
+Boshlang'ich JS ≤ **250 KB gzip** (TZ §12 F192). Joriy o'lchov —
+**152 KB**. Batafsil: [`../docs/perf-stage-9.md`](../docs/perf-stage-9.md).
+
+`npm run bundle:budget` uch narsani tekshiradi va biri buzilsa CI'ni yiqitadi:
+boshlang'ich JS/CSS hajmi, `index.html` da inline `<script>` yo'qligi
+(CSP `script-src 'self'`), prod bundle'da `console.log/info/debug/warn/trace`
+qolmaganligi (`console.error` saqlanadi).
+
+Vizual tahlil: `npm run build:analyze` → `docs/bundle-stats.html`.
+
+### Bog'liqliklar xavfsizligi
+
+`npm audit --audit-level=high` — **0** (prod ham, dev ham). Qolgan
+`moderate`: `react-router-dom` 6.x (tuzatish faqat breaking 7.x da) —
+qaror va reja: `docs/tz/16-17-registry-open-questions.md` → **D46**.
+
+## Deploy
+
+Statik SPA → `https://eldadmin.stackyard.uz` (nginx).
+To'liq qo'llanma: [`../docs/deploy.md`](../docs/deploy.md).
+Konfiguratsiya repoda: [`deploy/`](./deploy/) — `nginx.conf`,
+`csp.conf`, `security-headers.conf`.
+
+Qisqacha:
+
+```bash
+npm ci && npm run build && npm run bundle:budget
+rsync -av --delete --exclude '*.map' dist/ deploy@eldadmin.stackyard.uz:/var/www/eldadmin/
+```
+
+- `--exclude '*.map'` **majburiy**: `build.sourcemap: 'hidden'` `.map`
+  fayllarni yozadi, lekin ular hech qachon serverga chiqmasligi kerak
+  (nginx'da qo'shimcha `location ~* \.map$ { return 404; }`).
+- CSP avval `Report-Only` rejimida chiqariladi — `docs/deploy.md` §4 dagi
+  chek-list.
+- Sentry SDK hali **ulanmagan**; yoqish qadamlari `docs/deploy.md` §5.
+
+## Bosqichlar holati
+
+| #   | Bosqich                                   | Holat        |
+| --- | ----------------------------------------- | ------------ |
+| -1  | Tayyorgarlik (infratuzilma)               | ✅ 7/7       |
+| 0   | Karkas va autentifikatsiya                | ✅ 24/24     |
+| 1   | Dizayn tizimi va komponent kutubxonasi    | ✅ 18/18     |
+| 2   | Fleet moduli                              | ✅ 12/12     |
+| 3   | Logs va HOS                               | ✅ 15/15     |
+| 4   | Tracking va xarita                        | ✅ 13/13     |
+| 5   | DVIR va Maintenance                       | ✅ 14/14     |
+| 6   | Reports va eksport                        | ✅ 11/11     |
+| 7   | Real-vaqt, Chat, Notifications, Dashboard | ✅ 12/12     |
+| 8   | Settings, Support, Audit                  | ✅ 13/13     |
+| 9   | Sayqal, testlar, ishga tushirish          | 🚧 jarayonda |
+
+Vazifa darajasidagi aniq holat: [`../tasks.md`](../tasks.md).
 
 ## Brauzerlar
 

@@ -7,3 +7,5 @@ openapi/swagger.json
 openapi/openapi3.json
 src/api/schema.d.ts
 package-lock.json
+# MSW generatsiya qilgan worker skripti (`npx msw init public/`, 9.1) — qo'lda tegilmaydi.
+public/mockServiceWorker.js

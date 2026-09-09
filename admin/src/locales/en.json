@@ -1,7 +1,6 @@
 {
   "app": {
-    "name": "ONEBOOK ELD",
-    "title": "ELD Admin"
+    "name": "ONEBOOK ELD"
   },
   "auth": {
     "forgotPassword": {
@@ -96,7 +95,6 @@
       "reload": "Reload the page",
       "refresh": "Refresh",
       "save": "Save",
-      "search": "Search",
       "signOut": "Sign out",
       "staySignedIn": "Stay signed in",
       "tryAgain": "Try again",
@@ -128,8 +126,7 @@
       "branch": "Branch"
     },
     "filters": {
-      "branch": "Branch",
-      "allBranches": "All branches"
+      "branch": "Branch"
     }
   },
   "enums": {
@@ -138,7 +135,8 @@
       "online": "Online",
       "idle": "Idle",
       "disconnected": "Disconnected",
-      "malfunction": "Malfunction"
+      "malfunction": "Malfunction",
+      "no_device": "No device"
     },
     "duty_status": {
       "DR": "Driving",
@@ -153,10 +151,6 @@
       "failed": "Failed",
       "queued": "Queued",
       "running": "Running"
-    },
-    "unit_status": {
-      "active": "Active",
-      "inactive": "Inactive"
     },
     "driver_status": {
       "invited": "Invited",
@@ -243,30 +237,75 @@
   },
   "errors": {
     "accountInactive": "This account is inactive. Contact your administrator.",
+    "alreadyAssigned": "This item is already assigned.",
+    "badRequest": "The request could not be understood. Please try again.",
+    "batchTooLarge": "This batch is too large. Please split it into smaller batches.",
     "boundary": {
       "description": "An unexpected error occurred while rendering this screen.",
       "title": "This page could not be displayed",
       "traceId": "Trace ID: {{traceId}}"
     },
     "conflict": "This record changed while you were editing it.",
+    "defectTypeSystemLocked": "Standard defect types cannot be edited. Create a company defect type instead.",
+    "defectTypeUnknown": "This defect type no longer exists.",
+    "drImmutable": "Driving time cannot be edited directly.",
+    "drivingModeBlocked": "This action is not available while the driver is in driving mode.",
+    "dvirAdminCreateDenied": "Administrators cannot create inspection reports on behalf of a driver.",
+    "dvirInvalidTransition": "This report is no longer in a state that allows this action. Reload the page to see its current status.",
+    "eventImmutable": "This log event cannot be changed directly.",
+    "featureDisabled": "This feature is not enabled for your company.",
+    "fileTooLarge": "This file is too large to upload.",
+    "fileTypeInvalid": "This file type is not supported.",
     "forbidden": "You do not have permission to perform this action.",
     "forbiddenScreen": {
       "description": "Ask your administrator to grant access, or go back to a page you can open.",
       "requiredPermission": "Required permission: {{permission}}",
       "title": "You do not have permission to view this page"
     },
+    "idempotencyConflict": "This request was already processed with different data.",
     "internal": "The server could not complete the request.",
+    "invalidCredentials": "The email/username or password is incorrect.",
+    "invalidState": "This action is not allowed in the current state.",
+    "invitationExpired": "This invitation has expired.",
+    "invitationInvalid": "This invitation link is invalid.",
+    "invitationUsed": "This invitation has already been used.",
+    "lastAdministrator": "You cannot remove the last administrator.",
+    "lockedOut": "This account is temporarily locked. Please try again later.",
+    "logNotReady": "This log is not ready yet. Please try again shortly.",
+    "maintenanceInvalidState": "This maintenance item cannot change to that status from its current status.",
+    "maintenanceNoReading": "No odometer or engine-hours reading is available yet.",
+    "messageTooLong": "This message is too long.",
     "network": "You appear to be offline.",
     "notFound": "Not found.",
     "notFoundScreen": {
       "description": "The page or record you are looking for does not exist.",
       "title": "Not found"
     },
+    "passwordWeak": "Please choose a stronger password.",
+    "payloadTooLarge": "The request is too large.",
+    "pinInvalid": "That PIN is not valid.",
+    "pinLocked": "The PIN has been locked after too many attempts.",
+    "pinNotSet": "A PIN has not been set yet.",
+    "pinRequired": "A PIN is required to continue.",
     "rateLimited": "Too many requests. Please wait a moment and try again.",
+    "resourceInUse": "This item is in use and cannot be removed.",
+    "roleInUse": "This role is assigned to users and cannot be removed.",
+    "selfTargetForbidden": "You cannot perform this action on your own account.",
+    "serviceUnavailable": "The service is temporarily unavailable. Please try again shortly.",
     "sessionExpired": "Your session ended for security reasons. Please sign in again.",
+    "storageError": "The file could not be stored. Please try again.",
+    "subscriptionExpired": "Your subscription has expired. Contact your administrator.",
     "subscriptionReadonly": "Your subscription is read-only. Changes are disabled.",
+    "systemRoleImmutable": "This system role cannot be changed.",
+    "timeInFuture": "The selected time is in the future.",
+    "totpAlreadyEnabled": "Two-factor authentication is already enabled.",
+    "totpInvalid": "That code is not valid. Please try again.",
+    "totpRequired": "A two-factor authentication code is required.",
+    "totpSetupRequired": "Two-factor authentication setup is required before continuing.",
     "unauthorized": "Your session has ended. Please sign in again.",
+    "uniqueViolation": "A record with these details already exists.",
     "unknown": "Something went wrong.",
+    "upstreamError": "An upstream service did not respond. Please try again.",
     "validation": "Please check the highlighted fields and try again."
   },
   "idle": {
@@ -340,7 +379,6 @@
       "uncertified": "Uncertified Logs",
       "uncertifiedDescription": "Logs that are still uncertified"
     },
-    "routes": "Routes",
     "support": {
       "audit": "Histories",
       "auditDescription": "Full audit trail of every change",
@@ -353,12 +391,6 @@
     "tracking": "Tracking"
   },
   "pages": {
-    "audit": {
-      "title": "Histories"
-    },
-    "chat": {
-      "title": "Chat"
-    },
     "dashboard": {
       "title": "Dashboard"
     },
@@ -368,38 +400,14 @@
     "drivers": {
       "title": "Driver Management"
     },
-    "dvir": {
-      "title": "DVIR"
-    },
-    "eldDevices": {
-      "title": "ELD Devices"
-    },
-    "feedback": {
-      "title": "Feedback"
-    },
     "forgotPassword": {
       "title": "Forgot password"
     },
     "invitationAccept": {
       "title": "Accept invitation"
     },
-    "logEditRequests": {
-      "title": "Log Edit Requests"
-    },
     "login": {
       "title": "Sign in"
-    },
-    "logsByDriver": {
-      "title": "Logs By Driver"
-    },
-    "logsByUnit": {
-      "title": "Logs By Unit"
-    },
-    "logView": {
-      "title": "Daily Log"
-    },
-    "maintenance": {
-      "title": "Maintenance"
     },
     "resetPassword": {
       "title": "Reset password"
@@ -422,41 +430,14 @@
     "settingsSecurity": {
       "title": "Security"
     },
-    "shippingDocuments": {
-      "title": "Shipping Documents"
-    },
-    "support": {
-      "title": "Contact Support"
-    },
-    "tracking": {
-      "title": "Tracking"
-    },
-    "trackOnMap": {
-      "title": "Track on Map"
-    },
-    "trailers": {
-      "title": "Trailers"
-    },
     "twoFactorSetup": {
       "title": "Set up two-factor authentication"
     },
     "twoFactorVerify": {
       "title": "Two-factor verification"
     },
-    "unassignedDriving": {
-      "title": "Unassigned Driving"
-    },
-    "unitDetail": {
-      "title": "Unit"
-    },
-    "units": {
-      "title": "Unit Management"
-    },
     "users": {
       "title": "Users"
-    },
-    "violations": {
-      "title": "Violations"
     }
   },
   "profileMenu": {
@@ -1091,6 +1072,21 @@
         "activity": "Activity"
       },
       "activitySummary": "{{field}} changed from {{oldValue}} to {{newValue}}",
+      "activitiesActions": {
+        "create": "Created",
+        "update": "Updated",
+        "soft_delete": "Deleted",
+        "login": "Signed in",
+        "logout": "Signed out",
+        "failed_login": "Failed sign-in",
+        "export": "Exported",
+        "activate": "Activated",
+        "deactivate": "Deactivated",
+        "password_reset": "Password reset",
+        "session_active": "Session started",
+        "session_paused": "Session paused",
+        "session_revoked": "Session revoked"
+      },
       "dailyLogsEmptyTitle": "No daily logs",
       "dailyLogsEmptyDescription": "No daily logs in the current certification window.",
       "dailyLogsColumns": {
@@ -1410,7 +1406,6 @@
         "notSet": "Not set",
         "signed": "Signed",
         "notSigned": "Not Signed",
-        "signatureAlt": "Driver signature",
         "fields": {
           "units": "Unit #(s)",
           "driver": "Driver",
@@ -1703,7 +1698,6 @@
         "start": "Start",
         "end": "End",
         "range": "Range",
-        "duration": "Duration",
         "empty": "No trips recorded for this day"
       },
       "error": "Could not load live tracking data"
@@ -1846,32 +1840,23 @@
         "summary": "Inspection",
         "defects": "Defects",
         "signatures": "Signatures",
-        "history": "Status history",
-        "repair": "Repair"
+        "history": "Status history"
       },
       "fields": {
         "unit": "Unit #",
         "trailers": "Trailers",
         "type": "Type",
         "performedAt": "Performed at",
-        "createdAt": "Created at",
         "location": "Location",
         "coordinates": "Coordinates",
         "odometer": "Odometer",
         "engineHours": "Engine hours",
         "driver": "Driver",
-        "source": "Source",
-        "mechanicNote": "Mechanic note",
-        "repairedAt": "Repaired at",
-        "certifiedAt": "Certified at",
-        "closedAt": "Closed at",
-        "closedReason": "Closed reason"
+        "source": "Source"
       },
       "defects": {
         "empty": "No defects were reported in this inspection.",
         "critical": "Critical",
-        "note": "Note",
-        "photos": "Photos",
         "photoAlt": "Defect photo {{index}} of {{name}}",
         "openPhoto": "Open photo {{index}} of {{name}}"
       },
@@ -1902,7 +1887,6 @@
     },
     "lightbox": {
       "title": "Photo",
-      "close": "Close photo",
       "previous": "Previous photo",
       "next": "Next photo",
       "position": "{{current}} of {{total}}"
@@ -1913,7 +1897,6 @@
     },
     "actions": {
       "recordRepair": "Record repair",
-      "certify": "Certify",
       "downloadPdf": "Download PDF",
       "view": "View",
       "back": "Back to DVIR"
@@ -1933,15 +1916,9 @@
       "submit": "Record repair",
       "signatureMissing": "Mechanic signature required — captured in the driver app"
     },
-    "certify": {
-      "confirmTitle": "Are you absolutely sure?",
-      "confirmDescription": "Certifying closes this DVIR. The admin panel never signs on behalf of a driver — only the driver's own certification signature is stored. Are you sure you want to continue?"
-    },
     "toast": {
       "repairRecorded": "Repair recorded on DVIR for unit {{unit}}",
       "repairFailed": "The repair could not be recorded",
-      "certified": "DVIR for unit {{unit}} certified",
-      "certifyFailed": "The report could not be certified",
       "pdfDownloaded": "DVIR PDF downloaded",
       "pdfFailed": "The PDF could not be downloaded",
       "uploadFailed": "The invoice could not be uploaded"
@@ -1950,10 +1927,6 @@
       "invalidTransition": "This report is no longer in a state that allows this action. Reload the page to see its current status.",
       "systemLocked": "Standard defect types cannot be edited. Create a company defect type instead.",
       "duplicateName": "A defect type with this name already exists in this category."
-    },
-    "guards": {
-      "repairUnavailable": "Only a report with defects found can move to Repaired.",
-      "certifyUnavailable": "Only a repaired report can be certified."
     },
     "defectTypes": {
       "title": "Defect Types",
@@ -1971,7 +1944,6 @@
         "action": "Action"
       },
       "system": "Standard",
-      "systemHint": "Standard FMCSA defect types are read only.",
       "form": {
         "addTitle": "Add defect type",
         "editTitle": "Edit defect type",
@@ -2008,7 +1980,6 @@
       "mechanicNoteMax": "The note must be at most 2000 characters",
       "vendorMax": "Vendor must be at most 200 characters",
       "invoiceNoMax": "Invoice # must be at most 64 characters",
-      "costMin": "Cost cannot be negative",
       "sortOrderRange": "Sort order must be between 0 and 10000",
       "signatureRequired": "A mechanic signature from the driver app is required"
     }
@@ -2089,8 +2060,7 @@
       "add": "Add Maintenance",
       "view": "View",
       "markComplete": "Mark as Complete",
-      "cancel": "Cancel",
-      "downloadInvoice": "Download invoice"
+      "cancel": "Cancel"
     },
     "empty": {
       "title": "No Data Found",
@@ -2098,13 +2068,10 @@
       "filteredDescription": "No records match your filters"
     },
     "units": {
-      "km": "km",
-      "mi": "mi",
       "days_one": "{{count}} day",
       "days_other": "{{count}} days",
       "engineHours_one": "{{count}} engine hour",
-      "engineHours_other": "{{count}} engine hours",
-      "label": "Unit"
+      "engineHours_other": "{{count}} engine hours"
     },
     "form": {
       "addTitle": "Add Maintenance",
@@ -2129,7 +2096,6 @@
       },
       "hints": {
         "lastServiceValue": "Last service value — the odometer or engine hour reading recorded at the last completed service.",
-        "unitsSelectAll": "Select All",
         "distanceUnit": "Values are entered and shown in {{unit}}."
       },
       "modes": {
@@ -2148,7 +2114,6 @@
         "reminderNegative": "Reminder cannot be negative",
         "nameRequired": "Enter a schedule name",
         "typeRequired": "Select a maintenance type",
-        "alertTypeRequired": "Select an alert type",
         "deliveryRequired": "Select at least one delivery method",
         "notesMax": "Notes cannot be longer than 60 characters"
       }
@@ -2241,8 +2206,7 @@
       "updated": "Maintenance schedule {{name}} updated",
       "deleted": "Maintenance schedule {{name}} deleted",
       "completed": "Maintenance for unit {{unit}} marked as complete",
-      "cancelled": "Maintenance for unit {{unit}} cancelled",
-      "uploadFailed": "The invoice could not be uploaded"
+      "cancelled": "Maintenance for unit {{unit}} cancelled"
     }
   },
   "reports": {

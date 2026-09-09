@@ -83,6 +83,33 @@ async function loadCompanyContext(permissions: readonly string[]): Promise<void>
 }
 
 /**
+ * Ochiq sessiya uchun profil + ruxsatlar + kompaniya kontekstini yuklaydi.
+ *
+ * Bootstrap'dan **tashqarida** ham kerak: login / 2FA verify / 2FA setup
+ * tokenlarni qo'llagach yangi sessiya ochadi, lekin `BootstrapGate` allaqachon
+ * ishlab bo'lgan va qayta ishga tushmaydi. Shu funksiya chaqirilmasa
+ * `profile` `null` qoladi → ruxsatlar bo'sh → foydalanuvchi darhol 403 ga
+ * tushadi (D49). Shuning uchun sessiya ochadigan har bir oqim navigatsiyadan
+ * **oldin** shuni kutishi shart.
+ *
+ * `401`/`403` — sessiya haqiqiy emas: anonim holatga tushiladi (xato emas).
+ */
+export async function loadSessionContext(): Promise<BootstrapResult> {
+  try {
+    const profile = await fetchProfile();
+    authState().setProfile(profile);
+    await loadCompanyContext(profile.permissions ?? []);
+    return { authenticated: true, limited: authState().limited };
+  } catch (error) {
+    if (isApiError(error) && (error.status === 401 || error.status === 403)) {
+      endSession('session_expired');
+      return { authenticated: false, limited: false };
+    }
+    throw error;
+  }
+}
+
+/**
  * Bootstrap'ni bajaradi. `GET /app/config` yiqilsa xato **otiladi** —
  * chaqiruvchi to'liq ekranli xato holatini ko'rsatadi.
  */
@@ -95,17 +122,5 @@ export async function runBootstrap(): Promise<BootstrapResult> {
     return { authenticated: false, limited: false };
   }
 
-  try {
-    const profile = await fetchProfile();
-    authState().setProfile(profile);
-    await loadCompanyContext(profile.permissions ?? []);
-    return { authenticated: true, limited: authState().limited };
-  } catch (error) {
-    // 401 — sessiya haqiqiy emas: anonim holatga tushamiz, xato ekrani emas.
-    if (isApiError(error) && (error.status === 401 || error.status === 403)) {
-      endSession('session_expired');
-      return { authenticated: false, limited: false };
-    }
-    throw error;
-  }
+  return loadSessionContext();
 }

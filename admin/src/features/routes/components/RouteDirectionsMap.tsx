@@ -8,7 +8,8 @@
  * `RouteListPage`) maplibre'ga statik bog'lanmaydi.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import maplibregl, { type Map as MapLibreMap } from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+import type { Map as MapLibreMap } from 'maplibre-gl';
 
 import { LazyMapCanvas } from '@/components/map/LazyMapCanvas';
 import { decodePolyline } from '@/components/map/polyline';

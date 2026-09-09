@@ -3,7 +3,11 @@
  * mos (`WaypointInput.text` majburiy, `lat`/`lng` ixtiyoriy — MVP'da
  * xaritadan nuqta tanlash yo'q, faqat manzil matni, D-Q1 kabi ochiq band
  * sifatida hisobotda qayd etilgan).
+ *
+ * Sxemalar `t` bilan quriladi — validatsiya matni ham i18n kalitidan keladi
+ * (W6: kodda hardcode string yo'q, `dvir/lib/schemas.ts` bilan bir xil naqsh).
  */
+import type { TFunction } from 'i18next';
 import { z } from 'zod';
 
 export const NOT_COMPLETED_REASONS = [
@@ -17,17 +21,27 @@ export const NOT_COMPLETED_REASONS = [
 
 export type NotCompletedReason = (typeof NOT_COMPLETED_REASONS)[number];
 
-export const routeFormSchema = z.object({
-  unit_id: z.string().min(1, 'Select a unit.'),
-  driver_id: z.string().min(1, 'Select a driver.'),
-  origin_text: z.string().trim().min(1, 'Enter the origin address.').max(255),
-  destination_text: z.string().trim().min(1, 'Enter the destination address.').max(255),
-  geofence_m: z.number().min(50).max(20_000).optional(),
-  sequence: z.number().min(1).max(9999).optional(),
-  note: z.string().trim().max(1000).optional().or(z.literal('')),
-});
+export function buildRouteFormSchema(t: TFunction) {
+  return z.object({
+    unit_id: z.string().min(1, t('routes.form.errors.unitRequired')),
+    driver_id: z.string().min(1, t('routes.form.errors.driverRequired')),
+    origin_text: z.string().trim().min(1, t('routes.form.errors.originRequired')).max(255),
+    destination_text: z
+      .string()
+      .trim()
+      .min(1, t('routes.form.errors.destinationRequired'))
+      .max(255),
+    geofence_m: z
+      .number()
+      .min(50, t('routes.form.errors.geofenceRange'))
+      .max(20_000, t('routes.form.errors.geofenceRange'))
+      .optional(),
+    sequence: z.number().min(1).max(9999).optional(),
+    note: z.string().trim().max(1000).optional().or(z.literal('')),
+  });
+}
 
-export type RouteFormValues = z.infer<typeof routeFormSchema>;
+export type RouteFormValues = z.infer<ReturnType<typeof buildRouteFormSchema>>;
 
 export const routeFormDefaultValues: RouteFormValues = {
   unit_id: '',
@@ -39,17 +53,19 @@ export const routeFormDefaultValues: RouteFormValues = {
   note: '',
 };
 
-export const notCompletedSchema = z
-  .object({
-    reason: z.enum(NOT_COMPLETED_REASONS),
-    note: z.string().trim().max(1000).optional().or(z.literal('')),
-  })
-  .refine((value) => value.reason !== 'other' || Boolean(value.note?.trim()), {
-    message: 'A note is required when the reason is "Other".',
-    path: ['note'],
-  });
+export function buildNotCompletedSchema(t: TFunction) {
+  return z
+    .object({
+      reason: z.enum(NOT_COMPLETED_REASONS),
+      note: z.string().trim().max(1000).optional().or(z.literal('')),
+    })
+    .refine((value) => value.reason !== 'other' || Boolean(value.note?.trim()), {
+      message: t('routes.notCompleted.noteRequired'),
+      path: ['note'],
+    });
+}
 
-export type NotCompletedFormValues = z.infer<typeof notCompletedSchema>;
+export type NotCompletedFormValues = z.infer<ReturnType<typeof buildNotCompletedSchema>>;
 
 export const notCompletedDefaultValues: NotCompletedFormValues = {
   reason: 'breakdown',

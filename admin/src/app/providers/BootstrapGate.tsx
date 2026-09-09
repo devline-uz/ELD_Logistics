@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { runBootstrap } from '@/app/bootstrap';
@@ -25,13 +25,19 @@ export function BootstrapGate({ skip = false, children }: BootstrapGateProps) {
   const { t } = useTranslation();
   const [status, setStatus] = useState<BootstrapStatus>(skip ? 'ready' : 'loading');
   const [attempt, setAttempt] = useState(0);
-  // StrictMode effektni ikki marta chaqiradi — bootstrap bir marta ketishi shart.
-  const startedAttempt = useRef(-1);
 
   useEffect(() => {
-    if (skip || startedAttempt.current === attempt) return;
-    startedAttempt.current = attempt;
+    if (skip) return undefined;
 
+    // StrictMode dev rejimida effektni ikki marta chaqiradi (mount → cleanup
+    // → mount, bitta sinxron bosqichda). Oldin bu yerda "bir marta ketishi
+    // shart" degan `useRef` darvozasi bor edi: u ikkinchi (haqiqiy qoladigan)
+    // chaqiruvni butunlay bloklardi, birinchisi esa `cleanup`da `cancelled`
+    // bo'lib qolib, promise tugagach `setStatus` hech qachon chaqirilmasdi —
+    // ilova "Loading…" holatida abadiy qolib ketardi (9.1 e2e orqali
+    // `npm run dev`da aniqlangan, productionda StrictMode yo'q — ko'rinmagan).
+    // To'g'ri yechim: darvozasiz, har chaqiruv o'zining `cancelled`
+    // bayrog'iga tayanadi — birinchisi bekor qilinadi, ikkinchisi yakunlaydi.
     let cancelled = false;
     setStatus('loading');
 

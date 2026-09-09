@@ -6,6 +6,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { login } from '@/api/auth.api';
 import { applyTokens } from '@/api/refresh';
+import { loadSessionContext } from '@/app/bootstrap';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { resolveDeviceId } from '@/features/auth/device-id';
 import { loginSchema, type LoginFormValues } from '@/features/auth/schemas';
@@ -87,11 +88,25 @@ export function LoginPage() {
         },
       );
 
+      // Ruxsatlar `GET /me` dan keladi. `BootstrapGate` faqat ilova ishga
+      // tushganda ishlaydi, shu sababli login'dan keyin profilni **shu yerda**
+      // yuklash shart — aks holda ruxsatlar bo'sh qolib, birinchi ekranda
+      // darhol 403 chiqadi (D49).
+      const session = await loadSessionContext().catch(() => null);
+      if (session === null) {
+        setFormError(t('errors.unknown'));
+        return;
+      }
+      if (!session.authenticated) {
+        setFormError(t('errors.sessionExpired'));
+        return;
+      }
+
       if (result.replaced_session) {
         toast.show({ variant: 'warning', message: t('toast.replacedSession') });
       }
 
-      void navigate('/', { replace: true });
+      void navigate(session.limited ? '/2fa/setup' : '/', { replace: true });
     } catch (error) {
       if (isApiError(error)) {
         if (error.status === 429) {

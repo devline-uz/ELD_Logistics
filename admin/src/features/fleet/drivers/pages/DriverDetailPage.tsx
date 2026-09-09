@@ -286,7 +286,7 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
                 {(activitiesQuery.data?.data ?? []).map((activity) => (
                   <tr key={activity.id} className="border-t border-stroke">
                     <td className="px-4 py-3">{formatDateTime(activity.occurred_at)}</td>
-                    <td className="px-4 py-3">{activity.actor_id ?? '—'}</td>
+                    <td className="px-4 py-3">{activity.actor_id ?? t('common.na')}</td>
                     <td className="px-4 py-3">
                       {activity.field
                         ? t('fleetDrivers.detail.activitySummary', {
@@ -294,7 +294,7 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
                             oldValue: activity.old_value ?? '—',
                             newValue: activity.new_value ?? '—',
                           })
-                        : activity.action}
+                        : t(`fleetDrivers.detail.activitiesActions.${activity.action ?? 'update'}`)}
                     </td>
                   </tr>
                 ))}

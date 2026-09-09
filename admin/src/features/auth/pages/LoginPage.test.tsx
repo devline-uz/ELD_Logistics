@@ -13,6 +13,7 @@ import {
   loginRateLimitedHandler,
   loginRequiresTotpSetupHandler,
   loginSuccessHandler,
+  meHandler,
 } from '@/features/auth/mocks/handlers';
 import { LoginPage } from '@/features/auth/pages/LoginPage';
 import { server } from '@/test/msw-server';
@@ -39,7 +40,7 @@ afterEach(() => {
 
 describe('LoginPage', () => {
   it('signs in with valid credentials and stores the access token in memory only', async () => {
-    server.use(appConfigHandler, loginSuccessHandler);
+    server.use(appConfigHandler, loginSuccessHandler, meHandler());
     const user = userEvent.setup();
     renderLogin();
 
