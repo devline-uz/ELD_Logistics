@@ -4,10 +4,13 @@
 Kod TZ dan chetlashsa — avval TZ o'zgartiriladi (CR), keyin kod.
 **Joriy bosqich:** **mobil ilova** (Flutter, `mobile/`). Backend `v1` tugagan va muzlatilgan.
 
+> ⚠️ Backend va admin panel kodi bu repodan **alohida repolarga ko'chirildi**
+> (tarix bilan): backend → `github.com/devline-uz/eld_backend`, admin panel →
+> `github.com/devline-uz/eld_admin`. Bu repo (`eld_mobile`) endi faqat mobil
+> ilova kodini saqlaydi.
+
 ## Papkalar
-- `backend/` — butun backend kodi (boshqa joyga backend kodi yozilmaydi) · reja: `tasks.md`
 - `mobile/` — butun Flutter kodi · reja: `mobile/tasks.md` · dizayn manbai: `mobile/design/figma/`
-- `admin/` — butun web admin panel kodi (Vite + React) · reja: `admin/tasks.md` · TZ: `docs/tz-admin-frontend.md` · ekran spetsifikatsiyalari: `docs/tz/07-*.md`
 - `contracts/` — muzlatilgan backend kontrakti (`swagger.json`, `permissions.md`, `websocket.md`) — klientlar uchun yagona haqiqat manbai
 - `.claude/agents/` — loyiha subagentlari
 - `.claude/skills/` — siqilgan TZ bilimi (butun tz.md ni qayta o'qimaslik uchun)
