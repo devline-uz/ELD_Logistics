@@ -892,3 +892,25 @@ yuklanishidan** boshlanadi (`e2e/fixtures.ts`) — bootstrap to'liq ishlaydi.
 asosiy sessiya.
 **Qachon:** 9.14 yakuniy ko'rikdan oldin — bu MVP uchun bloklovchi bug,
 [MAY] emas.
+
+### D50 — [MAY] MapLibre canvas — axe-core `<canvas>` ichini skanlay olmaydi (Bosqich 9.2)
+
+**Topilish:** `e2e/10-a11y.spec.ts` — "Tracking — Track on Map" ekrani
+`axe-core` bilan skanlanganda, xarita `<canvas>` elementi (`maplibre-gl`,
+`.maplibregl-map`) uchinchi tomon kutubxonasi tomonidan chiziladi — WebGL
+canvas ichidagi piksellar DOM tuguni emas, shu sabab `axe-core` (va umuman
+har qanday DOM-asoslangan a11y skaneri) uning ichini tekshira olmaydi.
+
+**Qaror:** Skan `.maplibregl-map` tugunini `AxeBuilder().exclude(...)` bilan
+chetlab o'tadi; xaritaning matn ekvivalenti (trip tarixi jadvali,
+`TripHistoryTimeline`, unit ma'lumotlari paneli) to'liq skanlanadi va
+critical/serious = 0. Xaritaning o'zi klaviatura bilan boshqarilishi (zoom
+tugmalari, marker fokus) alohida qo'lda tekshiriladi — `fe-a11y` skill §1,
+avtomatik skan qamrovidan tashqarida.
+
+**Tuzatish taklifi:** Yo'q — uchinchi tomon kutubxona cheklovi, frontend
+tomondan tuzatib bo'lmaydi (MapLibre canvas render arxitekturasi shunday).
+
+**Kim yopadi:** Hech kim — abadiy istisno, faqat kelajakda MapLibre o'zi
+canvas ichiga ARIA canvas-fallback content qo'shsa qayta ko'rib chiqiladi.
+**Qachon:** N/A.

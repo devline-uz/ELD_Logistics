@@ -142,7 +142,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               ) : null}
               <button
                 type="button"
-                className="shrink-0 text-neutral-500 hover:text-neutral-700"
+                className="shrink-0 text-neutral-600 hover:text-neutral-700"
                 onClick={() => {
                   dismiss(toast.id);
                 }}

@@ -6,11 +6,24 @@ export interface ErrorStateProps {
   message?: string;
   onRetry?: () => void;
   retryLabel?: string;
+  /**
+   * Sarlavha HTML darajasi — chaqiruvchi ekran o'z `h1`/`h2` ierarxiyasiga
+   * mos moslashtiradi (fe-a11y §4). Default `2`: bu komponent odatda sahifa
+   * `h1`idan keyingi birinchi kontent sarlavhasi sifatida ishlatiladi.
+   */
+  headingLevel?: 2 | 3 | 4;
 }
 
 /** Xato xabari + «Try again» tugmasi (fe-screens §7). */
-export function ErrorState({ title, message, onRetry, retryLabel }: ErrorStateProps) {
+export function ErrorState({
+  title,
+  message,
+  onRetry,
+  retryLabel,
+  headingLevel = 2,
+}: ErrorStateProps) {
   const { t } = useTranslation();
+  const HeadingTag = `h${headingLevel}` as const;
 
   return (
     <div
@@ -18,10 +31,10 @@ export function ErrorState({ title, message, onRetry, retryLabel }: ErrorStatePr
       className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center"
     >
       <AlertTriangle aria-hidden="true" className="h-10 w-10 text-error-base" />
-      <h3 className="text-body-lg font-semibold text-neutral-900">
+      <HeadingTag className="text-body-lg font-semibold text-neutral-900">
         {title ?? t('common.states.error')}
-      </h3>
-      <p className="max-w-sm text-body text-neutral-500">{message ?? t('errors.unknown')}</p>
+      </HeadingTag>
+      <p className="max-w-sm text-body text-neutral-600">{message ?? t('errors.unknown')}</p>
       {onRetry ? (
         <button
           type="button"

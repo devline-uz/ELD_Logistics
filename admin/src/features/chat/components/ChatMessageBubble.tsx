@@ -180,7 +180,7 @@ export function ChatFailedMessage({
           <button
             type="button"
             onClick={onDiscard}
-            className="text-body-xs font-medium text-neutral-500 hover:underline"
+            className="text-body-xs font-medium text-neutral-600 hover:underline"
           >
             {t('common.actions.delete')}
           </button>

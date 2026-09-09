@@ -55,7 +55,7 @@ export function ActivityReportDetailPage() {
 
       <div className="overflow-x-auto rounded-lg border border-stroke bg-surface">
         <table className="w-full text-start text-body-sm">
-          <thead className="bg-surface-muted text-neutral-500">
+          <thead className="bg-surface-muted text-neutral-600">
             <tr>
               {DETAIL_COLUMN_KEYS.map((key) => (
                 <th key={key} className="px-3 py-2 text-start font-medium uppercase tracking-wide">

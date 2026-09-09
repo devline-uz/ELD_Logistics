@@ -152,7 +152,7 @@ export function LogsByDriverPage() {
             <h3 className="text-body-lg font-semibold text-neutral-900">
               {t('logs.byDriver.empty.selectDriverTitle')}
             </h3>
-            <p className="mt-2 text-body text-neutral-500">
+            <p className="mt-2 text-body text-neutral-600">
               {t('logs.byDriver.empty.selectDriverDescription')}
             </p>
           </div>

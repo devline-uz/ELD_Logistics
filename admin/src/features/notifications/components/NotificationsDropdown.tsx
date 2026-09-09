@@ -140,7 +140,7 @@ export function NotificationsDropdown() {
                 onRetry={() => void list.refetch()}
               />
             ) : items.length === 0 ? (
-              <p className="px-3 py-8 text-center text-body-sm text-neutral-500">
+              <p className="px-3 py-8 text-center text-body-sm text-neutral-600">
                 {t('notifications.dropdown.empty')}
               </p>
             ) : (

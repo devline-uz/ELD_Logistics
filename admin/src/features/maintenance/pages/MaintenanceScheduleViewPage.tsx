@@ -146,25 +146,25 @@ export function MaintenanceScheduleViewPage() {
                 <tr>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-600"
                   >
                     {t('maintenance.view.unitsColumns.unit')}
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-600"
                   >
                     {t('maintenance.view.unitsColumns.lastServiceValue')}
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-600"
                   >
                     {t('maintenance.view.unitsColumns.nextFrequency')}
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-600"
                   >
                     {t('maintenance.view.unitsColumns.remaining')}
                   </th>

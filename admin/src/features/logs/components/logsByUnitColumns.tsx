@@ -81,7 +81,7 @@ export function buildLogsByUnitColumns(
             <span>
               {lat.toFixed(4)}, {lng.toFixed(4)}
             </span>
-            <span className="text-body-sm text-neutral-500">
+            <span className="text-body-sm text-neutral-600">
               {dateFormat.formatRelative(last_seen_at)}
             </span>
           </div>

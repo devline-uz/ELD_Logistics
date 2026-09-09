@@ -56,7 +56,7 @@ import { resolveStorageUrl } from '@/lib/storage';
 function Field({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <dt className="text-body-sm text-neutral-500">{label}</dt>
+      <dt className="text-body-sm text-neutral-600">{label}</dt>
       <dd className="text-body text-neutral-900">{value}</dd>
     </div>
   );
@@ -230,7 +230,7 @@ export function DvirDetailPage() {
 
       <Section title={t('dvir.detail.sections.defects')}>
         {(data.defects ?? []).length === 0 ? (
-          <p className="text-body-sm text-neutral-500">{t('dvir.detail.defects.empty')}</p>
+          <p className="text-body-sm text-neutral-600">{t('dvir.detail.defects.empty')}</p>
         ) : (
           <ul className="flex flex-col gap-4">
             {(data.defects ?? []).map((defect: DvirDefect, defectIndex: number) => {
@@ -285,7 +285,7 @@ export function DvirDetailPage() {
                                   className="h-full w-full object-cover"
                                 />
                               ) : (
-                                <span className="flex h-full w-full items-center justify-center text-body-sm text-neutral-500">
+                                <span className="flex h-full w-full items-center justify-center text-body-sm text-neutral-600">
                                   {photoIndex + 1}
                                 </span>
                               )}
@@ -303,7 +303,7 @@ export function DvirDetailPage() {
       </Section>
 
       <Section title={t('dvir.detail.sections.signatures')}>
-        <p className="text-body-sm text-neutral-500">{t('dvir.detail.signatures.viewOnly')}</p>
+        <p className="text-body-sm text-neutral-600">{t('dvir.detail.signatures.viewOnly')}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <SignatureView
             label={t('dvir.detail.signatures.driver')}

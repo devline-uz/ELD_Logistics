@@ -260,11 +260,11 @@ export function CompanyForm({ company, canEdit, isPending, onSubmit }: CompanyFo
       <Card title={t('settings.company.sections.subscription')}>
         <dl className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div>
-            <dt className="text-body-sm text-neutral-500">{t('settings.company.fields.plan')}</dt>
+            <dt className="text-body-sm text-neutral-600">{t('settings.company.fields.plan')}</dt>
             <dd className="text-body text-neutral-900">{company.plan || t('common.na')}</dd>
           </div>
           <div>
-            <dt className="text-body-sm text-neutral-500">
+            <dt className="text-body-sm text-neutral-600">
               {t('settings.company.fields.subscriptionStatus')}
             </dt>
             <dd className="text-body text-neutral-900">
@@ -278,7 +278,7 @@ export function CompanyForm({ company, canEdit, isPending, onSubmit }: CompanyFo
             </dd>
           </div>
           <div>
-            <dt className="text-body-sm text-neutral-500">
+            <dt className="text-body-sm text-neutral-600">
               {t('settings.company.fields.subscriptionEndAt')}
             </dt>
             <dd className="text-body text-neutral-900">
@@ -286,7 +286,7 @@ export function CompanyForm({ company, canEdit, isPending, onSubmit }: CompanyFo
             </dd>
           </div>
         </dl>
-        <p className="mt-3 text-body-sm text-neutral-500">
+        <p className="mt-3 text-body-sm text-neutral-600">
           {t('settings.company.sections.subscriptionHint')}
         </p>
       </Card>

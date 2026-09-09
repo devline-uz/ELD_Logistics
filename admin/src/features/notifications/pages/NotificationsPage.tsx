@@ -181,7 +181,7 @@ export function NotificationsPage() {
           <div>
             {groups.map((group) => (
               <div key={group.label}>
-                <h2 className="border-b border-t border-stroke bg-surface-muted px-4 py-2 text-body-sm font-medium uppercase tracking-wide text-neutral-500">
+                <h2 className="border-b border-t border-stroke bg-surface-muted px-4 py-2 text-body-sm font-medium uppercase tracking-wide text-neutral-600">
                   {group.label}
                 </h2>
                 <ul>

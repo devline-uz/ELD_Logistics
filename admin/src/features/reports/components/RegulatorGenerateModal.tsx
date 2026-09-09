@@ -93,7 +93,7 @@ export function RegulatorGenerateModal({
       onJobDone={onJobDone}
     >
       <div className="flex flex-col gap-4">
-        <p className="text-body-sm font-medium uppercase tracking-wide text-neutral-500">
+        <p className="text-body-sm font-medium uppercase tracking-wide text-neutral-600">
           {t('reports.regulator.generateModal.sectionTitle')}
         </p>
 

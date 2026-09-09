@@ -244,8 +244,13 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
       `VITE_ENABLE_MSW=1`, `admin/src/mocks/browser.ts`; login bir marta
       `global-setup.ts` + `sessionStorage` orqali qayta ishlatiladi;
       D49 — login'dan keyingi profil bo'shlig'i topildi va ro'yxatga yozildi)
-- [ ] 9.2 `axe-core` asosiy 10 ekranda — kritik xato 0
-- [ ] 9.3 Lighthouse: Performance ≥ 90, A11y ≥ 95, Best Practices ≥ 95
+- [x] 9.2 `axe-core` asosiy 10 ekranda — kritik xato 0
+      (`admin/e2e/10-a11y.spec.ts`: Dashboard, Units list + Add Unit modal
+      [focus trap + aria-modal], Unit detail, Drivers list, Logs By Driver,
+      Tracking [MapLibre canvas excluded — D49], DVIR, Maintenance, Reports,
+      Settings — barchasida critical/serious = 0; `Tabs`ni ishlatuvchi
+      `UnitDetailPage`/`DriverDetailPage`da yo'q `tabpanel` tuzatildi)
+- [x] 9.3 Lighthouse: Performance ≥ 90, A11y ≥ 95, Best Practices ≥ 95
 - [x] 9.4 Bundle byudjeti: boshlang'ich JS ≤ 250 KB gzip; `rollup-plugin-visualizer` hisoboti
       (o'lchov **152 KB**; `npm run bundle:budget` + CI qadami; `npm run build:analyze`;
       hisobot `docs/perf-stage-9.md`)

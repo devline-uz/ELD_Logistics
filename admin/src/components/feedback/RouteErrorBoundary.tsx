@@ -44,7 +44,7 @@ export function RouteErrorBoundary() {
       <h1 className="text-xl font-semibold text-neutral-900">{t('errors.boundary.title')}</h1>
       <p className="text-sm text-neutral-600">{t('errors.boundary.description')}</p>
       {traceId ? (
-        <p className="font-mono text-xs text-neutral-500">
+        <p className="font-mono text-xs text-neutral-600">
           {t('errors.boundary.traceId', { traceId })}
         </p>
       ) : null}

@@ -117,7 +117,7 @@ export function NotificationSettingsPage() {
           <h1 className="text-h3 font-bold text-neutral-900">
             {t('settings.notifications.title')}
           </h1>
-          <p className="text-body text-neutral-500">{t('settings.notifications.description')}</p>
+          <p className="text-body text-neutral-600">{t('settings.notifications.description')}</p>
         </div>
         <PermissionGate permission={PERM.notificationSettingsUpdate}>
           <Button onClick={() => void handleSave()} loading={update.isPending} disabled={!isDirty}>

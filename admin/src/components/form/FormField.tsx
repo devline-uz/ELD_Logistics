@@ -75,7 +75,7 @@ export function FormField({
       {children(bindings)}
 
       {description ? (
-        <p id={`${fieldId}-description`} className="text-body-sm text-neutral-500">
+        <p id={`${fieldId}-description`} className="text-body-sm text-neutral-600">
           {description}
         </p>
       ) : null}

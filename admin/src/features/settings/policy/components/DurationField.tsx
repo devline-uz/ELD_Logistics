@@ -100,7 +100,7 @@ export function DurationField({
           {error}
         </p>
       ) : hint ? (
-        <p id={hintId} className="text-body-sm text-neutral-500">
+        <p id={hintId} className="text-body-sm text-neutral-600">
           {hint}
         </p>
       ) : null}

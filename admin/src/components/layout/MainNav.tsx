@@ -118,7 +118,7 @@ export function MainNav() {
                           {t(resolveNavLabelKey(leaf, bucket))}
                         </span>
                         {leaf.descriptionKey ? (
-                          <span className="block text-xs text-neutral-500">
+                          <span className="block text-xs text-neutral-600">
                             {t(leaf.descriptionKey)}
                           </span>
                         ) : null}

@@ -42,7 +42,7 @@ function DateSeparator({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3 py-2" role="separator" aria-label={label}>
       <div className="h-px flex-1 bg-stroke" aria-hidden="true" />
-      <span className="text-body-xs font-medium uppercase tracking-wide text-neutral-500">
+      <span className="text-body-xs font-medium uppercase tracking-wide text-neutral-600">
         {label}
       </span>
       <div className="h-px flex-1 bg-stroke" aria-hidden="true" />

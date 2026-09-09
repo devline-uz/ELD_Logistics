@@ -81,7 +81,7 @@ export function SupportStatusModal({ open, ticket, onClose }: SupportStatusModal
       }
     >
       {options.length === 0 ? (
-        <p className="text-body-sm text-neutral-500">{t('support.statusModal.noFurtherStatus')}</p>
+        <p className="text-body-sm text-neutral-600">{t('support.statusModal.noFurtherStatus')}</p>
       ) : (
         <Select
           label={t('support.statusModal.statusLabel')}

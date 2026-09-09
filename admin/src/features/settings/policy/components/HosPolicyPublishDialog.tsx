@@ -88,12 +88,12 @@ export function HosPolicyPublishDialog({
       </p>
 
       {diffEntries.length === 0 ? (
-        <p className="mt-4 text-body text-neutral-500">{t('settings.hos.publish.noChanges')}</p>
+        <p className="mt-4 text-body text-neutral-600">{t('settings.hos.publish.noChanges')}</p>
       ) : (
         <table className="mt-4 w-full text-body-sm">
           <caption className="sr-only">{t('settings.hos.publish.diffTableCaption')}</caption>
           <thead>
-            <tr className="border-b border-stroke text-left text-neutral-500">
+            <tr className="border-b border-stroke text-left text-neutral-600">
               <th scope="col" className="py-2 pr-3 font-medium">
                 {t('settings.hos.publish.field')}
               </th>
@@ -111,7 +111,7 @@ export function HosPolicyPublishDialog({
                 <td className="py-2 pr-3 text-neutral-800">
                   {t(hosPolicyFieldLabelKey(entry.field))}
                 </td>
-                <td className="py-2 pr-3 text-neutral-500">
+                <td className="py-2 pr-3 text-neutral-600">
                   {formatDiffValue(entry.field, entry.oldValue, t)}
                 </td>
                 <td className="py-2 font-medium text-neutral-900">

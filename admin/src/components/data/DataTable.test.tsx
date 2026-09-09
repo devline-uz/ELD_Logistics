@@ -105,7 +105,12 @@ describe('DataTable', () => {
     const onRowClick = vi.fn();
     render(<DataTable tableId="units" columns={columns} data={rows} onRowClick={onRowClick} />);
 
-    const firstRow = screen.getAllByRole('button').find((el) => el.tagName === 'TR');
+    // `role="button"` qatorga ataylab qo'yilmaydi (axe `nested-interactive` —
+    // qatorda haqiqiy `__actions` tugmasi bo'lsa, ARIA interaktiv rollarni
+    // ichma-ich joylashtirishni taqiqlaydi). Qator `tabIndex`/`onKeyDown`
+    // orqali baribir klaviatura bilan ishlaydi — shu sabab `<tr>` teg nomi
+    // bilan topiladi, rol bilan emas.
+    const firstRow = document.querySelectorAll('tbody tr')[0] as HTMLElement | undefined;
     expect(firstRow).toBeTruthy();
     await userEvent.click(firstRow!);
     expect(onRowClick).toHaveBeenCalledWith(rows[0]);

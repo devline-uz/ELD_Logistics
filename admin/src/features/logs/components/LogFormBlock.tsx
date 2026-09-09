@@ -25,7 +25,7 @@ export interface LogFormBlockProps {
 function Field({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <dt className="text-body-sm text-neutral-500">{label}</dt>
+      <dt className="text-body-sm text-neutral-600">{label}</dt>
       <dd className="text-body text-neutral-900">{value}</dd>
     </div>
   );
@@ -35,7 +35,7 @@ export function LogFormBlock({ form, dateFormat, unitSystem }: LogFormBlockProps
   const { t } = useTranslation();
 
   if (!form) {
-    return <p className="text-body-sm text-neutral-500">{t('logs.view.form.empty')}</p>;
+    return <p className="text-body-sm text-neutral-600">{t('logs.view.form.empty')}</p>;
   }
 
   const units = form.units ?? [];
@@ -69,7 +69,7 @@ export function LogFormBlock({ form, dateFormat, unitSystem }: LogFormBlockProps
       </dl>
 
       <div>
-        <p className="mb-1 text-body-sm text-neutral-500">{t('logs.view.form.fields.trailers')}</p>
+        <p className="mb-1 text-body-sm text-neutral-600">{t('logs.view.form.fields.trailers')}</p>
         {trailers.length === 0 ? (
           <span className="text-body-sm text-neutral-400">{t('logs.view.form.notSet')}</span>
         ) : (
@@ -84,7 +84,7 @@ export function LogFormBlock({ form, dateFormat, unitSystem }: LogFormBlockProps
       </div>
 
       <div>
-        <p className="mb-1 text-body-sm text-neutral-500">
+        <p className="mb-1 text-body-sm text-neutral-600">
           {t('logs.view.form.fields.shippingDocs')}
         </p>
         {docs.length === 0 ? (
@@ -101,14 +101,14 @@ export function LogFormBlock({ form, dateFormat, unitSystem }: LogFormBlockProps
       </div>
 
       <div>
-        <p className="mb-1 text-body-sm text-neutral-500">{t('logs.view.form.fields.signature')}</p>
+        <p className="mb-1 text-body-sm text-neutral-600">{t('logs.view.form.fields.signature')}</p>
         <div className="flex items-center gap-3">
           <StatusChip
             status={signed ? t('logs.view.form.signed') : t('logs.view.form.notSigned')}
             tone={signed ? 'success' : 'danger'}
           />
           {signed ? (
-            <span className="text-body-sm text-neutral-500">
+            <span className="text-body-sm text-neutral-600">
               {dateFormat.formatDateTime(form.signed_at)}
             </span>
           ) : null}

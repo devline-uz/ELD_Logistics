@@ -105,14 +105,14 @@ export function RouteDirectionsDrawer({ open, onClose, route }: RouteDirectionsD
         {directions.isLoading ? (
           <Skeleton variant="text" count={2} />
         ) : directions.data?.provider === 'nop' || !directions.data?.polyline ? (
-          <p className="text-body-sm text-neutral-500">{t('routes.directions.unavailable')}</p>
+          <p className="text-body-sm text-neutral-600">{t('routes.directions.unavailable')}</p>
         ) : (
           <dl className="grid grid-cols-2 gap-2 text-body-sm">
-            <dt className="text-neutral-500">{t('routes.directions.distance')}</dt>
+            <dt className="text-neutral-600">{t('routes.directions.distance')}</dt>
             <dd className="text-neutral-900">
               {formatDistance(directions.data?.distance_m ?? undefined)}
             </dd>
-            <dt className="text-neutral-500">{t('routes.directions.duration')}</dt>
+            <dt className="text-neutral-600">{t('routes.directions.duration')}</dt>
             <dd className="text-neutral-900">
               {formatDuration(
                 typeof directions.data?.duration_s === 'number'

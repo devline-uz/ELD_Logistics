@@ -134,7 +134,7 @@ export function ChatThreadListPanel({
                         ) : null}
                       </div>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="truncate text-body-sm text-neutral-500">
+                        <span className="truncate text-body-sm text-neutral-600">
                           {preview ?? t('chat.threads.noMessages')}
                         </span>
                         {thread.unread_count ? (

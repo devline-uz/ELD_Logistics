@@ -20,7 +20,7 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 function Field({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <dt className="text-body-sm text-neutral-500">{label}</dt>
+      <dt className="text-body-sm text-neutral-600">{label}</dt>
       <dd className="text-body text-neutral-900">{value}</dd>
     </div>
   );

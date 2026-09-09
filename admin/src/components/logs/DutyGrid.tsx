@@ -347,7 +347,7 @@ export function DutyGrid({
         )}
       </svg>
 
-      <p className="mt-1 text-body-sm text-neutral-500">
+      <p className="mt-1 text-body-sm text-neutral-600">
         {labels.total}: {formatDuration(totalMinutes)}
       </p>
 

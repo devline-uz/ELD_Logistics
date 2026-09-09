@@ -72,23 +72,23 @@ export function DriverInfoPanel({
 
       <dl className="mt-2 flex flex-col gap-1 text-body-sm">
         <div className="flex justify-between">
-          <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.location')}</dt>
+          <dt className="text-neutral-600">{t('tracking.trackOnMap.driver.location')}</dt>
           <dd className="text-neutral-900">{formatCoordinatePair(unit?.lat, unit?.lng)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.battery')}</dt>
+          <dt className="text-neutral-600">{t('tracking.trackOnMap.driver.battery')}</dt>
           <dd className="text-neutral-900">{formatBattery(telemetry)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.speed')}</dt>
+          <dt className="text-neutral-600">{t('tracking.trackOnMap.driver.speed')}</dt>
           <dd className="text-neutral-900">{formatSpeed(unit?.speed_kmh)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.timestamp')}</dt>
+          <dt className="text-neutral-600">{t('tracking.trackOnMap.driver.timestamp')}</dt>
           <dd className="text-neutral-900">{formatDateTime(unit?.last_seen_at)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-neutral-500">{t('tracking.trackOnMap.driver.shiftEnds')}</dt>
+          <dt className="text-neutral-600">{t('tracking.trackOnMap.driver.shiftEnds')}</dt>
           <dd className="text-neutral-900">
             {typeof shiftLeftMin === 'number'
               ? formatDuration(shiftLeftMin, { withSeconds: true })

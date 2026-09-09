@@ -17,7 +17,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
 
   return (
     <nav aria-label={t('nav.breadcrumb')}>
-      <ol className="flex flex-wrap items-center gap-1.5 text-body-sm text-neutral-500">
+      <ol className="flex flex-wrap items-center gap-1.5 text-body-sm text-neutral-600">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (

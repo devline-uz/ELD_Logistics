@@ -26,7 +26,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           </span>
         </div>
 
-        <div
+        <main
           className="rounded-lg p-8 shadow-sm"
           style={{
             backgroundColor: 'var(--color-surface)',
@@ -34,7 +34,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           }}
         >
           {children}
-        </div>
+        </main>
       </div>
     </div>
   );

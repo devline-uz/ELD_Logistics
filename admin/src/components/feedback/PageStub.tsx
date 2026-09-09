@@ -14,7 +14,7 @@ export function PageStub({ titleKey, stage }: PageStubProps) {
   return (
     <section className="flex flex-col gap-2">
       <h1 className="text-xl font-semibold text-neutral-900">{t(titleKey)}</h1>
-      <p className="text-sm text-neutral-500">{t('stub.notice', { stage })}</p>
+      <p className="text-sm text-neutral-600">{t('stub.notice', { stage })}</p>
     </section>
   );
 }

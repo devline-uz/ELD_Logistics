@@ -277,7 +277,7 @@ export function FileUpload({
       <label htmlFor={inputId} className="mb-1 block text-body font-medium text-neutral-700">
         {label}
       </label>
-      {description ? <p className="mb-1 text-body-sm text-neutral-500">{description}</p> : null}
+      {description ? <p className="mb-1 text-body-sm text-neutral-600">{description}</p> : null}
 
       <div
         role="presentation"
@@ -303,7 +303,7 @@ export function FileUpload({
           onChange={(event) => handleFiles(event.target.files)}
         />
 
-        <p className="text-body-sm text-neutral-500">{t('ui.data.fileUpload.dragHint')}</p>
+        <p className="text-body-sm text-neutral-600">{t('ui.data.fileUpload.dragHint')}</p>
         <Button
           type="button"
           variant="secondary"

@@ -15,7 +15,7 @@ import { isApiError } from '@/lib/errors';
 function ProfileField({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <dt className="text-body-sm font-medium text-neutral-500">{label}</dt>
+      <dt className="text-body-sm font-medium text-neutral-600">{label}</dt>
       <dd className="mt-0.5 text-body text-neutral-900">{value}</dd>
     </div>
   );
@@ -47,7 +47,7 @@ export function ProfileSettingsPage() {
     <div className="flex max-w-2xl flex-col gap-6">
       <div>
         <h1 className="text-h3 font-bold text-neutral-900">{t('settings.profile.title')}</h1>
-        <p className="mt-1 text-body text-neutral-500">{t('settings.profile.subtitle')}</p>
+        <p className="mt-1 text-body text-neutral-600">{t('settings.profile.subtitle')}</p>
       </div>
 
       <Card>
@@ -71,7 +71,7 @@ export function ProfileSettingsPage() {
                   {fullName || profile.username}
                 </p>
                 {profile.role_name ? (
-                  <p className="text-body-sm text-neutral-500">{profile.role_name}</p>
+                  <p className="text-body-sm text-neutral-600">{profile.role_name}</p>
                 ) : null}
               </div>
             </div>

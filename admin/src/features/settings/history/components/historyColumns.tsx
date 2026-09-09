@@ -60,7 +60,7 @@ export function buildHistoryColumns(
         <div className="flex flex-col">
           <span>{formatHistoryChange(t, row.original)}</span>
           {row.original.table_name ? (
-            <span className="text-body-sm text-neutral-500">{row.original.table_name}</span>
+            <span className="text-body-sm text-neutral-600">{row.original.table_name}</span>
           ) : null}
         </div>
       ),

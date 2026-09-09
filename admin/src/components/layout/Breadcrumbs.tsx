@@ -20,7 +20,7 @@ export function Breadcrumbs() {
   return (
     <nav
       aria-label={t('nav.breadcrumb')}
-      className="border-b border-[var(--color-stroke)] bg-[var(--color-surface)] px-6 py-2 text-xs text-neutral-500"
+      className="border-b border-[var(--color-stroke)] bg-[var(--color-surface)] px-6 py-2 text-xs text-neutral-600"
     >
       <ol className="flex items-center gap-2">
         <li>

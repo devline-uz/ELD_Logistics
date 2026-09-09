@@ -58,7 +58,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
     <div className="grid grid-cols-2 gap-4 xl:grid-cols-5">
       <KpiCardLink
         to="/units?status=active"
-        ariaLabel={t('dashboard.kpi.activeUnits.label')}
         label={t('dashboard.kpi.activeUnits.label')}
         value={kpiValue(kpi?.active_units)}
         tone="warning"
@@ -67,7 +66,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to="/drivers?status=active"
-        ariaLabel={t('dashboard.kpi.activeDrivers.label')}
         label={t('dashboard.kpi.activeDrivers.label')}
         value={kpiValue(kpi?.active_drivers)}
         tone="info"
@@ -76,7 +74,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to="/tracking"
-        ariaLabel={t('dashboard.kpi.driversOnDuty.label')}
         label={t('dashboard.kpi.driversOnDuty.label')}
         value={kpiValue(kpi?.drivers_on_duty)}
         tone="info"
@@ -85,7 +82,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to={violationsHref}
-        ariaLabel={t('dashboard.kpi.violations.label')}
         label={t('dashboard.kpi.violations.label')}
         value={kpiValue(kpi?.violations)}
         tone="error"
@@ -96,7 +92,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
 
       <KpiCardLink
         to="/tracking?online_status=disconnected"
-        ariaLabel={t('dashboard.kpi.disconnectedEld.label')}
         label={t('dashboard.kpi.disconnectedEld.label')}
         value={kpiValue(kpi?.disconnected_eld)}
         tone={disconnectedTone}
@@ -105,7 +100,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to="/eld-devices?status=malfunction"
-        ariaLabel={t('dashboard.kpi.malfunctionEld.label')}
         label={t('dashboard.kpi.malfunctionEld.label')}
         value={kpiValue(kpi?.malfunction_eld)}
         tone="error"
@@ -114,7 +108,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to="/reports/uncertified-logs"
-        ariaLabel={t('dashboard.kpi.uncertifiedLogs.label')}
         label={t('dashboard.kpi.uncertifiedLogs.label')}
         value={kpiValue(kpi?.uncertified_logs)}
         tone="warning"
@@ -123,7 +116,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to="/logs/unassigned"
-        ariaLabel={t('dashboard.kpi.unassignedDriving.label')}
         label={t('dashboard.kpi.unassignedDriving.label')}
         value={kpiValue(kpi?.unassigned_driving)}
         tone="warning"
@@ -132,7 +124,6 @@ export function DashboardKpiGrid({ summary, loading }: DashboardKpiGridProps) {
       />
       <KpiCardLink
         to="/logs/edit-requests?status=pending"
-        ariaLabel={t('dashboard.kpi.pendingLogEdits.label')}
         label={t('dashboard.kpi.pendingLogEdits.label')}
         value={kpiValue(kpi?.pending_log_edits)}
         tone="warning"

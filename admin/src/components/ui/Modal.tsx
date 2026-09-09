@@ -78,7 +78,7 @@ export function Modal({
           </h2>
           <button
             type="button"
-            className="rounded-md p-1 text-neutral-500 hover:bg-surface-muted hover:text-neutral-700"
+            className="rounded-md p-1 text-neutral-600 hover:bg-surface-muted hover:text-neutral-700"
             onClick={onClose}
             aria-label={t('common.actions.close')}
           >

@@ -283,7 +283,7 @@ export function MaintenanceFormModal({
         }}
         className="flex flex-col gap-4"
       >
-        <h3 className="text-body-sm font-medium uppercase tracking-wide text-neutral-500">
+        <h3 className="text-body-sm font-medium uppercase tracking-wide text-neutral-600">
           {t('maintenance.form.sectionTitle')}
         </h3>
 
@@ -359,7 +359,7 @@ export function MaintenanceFormModal({
         {/* Har tanlangan unit uchun `Last service value` (§7.6, ko'p rejim). */}
         {mode === 'multiple' && selectedUnits.length > 0 ? (
           <div className="flex flex-col gap-3 rounded-md border border-stroke p-3">
-            <p className="text-body-sm text-neutral-500">
+            <p className="text-body-sm text-neutral-600">
               {t('maintenance.form.unitsSelected', { count: selectedUnits.length })}
             </p>
             {selectedUnits.map((unit) => (
@@ -413,7 +413,7 @@ export function MaintenanceFormModal({
           />
         </div>
 
-        <p className="text-body-sm text-neutral-500">
+        <p className="text-body-sm text-neutral-600">
           {t('maintenance.form.hints.distanceUnit', { unit: unitLabel })}
         </p>
 

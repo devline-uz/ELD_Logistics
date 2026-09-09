@@ -249,7 +249,7 @@ export function DateRangePicker({
             disabled && 'cursor-not-allowed bg-surface-muted opacity-60',
           )}
         >
-          <span id={valueId} className={cn(!(value.start && value.end) && 'text-neutral-400')}>
+          <span id={valueId} className={cn(!(value.start && value.end) && 'text-neutral-600')}>
             {displayValue}
           </span>
           <Icon icon={CalendarDays} size={16} className="text-neutral-400" />
@@ -289,7 +289,7 @@ export function DateRangePicker({
                   type="button"
                   aria-label={t('ui.form.calendar.previousMonth')}
                   onClick={() => setVisibleMonth((m) => subMonths(m, 1))}
-                  className="rounded p-1 text-neutral-500 hover:bg-surface-muted"
+                  className="rounded p-1 text-neutral-600 hover:bg-surface-muted"
                 >
                   <Icon icon={ChevronLeft} size={16} />
                 </button>
@@ -300,13 +300,13 @@ export function DateRangePicker({
                   type="button"
                   aria-label={t('ui.form.calendar.nextMonth')}
                   onClick={() => setVisibleMonth((m) => addMonths(m, 1))}
-                  className="rounded p-1 text-neutral-500 hover:bg-surface-muted"
+                  className="rounded p-1 text-neutral-600 hover:bg-surface-muted"
                 >
                   <Icon icon={ChevronRight} size={16} />
                 </button>
               </div>
 
-              <div className="grid grid-cols-7 gap-1 text-center text-body-xs text-neutral-500">
+              <div className="grid grid-cols-7 gap-1 text-center text-body-xs text-neutral-600">
                 {weekdays.map((weekday) => (
                   <span key={weekday}>{weekday}</span>
                 ))}
@@ -399,7 +399,7 @@ export function DateRangePicker({
           {error}
         </p>
       ) : hint ? (
-        <p id={hintId} className="text-body-sm text-neutral-500">
+        <p id={hintId} className="text-body-sm text-neutral-600">
           {hint}
         </p>
       ) : null}

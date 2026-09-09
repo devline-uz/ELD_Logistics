@@ -104,7 +104,7 @@ export function buildTrackingColumns(
               <Badge tone={onlineStatusTone(status)} variant="dot">
                 {t(`enums.connection_status.${status}`, { defaultValue: status })}
               </Badge>
-              <span className="text-body-sm text-neutral-500">
+              <span className="text-body-sm text-neutral-600">
                 {row.original.eld_device_serial ?? NA}
               </span>
             </div>
@@ -128,7 +128,7 @@ export function buildTrackingColumns(
         <HighlightCell highlighted={helpers.isHighlighted(row.original)}>
           <div className="flex flex-col gap-0.5">
             <span>{formatCoordinatePair(row.original.lat, row.original.lng)}</span>
-            <span className="text-body-sm text-neutral-500">
+            <span className="text-body-sm text-neutral-600">
               {helpers.formatRelative(row.original.last_seen_at)}
             </span>
           </div>

@@ -53,7 +53,7 @@ export function NotificationListItem({
           {notification.title}
         </span>
         {notification.body ? (
-          <span className="line-clamp-2 block text-body-sm text-neutral-500">
+          <span className="line-clamp-2 block text-body-sm text-neutral-600">
             {notification.body}
           </span>
         ) : null}

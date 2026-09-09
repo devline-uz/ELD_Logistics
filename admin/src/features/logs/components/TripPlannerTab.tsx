@@ -213,7 +213,7 @@ export function TripPlannerTab({ unitId, driverId, logDate, dateFormat }: TripPl
         ) : trips.isError ? (
           <ErrorState message={trips.error?.message} onRetry={() => void trips.refetch()} />
         ) : tripRows.length === 0 ? (
-          <p className="text-body-sm text-neutral-500">{t('logs.view.tripPlanner.noTrips')}</p>
+          <p className="text-body-sm text-neutral-600">{t('logs.view.tripPlanner.noTrips')}</p>
         ) : (
           <ul aria-label={t('logs.view.tripPlanner.segmentsTitle')} className="flex flex-col gap-2">
             {tripRows.map((trip, index) => {
@@ -236,7 +236,7 @@ export function TripPlannerTab({ unitId, driverId, logDate, dateFormat }: TripPl
                         {dateFormat.formatDateTime(trip.start_at)} –{' '}
                         {dateFormat.formatDateTime(trip.end_at)}
                       </span>
-                      <span className="text-neutral-500">
+                      <span className="text-neutral-600">
                         {formatCoordinatePair(trip.start_lat, trip.start_lng)}
                       </span>
                     </span>

@@ -351,7 +351,7 @@ export function TrackOnMapPage() {
               <PermissionGate permission={PERM.trackingViewHistory}>
                 <div>
                   <div className="mb-2 flex items-center justify-between">
-                    <h3 className="text-body-sm font-semibold uppercase tracking-wide text-neutral-500">
+                    <h3 className="text-body-sm font-semibold uppercase tracking-wide text-neutral-600">
                       {t('tracking.trackOnMap.histories.title')}
                     </h3>
                     <div className="flex items-center gap-1">

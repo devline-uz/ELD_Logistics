@@ -68,7 +68,7 @@ export function DvirStatusHistory({ report, dateFormat }: DvirStatusHistoryProps
   }
 
   if (entries.length === 0) {
-    return <p className="text-body-sm text-neutral-500">{t('dvir.detail.history.empty')}</p>;
+    return <p className="text-body-sm text-neutral-600">{t('dvir.detail.history.empty')}</p>;
   }
 
   return (
@@ -81,7 +81,7 @@ export function DvirStatusHistory({ report, dateFormat }: DvirStatusHistoryProps
               {entry.label}
               {entry.by ? ` — ${t('dvir.detail.history.by', { name: entry.by })}` : ''}
             </p>
-            <p className="text-body-sm text-neutral-500">{dateFormat.formatDateTime(entry.at)}</p>
+            <p className="text-body-sm text-neutral-600">{dateFormat.formatDateTime(entry.at)}</p>
             {entry.note ? <p className="text-body-sm text-neutral-600">{entry.note}</p> : null}
           </div>
         </li>

@@ -71,7 +71,7 @@ export function buildInspectionLogColumns(
               {t(`inspection.list.certificationStatus.${status}`)}
             </Badge>
             {row.original.signed_at ? (
-              <span className="text-body-sm text-neutral-500">
+              <span className="text-body-sm text-neutral-600">
                 {dateFormat.formatDateTime(row.original.signed_at)}
               </span>
             ) : null}

@@ -35,7 +35,7 @@ function DetailField({ label, value }: { label: string; value: ReactNode }) {
   const { t } = useTranslation();
   return (
     <div>
-      <dt className="text-body-sm text-neutral-500">{label}</dt>
+      <dt className="text-body-sm text-neutral-600">{label}</dt>
       <dd className="text-body text-neutral-900">{value ?? t('common.na')}</dd>
     </div>
   );
@@ -112,60 +112,71 @@ export function UnitDetailPage({ tab = 'info' }: { tab?: UnitTab }) {
       />
 
       {tab === 'info' ? (
-        <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <DetailField label={t('fleet.units.detail.fields.drivers')} value={t('common.na')} />
-          <DetailField label={t('fleet.units.detail.fields.eld')} value={data.eld_device_serial} />
-          <DetailField
-            label={t('fleet.units.detail.fields.activatedOn')}
-            value={formatDate(data.activated_on)}
-          />
-          <DetailField label={t('fleet.units.detail.fields.vin')} value={data.vin} />
-          <DetailField label={t('fleet.units.detail.fields.make')} value={data.make} />
-          <DetailField label={t('fleet.units.detail.fields.model')} value={data.model} />
-          <DetailField label={t('fleet.units.detail.fields.year')} value={data.year} />
-          <DetailField
-            label={t('fleet.units.detail.fields.sleeperBerth')}
-            value={
-              data.sleeper_berth
-                ? t('fleet.units.detail.available')
-                : t('fleet.units.detail.notAvailable')
-            }
-          />
-          <DetailField
-            label={t('fleet.units.detail.fields.licensePlate')}
-            value={
-              data.plate_region
-                ? `${data.license_plate} (${data.plate_region})`
-                : data.license_plate
-            }
-          />
-          <DetailField
-            label={t('fleet.units.detail.fields.fuelType')}
-            value={data.fuel_type ? t(`fleet.units.fuelTypes.${data.fuel_type}`) : undefined}
-          />
-          <DetailField label={t('fleet.units.detail.fields.branch')} value={data.branch_name} />
-          <DetailField label={t('fleet.units.detail.fields.notes')} value={data.notes} />
-          <DetailField
-            label={t('fleet.units.detail.fields.status')}
-            value={
-              <Badge tone={data.status === 'active' ? 'success' : 'neutral'}>
-                {t(`fleet.units.status.${data.status ?? 'inactive'}`)}
-              </Badge>
-            }
-          />
-          <DetailField
-            label={t('fleet.units.detail.fields.outOfService')}
-            value={
-              <Badge tone={data.out_of_service ? 'error' : 'success'}>
-                {data.out_of_service ? t('common.boolean.yes') : t('common.boolean.no')}
-              </Badge>
-            }
-          />
-        </dl>
+        <div id="tabpanel-info" role="tabpanel" aria-labelledby="tab-info" tabIndex={0}>
+          <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <DetailField label={t('fleet.units.detail.fields.drivers')} value={t('common.na')} />
+            <DetailField
+              label={t('fleet.units.detail.fields.eld')}
+              value={data.eld_device_serial}
+            />
+            <DetailField
+              label={t('fleet.units.detail.fields.activatedOn')}
+              value={formatDate(data.activated_on)}
+            />
+            <DetailField label={t('fleet.units.detail.fields.vin')} value={data.vin} />
+            <DetailField label={t('fleet.units.detail.fields.make')} value={data.make} />
+            <DetailField label={t('fleet.units.detail.fields.model')} value={data.model} />
+            <DetailField label={t('fleet.units.detail.fields.year')} value={data.year} />
+            <DetailField
+              label={t('fleet.units.detail.fields.sleeperBerth')}
+              value={
+                data.sleeper_berth
+                  ? t('fleet.units.detail.available')
+                  : t('fleet.units.detail.notAvailable')
+              }
+            />
+            <DetailField
+              label={t('fleet.units.detail.fields.licensePlate')}
+              value={
+                data.plate_region
+                  ? `${data.license_plate} (${data.plate_region})`
+                  : data.license_plate
+              }
+            />
+            <DetailField
+              label={t('fleet.units.detail.fields.fuelType')}
+              value={data.fuel_type ? t(`fleet.units.fuelTypes.${data.fuel_type}`) : undefined}
+            />
+            <DetailField label={t('fleet.units.detail.fields.branch')} value={data.branch_name} />
+            <DetailField label={t('fleet.units.detail.fields.notes')} value={data.notes} />
+            <DetailField
+              label={t('fleet.units.detail.fields.status')}
+              value={
+                <Badge tone={data.status === 'active' ? 'success' : 'neutral'}>
+                  {t(`fleet.units.status.${data.status ?? 'inactive'}`)}
+                </Badge>
+              }
+            />
+            <DetailField
+              label={t('fleet.units.detail.fields.outOfService')}
+              value={
+                <Badge tone={data.out_of_service ? 'error' : 'success'}>
+                  {data.out_of_service ? t('common.boolean.yes') : t('common.boolean.no')}
+                </Badge>
+              }
+            />
+          </dl>
+        </div>
       ) : null}
 
       {tab === 'activities' ? (
-        <div className="overflow-x-auto rounded-lg border border-stroke">
+        <div
+          id="tabpanel-activities"
+          role="tabpanel"
+          aria-labelledby="tab-activities"
+          tabIndex={0}
+          className="overflow-x-auto rounded-lg border border-stroke"
+        >
           <table className="w-full border-collapse text-body-sm">
             <thead className="bg-surface-muted">
               <tr>
@@ -198,7 +209,7 @@ export function UnitDetailPage({ tab = 'info' }: { tab?: UnitTab }) {
                 </tr>
               ) : (history.data?.data ?? []).length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-body text-neutral-500">
+                  <td colSpan={4} className="p-8 text-center text-body text-neutral-600">
                     {t('fleet.units.detail.activities.empty')}
                   </td>
                 </tr>
@@ -228,91 +239,98 @@ export function UnitDetailPage({ tab = 'info' }: { tab?: UnitTab }) {
       ) : null}
 
       {tab === 'diagnostics' ? (
-        <PermissionGate
-          permission={PERM.unitsDiagnostics}
-          fallback={
-            <ErrorState
-              title={t('ui.overlay.emptyState.noAccessTitle')}
-              message={t('fleet.units.detail.diagnostics.forbidden')}
-            />
-          }
+        <div
+          id="tabpanel-diagnostics"
+          role="tabpanel"
+          aria-labelledby="tab-diagnostics"
+          tabIndex={0}
         >
-          {diagnostics.isLoading ? (
-            <Skeleton variant="card" count={3} />
-          ) : diagnostics.isError || !diagnostics.data ? (
-            <ErrorState onRetry={() => void diagnostics.refetch()} />
-          ) : (
-            <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.deviceSerial')}
-                value={diagnostics.data.device_serial}
+          <PermissionGate
+            permission={PERM.unitsDiagnostics}
+            fallback={
+              <ErrorState
+                title={t('ui.overlay.emptyState.noAccessTitle')}
+                message={t('fleet.units.detail.diagnostics.forbidden')}
               />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.vendor')}
-                value={diagnostics.data.device_vendor}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.model')}
-                value={diagnostics.data.device_model}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.firmware')}
-                value={diagnostics.data.device_firmware}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.connectionType')}
-                value={diagnostics.data.connection_type}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.connectionState')}
-                value={diagnostics.data.connection_state}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.simPresent')}
-                value={
-                  diagnostics.data.sim_present ? t('common.boolean.yes') : t('common.boolean.no')
-                }
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.lastSeen')}
-                value={formatDateTime(diagnostics.data.last_seen_at)}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.odometer')}
-                value={formatDistance(diagnostics.data.telemetry?.odometer_m)}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.engineHours')}
-                value={
-                  diagnostics.data.telemetry?.engine_hours !== undefined
-                    ? diagnostics.data.telemetry.engine_hours
-                    : undefined
-                }
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.fuel')}
-                value={
-                  diagnostics.data.telemetry?.fuel_pct !== undefined
-                    ? `${diagnostics.data.telemetry.fuel_pct}%`
-                    : undefined
-                }
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.coolantTemp')}
-                value={formatTemperature(diagnostics.data.telemetry?.coolant_temp_c)}
-              />
-              <DetailField
-                label={t('fleet.units.detail.diagnostics.fields.malfunctionCodes')}
-                value={
-                  diagnostics.data.malfunction_codes &&
-                  diagnostics.data.malfunction_codes.length > 0
-                    ? diagnostics.data.malfunction_codes.map((code) => code.code).join(', ')
-                    : t('fleet.units.detail.diagnostics.none')
-                }
-              />
-            </dl>
-          )}
-        </PermissionGate>
+            }
+          >
+            {diagnostics.isLoading ? (
+              <Skeleton variant="card" count={3} />
+            ) : diagnostics.isError || !diagnostics.data ? (
+              <ErrorState onRetry={() => void diagnostics.refetch()} />
+            ) : (
+              <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.deviceSerial')}
+                  value={diagnostics.data.device_serial}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.vendor')}
+                  value={diagnostics.data.device_vendor}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.model')}
+                  value={diagnostics.data.device_model}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.firmware')}
+                  value={diagnostics.data.device_firmware}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.connectionType')}
+                  value={diagnostics.data.connection_type}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.connectionState')}
+                  value={diagnostics.data.connection_state}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.simPresent')}
+                  value={
+                    diagnostics.data.sim_present ? t('common.boolean.yes') : t('common.boolean.no')
+                  }
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.lastSeen')}
+                  value={formatDateTime(diagnostics.data.last_seen_at)}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.odometer')}
+                  value={formatDistance(diagnostics.data.telemetry?.odometer_m)}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.engineHours')}
+                  value={
+                    diagnostics.data.telemetry?.engine_hours !== undefined
+                      ? diagnostics.data.telemetry.engine_hours
+                      : undefined
+                  }
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.fuel')}
+                  value={
+                    diagnostics.data.telemetry?.fuel_pct !== undefined
+                      ? `${diagnostics.data.telemetry.fuel_pct}%`
+                      : undefined
+                  }
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.coolantTemp')}
+                  value={formatTemperature(diagnostics.data.telemetry?.coolant_temp_c)}
+                />
+                <DetailField
+                  label={t('fleet.units.detail.diagnostics.fields.malfunctionCodes')}
+                  value={
+                    diagnostics.data.malfunction_codes &&
+                    diagnostics.data.malfunction_codes.length > 0
+                      ? diagnostics.data.malfunction_codes.map((code) => code.code).join(', ')
+                      : t('fleet.units.detail.diagnostics.none')
+                  }
+                />
+              </dl>
+            )}
+          </PermissionGate>
+        </div>
       ) : null}
 
       {assignOpen ? (

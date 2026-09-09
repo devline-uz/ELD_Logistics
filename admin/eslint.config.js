@@ -63,6 +63,10 @@ export default tseslint.config(
   {
     ignores: [
       'dist',
+      // 9.3 — Lighthouse o'lchov artefaktlari (`scripts/lighthouse.mjs`):
+      // prod build nusxasi va o'lchov vositalari, ikkalasi ham gitignored.
+      'dist-lh',
+      '.lh-tools',
       'coverage',
       'playwright-report',
       'test-results',

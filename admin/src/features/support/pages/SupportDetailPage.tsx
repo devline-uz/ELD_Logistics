@@ -36,7 +36,7 @@ import { nextSupportTicketStatuses } from '../lib/status';
 function Field({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <dt className="text-body-sm text-neutral-500">{label}</dt>
+      <dt className="text-body-sm text-neutral-600">{label}</dt>
       <dd className="text-body text-neutral-900">{value}</dd>
     </div>
   );
@@ -113,7 +113,7 @@ export function SupportDetailPage() {
           <Field label={t('support.detail.fields.subject')} value={data.subject ?? NA} />
         </dl>
         <div>
-          <dt className="text-body-sm text-neutral-500">
+          <dt className="text-body-sm text-neutral-600">
             {t('support.detail.fields.description')}
           </dt>
           <dd className="mt-1 whitespace-pre-wrap text-body text-neutral-800">
@@ -122,7 +122,7 @@ export function SupportDetailPage() {
         </div>
         {attachments.length > 0 ? (
           <div>
-            <dt className="text-body-sm text-neutral-500">
+            <dt className="text-body-sm text-neutral-600">
               {t('support.detail.fields.attachments')}
             </dt>
             <ul className="mt-1 flex flex-wrap gap-2">
@@ -142,7 +142,7 @@ export function SupportDetailPage() {
                         {name}
                       </a>
                     ) : (
-                      <span className="inline-flex items-center gap-1 rounded-md border border-stroke px-2 py-1 text-body-sm text-neutral-500">
+                      <span className="inline-flex items-center gap-1 rounded-md border border-stroke px-2 py-1 text-body-sm text-neutral-600">
                         <Icon icon={Paperclip} size={14} />
                         {name}
                       </span>

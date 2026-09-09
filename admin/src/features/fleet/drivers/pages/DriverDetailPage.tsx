@@ -114,7 +114,7 @@ function HosSummaryBlock({ driverId }: { driverId: string }) {
 function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex flex-col gap-0.5 py-2">
-      <span className="text-body-sm text-neutral-500">{label}</span>
+      <span className="text-body-sm text-neutral-600">{label}</span>
       <span className="text-body text-neutral-900">{value}</span>
     </div>
   );
@@ -207,7 +207,13 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
       />
 
       {tab === 'information' ? (
-        <div className="flex flex-col gap-6">
+        <div
+          id="driver-detailpanel-information"
+          role="tabpanel"
+          aria-labelledby="driver-detail-information"
+          tabIndex={0}
+          className="flex flex-col gap-6"
+        >
           <div className="grid grid-cols-1 gap-x-6 gap-y-1 rounded-lg border border-stroke p-4 sm:grid-cols-3">
             <InfoRow label={t('fleetDrivers.form.username')} value={driver.username ?? '—'} />
             <InfoRow label={t('fleetDrivers.form.email')} value={driver.email ?? '—'} />
@@ -245,63 +251,72 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
       ) : null}
 
       {tab === 'activities' ? (
-        activitiesQuery.isLoading ? (
-          <Skeleton variant="table-row" count={5} />
-        ) : activitiesQuery.isError ? (
-          <ErrorState
-            message={activitiesQuery.error?.message}
-            onRetry={() => void activitiesQuery.refetch()}
-          />
-        ) : (activitiesQuery.data?.data ?? []).length === 0 ? (
-          <EmptyState
-            title={t('fleetDrivers.detail.activitiesEmptyTitle')}
-            description={t('fleetDrivers.detail.activitiesEmptyDescription')}
-          />
-        ) : (
-          <div className="overflow-x-auto rounded-lg border border-stroke">
-            <table className="w-full border-collapse text-body">
-              <thead className="bg-surface-muted">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
-                  >
-                    {t('fleetDrivers.detail.activitiesColumns.timestamp')}
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
-                  >
-                    {t('fleetDrivers.detail.activitiesColumns.editedBy')}
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
-                  >
-                    {t('fleetDrivers.detail.activitiesColumns.activity')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {(activitiesQuery.data?.data ?? []).map((activity) => (
-                  <tr key={activity.id} className="border-t border-stroke">
-                    <td className="px-4 py-3">{formatDateTime(activity.occurred_at)}</td>
-                    <td className="px-4 py-3">{activity.actor_id ?? t('common.na')}</td>
-                    <td className="px-4 py-3">
-                      {activity.field
-                        ? t('fleetDrivers.detail.activitySummary', {
-                            field: activity.field,
-                            oldValue: activity.old_value ?? '—',
-                            newValue: activity.new_value ?? '—',
-                          })
-                        : t(`fleetDrivers.detail.activitiesActions.${activity.action ?? 'update'}`)}
-                    </td>
+        <div
+          id="driver-detailpanel-activities"
+          role="tabpanel"
+          aria-labelledby="driver-detail-activities"
+          tabIndex={0}
+        >
+          {activitiesQuery.isLoading ? (
+            <Skeleton variant="table-row" count={5} />
+          ) : activitiesQuery.isError ? (
+            <ErrorState
+              message={activitiesQuery.error?.message}
+              onRetry={() => void activitiesQuery.refetch()}
+            />
+          ) : (activitiesQuery.data?.data ?? []).length === 0 ? (
+            <EmptyState
+              title={t('fleetDrivers.detail.activitiesEmptyTitle')}
+              description={t('fleetDrivers.detail.activitiesEmptyDescription')}
+            />
+          ) : (
+            <div className="overflow-x-auto rounded-lg border border-stroke">
+              <table className="w-full border-collapse text-body">
+                <thead className="bg-surface-muted">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
+                    >
+                      {t('fleetDrivers.detail.activitiesColumns.timestamp')}
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
+                    >
+                      {t('fleetDrivers.detail.activitiesColumns.editedBy')}
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
+                    >
+                      {t('fleetDrivers.detail.activitiesColumns.activity')}
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )
+                </thead>
+                <tbody>
+                  {(activitiesQuery.data?.data ?? []).map((activity) => (
+                    <tr key={activity.id} className="border-t border-stroke">
+                      <td className="px-4 py-3">{formatDateTime(activity.occurred_at)}</td>
+                      <td className="px-4 py-3">{activity.actor_id ?? t('common.na')}</td>
+                      <td className="px-4 py-3">
+                        {activity.field
+                          ? t('fleetDrivers.detail.activitySummary', {
+                              field: activity.field,
+                              oldValue: activity.old_value ?? '—',
+                              newValue: activity.new_value ?? '—',
+                            })
+                          : t(
+                              `fleetDrivers.detail.activitiesActions.${activity.action ?? 'update'}`,
+                            )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       ) : null}
 
       {tab === 'dailyLogs' ? (
@@ -324,25 +339,25 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
                 <tr>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
                   >
                     {t('fleetDrivers.detail.dailyLogsColumns.date')}
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
                   >
                     {t('fleetDrivers.detail.dailyLogsColumns.certification')}
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
                   >
                     {t('fleetDrivers.detail.dailyLogsColumns.coDriver')}
                   </th>
                   <th
                     scope="col"
-                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-500"
+                    className="px-4 py-3 text-start text-body-sm font-medium uppercase text-neutral-600"
                   >
                     {t('fleetDrivers.detail.dailyLogsColumns.action')}
                   </th>

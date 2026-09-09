@@ -113,7 +113,7 @@ export function ChatConversationPanel({
         <div>
           <p className="text-body font-semibold text-neutral-900">{driverName ?? t('common.na')}</p>
           {driverStatus === 'inactive' ? (
-            <p className="text-body-xs text-neutral-500">{t('chat.conversation.driverInactive')}</p>
+            <p className="text-body-xs text-neutral-600">{t('chat.conversation.driverInactive')}</p>
           ) : null}
         </div>
       </div>
@@ -137,7 +137,7 @@ export function ChatConversationPanel({
       <PermissionGate
         permission={PERM.chatSend}
         fallback={
-          <div className="border-t border-stroke p-4 text-body-sm text-neutral-500">
+          <div className="border-t border-stroke p-4 text-body-sm text-neutral-600">
             {t('chat.composer.readOnly')}
           </div>
         }

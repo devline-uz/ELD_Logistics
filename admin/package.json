@@ -23,7 +23,8 @@
     "api:gen": "openapi-typescript openapi/openapi3.json -o src/api/schema.d.ts && node scripts/api-banner.mjs",
     "i18n:extract": "i18next -c i18next-parser.config.js",
     "build:analyze": "ANALYZE=1 npm run build",
-    "bundle:budget": "node scripts/check-bundle-budget.mjs"
+    "bundle:budget": "node scripts/check-bundle-budget.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "browserslist": [
     "last 2 Chrome versions",

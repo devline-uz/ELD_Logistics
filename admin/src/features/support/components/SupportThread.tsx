@@ -78,7 +78,7 @@ export function SupportThread({ ticketId }: SupportThreadProps) {
           onRetry={() => void messagesQuery.refetch()}
         />
       ) : messages.length === 0 ? (
-        <p className="text-body-sm text-neutral-500">{t('support.thread.empty')}</p>
+        <p className="text-body-sm text-neutral-600">{t('support.thread.empty')}</p>
       ) : (
         <ul className="flex flex-col gap-3">
           {messages.map((message) => (
@@ -92,7 +92,7 @@ export function SupportThread({ ticketId }: SupportThreadProps) {
                   <span className="text-body-sm font-semibold text-neutral-900">
                     {message.sender_name ?? t('common.na')}
                   </span>
-                  <span className="text-body-xs text-neutral-500">
+                  <span className="text-body-xs text-neutral-600">
                     {dateFormat.formatDateTime(message.created_at)}
                   </span>
                 </div>
@@ -117,7 +117,7 @@ export function SupportThread({ ticketId }: SupportThreadProps) {
                               {name}
                             </a>
                           ) : (
-                            <span className="inline-flex items-center gap-1 rounded-md border border-stroke px-2 py-1 text-body-sm text-neutral-500">
+                            <span className="inline-flex items-center gap-1 rounded-md border border-stroke px-2 py-1 text-body-sm text-neutral-600">
                               <Icon icon={Paperclip} size={14} />
                               {name}
                             </span>
@@ -135,7 +135,7 @@ export function SupportThread({ ticketId }: SupportThreadProps) {
 
       <PermissionGate
         permission={PERM.supportCreate}
-        fallback={<p className="text-body-sm text-neutral-500">{t('support.thread.readOnly')}</p>}
+        fallback={<p className="text-body-sm text-neutral-600">{t('support.thread.readOnly')}</p>}
       >
         <div className="flex flex-col gap-2 border-t border-stroke pt-4">
           <Textarea
@@ -151,7 +151,7 @@ export function SupportThread({ ticketId }: SupportThreadProps) {
               key={attachment.key}
               className="flex items-center gap-2 rounded-md border border-stroke bg-surface px-3 py-2"
             >
-              <Icon icon={Paperclip} size={14} className="text-neutral-500" />
+              <Icon icon={Paperclip} size={14} className="text-neutral-600" />
               <span className="flex-1 truncate text-body-sm text-neutral-700">
                 {attachment.filename}
               </span>

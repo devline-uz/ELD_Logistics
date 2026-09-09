@@ -28,7 +28,7 @@ export function DutyStatusCard({ status, loading }: DutyStatusCardProps) {
       aria-busy={loading}
     >
       <div className="p-5">
-        <p className="truncate text-body-sm font-medium uppercase tracking-wide text-neutral-500">
+        <p className="truncate text-body-sm font-medium uppercase tracking-wide text-neutral-600">
           {t('dashboard.status.title')}
         </p>
         {loading ? (

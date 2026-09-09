@@ -253,7 +253,7 @@ export function ImportModal({
             <label htmlFor={inputId} className="sr-only">
               {t(`${i18nNamespace}.fileInputLabel`)}
             </label>
-            <p className="text-body-sm text-neutral-500">{t(`${i18nNamespace}.dragHint`)}</p>
+            <p className="text-body-sm text-neutral-600">{t(`${i18nNamespace}.dragHint`)}</p>
             <Button variant="secondary" size="sm" onClick={() => inputRef.current?.click()}>
               {t(`${i18nNamespace}.actions.browse`)}
             </Button>

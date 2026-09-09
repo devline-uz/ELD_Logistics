@@ -122,7 +122,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
       >
         {segments.map((segment, index) => (
           <div key={segment.key} className="flex items-center">
-            {index > 0 ? <span className="px-0.5 text-neutral-400">:</span> : null}
+            {index > 0 ? <span className="px-0.5 text-neutral-600">:</span> : null}
             <input
               name={name ? `${name}.${segment.key}` : undefined}
               inputMode="numeric"
@@ -143,7 +143,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
           {error}
         </p>
       ) : hint ? (
-        <p id={hintId} className="text-body-sm text-neutral-500">
+        <p id={hintId} className="text-body-sm text-neutral-600">
           {hint}
         </p>
       ) : null}

@@ -80,7 +80,7 @@ export function PhotoLightbox({
             ) : (
               <div className="p-6 text-center">
                 <p className="text-body text-neutral-600">{t('dvir.detail.preview.unavailable')}</p>
-                <p className="mt-1 break-all text-body-sm text-neutral-500">
+                <p className="mt-1 break-all text-body-sm text-neutral-600">
                   {t('dvir.detail.preview.key', { key })}
                 </p>
               </div>
@@ -93,7 +93,7 @@ export function PhotoLightbox({
             disabled={total < 2}
           />
         </div>
-        <p className="text-center text-body-sm text-neutral-500" aria-live="polite">
+        <p className="text-center text-body-sm text-neutral-600" aria-live="polite">
           {t('dvir.lightbox.position', { current: index + 1, total })}
         </p>
       </div>

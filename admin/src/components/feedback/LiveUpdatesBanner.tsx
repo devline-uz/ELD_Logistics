@@ -26,9 +26,10 @@ export function LiveUpdatesBanner() {
       <strong className="font-semibold">{t('realtime.banner.title')}</strong>
       <span>{t('realtime.banner.description')}</span>
       {reconnectAttempt > 0 && (
-        <span className="text-xs opacity-80">
-          {t('realtime.banner.attempt', { count: reconnectAttempt })}
-        </span>
+        // `opacity-80` olib tashlandi: `warning-dark` matn `warning-bg`
+        // fonida shu bilan 3.47:1 ga tushib qolardi (AA 4.5:1 talabidan
+        // past, axe `color-contrast`/serious).
+        <span className="text-xs">{t('realtime.banner.attempt', { count: reconnectAttempt })}</span>
       )}
       <button
         type="button"

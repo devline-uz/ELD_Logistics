@@ -48,14 +48,14 @@ export function FeedbackDetailModal({ feedback, onClose }: FeedbackDetailModalPr
                 }
               />
             ))}
-            <span className="ms-1 text-body-sm text-neutral-500">
+            <span className="ms-1 text-body-sm text-neutral-600">
               {typeof feedback.app_rating === 'number' ? feedback.app_rating : NA}
             </span>
           </div>
 
           <p className="whitespace-pre-wrap text-body text-neutral-800">{feedback.text ?? NA}</p>
 
-          <p className="text-body-sm text-neutral-500">
+          <p className="text-body-sm text-neutral-600">
             {t('feedback.detail.submittedOn', {
               date: dateFormat.formatDateTime(feedback.submitted_at),
             })}

@@ -17,7 +17,7 @@ export function ForbiddenScreen({ requiredPermission }: ForbiddenScreenProps) {
       </h1>
       <p className="text-sm text-neutral-600">{t('errors.forbiddenScreen.description')}</p>
       {import.meta.env.DEV && requiredPermission ? (
-        <p className="font-mono text-xs text-neutral-500">
+        <p className="font-mono text-xs text-neutral-600">
           {t('errors.forbiddenScreen.requiredPermission', { permission: requiredPermission })}
         </p>
       ) : null}

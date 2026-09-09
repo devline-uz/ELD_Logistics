@@ -96,3 +96,42 @@ jobs:
           else
             git diff --exit-code -- openapi/openapi3.json src/api/schema.d.ts
           fi
+
+  lighthouse:
+    # 9.3 — Lighthouse (TZ §14.3: Performance >= 90, Accessibility >= 95,
+    # Best Practices >= 95). BLOKLOVCHI EMAS (`continue-on-error`): natija
+    # runner yuki va tarmoq shovqiniga sezgir, shuning uchun u signal beradi,
+    # PR ni yiqitmaydi. Haqiqiy darvoza — `admin` job'idagi bundle byudjeti.
+    name: admin — lighthouse (bloklamaydi)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: admin
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Skript o'lchov uchun alohida prod build qiladi (`dist-lh/`, MSW
+      # yoqilgan) va `lighthouse` + `chrome-launcher` ni `.lh-tools/` ga
+      # o'rnatadi — ular ilova bog'liqligi emas, shuning uchun
+      # `package.json` da yo'q. Chrome ubuntu-latest obrazida mavjud.
+      - name: Lighthouse (login · dashboard · units · tracking)
+        run: npm run lighthouse
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: admin/dist-lh/reports
+          retention-days: 7
+          if-no-files-found: ignore

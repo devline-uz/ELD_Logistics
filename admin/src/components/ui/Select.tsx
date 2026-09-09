@@ -249,11 +249,11 @@ export function Select<TValue extends string = string>({
             )}
           >
             {loading ? (
-              <li className="px-3 py-2 text-body-sm text-neutral-400">
+              <li className="px-3 py-2 text-body-sm text-neutral-600">
                 {t('ui.form.select.loading')}
               </li>
             ) : filteredOptions.length === 0 ? (
-              <li className="px-3 py-2 text-body-sm text-neutral-400">
+              <li className="px-3 py-2 text-body-sm text-neutral-600">
                 {t('ui.form.select.noResults')}
               </li>
             ) : (
@@ -291,7 +291,7 @@ export function Select<TValue extends string = string>({
           {error}
         </p>
       ) : hint ? (
-        <p id={hintId} className="text-body-sm text-neutral-500">
+        <p id={hintId} className="text-body-sm text-neutral-600">
           {hint}
         </p>
       ) : null}

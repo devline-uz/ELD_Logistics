@@ -24,7 +24,7 @@ export function SecuritySettingsPage() {
     <div className="flex max-w-2xl flex-col gap-6">
       <div>
         <h1 className="text-h3 font-bold text-neutral-900">{t('settings.security.title')}</h1>
-        <p className="mt-1 text-body text-neutral-500">{t('settings.security.subtitle')}</p>
+        <p className="mt-1 text-body text-neutral-600">{t('settings.security.subtitle')}</p>
       </div>
 
       {isPending ? (

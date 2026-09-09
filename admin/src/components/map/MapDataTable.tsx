@@ -85,7 +85,7 @@ export function MapDataTable<TRow>({
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-2 py-2 text-neutral-500">
+                <td colSpan={columns.length} className="px-2 py-2 text-neutral-600">
                   {emptyLabel}
                 </td>
               </tr>

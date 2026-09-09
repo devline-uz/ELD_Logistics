@@ -33,7 +33,7 @@ export function buildUnitColumns(t: TFunction, startIndex: number): ColumnDef<Un
         <div>
           <div>{row.original.license_plate ?? '—'}</div>
           {row.original.plate_region ? (
-            <div className="text-body-sm text-neutral-500">{row.original.plate_region}</div>
+            <div className="text-body-sm text-neutral-600">{row.original.plate_region}</div>
           ) : null}
         </div>
       ),

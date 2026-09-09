@@ -74,7 +74,7 @@ export function RouteDetailsCard({
       ) : (
         <div className="max-h-[420px] overflow-y-auto overflow-x-auto">
           <table className="w-full text-left text-body-sm">
-            <thead className="sticky top-0 bg-surface-muted text-body-sm font-medium uppercase tracking-wide text-neutral-500">
+            <thead className="sticky top-0 bg-surface-muted text-body-sm font-medium uppercase tracking-wide text-neutral-600">
               <tr>
                 <th className="px-3 py-2" scope="col">
                   {t('dashboard.routes.columns.unitNumber')}

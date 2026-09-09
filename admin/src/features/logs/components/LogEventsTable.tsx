@@ -56,14 +56,14 @@ export function LogEventsTable({
   );
 
   if (sorted.length === 0) {
-    return <p className="text-body-sm text-neutral-500">{t('logs.view.events.empty')}</p>;
+    return <p className="text-body-sm text-neutral-600">{t('logs.view.events.empty')}</p>;
   }
 
   return (
     <div className="overflow-x-auto rounded-lg border border-stroke">
       <table className="w-full min-w-[960px] text-body-sm">
         <caption className="sr-only">{t('logs.view.events.caption')}</caption>
-        <thead className="bg-neutral-50 text-start text-neutral-500">
+        <thead className="bg-neutral-50 text-start text-neutral-600">
           <tr>
             <th scope="col" className="sticky left-0 bg-neutral-50 px-3 py-2 text-start">
               #

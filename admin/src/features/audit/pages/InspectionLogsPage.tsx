@@ -112,7 +112,7 @@ export function InspectionLogsPage() {
               <h3 className="text-body-lg font-semibold text-neutral-900">
                 {t('inspection.list.empty.selectDriverTitle')}
               </h3>
-              <p className="mt-2 text-body text-neutral-500">
+              <p className="mt-2 text-body text-neutral-600">
                 {t('inspection.list.empty.selectDriverDescription')}
               </p>
             </div>

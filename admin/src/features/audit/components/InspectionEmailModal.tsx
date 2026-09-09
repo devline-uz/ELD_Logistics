@@ -99,7 +99,7 @@ export function InspectionEmailModal({
       <form className="flex flex-col gap-4" onSubmit={(event) => event.preventDefault()}>
         {formMessage ? <Alert variant="error" message={formMessage} /> : null}
 
-        <p className="text-body-sm text-neutral-500">
+        <p className="text-body-sm text-neutral-600">
           {t('inspection.emailModal.description', { driverName })}
         </p>
 

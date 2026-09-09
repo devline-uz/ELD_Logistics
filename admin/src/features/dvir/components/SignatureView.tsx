@@ -21,7 +21,7 @@ export function SignatureView({ label, signatureKey }: SignatureViewProps) {
 
   return (
     <figure className="flex flex-col gap-2">
-      <figcaption className="text-body-sm text-neutral-500">{label}</figcaption>
+      <figcaption className="text-body-sm text-neutral-600">{label}</figcaption>
       <div className="flex h-24 items-center justify-center rounded-md border border-stroke bg-surface px-3">
         {!signatureKey ? (
           <span className="text-body-sm text-neutral-400">
@@ -30,7 +30,7 @@ export function SignatureView({ label, signatureKey }: SignatureViewProps) {
         ) : src ? (
           <img src={src} alt={t('dvir.detail.signatures.alt', { label })} className="max-h-20" />
         ) : (
-          <span className="break-all text-center text-body-sm text-neutral-500">
+          <span className="break-all text-center text-body-sm text-neutral-600">
             {t('dvir.detail.preview.key', { key: signatureKey })}
           </span>
         )}

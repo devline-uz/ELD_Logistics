@@ -26,7 +26,7 @@ export interface UnitDiagnosticsPanelProps {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-2 py-1 text-body-sm">
-      <span className="text-neutral-500">{label}</span>
+      <span className="text-neutral-600">{label}</span>
       <span className="text-neutral-900">{value}</span>
     </div>
   );
@@ -47,7 +47,7 @@ export function UnitDiagnosticsPanel({ diagnostics, isLoading, vin }: UnitDiagno
 
   return (
     <div>
-      <h3 className="mb-1 text-body-sm font-semibold uppercase tracking-wide text-neutral-500">
+      <h3 className="mb-1 text-body-sm font-semibold uppercase tracking-wide text-neutral-600">
         {t('tracking.trackOnMap.diagnostics.title')}
       </h3>
       <Field label={t('tracking.trackOnMap.diagnostics.vin')} value={vin ?? NA} />

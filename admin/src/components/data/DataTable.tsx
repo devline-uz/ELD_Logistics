@@ -194,7 +194,7 @@ export function DataTable<TData>({
                       key={header.id}
                       scope="col"
                       aria-sort={ariaSort}
-                      className={`whitespace-nowrap px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-500 ${
+                      className={`whitespace-nowrap px-4 py-3 text-start text-body-sm font-medium uppercase tracking-wide text-neutral-600 ${
                         index === 0 ? 'sticky left-0 z-10 bg-surface-muted' : ''
                       }`}
                     >
@@ -270,7 +270,14 @@ export function DataTable<TData>({
                   className={`border-t border-stroke bg-surface ${onRowClick ? 'cursor-pointer hover:bg-surface-muted' : ''}`}
                   {...(onRowClick
                     ? {
-                        role: 'button',
+                        // `role="button"` ataylab qo'yilmagan: qator ichida
+                        // haqiqiy interaktiv element (`__actions` tugmasi)
+                        // bor — ARIA interaktiv rollarni ichma-ich
+                        // joylashtirishni taqiqlaydi (axe `nested-interactive`,
+                        // serious). `tabIndex`/`onKeyDown` orqali klaviatura
+                        // bilan baribir yetiladi va `Enter`/`Space` ishlaydi;
+                        // faqat ekran o'quvchisiga "button" deb e'lon
+                        // qilinmaydi (qator semantikasi — implicit `row`).
                         tabIndex: 0,
                         onClick: () => onRowClick(row.original),
                         onKeyDown: (event: KeyboardEvent<HTMLTableRowElement>) => {

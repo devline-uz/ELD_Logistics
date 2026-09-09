@@ -73,7 +73,7 @@ export function TripHistoryTimeline({
                 <span>{formatCoordinatePair(trip.start_lat, trip.start_lng)}</span>
                 <span>{formatTime(trip.start_at)}</span>
               </div>
-              <div className="flex items-center justify-between text-neutral-500">
+              <div className="flex items-center justify-between text-neutral-600">
                 <span>
                   {t('tracking.trackOnMap.histories.range')}:{' '}
                   {formatDistance(trip.distance_m ?? undefined)}

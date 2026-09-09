@@ -1,4 +1,6 @@
 dist
+dist-lh
+.lh-tools
 coverage
 node_modules
 playwright-report

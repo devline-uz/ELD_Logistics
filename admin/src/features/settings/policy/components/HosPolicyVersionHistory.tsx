@@ -57,7 +57,7 @@ export function HosPolicyVersionHistory({
     <table className="w-full text-body-sm">
       <caption className="sr-only">{t('settings.hos.history.title')}</caption>
       <thead>
-        <tr className="border-b border-stroke bg-surface-muted text-left uppercase tracking-wide text-neutral-500">
+        <tr className="border-b border-stroke bg-surface-muted text-left uppercase tracking-wide text-neutral-600">
           <th scope="col" className="px-3 py-2 font-medium">
             {t('settings.hos.history.columns.date')}
           </th>
@@ -87,7 +87,7 @@ export function HosPolicyVersionHistory({
                 ? t(hosPolicyFieldLabelKey(entry.field))
                 : t('common.states.notAvailable')}
             </td>
-            <td className="px-3 py-2 text-neutral-500">
+            <td className="px-3 py-2 text-neutral-600">
               {entry.old_value ?? t('common.states.notAvailable')}
             </td>
             <td className="px-3 py-2 font-medium text-neutral-900">

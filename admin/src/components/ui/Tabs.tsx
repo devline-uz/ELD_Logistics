@@ -70,7 +70,7 @@ export function Tabs({ tabs, activeId, onChange, ariaLabel, idPrefix = 'tab' }: 
             className={`border-b-2 px-1 pb-3 text-body font-medium disabled:cursor-not-allowed disabled:opacity-50 ${
               selected
                 ? 'border-primary text-primary'
-                : 'border-transparent text-neutral-500 hover:text-neutral-700'
+                : 'border-transparent text-neutral-600 hover:text-neutral-700'
             }`}
             onClick={() => {
               onChange(tab.id);

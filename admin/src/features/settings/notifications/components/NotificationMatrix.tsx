@@ -40,7 +40,7 @@ export function NotificationMatrix({ rows, onChange, roles, disabled }: Notifica
       <table className="w-full min-w-[720px] text-body-sm">
         <caption className="sr-only">{t('settings.notifications.matrix.caption')}</caption>
         <thead>
-          <tr className="border-b border-stroke bg-surface-muted text-left uppercase tracking-wide text-neutral-500">
+          <tr className="border-b border-stroke bg-surface-muted text-left uppercase tracking-wide text-neutral-600">
             <th scope="col" className="sticky left-0 bg-surface-muted px-3 py-2 font-medium">
               {t('settings.notifications.matrix.alertType')}
             </th>

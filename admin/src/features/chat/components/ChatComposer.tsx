@@ -97,7 +97,7 @@ export function ChatComposer({
 
       {attachment ? (
         <div className="flex items-center gap-2 rounded-md border border-stroke bg-surface px-3 py-2">
-          <Paperclip className="h-4 w-4 text-neutral-500" aria-hidden="true" />
+          <Paperclip className="h-4 w-4 text-neutral-600" aria-hidden="true" />
           <span className="flex-1 truncate text-body-sm text-neutral-700">
             {attachment.filename}
             {attachment.size ? ` (${formatFileSize(attachment.size)})` : ''}

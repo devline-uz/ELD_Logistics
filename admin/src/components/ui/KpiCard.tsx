@@ -30,7 +30,7 @@ const TONE_LINE_CLASSES: Record<NonNullable<KpiCardProps['tone']>, string> = {
 const DELTA_CLASSES: Record<NonNullable<KpiCardDelta['direction']>, string> = {
   up: 'text-success-dark',
   down: 'text-error-dark',
-  neutral: 'text-neutral-500',
+  neutral: 'text-neutral-600',
 };
 
 /** Sarlavha + qiymat + delta + ikonka + pastki rangli chiziq; yuklanishda skeleton (fe-design-system §6). */
@@ -51,7 +51,7 @@ export function KpiCard({
     >
       <div className="flex items-start justify-between gap-3 p-5">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-body-sm font-medium uppercase tracking-wide text-neutral-500">
+          <p className="truncate text-body-sm font-medium uppercase tracking-wide text-neutral-600">
             {label}
           </p>
           {loading ? (

@@ -121,7 +121,7 @@ export function LogViewPage() {
           <h1 className="text-h3 font-bold text-neutral-900">
             {data.driver_name ?? t('common.na')}
           </h1>
-          <p className="text-body-sm text-neutral-500">
+          <p className="text-body-sm text-neutral-600">
             {t('logs.view.certified', {
               value:
                 data.certification_status === 'certified'

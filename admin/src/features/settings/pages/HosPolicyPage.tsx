@@ -117,7 +117,7 @@ export function HosPolicyPage() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-h3 font-bold text-neutral-900">{t('settings.hos.title')}</h1>
-          <p className="text-body text-neutral-500">{t('settings.hos.description')}</p>
+          <p className="text-body text-neutral-600">{t('settings.hos.description')}</p>
         </div>
         <PermissionGate permission={PERM.hosPolicyUpdate}>
           <div className="flex gap-2">

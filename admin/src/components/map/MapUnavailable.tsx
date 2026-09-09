@@ -19,7 +19,7 @@ export function MapUnavailable({ className }: MapUnavailableProps) {
     >
       <MapPinOff aria-hidden="true" className="h-10 w-10 text-neutral-400" />
       <h3 className="text-body-lg font-semibold text-neutral-900">{t('map.unavailable.title')}</h3>
-      <p className="max-w-sm text-body text-neutral-500">{t('map.unavailable.description')}</p>
+      <p className="max-w-sm text-body text-neutral-600">{t('map.unavailable.description')}</p>
     </div>
   );
 }

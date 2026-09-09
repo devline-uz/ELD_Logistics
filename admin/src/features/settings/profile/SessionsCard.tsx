@@ -98,7 +98,7 @@ export function SessionsCard() {
         <div className="overflow-x-auto">
           <table className="w-full text-body-sm">
             <thead>
-              <tr className="border-b border-stroke text-left text-neutral-500">
+              <tr className="border-b border-stroke text-left text-neutral-600">
                 <th className="py-2 pr-4 font-medium uppercase tracking-wide">
                   {t('settings.security.sessions.deviceType')}
                 </th>

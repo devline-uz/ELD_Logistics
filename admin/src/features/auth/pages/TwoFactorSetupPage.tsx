@@ -113,7 +113,7 @@ export function TwoFactorSetupPage() {
           ) : null}
         </div>
       ) : !loadError ? (
-        <p aria-live="polite" className="mb-6 text-sm text-neutral-500" role="status">
+        <p aria-live="polite" className="mb-6 text-sm text-neutral-600" role="status">
           {t('common.states.loading')}
         </p>
       ) : null}

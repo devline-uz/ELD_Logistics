@@ -74,7 +74,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
       >
         {prefix ? (
-          <span className="flex shrink-0 items-center text-neutral-500">{prefix}</span>
+          <span className="flex shrink-0 items-center text-neutral-600">{prefix}</span>
         ) : null}
         <input
           ref={ref}
@@ -97,7 +97,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {...rest}
         />
         {suffix ? (
-          <span className="flex shrink-0 items-center text-neutral-500">{suffix}</span>
+          <span className="flex shrink-0 items-center text-neutral-600">{suffix}</span>
         ) : null}
       </div>
 
@@ -108,13 +108,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
               {error}
             </p>
           ) : hint ? (
-            <p id={hintId} className="text-body-sm text-neutral-500">
+            <p id={hintId} className="text-body-sm text-neutral-600">
               {hint}
             </p>
           ) : null}
         </div>
         {maxLength ? (
-          <p id={counterId} className="shrink-0 text-body-sm text-neutral-400">
+          <p id={counterId} className="shrink-0 text-body-sm text-neutral-600">
             {t('ui.form.input.charactersRemaining', {
               count: Math.max(maxLength - currentLength, 0),
             })}
