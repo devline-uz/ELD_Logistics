@@ -85,6 +85,22 @@ export function useDriverDailyLogs(
 }
 
 /**
+ * `GET /drivers/{id}/daily-logs` — **imperativ** variant (React holatidan
+ * tashqarida, masalan qatorni bosganda "shu kunning logi"ni topib navigatsiya
+ * qilish uchun). Hook ishlatib bo'lmaydigan joyda ham API qatlami
+ * `api/queries` orqali qoladi — `features/*` da `api.GET` chaqirilmaydi.
+ */
+export async function fetchDriverDailyLogs(
+  driverId: string,
+  params: DriverDailyLogsParams = {},
+): Promise<ListResponse<DailyLogSummary>> {
+  const { data } = await api.GET('/drivers/{id}/daily-logs', {
+    params: { path: { id: driverId }, query: params },
+  });
+  return data ?? {};
+}
+
+/**
  * `GET /daily-logs/{id}` (`logs.read`) — Log view: `events[]`, `form`,
  * `totals`, `violations[]`, `certification_status`.
  */

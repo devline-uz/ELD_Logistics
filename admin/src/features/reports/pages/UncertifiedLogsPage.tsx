@@ -62,7 +62,7 @@ export function UncertifiedLogsPage() {
   const hasActiveFilters = Boolean(driverFilter || branchFilter);
 
   const openLog = (log: UncertifiedLog) => {
-    if (log.daily_log_id) navigate(`/logs/view/${log.daily_log_id}`);
+    if (log.daily_log_id) navigate(`/logs/view/${encodeURIComponent(log.daily_log_id)}`);
   };
 
   return (

@@ -27,8 +27,8 @@ export function AppLayout() {
     (reason: 'user' | 'idle_timeout') => {
       // Server sessiyasini yopish (`POST /auth/logout`) 0.12 da qo'shiladi;
       // lokal tozalash har holatda bajariladi.
+      // `clearSession()` xotira + `sessionStorage` (`eld.rt`) ni o'zi tozalaydi.
       clearSession();
-      sessionStorage.removeItem('eld.rt');
       void navigate(`/login?reason=${reason}`, { replace: true });
     },
     [navigate],

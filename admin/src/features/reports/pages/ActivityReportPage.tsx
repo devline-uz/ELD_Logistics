@@ -84,7 +84,9 @@ export function ActivityReportPage() {
 
   const openDetail = (row: ActivityRow) => {
     if (!row.subject_id) return;
-    navigate(`/reports/activity/${row.subject_id}`, { state: { name: row.name, subject } });
+    navigate(`/reports/activity/${encodeURIComponent(row.subject_id)}`, {
+      state: { name: row.name, subject },
+    });
   };
 
   const exportParams = {

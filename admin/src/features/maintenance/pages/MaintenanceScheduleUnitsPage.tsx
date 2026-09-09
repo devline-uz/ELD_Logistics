@@ -65,7 +65,7 @@ export function MaintenanceScheduleUnitsPage() {
             errorMessage={list.error?.message}
             onRetry={() => void list.refetch()}
             rowOffset={(listParams.page - 1) * listParams.perPage}
-            onView={() => navigate(`/maintenance/schedules/${id ?? ''}`)}
+            onView={() => navigate(`/maintenance/schedules/${encodeURIComponent(id ?? '')}`)}
             onComplete={actions.openComplete}
             onCancel={actions.openCancel}
           />

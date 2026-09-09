@@ -109,7 +109,7 @@ export function MaintenanceSchedulesPage() {
           if (count === 0) return t('maintenance.schedules.noUnits');
           return (
             <Link
-              to={`/maintenance/schedules/${row.original.id ?? ''}/units`}
+              to={`/maintenance/schedules/${encodeURIComponent(row.original.id ?? '')}/units`}
               onClick={(event) => event.stopPropagation()}
               className="text-primary hover:underline"
             >
@@ -219,7 +219,9 @@ export function MaintenanceSchedulesPage() {
             }
             onClearFilters={listParams.hasActiveFilters ? listParams.clearFilters : undefined}
             getRowId={(row, index) => row.id ?? String(index)}
-            onRowClick={(row) => navigate(`/maintenance/schedules/${row.id ?? ''}`)}
+            onRowClick={(row) =>
+              navigate(`/maintenance/schedules/${encodeURIComponent(row.id ?? '')}`)
+            }
             rowActions={(row) => (
               <RowActionsMenu
                 ariaLabel={t('maintenance.schedules.rowActionsLabel', { name: row.name })}
@@ -227,7 +229,8 @@ export function MaintenanceSchedulesPage() {
                   {
                     key: 'view',
                     label: t('maintenance.actions.view'),
-                    onSelect: () => navigate(`/maintenance/schedules/${row.id ?? ''}`),
+                    onSelect: () =>
+                      navigate(`/maintenance/schedules/${encodeURIComponent(row.id ?? '')}`),
                   },
                   {
                     key: 'edit',

@@ -18,6 +18,7 @@ import { useToast } from '@/components/feedback/toast-context';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { Modal } from '@/components/ui/Modal';
+import { saveBlob } from '@/lib/download';
 import { isApiError } from '@/lib/errors';
 
 export interface ImportModalProps {
@@ -51,17 +52,6 @@ function readImportResultFromError(error: unknown): ImportResult | undefined {
   if (typeof payload !== 'object' || payload === null) return undefined;
   const data = (payload as { data?: unknown }).data;
   return isImportResult(data) ? data : undefined;
-}
-
-function downloadBlob(blob: Blob, filename: string): void {
-  const objectUrl = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = objectUrl;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(objectUrl);
 }
 
 function errorsToCsv(errors: ImportRowError[]): string {
@@ -137,7 +127,7 @@ export function ImportModal({
   const handleDownloadTemplate = async (format: 'csv' | 'xlsx') => {
     try {
       const blob = await onDownloadTemplate(format);
-      downloadBlob(blob, `${filenamePrefix}-import-template.${format}`);
+      saveBlob(blob, `${filenamePrefix}-import-template.${format}`);
     } catch {
       toast.show({ variant: 'error', message: t(`${i18nNamespace}.errors.templateFailed`) });
     }
@@ -169,7 +159,7 @@ export function ImportModal({
   const handleDownloadErrors = () => {
     if (!result?.errors || result.errors.length === 0) return;
     const blob = new Blob([errorsToCsv(result.errors)], { type: 'text/csv' });
-    downloadBlob(blob, `${filenamePrefix}-import-errors.csv`);
+    saveBlob(blob, `${filenamePrefix}-import-errors.csv`);
   };
 
   const hasErrors = (result?.errors?.length ?? 0) > 0;

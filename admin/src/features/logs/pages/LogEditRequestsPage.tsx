@@ -95,7 +95,8 @@ export function LogEditRequestsPage() {
     currentUserId,
     canApprove: can(PERM.logsApproveEdit),
     canReject: can(PERM.logsRejectEdit),
-    onView: (request) => request.daily_log_id && navigate(`/logs/view/${request.daily_log_id}`),
+    onView: (request) =>
+      request.daily_log_id && navigate(`/logs/view/${encodeURIComponent(request.daily_log_id)}`),
     onApprove: (request) => void handleApprove(request),
     onReject: (request) => setRejecting(request),
   });

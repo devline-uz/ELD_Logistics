@@ -172,7 +172,8 @@ export function MaintenanceHistoryPage() {
   );
 
   const openRecord = (row: MaintenanceRecord) => {
-    if (row.schedule_unit_id) navigate(`/maintenance/history/${row.schedule_unit_id}`);
+    if (row.schedule_unit_id)
+      navigate(`/maintenance/history/${encodeURIComponent(row.schedule_unit_id)}`);
   };
 
   return (

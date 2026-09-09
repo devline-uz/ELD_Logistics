@@ -12,6 +12,7 @@ import { Drawer } from '@/components/ui/Drawer';
 import { Skeleton } from '@/components/feedback/Skeleton';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 import { useDateFormat } from '@/hooks/useDateFormat';
+import { formatCoordinatePair } from '@/lib/format';
 
 import { LazyRouteDirectionsMap } from './LazyRouteDirectionsMap';
 
@@ -47,7 +48,7 @@ export function RouteDirectionsDrawer({ open, onClose, route }: RouteDirectionsD
         key: 'origin',
         point: t('routes.directions.table.origin'),
         label: origin.text ?? '',
-        coordinates: `${origin.lat.toFixed(7)}, ${origin.lng.toFixed(7)}`,
+        coordinates: formatCoordinatePair(origin.lat, origin.lng),
       });
     }
     if (typeof dest?.lat === 'number' && typeof dest?.lng === 'number') {
@@ -55,7 +56,7 @@ export function RouteDirectionsDrawer({ open, onClose, route }: RouteDirectionsD
         key: 'destination',
         point: t('routes.directions.table.destination'),
         label: dest.text ?? '',
-        coordinates: `${dest.lat.toFixed(7)}, ${dest.lng.toFixed(7)}`,
+        coordinates: formatCoordinatePair(dest.lat, dest.lng),
       });
     }
     if (destination) {

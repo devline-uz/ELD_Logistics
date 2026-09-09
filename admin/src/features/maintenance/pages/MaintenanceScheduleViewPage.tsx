@@ -66,7 +66,7 @@ export function MaintenanceScheduleViewPage() {
               label: t('maintenance.view.fields.unit'),
               value: isMultiple ? (
                 <Link
-                  to={`/maintenance/schedules/${id ?? ''}/units`}
+                  to={`/maintenance/schedules/${encodeURIComponent(id ?? '')}/units`}
                   className="text-primary hover:underline"
                 >
                   {t('maintenance.schedules.unitCount', { count: units.length })}
@@ -133,7 +133,7 @@ export function MaintenanceScheduleViewPage() {
           title={t('maintenance.view.unitsSectionTitle')}
           actions={
             <Link
-              to={`/maintenance/schedules/${id ?? ''}/units`}
+              to={`/maintenance/schedules/${encodeURIComponent(id ?? '')}/units`}
               className="text-body-sm text-primary hover:underline"
             >
               {t('maintenance.view.openUnits')}

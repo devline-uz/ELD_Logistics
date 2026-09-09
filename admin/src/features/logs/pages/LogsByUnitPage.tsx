@@ -23,7 +23,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { api } from '@/api/client';
+import { fetchDriverDailyLogs } from '@/api/queries/logs';
 import { useHosSummaries } from '@/api/queries/hos';
 import { useTrackingLive } from '@/api/queries/logs';
 import { useViolationsList } from '@/api/queries/violations';
@@ -37,10 +37,10 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
 
 import { buildLogsByUnitColumns } from '../components/logsByUnitColumns';
-import { formatPersonName } from '@/lib/format';
+import { formatPersonName, toDateParam } from '@/lib/format';
 
 function todayIsoDate(): string {
-  return new Date().toISOString().slice(0, 10);
+  return toDateParam(new Date());
 }
 
 function groupViolationsByUnit(violations: Violation[]): Map<string, Violation[]> {
@@ -136,11 +136,9 @@ export function LogsByUnitPage() {
 
   const openLog = async (unit: LiveUnit) => {
     if (!unit.driver?.id) return;
-    const { data } = await api.GET('/drivers/{id}/daily-logs', {
-      params: { path: { id: unit.driver.id }, query: { from: date, to: date } },
-    });
-    const logId = data?.data?.[0]?.id;
-    if (logId) navigate(`/logs/view/${logId}`);
+    const data = await fetchDriverDailyLogs(unit.driver.id, { from: date, to: date });
+    const logId = data.data?.[0]?.id;
+    if (logId) navigate(`/logs/view/${encodeURIComponent(logId)}`);
   };
 
   const columns = buildLogsByUnitColumns(t, {

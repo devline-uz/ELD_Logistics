@@ -140,7 +140,9 @@ export function RouteListPage() {
             order={listParams.order}
             onSortChange={listParams.setSort}
             getRowId={(route, index) => route.id ?? String(index)}
-            onRowClick={(route) => route.unit_id && navigate(`/tracking/units/${route.unit_id}`)}
+            onRowClick={(route) =>
+              route.unit_id && navigate(`/tracking/units/${encodeURIComponent(route.unit_id)}`)
+            }
             rowActions={(route) => (
               <RowActionsMenu
                 ariaLabel={t('routes.list.rowActionsLabel', { routeId: route.id })}

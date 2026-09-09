@@ -216,7 +216,7 @@ export function TrackOnMapPage() {
           { label: t('fleet.units.title'), href: '/units' },
           {
             label: t('fleet.units.detail.breadcrumb', { unitNumber: unit?.unit_number ?? unitId }),
-            href: `/units/${unitId}`,
+            href: `/units/${encodeURIComponent(unitId ?? '')}`,
           },
           { label: t('tracking.trackOnMap.breadcrumbLeaf') },
         ]

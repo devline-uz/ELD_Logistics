@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { useDriverDailyLogs } from '@/api/queries/logs';
+import { useHosSummariesByDate } from '@/api/queries/hos';
 import { useDriversList } from '@/api/queries/drivers';
 import { useViolationsList } from '@/api/queries/violations';
 import type { DailyLogSummary, DriverDailyLogsParams, Violation } from '@/api/types';
@@ -24,12 +25,11 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
 
-import { useHosSummariesByDate } from '../lib/hosByDate';
 import { buildLogsByDriverColumns } from '../components/logsByDriverColumns';
-import { formatPersonName } from '@/lib/format';
+import { formatPersonName, toDateParam } from '@/lib/format';
 
 function isoDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
+  return toDateParam(date);
 }
 
 function defaultRange(): DateRange {
@@ -113,7 +113,7 @@ export function LogsByDriverPage() {
   });
 
   const openLog = (log: DailyLogSummary) => {
-    if (log.id) navigate(`/logs/view/${log.id}`);
+    if (log.id) navigate(`/logs/view/${encodeURIComponent(log.id)}`);
   };
 
   return (

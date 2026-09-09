@@ -31,7 +31,7 @@ import { PERM } from '@/lib/permissions';
 import { CoDriversPanel } from '../components/CoDriversPanel';
 import { DriverFormModal } from '../components/DriverFormModal';
 import { LicenseReveal } from '../components/LicenseReveal';
-import { useDriverDailyLogs } from '../hooks/useDriverDailyLogs';
+import { useDriverDailyLogs } from '@/api/queries/logs';
 import { useToast } from '@/components/feedback/toast-context';
 import type { DriverUpdate } from '@/api/types';
 import { formatPersonName } from '@/lib/format';
@@ -198,7 +198,9 @@ export function DriverDetailPage({ tab = 'information' }: { tab?: DriverDetailTa
         ariaLabel={t('fleetDrivers.detail.tabsLabel')}
         idPrefix="driver-detail"
         activeId={tab}
-        onChange={(id) => navigate(`/drivers/${driverId}${TAB_PATH[id as DriverDetailTab]}`)}
+        onChange={(id) =>
+          navigate(`/drivers/${encodeURIComponent(driverId)}${TAB_PATH[id as DriverDetailTab]}`)
+        }
         tabs={[
           { id: 'information', label: t('fleetDrivers.detail.tabs.information') },
           { id: 'activities', label: t('fleetDrivers.detail.tabs.activities') },

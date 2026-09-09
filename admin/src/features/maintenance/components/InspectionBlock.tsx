@@ -84,7 +84,7 @@ export function InspectionBlock({ type, unitId, performedAt }: InspectionBlockPr
                 </Badge>
               </span>
               <Link
-                to={`/dvir/${report.id ?? ''}`}
+                to={`/dvir/${encodeURIComponent(report.id ?? '')}`}
                 className="text-body-sm text-primary hover:underline"
               >
                 {t('maintenance.inspections.openReport')}

@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { TFunction } from 'i18next';
 
-import { formatExportJobFileSize, summarizeExportParams } from './exportJobDisplay';
+import {
+  formatExportJobFileSize,
+  safeDownloadUrl,
+  summarizeExportParams,
+} from './exportJobDisplay';
 
 /** Testda faqat kalitni qaytaradigan yengil `t()` stub — tarjima matnini emas, kalit
  * yo'lini tekshiramiz (fe-testing: haqiqiy i18next yuklamasdan pure funksiyani sinash). */
@@ -49,5 +53,24 @@ describe('summarizeExportParams', () => {
   it("params bo'sh bo'lsa N/A qaytaradi", () => {
     expect(summarizeExportParams(undefined, t)).toBe('N/A');
     expect(summarizeExportParams({}, t)).toBe('N/A');
+  });
+});
+
+describe("safeDownloadUrl (9.14 xavfsizlik ko'rigi)", () => {
+  it("https havolani o'zgarishsiz qaytaradi", () => {
+    expect(safeDownloadUrl('https://files.stackyard.uz/a.pdf')).toBe(
+      'https://files.stackyard.uz/a.pdf',
+    );
+  });
+
+  it('javascript:/data:/http: sxemalarini rad etadi', () => {
+    expect(safeDownloadUrl('javascript:alert(1)')).toBeUndefined();
+    expect(safeDownloadUrl('data:text/html,<script>alert(1)</script>')).toBeUndefined();
+    expect(safeDownloadUrl('http://files.stackyard.uz/a.pdf')).toBeUndefined();
+  });
+
+  it("bo'sh yoki buzuq qiymatda undefined qaytaradi", () => {
+    expect(safeDownloadUrl(undefined)).toBeUndefined();
+    expect(safeDownloadUrl('%%%')).toBeUndefined();
   });
 });

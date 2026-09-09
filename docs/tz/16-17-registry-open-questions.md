@@ -840,7 +840,13 @@ hosti) bilan mos bo'lishi **shart**: aks holda DVIR fotolari ko'rinmaydi
 **Kim yopadi:** infra/backend jamoasi — S3/MinIO public host nomi.
 **Qachon:** `docs/deploy.md` §4 dagi CSP Report-Only bosqichidan **oldin**.
 
-### D49 — [KRITIK] Login'dan keyin profil/ruxsatlar yuklanmaydi → darhol 403 (9.1 e2e orqali topildi)
+### D49 — [YOPILDI 9.14] Login'dan keyin profil/ruxsatlar yuklanmaydi → darhol 403 (9.1 e2e orqali topildi)
+
+**Holat (9.14 yakuniy ko'rik):** YOPILDI. `LoginPage` 2FA/oddiy login
+muvaffaqiyatidan keyin `loadSessionContext()` (→ `GET /me` +
+`authState().setProfile`) chaqiradi, shuning uchun `navigate('/')` paytida
+ruxsatlar to'ldirilgan bo'ladi. `e2e/01-login.spec.ts` dagi vaqtinchalik
+`page.reload()` chetlanishi olib tashlangan.
 
 **Topilish:** Bosqich 9.1 Playwright oqim 1 (Login → Dashboard → Logout)
 haqiqiy `/login` formasini to'ldirib kuzatdi: muvaffaqiyatli kirishdan keyin
@@ -914,3 +920,56 @@ tomondan tuzatib bo'lmaydi (MapLibre canvas render arxitekturasi shunday).
 **Kim yopadi:** Hech kim — abadiy istisno, faqat kelajakda MapLibre o'zi
 canvas ichiga ARIA canvas-fallback content qo'shsa qayta ko'rib chiqiladi.
 **Qachon:** N/A.
+
+### D51 — [YOPILDI 9.14] Prod `dist/` ga MSW service worker fayli tushardi
+
+**Topilish:** 9.14 yakuniy xavfsizlik ko'rigi. `public/mockServiceWorker.js`
+Vite tomonidan `dist/` ga so'zsiz ko'chiriladi — prod hostda ro'yxatdan
+o'tkazilishi mumkin bo'lgan service worker fayli qoladi (MSW ilova
+kodidan tree-shake qilingan bo'lsa ham, worker fayli o'z-o'zicha butun
+origin trafigini ushlab qolish qobiliyatiga ega).
+
+**Tuzatildi:** `vite.config.ts` da `stripMockServiceWorker()` plagini
+(`apply: 'build'`, faqat `mode === 'production'`) `closeBundle` da faylni
+o'chiradi; `deploy/nginx.conf` da `location = /mockServiceWorker.js
+{ return 404; }` — ikkinchi qatlam.
+
+### D52 — [YOPILDI 9.14] Marshrut ID lari kodlanmagan (react-router GHSA-wrjc-x8rr-h8h6)
+
+**Topilish:** 9.14. `navigate(\`/units/${unit.id}\`)` ko'rinishidagi 30 ta
+joyda backenddan kelgan `id` kodlanmagan holda marshrutga qo'shilardi.
+`react-router` 6.x da yopilmagan `moderate` zaiflik (D46) aynan `\\` bilan
+boshlanadigan yo'lni ochiq redirect sifatida qayta ishlaydi.
+
+**Tuzatildi:** barcha marshrut shablonlarida interpolyatsiyalar
+`encodeURIComponent(...)` bilan o'raldi (`entityLinks.ts` dagi `safeId`
+naqshi bilan bir xil). Qolgan yagona istisno — `TAB_PATH[...]` kabi
+ichki konstanta segmentlar.
+
+### D53 — [YOPILDI 9.14] `export_job.download_url` sxemasi tekshirilmasdan ochilardi
+
+**Topilish:** 9.14. `openExportJobDownload()` backenddan kelgan
+`download_url` ni `window.open()` ga to'g'ridan-to'g'ri berardi —
+`javascript:`/`data:` sxemasi filtrlanmagan (`resolveStorageUrl` dagi
+qoida bu yerda qo'llanmagan edi).
+
+**Tuzatildi:** `safeDownloadUrl()` — faqat `https:` qabul qilinadi,
+aks holda havola umuman ochilmaydi.
+
+### D54 — [OCHIQ] Tenant almashtirish (`X-Company-Id`) uchun kesh/WS reset yo'q
+
+**Topilish:** 9.14. `setCompanyId()` / `authState().setImpersonatedCompanyId()`
+mavjud va `X-Company-Id` header'ini boshqaradi, lekin **hech qanday UI uni
+chaqirmaydi** (super_admin `/companies*` ekranlari MVP qamrovida yo'q).
+Shu sababli hozir cross-tenant kesh sizishi **yuzaga kelmaydi**.
+
+**Xavf:** kelajakda kompaniya almashtirgichi qo'shilsa, `queryClient.clear()`
+va WS qayta obunasi (`resetProtocolState()` + `subscribe`) chaqirilmasa,
+oldingi tenant ma'lumotlari ekranda qolib ketadi.
+
+**Tuzatish taklifi:** `setCompanyId()` ni `endSession()` singari hodisa
+tarqatadigan qilish (`onCompanyChanged`) va `QueryProvider` + `lib/ws.ts` ni
+unga obuna qilish.
+
+**Kim yopadi:** `/companies*` ekranlarini yozadigan agent.
+**Qachon:** super_admin moduli qo'shilganda (MVP dan keyin).

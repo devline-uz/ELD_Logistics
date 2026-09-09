@@ -21,12 +21,28 @@ export const EXPORT_JOB_STATUS_TONE: Record<'queued' | 'running' | 'done' | 'fai
 };
 
 /**
+ * `download_url` — backenddan kelgan ishonchsiz satr (fe-security §2). Faqat
+ * `https:` sxemasi ochiladi; `javascript:`, `data:`, `blob:`, `http:` rad
+ * etiladi (`resolveStorageUrl` bilan bir xil qoida).
+ */
+export function safeDownloadUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.protocol === 'https:' ? parsed.toString() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
  * Tayyor eksport faylini yangi tabda ochadi. `noopener` — `download_url` tashqi
  * (presigned) manzil, `window.opener` orqali sahifaga kirish berilmaydi.
  */
 export function openExportJobDownload(job: ExportJob | undefined): void {
-  if (!job?.download_url) return;
-  window.open(job.download_url, '_blank', 'noopener');
+  const url = safeDownloadUrl(job?.download_url);
+  if (!url) return;
+  window.open(url, '_blank', 'noopener');
 }
 
 /**

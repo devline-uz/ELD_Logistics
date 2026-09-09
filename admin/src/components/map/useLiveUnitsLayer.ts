@@ -17,6 +17,7 @@ import * as maplibregl from 'maplibre-gl';
 
 import type { LiveUnit } from '@/api/types';
 
+import { easeDurationMs } from './motion';
 import { buildLiveUnitsGeoJson, type LiveUnitFeatureProperties } from './liveUnitsGeoJson';
 import { whenStyleReady } from './mapReady';
 import { registerDutyStatusIcons } from './markerIcons';
@@ -244,7 +245,7 @@ export function useLiveUnitsLayer(
         .getClusterExpansionZoom(clusterId)
         .then((zoom) => {
           if (zoom <= (map.getMaxZoom() ?? 22)) {
-            map.easeTo({ center: event.lngLat, zoom, duration: 300 });
+            map.easeTo({ center: event.lngLat, zoom, duration: easeDurationMs() });
             return undefined;
           }
           // Kengaytirish mumkin emas (max zoom'da ham to'plangan) — spiderfy

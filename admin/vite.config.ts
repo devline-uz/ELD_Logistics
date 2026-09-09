@@ -1,8 +1,10 @@
+import { rmSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
+import type { Plugin } from 'vite';
 import { defineConfig } from 'vitest/config';
 
 /**
@@ -19,9 +21,26 @@ const analyze = process.env.ANALYZE === '1';
  */
 const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
 
+/**
+ * MSW worker'i (`public/mockServiceWorker.js`) faqat dev + e2e uchun kerak.
+ * `public/` mazmuni Vite tomonidan `dist/` ga SO'ZSIZ ko'chiriladi, shuning
+ * uchun prod build'dan u qo'lda olib tashlanadi (fe-security §9): prod
+ * hostda service worker fayli umuman turmasligi kerak.
+ */
+function stripMockServiceWorker(): Plugin {
+  return {
+    name: 'eld-strip-msw-worker',
+    apply: 'build',
+    closeBundle() {
+      rmSync('dist/mockServiceWorker.js', { force: true });
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    ...(mode === 'production' ? [stripMockServiceWorker()] : []),
     ...(analyze
       ? [
           visualizer({

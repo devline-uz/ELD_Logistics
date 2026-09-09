@@ -23,6 +23,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
 import { api } from '@/api/client';
+import { batchSettled } from '@/lib/batch';
 import type { ApiError } from '@/lib/errors';
 import type { HosSummary, HosSummaryParams } from '@/api/types';
 
@@ -35,6 +36,9 @@ export const hosKeys = {
   batches: () => [...hosKeys.all, 'batch'] as const,
   batch: (driverIds: string[], date?: string) =>
     [...hosKeys.batches(), [...driverIds].sort(), date ?? null] as const,
+  dateBatches: () => [...hosKeys.all, 'date-batch'] as const,
+  dateBatch: (driverId: string, dates: string[]) =>
+    [...hosKeys.dateBatches(), driverId, [...dates].sort()] as const,
 };
 
 /** `GET /drivers/{id}/hos-summary` (`logs.read`) — bitta haydovchi/kun. */
@@ -74,24 +78,50 @@ export function useHosSummaries(
     queryKey: hosKeys.batch(driverIds, date),
     queryFn: async () => {
       const query: HosSummaryParams = date ? { date } : {};
-      const result: Record<string, HosSummary | undefined> = {};
-      for (let i = 0; i < driverIds.length; i += HOS_BATCH_CONCURRENCY) {
-        const chunk = driverIds.slice(i, i + HOS_BATCH_CONCURRENCY);
-        // Har to'plam ketma-ket kutiladi (F95): shu bilan bir vaqtning
-        // o'zida hech qachon HOS_BATCH_CONCURRENCY tadan ortiq so'rov ochiq bo'lmaydi.
-        const settled = await Promise.allSettled(
-          chunk.map((driverId) =>
-            api.GET('/drivers/{id}/hos-summary', {
-              params: { path: { id: driverId }, query },
-            }),
-          ),
-        );
-        chunk.forEach((driverId, idx) => {
-          const outcome = settled[idx];
-          result[driverId] = outcome?.status === 'fulfilled' ? outcome.value.data?.data : undefined;
-        });
-      }
-      return result;
+      // Har to'plam ketma-ket kutiladi (F95): bir vaqtning o'zida hech qachon
+      // HOS_BATCH_CONCURRENCY tadan ortiq so'rov ochiq bo'lmaydi.
+      return batchSettled(
+        driverIds,
+        async (driverId) => {
+          const { data } = await api.GET('/drivers/{id}/hos-summary', {
+            params: { path: { id: driverId }, query },
+          });
+          return data?.data;
+        },
+        HOS_BATCH_CONCURRENCY,
+      );
+    },
+    enabled,
+    staleTime: 60_000,
+  });
+}
+
+/**
+ * **`useHosSummariesByDate` — Logs By Driver kompozitsiyasi (7.4.2).**
+ * `useHosSummaries` bitta sana × ko'p haydovchi uchun; bu yerda aksincha —
+ * bitta haydovchi × ko'p sana (Break/Drive/Shift/Cycle/Recap ustunlari).
+ * Cheklov siyosati bir xil: concurrency ≤ 6, `staleTime` 60 s, bitta kun
+ * yiqilsa natijada `undefined` qoladi (butun batch yiqilmaydi).
+ */
+export function useHosSummariesByDate(
+  driverId: string | undefined,
+  dates: string[],
+  options: { enabled?: boolean } = {},
+): UseQueryResult<Record<string, HosSummary | undefined>, ApiError> {
+  const enabled = (options.enabled ?? true) && Boolean(driverId) && dates.length > 0;
+  return useQuery({
+    queryKey: hosKeys.dateBatch(driverId ?? '', dates),
+    queryFn: async () => {
+      return batchSettled(
+        dates,
+        async (date) => {
+          const { data } = await api.GET('/drivers/{id}/hos-summary', {
+            params: { path: { id: driverId as string }, query: { date } },
+          });
+          return data?.data;
+        },
+        HOS_BATCH_CONCURRENCY,
+      );
     },
     enabled,
     staleTime: 60_000,

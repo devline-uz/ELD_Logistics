@@ -81,7 +81,8 @@ export function ViolationsPage() {
   const columns = buildViolationsColumns(t, {
     startIndex: (listParams.page - 1) * listParams.perPage,
     dateFormat,
-    onView: (violation: Violation) => violation.id && navigate(`/violations/${violation.id}`),
+    onView: (violation: Violation) =>
+      violation.id && navigate(`/violations/${encodeURIComponent(violation.id)}`),
   });
 
   const filterDefs: FilterDef[] = [
@@ -141,7 +142,9 @@ export function ViolationsPage() {
               : t('logs.violationsList.empty.description')
           }
           onClearFilters={listParams.hasActiveFilters ? listParams.clearFilters : undefined}
-          onRowClick={(violation) => violation.id && navigate(`/violations/${violation.id}`)}
+          onRowClick={(violation) =>
+            violation.id && navigate(`/violations/${encodeURIComponent(violation.id)}`)
+          }
           getRowId={(violation, index) => violation.id ?? String(index)}
         />
       }

@@ -22,7 +22,7 @@ import { ListScreen } from '@/components/data/ListScreen';
 import { DateRangePicker, type DateRange } from '@/components/ui/DateRangePicker';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
-import { formatPersonName } from '@/lib/format';
+import { formatPersonName, toDateParam } from '@/lib/format';
 
 import { DvirAllTab } from '../components/DvirAllTab';
 import { DvirPendingTab } from '../components/DvirPendingTab';
@@ -33,7 +33,7 @@ const TAB_ALL = 'all';
 const TAB_PENDING = 'pending';
 
 function isoDate(date: Date | null): string | undefined {
-  return date ? date.toISOString().slice(0, 10) : undefined;
+  return date ? toDateParam(date) : undefined;
 }
 
 function parseIso(value: string | undefined): Date | null {
@@ -78,7 +78,7 @@ export function DvirListPage() {
   );
 
   const openReport = (report: DvirReport) => {
-    if (report.id) navigate(`/dvir/${report.id}`);
+    if (report.id) navigate(`/dvir/${encodeURIComponent(report.id)}`);
   };
 
   const searchTerm = listParams.search;

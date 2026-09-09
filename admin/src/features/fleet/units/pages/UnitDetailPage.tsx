@@ -80,8 +80,8 @@ export function UnitDetailPage({ tab = 'info' }: { tab?: UnitTab }) {
   const data = unit.data;
 
   const goToTab = (id: string) => {
-    if (id === 'info') navigate(`/units/${unitId}`);
-    else navigate(`/units/${unitId}/${id}`);
+    if (id === 'info') navigate(`/units/${encodeURIComponent(unitId ?? '')}`);
+    else navigate(`/units/${encodeURIComponent(unitId ?? '')}/${encodeURIComponent(id)}`);
   };
 
   return (

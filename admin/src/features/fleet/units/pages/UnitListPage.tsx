@@ -29,6 +29,7 @@ import { PermissionGate } from '@/components/ui/PermissionGate';
 import { useListParams } from '@/hooks/useListParams';
 import { useIsCompanyScope } from '@/hooks/useScope';
 import { useWriteGuard } from '@/hooks/useWriteGuard';
+import { saveBlob } from '@/lib/download';
 import { isApiError } from '@/lib/errors';
 import { PERM } from '@/lib/permissions';
 
@@ -171,14 +172,7 @@ export function UnitListPage() {
   const handleExport = async (format: 'csv' | 'xlsx') => {
     try {
       const blob = await exportUnits.mutateAsync({ format });
-      const objectUrl = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = objectUrl;
-      anchor.download = `units.${format}`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      URL.revokeObjectURL(objectUrl);
+      saveBlob(blob, `units.${format}`);
     } catch {
       toast.show({ variant: 'error', message: t('fleet.units.toast.exportFailed') });
     }
@@ -283,7 +277,7 @@ export function UnitListPage() {
             sort={listParams.sort}
             order={listParams.order}
             onSortChange={listParams.setSort}
-            onRowClick={(unit) => unit.id && navigate(`/units/${unit.id}`)}
+            onRowClick={(unit) => unit.id && navigate(`/units/${encodeURIComponent(unit.id)}`)}
             getRowId={(unit, index) => unit.id ?? String(index)}
             rowActions={(unit) => (
               <RowActionsMenu
@@ -292,7 +286,7 @@ export function UnitListPage() {
                   {
                     key: 'view',
                     label: t('common.actions.view'),
-                    onSelect: () => unit.id && navigate(`/units/${unit.id}`),
+                    onSelect: () => unit.id && navigate(`/units/${encodeURIComponent(unit.id)}`),
                   },
                   {
                     key: 'edit',

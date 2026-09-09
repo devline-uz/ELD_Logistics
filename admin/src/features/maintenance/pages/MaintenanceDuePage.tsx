@@ -88,7 +88,9 @@ export function MaintenanceDuePage() {
             }
             onClearFilters={listParams.hasActiveFilters ? listParams.clearFilters : undefined}
             rowOffset={(listParams.page - 1) * listParams.perPage}
-            onView={(row) => navigate(`/maintenance/schedules/${row.schedule_id ?? ''}`)}
+            onView={(row) =>
+              navigate(`/maintenance/schedules/${encodeURIComponent(row.schedule_id ?? '')}`)
+            }
             onComplete={actions.openComplete}
             onCancel={actions.openCancel}
           />

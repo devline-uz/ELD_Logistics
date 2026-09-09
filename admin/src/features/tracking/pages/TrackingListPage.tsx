@@ -209,7 +209,9 @@ export function TrackingListPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => unit.unit_id && navigate(`/tracking/units/${unit.unit_id}`)}
+              onClick={() =>
+                unit.unit_id && navigate(`/tracking/units/${encodeURIComponent(unit.unit_id)}`)
+              }
             >
               {t('tracking.list.actions.trackOnMap')}
             </Button>

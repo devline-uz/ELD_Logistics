@@ -11,6 +11,7 @@ import type { Map as MapLibreMap } from 'maplibre-gl';
 import * as maplibregl from 'maplibre-gl';
 import { LngLatBounds } from 'maplibre-gl';
 
+import { easeDurationMs } from './motion';
 import { whenStyleReady } from './mapReady';
 import type { LngLatTuple } from './polyline';
 
@@ -124,7 +125,7 @@ export function useTripPolylineLayer(
           (acc, coord) => acc.extend(coord),
           new LngLatBounds(activeCoords[0], activeCoords[0]),
         );
-        map.fitBounds(bounds, { padding: 64, duration: 500, maxZoom: 16 });
+        map.fitBounds(bounds, { padding: 64, duration: easeDurationMs(), maxZoom: 16 });
       }
     };
 

@@ -36,6 +36,7 @@ import { useDateFormat } from '@/hooks/useDateFormat';
 import { useListParams } from '@/hooks/useListParams';
 import { useIsCompanyScope } from '@/hooks/useScope';
 import { useWriteGuard } from '@/hooks/useWriteGuard';
+import { saveBlob } from '@/lib/download';
 import { PERM } from '@/lib/permissions';
 
 import { RowActionsMenu, type RowActionItem } from '@/components/data/RowActionsMenu';
@@ -100,14 +101,7 @@ export function DriverListPage() {
   const handleExport = async (format: 'csv' | 'xlsx') => {
     try {
       const blob = await exportDrivers.mutateAsync({ format });
-      const objectUrl = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = objectUrl;
-      anchor.download = `drivers.${format}`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      URL.revokeObjectURL(objectUrl);
+      saveBlob(blob, `drivers.${format}`);
     } catch {
       toast.show({ variant: 'error', message: t('fleetDrivers.toast.exportFailed') });
     }
@@ -219,7 +213,7 @@ export function DriverListPage() {
       {
         key: 'view',
         label: t('common.actions.view'),
-        onSelect: () => navigate(`/drivers/${id}`),
+        onSelect: () => navigate(`/drivers/${encodeURIComponent(id)}`),
       },
     ];
 
@@ -358,7 +352,7 @@ export function DriverListPage() {
             sort={listParams.sort}
             order={listParams.order}
             onSortChange={listParams.setSort}
-            onRowClick={(driver) => navigate(`/drivers/${driver.id}`)}
+            onRowClick={(driver) => navigate(`/drivers/${encodeURIComponent(driver.id ?? '')}`)}
             getRowId={(driver, index) => driver.id ?? String(index)}
             rowActions={(driver) => (
               <RowActionsMenu

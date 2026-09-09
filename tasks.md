@@ -275,7 +275,7 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
       `SENTRY_AUTH_TOKEN` bo'lganda + `filesToDeleteAfterUpload`.
       Yoqish/CSP qadamlari — `docs/deploy.md` §5
 - [x] 9.13 `README` — ishga tushirish, `npm run api` oqimi, env, skriptlar, bosqichlar holati 0–9, deploy havolasi
-- [ ] 9.14 **Yakuniy ko'rik:** `frontend-security-reviewer` + `frontend-code-reviewer` + §16/§17 reestrini yangilash
+- [x] 9.14 **Yakuniy ko'rik:** `frontend-security-reviewer` + `frontend-code-reviewer` + §16/§17 reestrini yangilash
 - [ ] 9.15 **[MAY]** Super Admin konsoli (§7.14)
 ```
 
@@ -322,8 +322,9 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [x] TD1 `features/logs/lib/tripPlannerApi.ts` → `api/queries/{tracking,routes}.ts` ga ko'chirildi
       (fayl o'chirildi; `TripPlannerTab` markaziy `useUnitTrips` + `useRouteCreate` ga o'tdi —
       markaziy `useRouteCreate` `/routes` ro'yxatini ham invalidatsiya qiladi)
-- [ ] TD2 `batchSettled<T,R>(items, fn, concurrency)` yordamchisini `lib/` ga chiqarish
-      (`api/queries/hos.ts` va `features/logs/lib/hosByDate.ts` da chunking algoritmi takrorlangan)
+- [x] TD2 `batchSettled<K,R>(keys, fn, concurrency)` → `src/lib/batch.ts` (9.14).
+      `features/logs/lib/hosByDate.ts` `api/queries/hos.ts` ga `useHosSummariesByDate` bo'lib
+      ko'chdi; ikkala batch ham endi bitta yordamchidan foydalanadi (`lib/batch.test.ts`)
 - [ ] TD3 Qidiruv faqat joriy sahifada ishlashini UI'da ko'rsatish
       (`LogsByUnitPage`, `ViolationsPage`, `UnassignedDrivingPage` — backend `search` parametri yo'q,
       lekin pagination `total` filtrlanmagan holda keladi → foydalanuvchi chalg'ishi mumkin)
@@ -331,9 +332,8 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 - [ ] TD5 Zod xabarlari inglizcha hardcode (`features/routes/schemas.ts`, `features/auth/schemas.ts`)
       — i18n kalitlariga o'tkazish loyiha bo'ylab **yagona qaror** sifatida rejalashtirilsin
       (4.13 ko'rigi; bitta modulda yakka tuzatish naqshni yanada chalkashtiradi)
-- [ ] TD6 Koordinata formatlagichi `features/routes/components/RouteDirectionsDrawer.tsx` da
-      hali ham inline — `lib/format.ts` dagi `formatCoordinatePair` ga o'tkazish
-      (qolgan 5 nusxa 4.13 da birlashtirildi)
+- [x] TD6 `RouteDirectionsDrawer` `formatCoordinatePair` ga o'tkazildi (9.14) — inline
+      `toFixed(7)` nusxalari loyihada qolmadi
 - [ ] TD7 `RouteListPage` qator bosilishi `/tracking/units/:id` ga olib boradi — `routes.read`
       ruxsati bor, lekin `tracking.view_live` yo'q foydalanuvchi 403 ekranga tushadi
       (havolani ruxsatga qarab yashirish yoki 403 ni oldindan tushuntirish)
@@ -358,6 +358,16 @@ Belgilash: `[ ]` bajarilmagan · `[~]` jarayonda · `[x]` bajarilgan (DoD §18.4
 
 - [ ] TD15 `features/chat/lib/dateGroups.ts` va `features/notifications/lib/groupByDay.ts` —
       "Today/Yesterday" ikki xil algoritm bilan. Birlashtirish katta refaktor.
+
+- [ ] TD17 `saveBlob` (`lib/download.ts`) 5 joyda inline takrorlangan edi — 9.14 da birlashtirildi;
+      `ReportTab` object URL'ni `<iframe>` uchun tirik saqlaydi, u ataylab alohida qolgan
+- [ ] TD18 `components/ui/` qamrovi 78.5% (F212 talabi ≥ 90%) — yetishmayotgani asosan
+      `DateRangePicker`/`TimePicker`/`Drawer` klaviatura shoxlari; `components/map/` 31%
+      (jsdom'da MapLibre ishlamaydi — Playwright bilan qoplanadi)
+- [ ] TD19 O'lik eksportlar: `forgetDeviceId` (`features/auth/device-id.ts`),
+      `isSameDateGroup` (`features/chat/lib/dateGroups.ts`), `useIsSuperAdmin`,
+      `isFeatureEnabled`/`selectClockSkewWarning` (`store/company-store.ts`) — hech qayerdan
+      chaqirilmaydi; API yuzasi sifatida qoldirildi, keyingi tozalashda ko'riladi
 
 - [ ] TD16 dev-bog'liqliklar `npm audit`: vitest/@vitest/coverage-v8 (critical), vite (high).
       Bundle'ga tushmaydi. 9.10 da yangilanadi.

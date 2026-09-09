@@ -137,7 +137,9 @@ export function LogViewPage() {
           <Button
             variant="secondary"
             disabled={!previousLogId}
-            onClick={() => previousLogId && navigate(`/logs/view/${previousLogId}`)}
+            onClick={() =>
+              previousLogId && navigate(`/logs/view/${encodeURIComponent(previousLogId)}`)
+            }
             aria-label={t('logs.view.previousDay')}
           >
             {'‹'}
@@ -148,7 +150,7 @@ export function LogViewPage() {
           <Button
             variant="secondary"
             disabled={!nextLogId}
-            onClick={() => nextLogId && navigate(`/logs/view/${nextLogId}`)}
+            onClick={() => nextLogId && navigate(`/logs/view/${encodeURIComponent(nextLogId)}`)}
             aria-label={t('logs.view.nextDay')}
           >
             {'›'}
@@ -236,6 +238,11 @@ export function LogViewPage() {
   );
 }
 
+/**
+ * `YYYY-MM-DD` qatorini kun bo'yicha suradi. Kirish ham, chiqish ham **sana
+ * qatori** (mahalliy `Date` emas), shuning uchun UTC arifmetikasi ataylab
+ * ishlatiladi — `toDateParam` bu yerda kerak emas (zona konvertatsiyasi yo'q).
+ */
 function shiftDate(isoDate: string, days: number): string {
   const date = new Date(`${isoDate}T00:00:00Z`);
   date.setUTCDate(date.getUTCDate() + days);

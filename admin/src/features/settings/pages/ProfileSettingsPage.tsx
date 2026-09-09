@@ -11,6 +11,7 @@ import { Badge, type BadgeTone } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import type { Profile } from '@/api/types';
 import { isApiError } from '@/lib/errors';
+import { formatPersonName } from '@/lib/format';
 
 function ProfileField({ label, value }: { label: string; value: ReactNode }) {
   return (
@@ -39,7 +40,7 @@ export function ProfileSettingsPage() {
   const { t } = useTranslation();
   const { data: profile, isPending, isError, error, refetch } = useMyProfile();
 
-  const fullName = profile ? [profile.first_name, profile.last_name].filter(Boolean).join(' ') : '';
+  const fullName = formatPersonName(profile, '');
   const avatarName = fullName || profile?.username || '';
   const status = profile?.status ?? 'active';
 

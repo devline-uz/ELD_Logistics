@@ -115,7 +115,10 @@ export function ViolationDetailPage() {
 
       {data.daily_log_id ? (
         <div>
-          <Button variant="secondary" onClick={() => navigate(`/logs/view/${data.daily_log_id}`)}>
+          <Button
+            variant="secondary"
+            onClick={() => navigate(`/logs/view/${encodeURIComponent(data.daily_log_id ?? '')}`)}
+          >
             {t('logs.violationDetail.openLog')}
           </Button>
         </div>

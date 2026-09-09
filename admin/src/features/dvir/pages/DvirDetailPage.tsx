@@ -37,6 +37,7 @@ import { Icon } from '@/components/ui/Icon';
 import { PermissionGate } from '@/components/ui/PermissionGate';
 import { useDateFormat } from '@/hooks/useDateFormat';
 import { useUnitSystem } from '@/hooks/useUnitSystem';
+import { saveBlob } from '@/lib/download';
 import { formatPersonName } from '@/lib/format';
 import { PERM } from '@/lib/permissions';
 
@@ -69,21 +70,6 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       {children}
     </section>
   );
-}
-
-/** Blob → dasturiy `<a download>` → `revokeObjectURL` (fe-api §8; leak yo'q). */
-function saveBlob(blob: Blob, filename: string): void {
-  const objectUrl = URL.createObjectURL(blob);
-  try {
-    const anchor = document.createElement('a');
-    anchor.href = objectUrl;
-    anchor.download = filename;
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-  } finally {
-    URL.revokeObjectURL(objectUrl);
-  }
 }
 
 export function DvirDetailPage() {
